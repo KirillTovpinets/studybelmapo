@@ -3,42 +3,34 @@
   <p class="category">Список слушателей</p>
 </div>
 <div id="List" class="content table-responsive table-full-width">
-    <div *ngFor="let faculty of faculties">
-        <div class="panel-group">
-            <accordion>
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h4 class="panel-title">{{ faculty }}</h4>
-                    
-                  </div>
-                  <div id="collapse1" class="panel">
-                    <div class="panel-body">
-                            <div *ngFor="let cathedra of cathedras">
-                                <h5>{{ cathedra }}</h5>
-                                <table class="table table-striped table-hover table-responsive">
-                                    <thead>
-                                        <tr>
-                                            <td>Номер</td>
-                                            <td>Название курса</td>
-                                            <td>Начало</td>
-                                            <td>Конец</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                      <!-- *ngFor="let course in coursesList" -->
-                                        <tr data-id="{{course.id}}" data-open="false" ng-click="showListOfListners($event)">
-                                            <td>{{course.Number}}</td>
-                                            <td>{{course.name}}</td>
-                                            <td>{{course.Start | date: "dd.MM.yy"}}</td>
-                                            <td>{{course.Finish | date: "dd.MM.yy"}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                    </div>
-                  </div>
-                </div>
-            </accordion>
-      </div>
-    </div>
+    <accordion>
+      <accordion-group #group *ngFor="let faculty of faculties">
+        <div accordion-heading>
+          {{ faculty }}
+          <i class="pull-right float-xs-right glyphicon"
+             [ngClass]="{'glyphicon-chevron-down': group?.isOpen, 'glyphicon-chevron-right': !group?.isOpen}"></i>
+        </div>
+        <div *ngFor="let cathedra of cathedras">
+            <h5>{{ cathedra }}</h5>
+            <table class="table table-striped table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <td>Номер</td>
+                        <td>Название курса</td>
+                        <td>Начало</td>
+                        <td>Конец</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-id="{{course.id}}" *ngFor="let course of coursesList" data-open="false" (click)="showListOfListners($event)">
+                        <td>{{course.Number}}</td>
+                        <td>{{course.name}}</td>
+                        <td>{{course.Start | date: "dd.MM.yy"}}</td>
+                        <td>{{course.Finish | date: "dd.MM.yy"}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      </accordion-group>
+    </accordion>
 </div>

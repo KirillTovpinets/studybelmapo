@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 import { LoginService } from './login.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
@@ -23,19 +22,19 @@ export class LoginComponent{
 				private cookieService: CookieService,
 				private router: Router){}
 	onSubmit(login): void{
-		this.router.navigate(['/main']);
-		// this.loginService.tryLogin(login)
-		// .then(response => {
-		// 	if(response._body == "success"){
-		// 		this.cookieService.set("Login", "true");
-		// 		// this.location.go("/main");
-		// 	}else if(response._body == "pass"){
-		// 		alert("Неправильный пароль");
-		// 	}else if(response._body == "log"){
-		// 		alert("Неправильный логин");
-		// 	}
-		// })
-		// .catch(this.handleError);
+		// this.router.navigate(['/main']);
+		this.loginService.tryLogin(login)
+		.then(response => {
+			if(response._body == "success"){
+				this.cookieService.set("Login", "true");
+				this.router.navigate(["/main"]);
+			}else if(response._body == "pass"){
+				alert("Неправильный пароль");
+			}else if(response._body == "log"){
+				alert("Неправильный логин");
+			}
+		})
+		.catch(this.handleError);
 	}
 	private handleError(error: any): Promise<any>{
 		console.log("An error occurred", error);

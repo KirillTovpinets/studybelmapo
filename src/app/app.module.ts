@@ -5,13 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
+import { AccordionModule } from 'ngx-bootstrap';
 // Components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './loginform.component';
 import { MainComponent } from './main.component';
 import { MenuComponent } from './menu.component';
 import { NavbarComponent } from './navbar.component';
-import { AccordionComponent } from './accordion.component';
 import { StudListComponent } from './studList.component';
 // Services
 import { CookieService } from 'ngx-cookie-service';
@@ -23,14 +23,14 @@ import { CookieService } from 'ngx-cookie-service';
     MainComponent,
     MenuComponent,
     NavbarComponent,
-    AccordionComponent,
-    StudListComponent
+    StudListComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-	  AppRoutingModule
+	  AppRoutingModule,
+    AccordionModule.forRoot()
   ],
   providers: [ CookieService ],
   bootstrap: [AppComponent]
