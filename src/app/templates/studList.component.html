@@ -2,6 +2,7 @@
   <h4 class="title">Статистика</h4>
   <p class="category">Список слушателей</p>
 </div>
+<div class="one" #one></div>
 <div id="List" class="content table-responsive table-full-width">
     <accordion>
       <accordion-group #group *ngFor="let faculty of faculties">
@@ -22,11 +23,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr data-id="{{course.id}}" *ngFor="let course of coursesList" data-open="false" (click)="showListOfListners($event)">
+                  <ng-container id="{{course.id}}" *ngFor="let course of coursesList">
+                    <tr (click)="showListOfListners($event)">
                         <td>{{course.Number}}</td>
                         <td>{{course.name}}</td>
                         <td>{{course.Start | date: "dd.MM.yy"}}</td>
                         <td>{{course.Finish | date: "dd.MM.yy"}}</td>
+                    </tr>
+                    <tr *ngIf="course.isOpened">
+                      <td colspan="4">
+                        <table-list><table-list>
+                      </td>   
                     </tr>
                 </tbody>
             </table>

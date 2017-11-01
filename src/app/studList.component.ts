@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { InfoService } from './studList.service';
 import { AccordionModule } from 'ngx-bootstrap';
 
 import { Preloader } from './ts/preloader';
 
+declare var $: any;
 @Component({
 	selector: "studlist",
 	templateUrl: "templates/studList.component.html",
@@ -14,6 +15,7 @@ export class StudListComponent implements OnInit{
 	coursesList: string[] = [];
 	cathedras: string[] = [];
 	faculties: string[] = [];
+	@ViewChild("one") test;
 	constructor(private infoService: InfoService,
 				private preloader: Preloader
 		){}
@@ -28,5 +30,12 @@ export class StudListComponent implements OnInit{
 			}
 			this.preloader.stop(".main-panel > .content");
 		})
+	}
+
+	showListOfListners(event:any): void {
+		var id = $(event.currentTarget).attr("id");
+		console.log(id);
+		var isOpen = $(event.target.parentElement).data("open");
+		this.test.nativeElement.insertAdjacentHTML("beforeend", '<div>two</div>');	
 	}
 }
