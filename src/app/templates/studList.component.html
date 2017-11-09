@@ -23,8 +23,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                  <ng-container id="{{course.id}}" *ngFor="let course of coursesList">
-                    <tr (click)="showListOfListners($event)">
+                  <ng-container *ngFor="let course of coursesList">
+                    <tr (click)="showListOfListners(course)">
                         <td>{{course.Number}}</td>
                         <td>{{course.name}}</td>
                         <td>{{course.Start | date: "dd.MM.yy"}}</td>
@@ -32,9 +32,10 @@
                     </tr>
                     <tr *ngIf="course.isOpened">
                       <td colspan="4">
-                        <table-list><table-list>
+                        <table-list [course]="course"></table-list>
                       </td>   
                     </tr>
+                  </ng-container>
                 </tbody>
             </table>
         </div>

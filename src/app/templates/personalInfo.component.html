@@ -1,0 +1,319 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="PIModal.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <tabset>
+        <tab heading="Общая" id="tab1">
+          <div class="content">
+            <form>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="content">
+                      <h4>ФИО</h4>
+                      <hr>
+                      <div class="row form-group">
+                        <label class="col-sm-3 col-form-label">Фамилия</label>
+                        <div class="col-sm-9">
+                          <input type="text" value="{{ person.surname }}" class="form-control inline">    
+                        </div>
+                      </div>
+                      
+                      <div class="row form-group">
+                        <label class="col-sm-3 col-form-label">Имя</label>
+                        <div class="col-sm-9">
+                          <input type="text" value="{{ person.name }}" class="form-control inline">   
+                        </div>
+                      </div>
+              
+  
+                      <div class="row form-group">
+                        <label class="col-sm-3 col-form-label">Отчество</label>
+                        <div class="col-sm-9">
+                          <input type="text" value="{{ person.patername }}" class="form-control inline">
+                        </div>  
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="content">
+                      <h4>Дополнительно</h4>
+                      <hr>
+                      <div class="row form-group">
+                        <label class="col-sm-3 col-form-label">Должность</label>
+                        <div class="col-sm-9">
+                          <input type="text" value="{{ person.AppName }}" class="form-control inline">
+                        </div>
+                      </div>
+                      <div class="row form-group">
+                        <label for="" class="col-sm-3 col-form-label">Организация</label>
+                        <div class="col-sm-9">
+                          <input type="text" value="{{ person.OrgName }}" class="form-control inline">
+                        </div>
+                      </div>
+                              <div class="row form-group">
+                        <label for="" class="col-sm-3 col-form-label">Отдел</label>
+                        <div class="col-sm-9">
+                          <input type="text" value="{{ person.DepName }}" class="form-control inline">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="content">
+                      <h4>Описание учреждения</h4>
+                      <hr>
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <label for="" class="col-sm-3 col-form-label">Тип учреждения</label>
+                          <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ person }}"></div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <label for="" class="col-sm-3 col-form-label">Страна</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control inline" value="{{ person }}">
+                          </div>
+                        </div>  
+                        <div class="col-md-12">
+                          <label for="" class="col-sm-3 col-form-label">Область</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control inline" value="{{ person }}">
+                          </div>
+                        </div>  
+                      </div>
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <label for="" class="col-sm-3 col-form-label">Населённый пункт</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control inline" value="{{ person }}">
+                          </div>
+                        </div>  
+                      </div>
+                      <div class="form-group">
+                        <div class="col-md-6">
+                          <label for="" class="col-sm-3 col-form-label">Улица</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control inline" value="{{ person }}">
+                          </div>
+                        </div>  
+                        <div class="col-md-6">
+                          <label for="" class="col-sm-3 col-form-label">Дом</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control inline" value="{{ person }}">
+                          </div>
+                        </div>  
+                      </div>
+                      <div class="row form-group">
+                        <div class="col-md-12">
+                          <label for="" class="col-form-label" *ngIf="">Принадлежность РБ</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </tab>
+        <tab heading="Проф. информация">
+          <div class="content">
+            <form>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="content">
+                      <h4>ВУЗ</h4>
+                      <hr>
+                      <div class="row form-group">
+                        <label class="col-sm-3 col-form-label">Наименование</label>
+                        <div class="col-sm-9">
+                          <input type="text" value="{{ person.EstName }}" class="form-control inline">    
+                        </div>
+                      </div>
+                      
+                      <div class="row form-group">
+                        <label class="col-sm-3 col-form-label">Факультет</label>
+                        <div class="col-sm-9">
+                          <input type="text" value="{{ person.FacName }}" class="form-control inline">   
+                        </div>
+                      </div>
+                      <div class="row form-group">
+                        <label class="col-sm-3 col-form-label">Номер диплома</label>
+                        <div class="col-sm-9">
+                          <input type="text" value="{{ person.diploma_number }}" class="form-control inline">
+                        </div>  
+                      </div>
+                      <div class="row form-group">
+                        <label class="col-sm-3 col-form-label">Дата выдачи</label>
+                        <div class="col-sm-9">
+                          <input type="text" value="{{ person.diploma_start }}" class="form-control inline">
+                        </div>  
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="content">
+                      <h4>Стаж</h4>
+                      <hr>
+                      <div class="row form-group">
+                        <label class="col-sm-3 col-form-label">По специальности</label>
+                        <div class="col-sm-9">
+                          <input type="text" value="{{ person.experiance_special }}" class="form-control inline">
+                        </div>
+                      </div>
+                      <div class="row form-group">
+                        <label for="" class="col-sm-3 col-form-label">Общий</label>
+                        <div class="col-sm-9">
+                          <input type="text" value="{{ person.experience_general }}" class="form-control inline">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="content">
+                      <h4>Специальность по диплому</h4>
+                      <hr>
+                      <div class="row form-group">
+                        <div class="col-md-12">
+                          <label for="" class="col-sm-3 col-form-label">Врачебная</label>
+                          <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ person.speciality_doct }}"></div>
+                        </div>
+                      </div>
+                      <div class="row form-group">
+                        <div class="col-md-12">
+                          <label for="" class="col-sm-3 col-form-label">Прочие</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control inline" value="{{ person.speciality_other }}">
+                          </div>
+                        </div>  
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="content">
+                      <h4>Специальность по переподготовке</h4>
+                      <hr>
+                      <div class=" row form-group">
+                        <div class="col-md-12">
+                          <label for="" class="col-sm-3 col-form-label">Переподготовка</label>
+                          <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ person.speciality_retraining }}"></div>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="" class="col-sm-3 col-form-label">№ диплома</label>
+                          <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ person.speciality_retraining }}"></div>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="" class="col-sm-3 col-form-label">Дата выдачи</label>
+                          <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ person.speciality_retraining }}"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="content">
+                      <h4>Квалификация</h4>
+                      <hr>
+                      <div class="row form-group">
+                        <div class="col-md-12">
+                          <label for="" class="col-sm-3 col-form-label">Врачебная (осн.)</label>
+                          <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ person.qualification_main }}"></div>
+                        </div>
+                      </div>
+                      <div class="row form-group">
+                        <div class="col-md-12">
+                          <label for="" class="col-sm-3 col-form-label">Врачебная (доп.)</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control inline" value="{{ person.qualification_add }}">
+                          </div>
+                        </div>  
+                      </div>
+                      <div class="row form-group">
+                        <div class="col-md-12">
+                          <label for="" class="col-sm-3 col-form-label">Прочие</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control inline" value="{{ person.qualification_other }}">
+                          </div>
+                        </div>  
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="content">
+                      <h4>Квалификационная врачебная категория</h4>
+                      <hr>
+                      <div class="row form-group">
+                        <div class="col-md-12">
+                          <label for="" class="col-sm-3 col-form-label">Основная</label> <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ person.speciality_retraining }}"></div></div>
+                        <div class="col-md-6">
+                          <label for="" class="col-sm-3 col-form-label">Категория</label>
+                          <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ person.speciality_retraining }}"></div>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="" class="col-sm-3 col-form-label">Дата присвоения</label>
+                          <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ person.speciality_retraining }}"></div>
+                        </div>
+                      </div>
+                      <div class="row form-group">
+                        <div class="col-md-12">
+                          <label for="" class="col-sm-3 col-form-label">Дополнительная</label> <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ person.speciality_retraining }}"></div></div>
+                        <div class="col-md-6">
+                          <label for="" class="col-sm-3 col-form-label">Категория</label>
+                          <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ person.speciality_retraining }}"></div>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="" class="col-sm-3 col-form-label">Дата присвоения</label>
+                          <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ person.speciality_retraining }}"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </tab>
+      <tab heading="Личная">
+        
+      </tab>
+      <tab heading="Приезды">
+        
+      </tab>
+      <tab heading="Последипломная подготовка">
+        
+      </tab>
+      <tab heading="Прочие">
+        
+      </tab>
+      <tab heading="История">
+        
+      </tab>
+</tabset>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="PIModal.hide()">Close</button>
+</div>

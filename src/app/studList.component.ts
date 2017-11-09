@@ -15,7 +15,6 @@ export class StudListComponent implements OnInit{
 	coursesList: string[] = [];
 	cathedras: string[] = [];
 	faculties: string[] = [];
-	@ViewChild("one") test;
 	constructor(private infoService: InfoService,
 				private preloader: Preloader
 		){}
@@ -32,10 +31,7 @@ export class StudListComponent implements OnInit{
 		})
 	}
 
-	showListOfListners(event:any): void {
-		var id = $(event.currentTarget).attr("id");
-		console.log(id);
-		var isOpen = $(event.target.parentElement).data("open");
-		this.test.nativeElement.insertAdjacentHTML("beforeend", '<div>two</div>');	
+	showListOfListners(course:any): void {
+		course.isOpened = !course.isOpened;
 	}
 }
