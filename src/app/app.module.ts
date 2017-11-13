@@ -15,6 +15,13 @@ import { NavbarComponent } from './navbar.component';
 import { StudListComponent } from './studList.component';
 import { TableListCopmonent } from './tableList.component';
 import { PersonalInfoComponent } from './personalInfo.component';
+import { GeneralInfoComponent } from './generalInfo.component';
+import { ProfInfoComponent } from './profInfo.component';
+import { PrivateInfoComponent } from './privateInfo.component';
+import { HistoryInfoComponent } from './historyInfo.component';
+import { OtherInfoComponent } from './otherInfo.component';
+import { PostDiplomaInfoComponent } from './postDiploma.component';
+import { ArrivalsInfoComponent } from './arrivals.component';
 // Services
 import { CookieService } from 'ngx-cookie-service';
 
@@ -27,7 +34,14 @@ import { CookieService } from 'ngx-cookie-service';
     NavbarComponent,
     StudListComponent,
     TableListCopmonent,
-    PersonalInfoComponent
+    PersonalInfoComponent,
+    GeneralInfoComponent,
+    ProfInfoComponent,
+    PrivateInfoComponent,
+    HistoryInfoComponent,
+    OtherInfoComponent,
+    PostDiplomaInfoComponent,
+    ArrivalsInfoComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,167 @@
+<form>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="content">
+          <h4>ВУЗ</h4>
+          <hr>
+          <div class="row form-group">
+            <label class="col-sm-3 col-form-label">Наименование</label>
+            <div class="col-sm-9">
+              <input type="text" value="{{ info.EstName }}" class="form-control inline">    
+            </div>
+          </div>
+          
+          <div class="row form-group">
+            <label class="col-sm-3 col-form-label">Факультет</label>
+            <div class="col-sm-9">
+              <input type="text" value="{{ info.FacName }}" class="form-control inline">   
+            </div>
+          </div>
+          <div class="row form-group">
+            <label class="col-sm-3 col-form-label">Номер диплома</label>
+            <div class="col-sm-9">
+              <input type="text" value="{{ info.diploma_number }}" class="form-control inline">
+            </div>  
+          </div>
+          <div class="row form-group">
+            <label class="col-sm-3 col-form-label">Дата выдачи</label>
+            <div class="col-sm-9">
+              <input type="text" value="{{ info.diploma_start }}" class="form-control inline">
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="content">
+          <h4>Стаж</h4>
+          <hr>
+          <div class="row form-group">
+            <label class="col-sm-3 col-form-label">По специальности</label>
+            <div class="col-sm-9">
+              <input type="text" value="{{ info.experiance_special }}" class="form-control inline">
+            </div>
+          </div>
+          <div class="row form-group">
+            <label for="" class="col-sm-3 col-form-label">Общий</label>
+            <div class="col-sm-9">
+              <input type="text" value="{{ info.experience_general }}" class="form-control inline">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="content">
+          <h4>Специальность по диплому</h4>
+          <hr>
+          <div class="row form-group">
+            <div class="col-md-12">
+              <label for="" class="col-sm-3 col-form-label">Врачебная</label>
+              <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ info.speciality_doct }}"></div>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-md-12">
+              <label for="" class="col-sm-3 col-form-label">Прочие</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control inline" value="{{ info.speciality_other }}">
+              </div>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="content">
+          <h4>Специальность по переподготовке</h4>
+          <hr>
+          <div class=" row form-group">
+            <div class="col-md-12">
+              <label for="" class="col-sm-3 col-form-label">Переподготовка</label>
+              <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ info.speciality_retraining }}"></div>
+            </div>
+            <div class="col-md-6">
+              <label for="" class="col-sm-3 col-form-label">№ диплома</label>
+              <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ info.speciality_retraining }}"></div>
+            </div>
+            <div class="col-md-6">
+              <label for="" class="col-sm-3 col-form-label">Дата выдачи</label>
+              <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ info.speciality_retraining }}"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="content">
+          <h4>Квалификация</h4>
+          <hr>
+          <div class="row form-group">
+            <div class="col-md-12">
+              <label for="" class="col-sm-3 col-form-label">Врачебная (осн.)</label>
+              <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ info.qualification_main }}"></div>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-md-12">
+              <label for="" class="col-sm-3 col-form-label">Врачебная (доп.)</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control inline" value="{{ info.qualification_add }}">
+              </div>
+            </div>  
+          </div>
+          <div class="row form-group">
+            <div class="col-md-12">
+              <label for="" class="col-sm-3 col-form-label">Прочие</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control inline" value="{{ info.qualification_other }}">
+              </div>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="content">
+          <h4>Квалификационная врачебная категория</h4>
+          <hr>
+          <div class="row form-group">
+            <div class="col-md-12">
+              <label for="" class="col-sm-3 col-form-label">Основная</label> <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ info.speciality_retraining }}"></div></div>
+            <div class="col-md-6">
+              <label for="" class="col-sm-3 col-form-label">Категория</label>
+              <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ info.speciality_retraining }}"></div>
+            </div>
+            <div class="col-md-6">
+              <label for="" class="col-sm-3 col-form-label">Дата присвоения</label>
+              <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ info.speciality_retraining }}"></div>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-md-12">
+              <label for="" class="col-sm-3 col-form-label">Дополнительная</label> <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ info.speciality_retraining }}"></div></div>
+            <div class="col-md-6">
+              <label for="" class="col-sm-3 col-form-label">Категория</label>
+              <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ info.speciality_retraining }}"></div>
+            </div>
+            <div class="col-md-6">
+              <label for="" class="col-sm-3 col-form-label">Дата присвоения</label>
+              <div class="col-sm-9"><input type="text" class="form-control inline" value="{{ info.speciality_retraining }}"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

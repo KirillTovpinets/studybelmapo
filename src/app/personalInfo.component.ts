@@ -13,6 +13,5 @@ export class PersonalInfoComponent{
 	person: any = {};
 	
 	constructor(public PIModal: BsModalRef ){
-		
 	}
 }

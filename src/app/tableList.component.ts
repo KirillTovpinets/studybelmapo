@@ -8,19 +8,21 @@ import { PersonalInfoComponent } from './personalInfo.component';
 	selector: "table-list",
 	templateUrl: "./templates/tableList.component.html",
 	providers: [PersonalInfoService]
-	// template: `<div>{{course}}</div>`
 })
 
 export class TableListCopmonent{
 	@Input('course') course: any;
 
 	PersonalInfoModal: BsModalRef;
+	data: any;
 	constructor(private PIService: BsModalService,
 				private personalInfo: PersonalInfoService){}
 	ShowPersonalInfo(person:any): void{
-		this.PersonalInfoModal = this.PIService.show(PersonalInfoComponent, {class: 'modal-lg'});
-		this.PersonalInfoModal.content.title = "Профиль врача";
-		this.personalInfo.getInfo(person.id).then(data => this.PersonalInfoModal.content.person = data.json().general);
+		this.personalInfo.getInfo(person.id).then(data => {
+			this.PersonalInfoModal = this.PIService.show(PersonalInfoComponent, {class: 'modal-lg'});
+			this.PersonalInfoModal.content.title = "Профиль врача";
+			this.PersonalInfoModal.content.person = data.json();
+		});
 	}
 }
 
