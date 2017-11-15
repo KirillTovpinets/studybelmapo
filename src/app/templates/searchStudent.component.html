@@ -1,0 +1,30 @@
+<div ng-controller="OptionsCtrl" class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="card">
+            <div class="header">
+              <h4 class="title">Настройки</h4>
+              <p class="category">Настройки поиска врачей</p>
+            </div>
+            <div class="content">
+              <a routerLink="sirname" class="btn btn-block btn-primary">По фамилии</a>
+              <a routerLink="gender" class="btn btn-block btn-primary">По полу</a>
+              <a routerLink="age" class="btn btn-block btn-primary">По возрасту</a>
+              <a routerLink="education" class="btn btn-block btn-primary">По ВУЗу</a>
+              <a routerLink="organization" class="btn btn-block btn-primary">По месту работы</a>
+              <a routerLink="appointment" class="btn btn-block btn-primary">По должности</a>
+              <a routerLink="speciality" class="btn btn-block btn-primary">По специальности</a>
+              <a routerLink="qualification" class="btn btn-block btn-primary">По квалификации</a>
+              <a routerLink="category" class="btn btn-block btn-primary">По категории</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="card">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

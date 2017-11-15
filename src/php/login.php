@@ -3,7 +3,6 @@
     require_once("rb.php");
     require_once("config.php");
     R::setup("mysql:host=$host;dbname=$dbname", $user, $passwd);
-    $mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die ("Ошибка подключения: " . mysqli_connect_error());
     $request = json_decode(file_get_contents('php://input'));
 	$login = $request->log;
 	$pass =  $request->pass;

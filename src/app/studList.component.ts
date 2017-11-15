@@ -517,10 +517,10 @@ export class StudListComponent implements OnInit{
 	ngOnInit(): void{
 		this.preloader.start(".main-panel > .content");
 		// this.coursesList = DATA.courseList;
-		for(var i = 0;  i < DATA.cathedraInfo.length; i++){
-			this.cathedras.push("Кафедра " + DATA.cathedraInfo[i].cathedra.toLowerCase());
-            this.faculties.push(DATA.cathedraInfo[i].faculty);
-		}
+		// for(var i = 0;  i < DATA.cathedraInfo.length; i++){
+		// 	this.cathedras.push("Кафедра " + DATA.cathedraInfo[i].cathedra.toLowerCase());
+  //           this.faculties.push(DATA.cathedraInfo[i].faculty);
+		// }
 		this.preloader.stop(".main-panel > .content");
 		this.infoService.getInfo("getStat").then(data => {
 			this.coursesList = data.json().courseList;

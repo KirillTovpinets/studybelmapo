@@ -22,6 +22,10 @@ import { HistoryInfoComponent } from './historyInfo.component';
 import { OtherInfoComponent } from './otherInfo.component';
 import { PostDiplomaInfoComponent } from './postDiploma.component';
 import { ArrivalsInfoComponent } from './arrivals.component';
+import { SearchStudentComponent } from './searchStudent.component';
+import { AddStudentComponent } from './addStudent.component';
+import { ReportComponent } from './report.component';
+import { SirnameComponent } from './searchComponents/sirname.component';
 // Services
 import { CookieService } from 'ngx-cookie-service';
 
@@ -41,7 +45,11 @@ import { CookieService } from 'ngx-cookie-service';
     HistoryInfoComponent,
     OtherInfoComponent,
     PostDiplomaInfoComponent,
-    ArrivalsInfoComponent
+    ArrivalsInfoComponent,
+    SearchStudentComponent,
+    AddStudentComponent,
+    ReportComponent,
+    SirnameComponent
   ],
   imports: [
     BrowserModule,
