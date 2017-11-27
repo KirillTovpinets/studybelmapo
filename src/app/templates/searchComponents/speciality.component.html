@@ -3,28 +3,88 @@
   <p class="category">По специальности</p>
 </div>
 <div class="content">
-  <div id="DoctorList" class="row">
-      <div class="content table-responsive table-full-width">
-        <table class="table-striped table table-hover">
-          <thead>
-              <th>Фамилия</th>
-              <th>Имя</th>
-              <th>Отчество</th>
-              <th>Дата рождения</th>
-              <th>Дата создания</th>
-          </thead>
-          <tbody>
-              <tr  ng-repeat="doctor in doctors">
-                  <td>{{ doctor.surname }}</td>
-                  <td>{{ doctor.name }}</td>
-                  <td>{{ doctor.patername }}</td>
-                  <!-- <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td> -->
-                  <!-- <td>{{ doctor.date | date: "d MMMM yyyy"}}</td> -->
-                  <td>{{ doctor.birthday }}</td>
-                  <td>{{ doctor.date }}</td>
-              </tr>
-          </tbody>
-      </table>
-      </div>
-  </div>
+    
+    <accordion>
+      <accordion-group heading="Врачебная">
+        <preloader *ngIf="specialities_main.length === 0"></preloader>
+        <accordion>
+          <accordion-group [heading]="sp.name + ' (' + sp.Total + ')'" *ngFor="let sp of specialities_main">
+            <div class="content table-responsive table-full-width">
+              <table class="table-striped table table-hover">
+                <thead>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Дата создания</th>
+                </thead>
+                <tbody>
+                    <tr  *ngFor="let doctor of sp.List">
+                        <td>{{ doctor.surname }}</td>
+                        <td>{{ doctor.name }}</td>
+                        <td>{{ doctor.patername }}</td>
+                        <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                        <td>{{ doctor.date | date: "d MMMM yyyy"}}</td> 
+                    </tr>
+                </tbody>
+              </table>
+            </div>  
+          </accordion-group>
+        </accordion>
+      </accordion-group>
+      <accordion-group heading="По переподготовке">
+        <preloader *ngIf="specialities_retraining.length === 0"></preloader>
+        <accordion>
+          <accordion-group [heading]="sp.name + ' (' + sp.Total + ')'" *ngFor="let sp of specialities_retraining">
+            <div class="content table-responsive table-full-width">
+              <table class="table-striped table table-hover">
+                <thead>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Дата создания</th>
+                </thead>
+                <tbody>
+                    <tr  *ngFor="let doctor of sp.List">
+                        <td>{{ doctor.surname }}</td>
+                        <td>{{ doctor.name }}</td>
+                        <td>{{ doctor.patername }}</td>
+                        <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                        <td>{{ doctor.date | date: "d MMMM yyyy"}}</td> 
+                    </tr>
+                </tbody>
+              </table>
+            </div>  
+          </accordion-group>
+        </accordion>
+      </accordion-group>
+      <accordion-group heading="Прочие">
+        <preloader *ngIf="specialities_others.length === 0"></preloader>
+        <accordion>
+          <accordion-group [heading]="sp.name + ' (' + sp.Total + ')'" *ngFor="let sp of specialities_others">
+            <div class="content table-responsive table-full-width">
+              <table class="table-striped table table-hover">
+                <thead>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Дата создания</th>
+                </thead>
+                <tbody>
+                    <tr  *ngFor="let doctor of sp.List">
+                        <td>{{ doctor.surname }}</td>
+                        <td>{{ doctor.name }}</td>
+                        <td>{{ doctor.patername }}</td>
+                        <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                        <td>{{ doctor.date | date: "d MMMM yyyy"}}</td> 
+                    </tr>
+                </tbody>
+              </table>
+            </div>  
+          </accordion-group>
+        </accordion>
+      </accordion-group>
+    </accordion>
 </div>

@@ -3,172 +3,170 @@
   <p class="category">По возрасту</p>
 </div>
 <div class="content">
-  <div id="DoctorList" class="row">
-      <div class="content table-responsive table-full-width">
-        <accordion>
-          <accordion-group heading="От 18 до 21">
-            <div class="content">
-              <table class="table-striped table table-hover">
-                <thead>
-                    <th>Фамилия</th>
-                    <th>Имя</th>
-                    <th>Отчество</th>
-                    <th>Дата рождения</th>
-                    <th>Дата создания</th>
-                </thead>
-                <tbody>
-                    <tr *ngIf="eighteenDoctors.length == 0">
-                      <td colspan="5">
-                        <preloader></preloader>
-                      </td>
-                    </tr>
-                    <tr  *ngFor="let doctor of eighteenDoctors" (click)="ShowPersonalInfo(doctor)">
-                        <td>{{ doctor.surname }}</td>
-                        <td>{{ doctor.name }}</td>
-                        <td>{{ doctor.patername }}</td>
-                        <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                        <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
-                    </tr>
-                </tbody>
-              </table>
-            </div>
-          </accordion-group>
-          <accordion-group heading="От 22 до 28">
-            <div class="content">
-              <table class="table-striped table table-hover">
-                <thead>
-                    <th>Фамилия</th>
-                    <th>Имя</th>
-                    <th>Отчество</th>
-                    <th>Дата рождения</th>
-                    <th>Дата создания</th>
-                </thead>
-                <tbody>
-                    <tr *ngIf="twentyTwoDoctors.length == 0">
-                      <td colspan="5">
-                        <preloader></preloader>
-                      </td>
-                    </tr>
-                  <tr  *ngFor="let doctor of twentyTwoDoctors" (click)="ShowPersonalInfo(doctor)">
-                        <td>{{ doctor.surname }}</td>
-                        <td>{{ doctor.name }}</td>
-                        <td>{{ doctor.patername }}</td>
-                        <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                        <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
-                    </tr>
-                </tbody>
-              </table>
-            </div>
-          </accordion-group>
-          <accordion-group heading="От 29 до 35">
-            <div class="content">
-              <table class="table-striped table table-hover">
-                <thead>
-                    <th>Фамилия</th>
-                    <th>Имя</th>
-                    <th>Отчество</th>
-                    <th>Дата рождения</th>
-                    <th>Дата создания</th>
-                </thead>
-                <tbody>
-                    <tr *ngIf="twentyNineDoctors.length == 0">
-                      <td colspan="5">
-                        <preloader></preloader>
-                      </td>
-                    </tr>
-                  <tr  *ngFor="let doctor of twentyNineDoctors" (click)="ShowPersonalInfo(doctor)">
-                        <td>{{ doctor.surname }}</td>
-                        <td>{{ doctor.name }}</td>
-                        <td>{{ doctor.patername }}</td>
-                        <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                        <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
-                    </tr>
-                </tbody>
-              </table>
-            </div>
-          </accordion-group>
-          <accordion-group heading="От 36 до 43">
-            <div class="content">
-              <table class="table-striped table table-hover">
-                <thead>
-                    <th>Фамилия</th>
-                    <th>Имя</th>
-                    <th>Отчество</th>
-                    <th>Дата рождения</th>
-                    <th>Дата создания</th>
-                </thead>
-                <tbody>
-                    <tr *ngIf="thirtySixDoctors.length == 0">
-                      <td colspan="5">
-                        <preloader></preloader>
-                      </td>
-                    </tr>
-                  <tr  *ngFor="let doctor of thirtySixDoctors" (click)="ShowPersonalInfo(doctor)">
-                        <td>{{ doctor.surname }}</td>
-                        <td>{{ doctor.name }}</td>
-                        <td>{{ doctor.patername }}</td>
-                        <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                        <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
-                    </tr>
-                </tbody>
-              </table>
-            </div>
-          </accordion-group>
-          <accordion-group heading="От 44 до 52">
-            <div class="content">
-              <table class="table-striped table table-hover">
-                <thead>
-                    <th>Фамилия</th>
-                    <th>Имя</th>
-                    <th>Отчество</th>
-                    <th>Дата рождения</th>
-                    <th>Дата создания</th>
-                </thead>
-                <tbody>
-                    <tr *ngIf="fortyFourDoctors.length == 0">
-                      <td colspan="5">
-                        <preloader></preloader>
-                      </td>
-                    </tr>
-                  <tr  *ngFor="let doctor of fortyFourDoctors" (click)="ShowPersonalInfo(doctor)">
-                        <td>{{ doctor.surname }}</td>
-                        <td>{{ doctor.name }}</td>
-                        <td>{{ doctor.patername }}</td>
-                        <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                        <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
-                    </tr>
-                </tbody>
-              </table>
-            </div>
-          </accordion-group>
-          <accordion-group heading="От 53 и старше">
-            <div class="content">
-              <table class="table-striped table table-hover">
-                <thead>
-                    <th>Фамилия</th>
-                    <th>Имя</th>
-                    <th>Отчество</th>
-                    <th>Дата рождения</th>
-                    <th>Дата создания</th>
-                </thead>
-                <tbody>
-                    <tr *ngIf="fiftyThreeDoctors.length == 0">
-                      <td colspan="5">
-                        <preloader></preloader>
-                      </td>
-                    </tr>
-                  <tr  *ngFor="let doctor of fiftyThreeDoctors" (click)="ShowPersonalInfo(doctor)">
-                        <td>{{ doctor.surname }}</td>
-                        <td>{{ doctor.name }}</td>
-                        <td>{{ doctor.patername }}</td>
-                        <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                        <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
-                    </tr>
-                </tbody>
-              </table>
-            </div>
-          </accordion-group>
-        </accordion>
-      </div>
+  <div class="content table-responsive table-full-width">
+    <accordion>
+      <accordion-group heading="От 18 до 21">
+        <div class="content">
+          <table class="table-striped table table-hover">
+            <thead>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Дата рождения</th>
+                <th>Дата создания</th>
+            </thead>
+            <tbody>
+                <tr *ngIf="eighteenDoctors.length == 0">
+                  <td colspan="5">
+                    <preloader></preloader>
+                  </td>
+                </tr>
+                <tr  *ngFor="let doctor of eighteenDoctors" (click)="ShowPersonalInfo(doctor)">
+                    <td>{{ doctor.surname }}</td>
+                    <td>{{ doctor.name }}</td>
+                    <td>{{ doctor.patername }}</td>
+                    <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                    <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </accordion-group>
+      <accordion-group heading="От 22 до 28">
+        <div class="content">
+          <table class="table-striped table table-hover">
+            <thead>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Дата рождения</th>
+                <th>Дата создания</th>
+            </thead>
+            <tbody>
+                <tr *ngIf="twentyTwoDoctors.length == 0">
+                  <td colspan="5">
+                    <preloader></preloader>
+                  </td>
+                </tr>
+              <tr  *ngFor="let doctor of twentyTwoDoctors" (click)="ShowPersonalInfo(doctor)">
+                    <td>{{ doctor.surname }}</td>
+                    <td>{{ doctor.name }}</td>
+                    <td>{{ doctor.patername }}</td>
+                    <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                    <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </accordion-group>
+      <accordion-group heading="От 29 до 35">
+        <div class="content">
+          <table class="table-striped table table-hover">
+            <thead>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Дата рождения</th>
+                <th>Дата создания</th>
+            </thead>
+            <tbody>
+                <tr *ngIf="twentyNineDoctors.length == 0">
+                  <td colspan="5">
+                    <preloader></preloader>
+                  </td>
+                </tr>
+              <tr  *ngFor="let doctor of twentyNineDoctors" (click)="ShowPersonalInfo(doctor)">
+                    <td>{{ doctor.surname }}</td>
+                    <td>{{ doctor.name }}</td>
+                    <td>{{ doctor.patername }}</td>
+                    <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                    <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </accordion-group>
+      <accordion-group heading="От 36 до 43">
+        <div class="content">
+          <table class="table-striped table table-hover">
+            <thead>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Дата рождения</th>
+                <th>Дата создания</th>
+            </thead>
+            <tbody>
+                <tr *ngIf="thirtySixDoctors.length == 0">
+                  <td colspan="5">
+                    <preloader></preloader>
+                  </td>
+                </tr>
+              <tr  *ngFor="let doctor of thirtySixDoctors" (click)="ShowPersonalInfo(doctor)">
+                    <td>{{ doctor.surname }}</td>
+                    <td>{{ doctor.name }}</td>
+                    <td>{{ doctor.patername }}</td>
+                    <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                    <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </accordion-group>
+      <accordion-group heading="От 44 до 52">
+        <div class="content">
+          <table class="table-striped table table-hover">
+            <thead>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Дата рождения</th>
+                <th>Дата создания</th>
+            </thead>
+            <tbody>
+                <tr *ngIf="fortyFourDoctors.length == 0">
+                  <td colspan="5">
+                    <preloader></preloader>
+                  </td>
+                </tr>
+              <tr  *ngFor="let doctor of fortyFourDoctors" (click)="ShowPersonalInfo(doctor)">
+                    <td>{{ doctor.surname }}</td>
+                    <td>{{ doctor.name }}</td>
+                    <td>{{ doctor.patername }}</td>
+                    <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                    <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </accordion-group>
+      <accordion-group heading="От 53 и старше">
+        <div class="content">
+          <table class="table-striped table table-hover">
+            <thead>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Дата рождения</th>
+                <th>Дата создания</th>
+            </thead>
+            <tbody>
+                <tr *ngIf="fiftyThreeDoctors.length == 0">
+                  <td colspan="5">
+                    <preloader></preloader>
+                  </td>
+                </tr>
+              <tr  *ngFor="let doctor of fiftyThreeDoctors" (click)="ShowPersonalInfo(doctor)">
+                    <td>{{ doctor.surname }}</td>
+                    <td>{{ doctor.name }}</td>
+                    <td>{{ doctor.patername }}</td>
+                    <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                    <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </accordion-group>
+    </accordion>
   </div>
 </div>

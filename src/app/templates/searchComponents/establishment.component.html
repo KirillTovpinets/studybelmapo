@@ -3,28 +3,29 @@
   <p class="category">По ВУЗу</p>
 </div>
 <div class="content">
-  <div id="DoctorList" class="row">
-      <div class="content table-responsive table-full-width">
-        <table class="table-striped table table-hover">
-          <thead>
-              <th>Фамилия</th>
-              <th>Имя</th>
-              <th>Отчество</th>
-              <th>Дата рождения</th>
-              <th>Дата создания</th>
-          </thead>
-          <tbody>
-              <tr  ng-repeat="doctor in doctors">
-                  <td>{{ doctor.surname }}</td>
-                  <td>{{ doctor.name }}</td>
-                  <td>{{ doctor.patername }}</td>
-                  <!-- <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td> -->
-                  <!-- <td>{{ doctor.date | date: "d MMMM yyyy"}}</td> -->
-                  <td>{{ doctor.birthday }}</td>
-                  <td>{{ doctor.date }}</td>
-              </tr>
-          </tbody>
-      </table>
-      </div>
-  </div>
+    <preloader *ngIf="establs.length === 0"></preloader>
+    <accordion>
+      <accordion-group [heading]="est.name + ' (' + est.Total + ')'" *ngFor="let est of establs">
+        <div class="content table-responsive table-full-width">
+          <table class="table-striped table table-hover">
+            <thead>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Дата рождения</th>
+                <th>Дата создания</th>
+            </thead>
+            <tbody>
+                <tr  *ngFor="let doctor of est.List">
+                    <td>{{ doctor.surname }}</td>
+                    <td>{{ doctor.name }}</td>
+                    <td>{{ doctor.patername }}</td>
+                    <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                    <td>{{ doctor.date | date: "d MMMM yyyy"}}</td> 
+                </tr>
+            </tbody>
+          </table>
+        </div>  
+      </accordion-group>
+    </accordion>
 </div>

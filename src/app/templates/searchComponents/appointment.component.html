@@ -3,7 +3,9 @@
   <p class="category">По должности</p>
 </div>
 <div class="content">
-  <div id="DoctorList" class="row">
+    <preloader *ngIf="appointments.length === 0"></preloader>
+    <accordion>
+    <accordion-group [heading]="app.name + ' (' + app.Total + ')'" *ngFor="let app of appointments">
       <div class="content table-responsive table-full-width">
         <table class="table-striped table table-hover">
           <thead>
@@ -14,17 +16,16 @@
               <th>Дата создания</th>
           </thead>
           <tbody>
-              <tr  ng-repeat="doctor in doctors">
+              <tr  *ngFor="let doctor of app.List">
                   <td>{{ doctor.surname }}</td>
                   <td>{{ doctor.name }}</td>
                   <td>{{ doctor.patername }}</td>
-                  <!-- <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td> -->
-                  <!-- <td>{{ doctor.date | date: "d MMMM yyyy"}}</td> -->
-                  <td>{{ doctor.birthday }}</td>
-                  <td>{{ doctor.date }}</td>
+                  <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                  <td>{{ doctor.date | date: "d MMMM yyyy"}}</td> 
               </tr>
           </tbody>
-      </table>
-      </div>
-  </div>
+        </table>
+      </div>  
+    </accordion-group>
+  </accordion>
 </div>

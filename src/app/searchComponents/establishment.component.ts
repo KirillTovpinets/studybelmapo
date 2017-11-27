@@ -11,6 +11,9 @@ export class EstablishmentComponent implements OnInit{
 	offset: number = 0;
 	limit: number = 30;
 	ngOnInit(): void{
-		this.establService.getList(this.limit, this.offset, "establishment").then(data => this.establs = data.json());
+		this.establService.getList(this.limit, this.offset, "establishment").then(data => {
+			console.log(data._body);
+			this.establs = data.json();
+		});
 	}
 }
