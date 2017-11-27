@@ -26,6 +26,15 @@ import { SearchStudentComponent } from './searchStudent.component';
 import { AddStudentComponent } from './addStudent.component';
 import { ReportComponent } from './report.component';
 import { SirnameComponent } from './searchComponents/sirname.component';
+import { GenderComponent } from './searchComponents/gender.component';
+import { AgeComponent } from './searchComponents/age.component';
+import { EstablishmentComponent } from './searchComponents/establishment.component';
+import { OrganizationComponent } from './searchComponents/organization.component';
+import { AppointmentComponent } from './searchComponents/appointment.component';
+import { SpecialityComponent } from './searchComponents/speciality.component';
+import { QualificationComponent } from './searchComponents/qualification.component';
+import { CategoryComponent } from './searchComponents/category.component';
+import { PreloaderComponent } from './preloader.component';
 // Services
 import { CookieService } from 'ngx-cookie-service';
 
@@ -49,7 +58,16 @@ import { CookieService } from 'ngx-cookie-service';
     SearchStudentComponent,
     AddStudentComponent,
     ReportComponent,
-    SirnameComponent
+    SirnameComponent,
+    GenderComponent,
+    AgeComponent,
+    EstablishmentComponent,
+    OrganizationComponent,
+    AppointmentComponent,
+    SpecialityComponent,
+    QualificationComponent,
+    CategoryComponent,
+    PreloaderComponent
   ],
   imports: [
     BrowserModule,

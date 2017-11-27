@@ -27,7 +27,7 @@
     </div>
   </tab>
   <tab heading="Последипломная подготовка">
-    <div class="content">
+    <div class="content" *ngIf="person.general">
       <post-diploma [personId]="person.general.id"></post-diploma>
     </div>
   </tab>

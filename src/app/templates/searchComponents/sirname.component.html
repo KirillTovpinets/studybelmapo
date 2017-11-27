@@ -1,11 +1,15 @@
 <div class="header">
-  <h4 class="title">Результаты поиска</h4>
-  <p class="category">Учётные карточки врачей</p>
+  <h4 class="title">Список слушателей</h4>
+  <p class="category">По фамилии</p>
 </div>
 <div class="content">
+  <form action="">
+    <label for="">Поиск</label>
+    <input type="text" class="form-control" (keyup)="Search($event)">
+  </form>
   <div id="DoctorList" class="row">
-      <div class="content table-responsive table-full-width">
-        <table class="table-striped table table-hover">
+      <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event)">
+        <table class="table-striped table table-hover" *ngIf="searchDoctors.length === 0">
           <thead>
               <th>Фамилия</th>
               <th>Имя</th>
@@ -14,18 +18,35 @@
               <th>Дата создания</th>
           </thead>
           <tbody>
-              <tr  ng-repeat="doctor in doctors">
+              <tr *ngIf="doctors.length == 0">
+                <td colspan="5">
+                  <preloader></preloader>
+                </td>
+              </tr>
+              <tr  *ngFor="let doctor of doctors" (click)="ShowPersonalInfo(doctor)">
                   <td>{{ doctor.surname }}</td>
                   <td>{{ doctor.name }}</td>
-                  <td>{{ doctor.patername}}</td>
-                  <!-- <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td> -->
-                  <!-- <td>{{ doctor.date | date: "d MMMM yyyy"}}</td> -->
-                  <td>
-                      
-                </td>
-                  <td>
-                      <a class="btn btn-info form-control">Просмотр</a>
-                  </td>
+                  <td>{{ doctor.patername }}</td>
+                  <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                  <td>{{ doctor.Date | date: "d MMMM yyyy"}}</td>
+              </tr>
+          </tbody>
+      </table>
+      <table class="table-striped table table-hover" *ngIf="searchDoctors.length !== 0">
+          <thead>
+              <th>Фамилия</th>
+              <th>Имя</th>
+              <th>Отчество</th>
+              <th>Дата рождения</th>
+              <th>Дата создания</th>
+          </thead>
+          <tbody>
+              <tr  *ngFor="let search of searchDoctors" (click)="ShowPersonalInfo(search)">
+                  <td>{{ search.surname }}</td>
+                  <td>{{ search.name }}</td>
+                  <td>{{ search.patername }}</td>
+                  <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
+                  <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
               </tr>
           </tbody>
       </table>

@@ -1,0 +1,30 @@
+<div class="header">
+  <h4 class="title">Список слушателей</h4>
+  <p class="category">По специальности</p>
+</div>
+<div class="content">
+  <div id="DoctorList" class="row">
+      <div class="content table-responsive table-full-width">
+        <table class="table-striped table table-hover">
+          <thead>
+              <th>Фамилия</th>
+              <th>Имя</th>
+              <th>Отчество</th>
+              <th>Дата рождения</th>
+              <th>Дата создания</th>
+          </thead>
+          <tbody>
+              <tr  ng-repeat="doctor in doctors">
+                  <td>{{ doctor.surname }}</td>
+                  <td>{{ doctor.name }}</td>
+                  <td>{{ doctor.patername }}</td>
+                  <!-- <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td> -->
+                  <!-- <td>{{ doctor.date | date: "d MMMM yyyy"}}</td> -->
+                  <td>{{ doctor.birthday }}</td>
+                  <td>{{ doctor.date }}</td>
+              </tr>
+          </tbody>
+      </table>
+      </div>
+  </div>
+</div>

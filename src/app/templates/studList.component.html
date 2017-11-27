@@ -4,6 +4,7 @@
 </div>
 <div class="one" #one></div>
 <div id="List" class="content table-responsive table-full-width">
+    <preloader  *ngIf="faculties.length === 0"></preloader>
     <accordion>
       <accordion-group #group *ngFor="let faculty of faculties">
         <div accordion-heading>

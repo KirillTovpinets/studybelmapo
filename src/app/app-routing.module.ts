@@ -12,6 +12,15 @@ import { SearchStudentComponent } from './searchStudent.component';
 import { AddStudentComponent } from './addStudent.component';
 import { ReportComponent } from './report.component';
 import { SirnameComponent } from './searchComponents/sirname.component';
+import { GenderComponent } from './searchComponents/gender.component';
+
+import { AgeComponent } from './searchComponents/age.component';
+import { EstablishmentComponent } from './searchComponents/establishment.component';
+import { OrganizationComponent } from './searchComponents/organization.component';
+import { AppointmentComponent } from './searchComponents/appointment.component';
+import { SpecialityComponent } from './searchComponents/speciality.component';
+import { QualificationComponent } from './searchComponents/qualification.component';
+import { CategoryComponent } from './searchComponents/category.component';
 
 const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
@@ -27,6 +36,15 @@ const routes: Routes = [
 				component: SearchStudentComponent,
 				children: [
 					{ path: 'sirname', component: SirnameComponent },
+					{ path: 'gender', component: GenderComponent },
+					{ path: 'age', component: AgeComponent },
+					{ path: 'education', component: EstablishmentComponent },
+					{ path: 'organization', component: OrganizationComponent },
+					{ path: 'appointment', component: AppointmentComponent },
+					{ path: 'speciality', component: SpecialityComponent },
+					{ path: 'qualification', component: QualificationComponent },
+					{ path: 'category', component: CategoryComponent }
+					
 				]
 			},
 			{ path: 'addDoctor', component: AddStudentComponent},

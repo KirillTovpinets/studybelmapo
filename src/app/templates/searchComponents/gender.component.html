@@ -1,0 +1,74 @@
+<div class="header">
+  <h4 class="title">Список слушателей</h4>
+  <p class="category">По полу</p>
+</div>
+<div class="content">
+  <div id="DoctorList" class="row">
+      <div class="content table-responsive table-full-width">
+        <tabset>
+          <tab heading="Мужской">
+            <div class="content">
+              <form action="">
+                <label for="">Поиск</label>
+                <input type="text" class="form-control" (keyup)="Search($event)">
+              </form>
+              <table class="table-striped table table-hover">
+                <thead>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Дата создания</th>
+                </thead>
+                <tbody>
+                  <tr *ngIf="MaleDoctors.length == 0">
+                    <td colspan="5">
+                      <preloader></preloader>
+                    </td>
+                  </tr>
+                    <tr  *ngFor="let doctor of MaleDoctors" (click)="ShowPersonalInfo(doctor)">
+                        <td>{{ doctor.surname }}</td>
+                        <td>{{ doctor.name }}</td>
+                        <td>{{ doctor.patername }}</td>
+                        <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                        <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
+                    </tr>
+                </tbody>
+              </table>
+            </div>
+          </tab>
+          <tab heading="Женский">
+            <div class="content">
+              <form action="">
+                <label for="">Поиск</label>
+                <input type="text" class="form-control" (keyup)="Search($event)">
+              </form>
+              <table class="table-striped table table-hover">
+                <thead>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Дата создания</th>
+                </thead>
+                <tbody>
+                  <tr *ngIf="FemaleDoctors.length == 0">
+                    <td colspan="5">
+                      <preloader></preloader>
+                    </td>
+                  </tr>
+                    <tr  *ngFor="let doctor of FemaleDoctors" (click)="ShowPersonalInfo(doctor)">
+                        <td>{{ doctor.surname }}</td>
+                        <td>{{ doctor.name }}</td>
+                        <td>{{ doctor.patername }}</td>
+                        <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                        <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
+                    </tr>
+                </tbody>
+              </table>
+            </div>
+          </tab>
+        </tabset>
+      </div>
+  </div>
+</div>

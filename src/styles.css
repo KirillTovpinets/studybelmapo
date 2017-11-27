@@ -768,7 +768,7 @@ body > .navbar-collapse {
     padding: 30px 15px;
     min-height: calc(100% - 123px); }
   .main-panel>.content{
-    padding: 90px 15px;
+    padding: 90px 15px 0px;
   }
   .main-panel > .footer {
     border-top: 1px solid #e7e7e7; }
