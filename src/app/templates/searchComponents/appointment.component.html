@@ -3,11 +3,19 @@
   <p class="category">По должности</p>
 </div>
 <div class="content">
+  <form action="">
+        <label for="">Поиск</label>
+        <input type="text" class="form-control" (keyup)="SearchAppointment($event)">
+      </form>
     <preloader *ngIf="appointments.length === 0"></preloader>
     <accordion>
     <accordion-group [heading]="app.name + ' (' + app.Total + ')'" *ngFor="let app of appointments">
-      <div class="content table-responsive table-full-width">
-        <table class="table-striped table table-hover">
+      <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event)">
+        <form action="">
+          <label for="">Поиск</label>
+          <input type="text" class="form-control" (keyup)="Search($event)">
+        </form>
+        <table class="table-striped table table-hover" *ngIf="searchDoctors.length === 0">
           <thead>
               <th>Фамилия</th>
               <th>Имя</th>
@@ -16,14 +24,32 @@
               <th>Дата создания</th>
           </thead>
           <tbody>
-              <tr  *ngFor="let doctor of app.List">
+              <tr  *ngFor="let doctor of app.List" (click)="ShowPersonalInfo(doctor)">
                   <td>{{ doctor.surname }}</td>
                   <td>{{ doctor.name }}</td>
                   <td>{{ doctor.patername }}</td>
                   <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                  <td>{{ doctor.date | date: "d MMMM yyyy"}}</td> 
+                  <td>{{ doctor.Date | date: "d MMMM yyyy"}}</td>
               </tr>
           </tbody>
+        </table>
+        <table class="table-striped table table-hover" *ngIf="searchDoctors.length !== 0">
+            <thead>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Дата рождения</th>
+                <th>Дата создания</th>
+            </thead>
+            <tbody>
+                <tr  *ngFor="let search of searchDoctors" (click)="ShowPersonalInfo(search)">
+                    <td>{{ search.surname }}</td>
+                    <td>{{ search.name }}</td>
+                    <td>{{ search.patername }}</td>
+                    <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
+                    <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
+                </tr>
+            </tbody>
         </table>
       </div>  
     </accordion-group>

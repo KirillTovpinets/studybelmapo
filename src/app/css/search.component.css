@@ -1,0 +1,7 @@
+#DoctorList .content{
+	height:60vh;
+	overflow-y: scroll;
+}
+form{
+	margin-bottom: 20px;
+}

@@ -7,14 +7,14 @@ import "rxjs/add/operator/toPromise";
 
 export class SearchSirnameService{
 	constructor(private http: Http){}
-	url:string = "php/SearchPerson.php";
+	url:string = "php/getPersonList.php";
 	params:string = "";
-	searchPerson(value, params?:any): Promise<any>{
+	searchParameter(value, params?:any): Promise<any>{
 		if (params !== undefined) {
 			for (var key in params) {
 				this.params += "&" + key + "=" + params[key];
 			}
 		}
-		return this.http.get(this.url + "?sirname=" + value + this.params).toPromise()
+		return this.http.get(this.url + "?name=" + value + this.params).toPromise()
 	}
 }

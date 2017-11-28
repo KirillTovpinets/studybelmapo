@@ -10,15 +10,7 @@ import { PersonalInfoComponent } from '../personalInfo.component';
 @Component({
 	templateUrl: "../templates/searchComponents/sirname.component.html",
 	providers: [GetListService, SearchSirnameService, PersonalInfoService],
-	styles: [`
-		#DoctorList .content{
-			height:60vh;
-			overflow-y: scroll;
-		}
-		form{
-			margin-bottom: 20px;
-		}
-	`]
+	styleUrls:['../css/search.component.css']
 })
 
 export class SirnameComponent implements OnInit{
@@ -60,11 +52,13 @@ export class SirnameComponent implements OnInit{
 	}
 
 	Search(event:any): void{
-		console.log("Press");
+		if (event.target.value === "") {
+			this.ngOnInit();
+			return;
+		}
 		this.searchValue = event.target.value;
 		this.search.searchPerson(this.searchValue).then(data => {
 			this.searchDoctors = data.json();
-			console.log(data.json());
 		});
 	}
 
