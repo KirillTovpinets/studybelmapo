@@ -23,17 +23,20 @@ export class AppointmentComponent implements OnInit{
 	scrollCounter:number = 400;
 	searchValue: string = "";
 	searchDoctors: any[] = [];
+	
+	ListLimit:number = 30;
+	ListOffset:number = 0;
 	ngOnInit(): void{
-		this.establService.getList(this.limit, this.offset, "appointment").then(data => {
+		this.establService.getList(this.limit, this.offset, "appointment", {listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
 			console.log(data._body);
-			this.appointments = data.json();
+			this.appointments = data.json().data;
 		});
 	}
 	ShowPersonalInfo(person:any): void{
 		this.personalInfo.getInfo(person.id).then(data => {
 			this.PersonalInfoModal = this.PIService.show(PersonalInfoComponent, {class: 'modal-lg'});
 			this.PersonalInfoModal.content.title = "Профиль врача";
-			this.PersonalInfoModal.content.person = data.json();
+			this.PersonalInfoModal.content.person = data.json().data;
 		});
 	}
 	ajaxLoad($event): void{
@@ -51,7 +54,7 @@ export class AppointmentComponent implements OnInit{
 		}
 		this.searchValue = event.target.value;
 		this.search.searchPerson(this.searchValue).then(data => {
-			this.searchDoctors = data.json();
+			this.searchDoctors = data.json().data;
 		});
 	}
 	SearchAppointment(event:any):void{
@@ -60,8 +63,8 @@ export class AppointmentComponent implements OnInit{
 			return;
 		}
 		this.searchValue = event.target.value;
-		this.establService.getList(0, 0, "appointment", { name: this.searchValue }).then(data => {
-			this.appointments = data.json();
+		this.establService.getList(50, 0, "appointment", { name: this.searchValue }).then(data => {
+			this.appointments = data.json().data;
 		});
 	}
 }

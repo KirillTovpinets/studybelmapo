@@ -27,7 +27,8 @@ export class SirnameComponent implements OnInit{
 	PersonalInfoModal: BsModalRef;
 	ngOnInit(): void{
 		this.sirnameServ.getList(30, this.offset, "sirname").then(data => {
-			this.doctors = this.doctors.concat(data.json());
+			console.log(data._body);
+			this.doctors = this.doctors.concat(data.json().data);
 			this.doctors.sort((a, b) => {
 	          var sirname_first, sirname_second;
 	          sirname_first = new Date(a.sirname);
@@ -52,8 +53,9 @@ export class SirnameComponent implements OnInit{
 	}
 
 	Search(event:any): void{
+		console.log(event.target.value);
 		if (event.target.value === "") {
-			this.ngOnInit();
+			this.searchDoctors = [];
 			return;
 		}
 		this.searchValue = event.target.value;

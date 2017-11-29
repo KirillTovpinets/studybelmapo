@@ -25,12 +25,18 @@ export class SpecialityComponent implements OnInit{
 	scrollCounter:number = 400;
 	searchValue: string = "";
 	searchDoctors: any[] = [];
+
+	ListLimit:number = 30;
+	ListOffset:number = 0;
 	ngOnInit(): void{
-		this.establService.getList(this.limit, this.offset, "speciality").then(data => {
-			console.log(data._body);
-			this.specialities_main = data.json().speciality_doct;
-			this.specialities_retraining = data.json().speciality_retraining;
-			this.specialities_others = data.json().speciality_other;
+		this.establService.getList(this.limit, this.offset, "speciality", {table: "speciality_doct", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+			this.specialities_main = data.json().data;
+		});
+		this.establService.getList(this.limit, this.offset, "speciality", {table: "speciality_retraining", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+			this.specialities_retraining = data.json().data;
+		});
+		this.establService.getList(this.limit, this.offset, "speciality", {table: "speciality_other", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+			this.specialities_others = data.json().data;
 		});
 	}
 	ShowPersonalInfo(person:any): void{
@@ -64,7 +70,7 @@ export class SpecialityComponent implements OnInit{
 			return;
 		}
 		this.searchValue = event.target.value;
-		this.establService.getList(0, 0, "specialities_doct", { name: this.searchValue }).then(data => {
+		this.establService.getList(30, 0, "speciality", { name: this.searchValue, table: "specialities_doct" }).then(data => {
 			this.specialities_main = data.json();
 		});
 	}
@@ -74,7 +80,7 @@ export class SpecialityComponent implements OnInit{
 			return;
 		}
 		this.searchValue = event.target.value;
-		this.establService.getList(0, 0, "specialities_retrain", { name: this.searchValue }).then(data => {
+		this.establService.getList(30, 0, "speciality", { name: this.searchValue, table: "specialities_retrain" }).then(data => {
 			this.specialities_retraining = data.json();
 		});
 	}
@@ -84,7 +90,7 @@ export class SpecialityComponent implements OnInit{
 			return;
 		}
 		this.searchValue = event.target.value;
-		this.establService.getList(0, 0, "specialities_other", { name: this.searchValue }).then(data => {
+		this.establService.getList(30, 0, "speciality", { name: this.searchValue, table: "specialities_other" }).then(data => {
 			this.specialities_others = data.json();
 		});
 	}

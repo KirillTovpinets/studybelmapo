@@ -5,298 +5,55 @@
 <div class="content">
   <div class="content table-responsive table-full-width">
     <accordion>
-      <accordion-group heading="От 18 до 21">
-        <div class="content" (scroll)="ajaxLoad($event)">
-          <form action="">
-            <label for="">Поиск</label>
-            <input type="text" class="form-control" (keyup)="Search($event, {min: 18, max: 21})">
-          </form>
-          <table class="table-striped table table-hover" *ngIf="searcheighteenDoctors.length === 0">
-            <thead>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Дата рождения</th>
-                <th>Дата создания</th>
-            </thead>
-            <tbody>
-                <tr *ngIf="eighteenDoctors.length == 0">
-                  <td colspan="5">
-                    <preloader></preloader>
-                  </td>
-                </tr>
-                <tr  *ngFor="let doctor of eighteenDoctors" (click)="ShowPersonalInfo(doctor)">
-                    <td>{{ doctor.surname }}</td>
-                    <td>{{ doctor.name }}</td>
-                    <td>{{ doctor.patername }}</td>
-                    <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                    <td>{{ doctor.Date | date: "d MMMM yyyy"}}</td>
-                </tr>
-            </tbody>
-          </table>
-          <table class="table-striped table table-hover" *ngIf="searcheighteenDoctors.length !== 0">
-            <thead>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Дата рождения</th>
-                <th>Дата создания</th>
-            </thead>
-            <tbody>
-                <tr  *ngFor="let search of searcheighteenDoctors" (click)="ShowPersonalInfo(search)">
-                    <td>{{ search.surname }}</td>
-                    <td>{{ search.name }}</td>
-                    <td>{{ search.patername }}</td>
-                    <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
-                    <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
-      </accordion-group>
-      <accordion-group heading="От 22 до 28">
-        <div class="content" (scroll)="ajaxLoad($event)">
-          <form action="">
-            <label for="">Поиск</label>
-            <input type="text" class="form-control" (keyup)="Search($event, {min: 22, max: 28})">
-          </form>
-          <table class="table-striped table table-hover" *ngIf="searchtwentyTwoDoctors.length === 0">
-            <thead>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Дата рождения</th>
-                <th>Дата создания</th>
-            </thead>
-            <tbody>
-                <tr *ngIf="twentyTwoDoctors.length == 0">
-                  <td colspan="5">
-                    <preloader></preloader>
-                  </td>
-                </tr>
-              <tr  *ngFor="let doctor of twentyTwoDoctors" (click)="ShowPersonalInfo(doctor)">
-                    <td>{{ doctor.surname }}</td>
-                    <td>{{ doctor.name }}</td>
-                    <td>{{ doctor.patername }}</td>
-                    <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                    <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
-                </tr>
-            </tbody>
-          </table>
-          <table class="table-striped table table-hover" *ngIf="searchtwentyTwoDoctors.length !== 0">
-            <thead>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Дата рождения</th>
-                <th>Дата создания</th>
-            </thead>
-            <tbody>
-                <tr  *ngFor="let search of searchtwentyTwoDoctors" (click)="ShowPersonalInfo(search)">
-                    <td>{{ search.surname }}</td>
-                    <td>{{ search.name }}</td>
-                    <td>{{ search.patername }}</td>
-                    <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
-                    <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
-      </accordion-group>
-      <accordion-group heading="От 29 до 35">
-        <div class="content" (scroll)="ajaxLoad($event)">
-          <form action="">
-            <label for="">Поиск</label>
-            <input type="text" class="form-control" (keyup)="Search($event, {min: 29, max: 35})">
-          </form>
-          <table class="table-striped table table-hover" *ngIf="searchtwentyNineDoctors.length === 0">
-            <thead>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Дата рождения</th>
-                <th>Дата создания</th>
-            </thead>
-            <tbody>
-                <tr *ngIf="twentyNineDoctors.length == 0">
-                  <td colspan="5">
-                    <preloader></preloader>
-                  </td>
-                </tr>
-              <tr  *ngFor="let doctor of twentyNineDoctors" (click)="ShowPersonalInfo(doctor)">
-                    <td>{{ doctor.surname }}</td>
-                    <td>{{ doctor.name }}</td>
-                    <td>{{ doctor.patername }}</td>
-                    <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                    <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
-                </tr>
-            </tbody>
-          </table>
-          <table class="table-striped table table-hover" *ngIf="searchtwentyNineDoctors.length !== 0">
-            <thead>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Дата рождения</th>
-                <th>Дата создания</th>
-            </thead>
-            <tbody>
-                <tr  *ngFor="let search of searchtwentyNineDoctors" (click)="ShowPersonalInfo(search)">
-                    <td>{{ search.surname }}</td>
-                    <td>{{ search.name }}</td>
-                    <td>{{ search.patername }}</td>
-                    <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
-                    <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
-      </accordion-group>
-      <accordion-group heading="От 36 до 43">
-        <div class="content" (scroll)="ajaxLoad($event)">
-          <form action="">
-            <label for="">Поиск</label>
-            <input type="text" class="form-control" (keyup)="Search($event, {min: 36, max: 43})">
-          </form>
-          <table class="table-striped table table-hover" *ngIf="searchthirtySixDoctors.length === 0">
-            <thead>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Дата рождения</th>
-                <th>Дата создания</th>
-            </thead>
-            <tbody>
-                <tr *ngIf="thirtySixDoctors.length == 0">
-                  <td colspan="5">
-                    <preloader></preloader>
-                  </td>
-                </tr>
-              <tr  *ngFor="let doctor of thirtySixDoctors" (click)="ShowPersonalInfo(doctor)">
-                    <td>{{ doctor.surname }}</td>
-                    <td>{{ doctor.name }}</td>
-                    <td>{{ doctor.patername }}</td>
-                    <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                    <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
-                </tr>
-            </tbody>
-          </table>
-          <table class="table-striped table table-hover" *ngIf="searchthirtySixDoctors.length !== 0">
-            <thead>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Дата рождения</th>
-                <th>Дата создания</th>
-            </thead>
-            <tbody>
-                <tr  *ngFor="let search of searchthirtySixDoctors" (click)="ShowPersonalInfo(search)">
-                    <td>{{ search.surname }}</td>
-                    <td>{{ search.name }}</td>
-                    <td>{{ search.patername }}</td>
-                    <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
-                    <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
-      </accordion-group>
-      <accordion-group heading="От 44 до 52">
-        <div class="content" (scroll)="ajaxLoad($event)">
-          <form action="">
-            <label for="">Поиск</label>
-            <input type="text" class="form-control" (keyup)="Search($event, {min: 44, max: 52})">
-          </form>
-          <table class="table-striped table table-hover" *ngIf="searchfortyFourDoctors.length === 0">
-            <thead>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Дата рождения</th>
-                <th>Дата создания</th>
-            </thead>
-            <tbody>
-                <tr *ngIf="fortyFourDoctors.length == 0">
-                  <td colspan="5">
-                    <preloader></preloader>
-                  </td>
-                </tr>
-              <tr  *ngFor="let doctor of fortyFourDoctors" (click)="ShowPersonalInfo(doctor)">
-                    <td>{{ doctor.surname }}</td>
-                    <td>{{ doctor.name }}</td>
-                    <td>{{ doctor.patername }}</td>
-                    <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                    <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
-                </tr>
-            </tbody>
-          </table>
-          <table class="table-striped table table-hover" *ngIf="searchfortyFourDoctors.length !== 0">
-            <thead>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Дата рождения</th>
-                <th>Дата создания</th>
-            </thead>
-            <tbody>
-                <tr  *ngFor="let search of searchfortyFourDoctors" (click)="ShowPersonalInfo(search)">
-                    <td>{{ search.surname }}</td>
-                    <td>{{ search.name }}</td>
-                    <td>{{ search.patername }}</td>
-                    <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
-                    <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
-      </accordion-group>
-      <accordion-group heading="От 53 и старше">
-        <div class="content" (scroll)="ajaxLoad($event)">
-          <form action="">
-            <label for="">Поиск</label>
-            <input type="text" class="form-control" (keyup)="Search($event, {min: 53, max: 100})">
-          </form>
-          <table class="table-striped table table-hover" *ngIf="searchfiftyThreeDoctors.length === 0">
-            <thead>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Дата рождения</th>
-                <th>Дата создания</th>
-            </thead>
-            <tbody>
-                <tr *ngIf="fiftyThreeDoctors.length == 0">
-                  <td colspan="5">
-                    <preloader></preloader>
-                  </td>
-                </tr>
-              <tr  *ngFor="let doctor of fiftyThreeDoctors" (click)="ShowPersonalInfo(doctor)">
-                    <td>{{ doctor.surname }}</td>
-                    <td>{{ doctor.name }}</td>
-                    <td>{{ doctor.patername }}</td>
-                    <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                    <td>{{ doctor.date | date: "d MMMM yyyy"}}</td>
-                </tr>
-            </tbody>
-          </table>
-          <table class="table-striped table table-hover" *ngIf="searchfiftyThreeDoctors.length !== 0">
-            <thead>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Дата рождения</th>
-                <th>Дата создания</th>
-            </thead>
-            <tbody>
-                <tr  *ngFor="let search of searchfiftyThreeDoctors" (click)="ShowPersonalInfo(search)">
-                    <td>{{ search.surname }}</td>
-                    <td>{{ search.name }}</td>
-                    <td>{{ search.patername }}</td>
-                    <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
-                    <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
-                </tr>
-            </tbody>
-        </table>
+      <accordion-group heading="От {{ age.parameters.min }} до {{ age.parameters.max }} ({{ age.total }})" *ngFor="let age of ageLists">
+        <div class="DoctorList">
+          <div class="content" (scroll)="ajaxLoad($event, age)">
+            <form action="">
+              <label for="">Поиск</label>
+              <input type="text" class="form-control" (keyup)="Search($event, age)">
+            </form>
+            <table class="table-striped table table-hover" *ngIf="age.searchResult.length === 0">
+              <thead>
+                  <th>Фамилия</th>
+                  <th>Имя</th>
+                  <th>Отчество</th>
+                  <th>Дата рождения</th>
+                  <th>Дата создания</th>
+              </thead>
+              <tbody>
+                  <tr *ngIf="age.doctors.length == 0">
+                    <td colspan="5">
+                      <preloader></preloader>
+                    </td>
+                  </tr>
+                  <tr  *ngFor="let doctor of age.doctors" (click)="ShowPersonalInfo(doctor)">
+                      <td>{{ doctor.surname }}</td>
+                      <td>{{ doctor.name }}</td>
+                      <td>{{ doctor.patername }}</td>
+                      <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                      <td>{{ doctor.Date | date: "d MMMM yyyy"}}</td>
+                  </tr>
+              </tbody>
+            </table>
+            <table class="table-striped table table-hover" *ngIf="age.searchResult.length !== 0">
+              <thead>
+                  <th>Фамилия</th>
+                  <th>Имя</th>
+                  <th>Отчество</th>
+                  <th>Дата рождения</th>
+                  <th>Дата создания</th>
+              </thead>
+              <tbody>
+                  <tr  *ngFor="let search of age.searchResult" (click)="ShowPersonalInfo(search)">
+                      <td>{{ search.surname }}</td>
+                      <td>{{ search.name }}</td>
+                      <td>{{ search.patername }}</td>
+                      <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
+                      <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </accordion-group>
     </accordion>

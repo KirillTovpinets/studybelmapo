@@ -25,11 +25,19 @@ export class QualificationComponent implements OnInit{
 	scrollCounter:number = 400;
 	searchValue: string = "";
 	searchDoctors: any[] = [];
+
+	ListLimit:number = 30;
+	ListOffset:number = 0;
 	ngOnInit(): void{
-		this.listService.getList(this.limit, this.offset, "qualification").then(data => {
-			this.qualification_main = data.json().qualification_main;
-			this.qualification_add = data.json().qualification_add;
-			this.qualification_others = data.json().qualification_other;
+
+		this.listService.getList(this.limit, this.offset, "qualification", {table: "qualification_main", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+			this.qualification_main = data.json().data;
+		});
+		this.listService.getList(this.limit, this.offset, "qualification", {table: "qualification_add", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+			this.qualification_add = data.json().data;
+		});
+		this.listService.getList(this.limit, this.offset, "qualification", {table: "qualification_other", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+			this.qualification_others = data.json().data;
 		});
 	}
 	ShowPersonalInfo(person:any): void{
@@ -63,7 +71,7 @@ export class QualificationComponent implements OnInit{
 			return;
 		}
 		this.searchValue = event.target.value;
-		this.listService.getList(0, 0, "qualification_main", { name: this.searchValue }).then(data => {
+		this.listService.getList(30, 0, "qualification", { name: this.searchValue, table: "qualification_main" }).then(data => {
 			this.qualification_main = data.json();
 		});
 	}
@@ -73,7 +81,7 @@ export class QualificationComponent implements OnInit{
 			return;
 		}
 		this.searchValue = event.target.value;
-		this.listService.getList(0, 0, "qualification_add", { name: this.searchValue }).then(data => {
+		this.listService.getList(30, 0, "qualification", { name: this.searchValue, table: "qualification_add" }).then(data => {
 			this.qualification_add = data.json();
 		});
 	}
@@ -83,7 +91,7 @@ export class QualificationComponent implements OnInit{
 			return;
 		}
 		this.searchValue = event.target.value;
-		this.listService.getList(0, 0, "qualification_other", { name: this.searchValue }).then(data => {
+		this.listService.getList(30, 0, "qualification", { name: this.searchValue, table: "qualification_other" }).then(data => {
 			this.qualification_others = data.json();
 		});
 	}

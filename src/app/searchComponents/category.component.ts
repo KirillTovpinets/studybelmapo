@@ -49,7 +49,7 @@ export class CategoryComponent implements OnInit{
 		}
 		this.searchValue = event.target.value;
 		this.search.searchPerson(this.searchValue).then(data => {
-			this.searchDoctors = data.json();
+			this.searchDoctors = data.json().data;
 		});
 	}
 }

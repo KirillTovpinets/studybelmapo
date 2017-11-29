@@ -8,11 +8,13 @@
 	$offset = $data->offset;
 	$query = "";
 	$condition = "";
-	function getList($connection, $SqlObject, $field){
+	function getList($connection, $SqlObject, $field, $data){
 		$Arr = array();
+		$limit = $data->params->listLimit;
+		$offset = $data->params->listOffset;
 		while ($row = $SqlObject->fetch_assoc()) {
 			$Id = $row["id"];
-			$PersonQuery = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE personal_card.$field = $Id";
+			$PersonQuery = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE personal_card.$field = $Id LIMIT $limit OFFSET $offset";
 			$PersonResult = $connection->query($PersonQuery) or die ("Ошибка выполнения запроса '$query': " . mysqli_error($connection));
 			$resultArray = array();
 
@@ -32,24 +34,22 @@
 	}
 	function getCrossTableData($table, $field, $mysqli, $data){
 		$data = getInitialData($table, $field, $mysqli, $data);
+		$response = array();
+		$response["data"] = $data;
 		mysqli_close($mysqli);
-		exit(json_encode($data));
+		exit(json_encode($response));
 	}
 	function getInitialData($table, $field, $mysqli, $data){
 		$limit = $data->limit;
 		$offset = $data->offset;
 		$condition = "";
-		$limitation = "";
 		if (isset($data->params->name)) {
 			$value = $data->params->name;
 			$condition .= "WHERE name LIKE '$value%'";
 		}
-		if ($limit !== 0 || $offset !== 0) {
-			 $limitation = "LIMIT $limit OFFSET $offset";
-		}
-		$query = "SELECT * FROM $table $condition ORDER BY name ASC $limitation";
+		$query = "SELECT * FROM $table $condition ORDER BY name ASC LIMIT $limit OFFSET $offset";
 		$result = $mysqli->query($query) or die ("Ошибка запроса '$query': " . mysqli_error($mysqli));
-		$data = getList($mysqli, $result, $field);
+		$data = getList($mysqli, $result, $field, $data);
 		return $data;
 	}
 	function getMultipleTablesData($tables, $mysqli, $data){
@@ -64,6 +64,9 @@
 		exit(json_encode($response));
 	}
 	switch ($data->info) {
+		case "sirname":{
+			break;
+		}
 		case 'age':{
 			$max = $data->params->max;
 			$min = $data->params->min;
@@ -90,13 +93,10 @@
 			$field = "appointment";
 			getCrossTableData($table, $field, $mysqli, $data);
 		}
-		case "speciality":{
-			$tables = ["speciality_doct", "speciality_retraining", "speciality_other"];
-			getMultipleTablesData($tables, $mysqli, $data);
-		}
-		case "qualification":{
-			$tables = ["qualification_main", "qualification_add", "qualification_other"];
-			getMultipleTablesData($tables, $mysqli, $data);	
+		case "speciality" || "qualification":{
+			$table = $data->params->table;
+			$field = $table;
+			getCrossTableData($table, $field, $mysqli, $data);
 		}
 
 	}
@@ -104,10 +104,12 @@
 	$query = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId $condition LIMIT $limit OFFSET $offset";
 	$result = $mysqli->query($query) or die ("Ошибка запроса '$query': " . mysqli_error($mysqli));
 	$personsArr = array();
-
+	$responseData = array();
 	while ($row = $result->fetch_assoc()) {
 		array_push($personsArr, $row);
 	}
+	$responseData["data"] = $personsArr;
+	$responseData["Total"] = $result->{"num_rows"};
 	mysqli_close($mysqli);
-	echo json_encode($personsArr);
+	echo json_encode($responseData);
 ?>

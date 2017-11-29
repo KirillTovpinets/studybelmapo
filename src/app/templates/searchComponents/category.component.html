@@ -3,7 +3,7 @@
   <p class="category">По категории</p>
 </div>
 <div class="content">
-  <div id="DoctorList" class="row">
+  <div class="DoctorList">
       <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event)">
         <table class="table-striped table table-hover" *ngIf="searchDoctors.length === 0">
           <thead>

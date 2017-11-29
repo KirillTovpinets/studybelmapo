@@ -5,6 +5,8 @@ import { SearchSirnameService } from './services/searchSirname.service';
 import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
 import { PersonalInfoService } from '../personalInfo.service';
 import { PersonalInfoComponent } from '../personalInfo.component';
+import { List } from "./List.class";
+
 @Component({
 	templateUrl: "../templates/searchComponents/establishment.component.html",
 	providers:[GetListService, PersonalInfoService,SearchSirnameService],
@@ -16,17 +18,26 @@ export class EstablishmentComponent implements OnInit{
 				private personalInfo: PersonalInfoService,
 				private search: SearchSirnameService,
 				private PIService: BsModalService){}
-	establs: any[] = [];
-	offset: number = 0;
-	limit: number = 30;
-	PersonalInfoModal: BsModalRef;
-	scrollCounter:number = 400;
+	establs: List[] = [];
+	EstOffset: number = 0;
+	EstLimit: number = 30;
+
+	ListOffset: number = 0;
+	ListLimit: number = 30;
 	searchValue: string = "";
-	searchDoctors: any[] = [];
+	searchEst:any[] = [];
+	PersonalInfoModal: BsModalRef;
 	ngOnInit(): void{
-		this.establService.getList(this.limit, this.offset, "establishment").then(data => {
+		this.establService.getList(this.EstLimit, this.EstOffset, "establishment", {listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
 			console.log(data._body);
-			this.establs = data.json();
+			for (var i = 0; i < data.json().data.length; i++) {
+				this.establs[i] = new List();
+				this.establs[i].limit = this.ListLimit;
+				this.establs[i].offset = this.ListOffset;
+				this.establs[i].name = data.json().data[i].name;
+				this.establs[i].total = data.json().data[i].Total;
+				this.establs[i].setList(data.json().data[i].List);
+			}
 		});
 	}
 	ShowPersonalInfo(person:any): void{
@@ -36,32 +47,35 @@ export class EstablishmentComponent implements OnInit{
 			this.PersonalInfoModal.content.person = data.json();
 		});
 	}
-	ajaxLoad($event): void{
-		if($event.target.scrollTop < this.scrollCounter){
-			this.offset += 30;
-			this.scrollCounter += 200;
-			this.ngOnInit();
+	ajaxLoad($event:any, establ:any): void{
+		if($event.target.scrollTop < establ.scrollCounter){
+			establ.offset += 30;
+			establ.scrollCounter += 200;
+			this.establService.getList(this.EstLimit, this.EstOffset, "establishment", {listLimit: establ.limit, listOffset: establ.offset}).then(data => {
+				console.log(data._body);
+				establ.setList(establ.doctors.concat(data.json().data.List));
+			});
 		}
 	}
 
-	Search(event:any): void{
+	Search(event:any, establ:any): void{
 		if (event.target.value === "") {
-			this.ngOnInit();
+			establ.searchResult = [];
 			return;
 		}
-		this.searchValue = event.target.value;
-		this.search.searchPerson(this.searchValue).then(data => {
-			this.searchDoctors = data.json();
+		establ.searchValue = event.target.value;
+		this.search.searchPerson(establ.searchValue).then(data => {
+			establ.searchResult = data.json().data;
 		});
 	}
 	SearchEstablishment(event:any):void{
 		if (event.target.value === "") {
-			this.ngOnInit();
+			this.searchEst = [];
 			return;
 		}
 		this.searchValue = event.target.value;
-		this.establService.getList(0, 0, "establishment", { name: this.searchValue }).then(data => {
-			this.establs = data.json();
+		this.establService.getList(50, 0, "establishment", { name: this.searchValue, listLimit: this.ListLimit, listOffset: this.ListOffset }).then(data => {
+			this.searchEst = data.json();
 		});
 	}
 }

@@ -20,13 +20,17 @@ export class OrganizationComponent implements OnInit{
 	offset: number = 0;
 	limit: number = 30;
 	PersonalInfoModal: BsModalRef;
-	scrollCounter:number = 400;
+	scrollCounter:number = 200;
 	searchValue: string = "";
 	searchDoctors: any[] = [];
+
+	ListOffset: number = 0;
+	ListLimit: number = 30;
+
 	ngOnInit(): void{
-		this.establService.getList(this.limit, this.offset, "job").then(data => {
+		this.establService.getList(this.limit, this.offset, "job", {listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
 			console.log(data._body);
-			this.organizations = data.json();
+			this.organizations = data.json().data;
 		});
 	}
 	ShowPersonalInfo(person:any): void{
@@ -46,6 +50,7 @@ export class OrganizationComponent implements OnInit{
 
 	Search(event:any): void{
 		if (event.target.value === "") {
+			this.searchDoctors = [];
 			this.ngOnInit();
 			return;
 		}
@@ -60,7 +65,7 @@ export class OrganizationComponent implements OnInit{
 			return;
 		}
 		this.searchValue = event.target.value;
-		this.establService.getList(0, 0, "job", { name: this.searchValue }).then(data => {
+		this.establService.getList(50, 0, "job", { name: this.searchValue }).then(data => {
 			this.organizations = data.json();
 		});
 	}

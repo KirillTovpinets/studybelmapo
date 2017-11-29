@@ -5,7 +5,7 @@ import { SearchSirnameService } from './services/searchSirname.service';
 import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
 import { PersonalInfoService } from '../personalInfo.service';
 import { PersonalInfoComponent } from '../personalInfo.component'; 
-
+import { List } from "./List.class";
 @Component({
 	templateUrl: '../templates/searchComponents/gender.component.html',
 	providers:[GetListService, PersonalInfoService,SearchSirnameService],
@@ -18,22 +18,15 @@ export class GenderComponent implements OnInit{
 				private search: SearchSirnameService,
 				private PIService: BsModalService
 		){}
-	MaleDoctors:any[] = [];
-	FemaleDoctors: any[] = [];
-	offset: number = 0;
-	parameters: any = {};
-	limit: number = 30;
 	PersonalInfoModal: BsModalRef;
-	scrollCounter:number = 400;
-	searchValue: string = "";
-	searchMaleDoctors: any[] = [];
-	searchFemaleDoctors: any[] = [];
+	maleList: List = new List();
+	femaleList: List = new List();
 	ngOnInit(): void {
-		this.genderService.getList(this.limit, this.offset, "gender", { isMale: 1 }).then(data => {
-			this.MaleDoctors = data.json()
+		this.genderService.getList(this.maleList.limit, this.maleList.offset, "gender", { isMale: 1 }).then(data => {
+			this.maleList.setList(data.json().data);
 		});
-		this.genderService.getList(this.limit, this.offset, "gender", { isMale: 2 }).then(data => {
-			this.FemaleDoctors = data.json()
+		this.genderService.getList(this.femaleList.limit, this.femaleList.offset, "gender", { isMale: 2 }).then(data => {
+			this.femaleList.setList(data.json().data);
 		});
 	}
 	ShowPersonalInfo(doctor): void{
@@ -43,27 +36,44 @@ export class GenderComponent implements OnInit{
 			this.PersonalInfoModal.content.person = data.json();
 		});
 	}
-	ajaxLoad($event): void{
-		if($event.target.scrollTop < this.scrollCounter){
-			this.offset += 30;
-			this.scrollCounter += 200;
-			this.ngOnInit();
+	ajaxLoadMale($event): void{
+		if($event.target.scrollTop < this.maleList.scrollCounter){
+			this.maleList.offset += 30;
+			this.maleList.scrollCounter += 200;
+			this.genderService.getList(this.maleList.limit, this.maleList.offset, "gender", { isMale: 1 }).then(data => {
+				this.maleList.setList(data.json().data);
+
+			});
 		}
 	}
 
-	Search(event:any, isMale:number): void{
+	ajaxLoadFemale($event): void{
+		if($event.target.scrollTop < this.femaleList.scrollCounter){
+			this.femaleList.offset += 30;
+			this.femaleList.scrollCounter += 200;
+			this.genderService.getList(this.femaleList.limit, this.femaleList.offset, "gender", { isMale: 2 }).then(data => {
+				this.femaleList.setList(data.json().data);
+			});
+		}
+	}
+	SearchMale(event:any): void{
 		if (event.target.value === "") {
-			this.ngOnInit();
+			this.maleList.searchResult = [];
 			return;
 		}
-		this.searchValue = event.target.value;
-		this.parameters.isMale = isMale;
-		this.search.searchPerson(this.searchValue, this.parameters).then(data => {
-			if (this.parameters.isMale === 1) {
-				this.searchMaleDoctors = data.json();
-			}else{
-				this.searchFemaleDoctors = data.json();
-			}
+		this.maleList.searchValue = event.target.value;
+		this.search.searchPerson(this.maleList.searchValue, {isMale: 1}).then(data => {
+			this.maleList.searchResult = data.json();
+		});
+	}
+	SearchFemale(event:any): void{
+		if (event.target.value === "") {
+			this.femaleList.searchResult = [];
+			return;
+		}
+		this.femaleList.searchValue = event.target.value;
+		this.search.searchPerson(this.femaleList.searchValue, {isMale: 0}).then(data => {
+			this.femaleList.searchResult = data.json();
 		});
 	}
 }

@@ -5,6 +5,8 @@ import { BsModalService } from "ngx-bootstrap/modal";
 import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
 import { PersonalInfoService } from '../personalInfo.service';
 import { PersonalInfoComponent } from '../personalInfo.component';
+import { List } from "./List.class";
+
 @Component({
 	templateUrl: "../templates/searchComponents/age.component.html",
 	providers: [GetListService, PersonalInfoService,SearchSirnameService],
@@ -12,53 +14,66 @@ import { PersonalInfoComponent } from '../personalInfo.component';
 })
 
 export class AgeComponent implements OnInit{
-	eighteenDoctors:any[] = [];
-	twentyTwoDoctors:any[] = [];
-	twentyNineDoctors:any[] = [];
-	thirtySixDoctors:any[] = [];
-	fortyFourDoctors:any[] = [];
-	fiftyThreeDoctors:any[] = [];
 
-	searcheighteenDoctors:any[] = [];
-	searchtwentyTwoDoctors:any[] = [];
-	searchtwentyNineDoctors:any[] = [];
-	searchthirtySixDoctors:any[] = [];
-	searchfortyFourDoctors:any[] = [];
-	searchfiftyThreeDoctors:any[] = [];
-
-	limit: number = 30;
-	offset:number = 0;
-	scrollCounter:number = 400;
-	searchValue: string = "";
-	searchDoctors: any[] = [];
+	ageLists:List[] = [];
 	PersonalInfoModal: BsModalRef;
-	data: any;
 
+	params:any[] = [
+						{min: 18, max: 21},
+						{min: 22, max: 28},
+						{min: 29, max: 35},
+						{min: 36, max: 43},
+						{min: 44, max: 52},
+						{min: 53, max: 100}
+					]
 
 	constructor(private ageService: GetListService,
 				private personalInfo: PersonalInfoService,
 				private search: SearchSirnameService,
 				private PIService: BsModalService
-		){}
-
+		){
+		for (var i = 0; i < this.ageLists.length; i++) {
+			this.ageLists[i] = new List();
+		}
+	}
+	indexInPromise:number = 0;
 	ngOnInit(): void{
-		this.ageService.getList(this.limit, this.offset, "age", {min: 18, max: 21}).then(data => {
-			this.eighteenDoctors = data.json();
+
+		this.ageService.getList(30, 0, "age", {min: 18, max: 21}).then(data => {
+			this.ageLists[0] = new List();
+			this.ageLists[0].parameters = this.params[0];
+			this.ageLists[0].setList(data.json().data);
+			this.ageLists[0].total = data.json().Total;
 		});
-		this.ageService.getList(this.limit, this.offset, "age", {min: 22, max: 28}).then(data => {
-			this.twentyTwoDoctors = data.json();
+		this.ageService.getList(30, 0, "age", {min: 22, max: 28}).then(data => {
+			this.ageLists[1] = new List();
+			this.ageLists[1].parameters = this.params[1];
+			this.ageLists[1].setList(data.json().data);
+			this.ageLists[1].total = data.json().Total;
 		});
-		this.ageService.getList(this.limit, this.offset, "age", {min: 29, max: 35}).then(data => {
-			this.twentyNineDoctors = data.json();
+		this.ageService.getList(30, 0, "age", {min: 29, max: 35}).then(data => {
+			this.ageLists[2] = new List();
+			this.ageLists[2].parameters = this.params[2];
+			this.ageLists[2].setList(data.json().data);
+			this.ageLists[2].total = data.json().Total;
 		});
-		this.ageService.getList(this.limit, this.offset, "age", {min: 36, max: 43}).then(data => {
-			this.thirtySixDoctors = data.json();
+		this.ageService.getList(30, 0, "age", {min: 36, max: 43}).then(data => {
+			this.ageLists[3] = new List();
+			this.ageLists[3].parameters = this.params[3];
+			this.ageLists[3].setList(data.json().data);
+			this.ageLists[3].total = data.json().Total;
 		});
-		this.ageService.getList(this.limit, this.offset, "age", {min: 44, max: 52}).then(data => {
-			this.fortyFourDoctors = data.json();
+		this.ageService.getList(30, 0, "age", {min: 44, max: 52}).then(data => {
+			this.ageLists[4] = new List();
+			this.ageLists[4].parameters = this.params[4];
+			this.ageLists[4].setList(data.json().data);
+			this.ageLists[4].total = data.json().Total;
 		});
-		this.ageService.getList(this.limit, this.offset, "age", {min: 53, max: 200}).then(data => {
-			this.fiftyThreeDoctors = data.json();
+		this.ageService.getList(30, 0, "age", {min: 53, max: 100}).then(data => {
+			this.ageLists[5] = new List();
+			this.ageLists[5].parameters = this.params[5];
+			this.ageLists[5].setList(data.json().data);
+			this.ageLists[5].total = data.json().Total;
 		});
 	}
 	ShowPersonalInfo(person:any): void{
@@ -68,42 +83,26 @@ export class AgeComponent implements OnInit{
 			this.PersonalInfoModal.content.person = data.json();
 		});
 	}
-	ajaxLoad($event): void{
-		if($event.target.scrollTop < this.scrollCounter){
-			this.offset += 30;
-			this.scrollCounter += 200;
-			this.ngOnInit();
+	ajaxLoad($event:any, list:List): void{
+		if($event.target.scrollTop < list.scrollCounter){
+			list.offset += 30;
+			list.scrollCounter += 200;
+			this.ageService.getList(list.limit, list.offset, "age", list.parameters).then(data => {
+				list.setList(data.json().data);
+				list.total = data.json().Total;
+			});
 		}
 	}
 
-	Search(event:any, params:any): void{
+	Search(event:any, age:List): void{
 		if (event.target.value === "") {
-			this.ngOnInit();
+			age.searchResult = [];
 			return;
 		}
-		this.searchValue = event.target.value;
-		this.search.searchPerson(this.searchValue, params).then(data => {
-			switch (params.min) {
-				case 18:
-					this.searcheighteenDoctors = data.json();
-					break;
-				case 22:
-					this.searchtwentyTwoDoctors = data.json();
-					break;
-				case 29:
-					this.searchtwentyNineDoctors = data.json();
-					break;
-				case 36:
-					this.searchthirtySixDoctors = data.json();
-					break;
-				case 44:
-					this.searchfortyFourDoctors = data.json();
-					break;
-				case 53:
-					this.searchfiftyThreeDoctors = data.json();
-					break;
-			}
-			this.searchDoctors = data.json();
+
+		age.searchValue = event.target.value;
+		this.search.searchPerson(age.searchValue, age.parameters).then(data => {
+			age.searchResult = data.json();
 		});
 	}
 	

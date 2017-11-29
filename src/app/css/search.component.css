@@ -1,7 +1,10 @@
-#DoctorList .content{
-	height:60vh;
+.DoctorList .content{
+	max-height:60vh;
 	overflow-y: scroll;
 }
 form{
 	margin-bottom: 20px;
+}
+.panel-body{
+	margin-left: 0px;
 }

@@ -3,38 +3,15 @@
   <p class="category">По полу</p>
 </div>
 <div class="content">
-  <div class="content table-responsive table-full-width">
     <tabset>
       <tab heading="Мужской">
-        <div class="content" (scroll)="ajaxLoad($event)">
-          <form action="">
-            <label for="">Поиск</label>
-            <input type="text" class="form-control" (keyup)="Search($event, 1)">
-          </form>
-          <table class="table-striped table table-hover" *ngIf="searchMaleDoctors.length === 0">
-            <thead>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Дата рождения</th>
-                <th>Дата создания</th>
-            </thead>
-            <tbody>
-              <tr *ngIf="MaleDoctors.length == 0">
-                <td colspan="5">
-                  <preloader></preloader>
-                </td>
-              </tr>
-                <tr  *ngFor="let doctor of MaleDoctors" (click)="ShowPersonalInfo(doctor)">
-                    <td>{{ doctor.surname }}</td>
-                    <td>{{ doctor.name }}</td>
-                    <td>{{ doctor.patername }}</td>
-                    <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                    <td>{{ doctor.Date | date: "d MMMM yyyy"}}</td>
-                </tr>
-            </tbody>
-          </table>
-          <table class="table-striped table table-hover" *ngIf="searchMaleDoctors.length !== 0">
+        <div class="DoctorList">
+          <div class="content" (scroll)="ajaxLoadMale($event)">
+            <form action="">
+              <label for="">Поиск</label>
+              <input type="text" class="form-control" (keyup)="SearchMale($event, 1)">
+            </form>
+            <table class="table-striped table table-hover" *ngIf="maleList.searchResult.length === 0">
               <thead>
                   <th>Фамилия</th>
                   <th>Имя</th>
@@ -43,47 +20,49 @@
                   <th>Дата создания</th>
               </thead>
               <tbody>
-                  <tr  *ngFor="let search of searchMaleDoctors" (click)="ShowPersonalInfo(search)">
-                      <td>{{ search.surname }}</td>
-                      <td>{{ search.name }}</td>
-                      <td>{{ search.patername }}</td>
-                      <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
-                      <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
+                <tr *ngIf="maleList.doctors.length == 0">
+                  <td colspan="5">
+                    <preloader></preloader>
+                  </td>
+                </tr>
+                  <tr  *ngFor="let doctor of maleList.doctors" (click)="ShowPersonalInfo(doctor)">
+                      <td>{{ doctor.surname }}</td>
+                      <td>{{ doctor.name }}</td>
+                      <td>{{ doctor.patername }}</td>
+                      <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                      <td>{{ doctor.Date | date: "d MMMM yyyy"}}</td>
                   </tr>
               </tbody>
-          </table>
+            </table>
+            <table class="table-striped table table-hover" *ngIf="maleList.searchResult.length !== 0">
+                <thead>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Дата создания</th>
+                </thead>
+                <tbody>
+                    <tr  *ngFor="let search of maleList.searchResult" (click)="ShowPersonalInfo(search)">
+                        <td>{{ search.surname }}</td>
+                        <td>{{ search.name }}</td>
+                        <td>{{ search.patername }}</td>
+                        <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
+                        <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
+                    </tr>
+                </tbody>
+            </table>
+          </div>
         </div>
       </tab>
       <tab heading="Женский">
-        <div class="content" (scroll)="ajaxLoad($event)">
-          <form action="">
-            <label for="">Поиск</label>
-            <input type="text" class="form-control" (keyup)="Search($event, 0)">
-          </form>
-          <table class="table-striped table table-hover" *ngIf="searchFemaleDoctors.length === 0">
-            <thead>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Дата рождения</th>
-                <th>Дата создания</th>
-            </thead>
-            <tbody>
-              <tr *ngIf="FemaleDoctors.length == 0">
-                <td colspan="5">
-                  <preloader></preloader>
-                </td>
-              </tr>
-                <tr  *ngFor="let doctor of FemaleDoctors" (click)="ShowPersonalInfo(doctor)">
-                    <td>{{ doctor.surname }}</td>
-                    <td>{{ doctor.name }}</td>
-                    <td>{{ doctor.patername }}</td>
-                    <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                    <td>{{ doctor.Date | date: "d MMMM yyyy"}}</td>
-                </tr>
-            </tbody>
-          </table>
-          <table class="table-striped table table-hover" *ngIf="searchFemaleDoctors.length !== 0">
+        <div class="DoctorList">
+          <div class="content" (scroll)="ajaxLoadFemale($event)">
+            <form action="">
+              <label for="">Поиск</label>
+              <input type="text" class="form-control" (keyup)="SearchFemale($event, 0)">
+            </form>
+            <table class="table-striped table table-hover" *ngIf="femaleList.searchResult.length === 0">
               <thead>
                   <th>Фамилия</th>
                   <th>Имя</th>
@@ -92,17 +71,40 @@
                   <th>Дата создания</th>
               </thead>
               <tbody>
-                  <tr  *ngFor="let search of searchFemaleDoctors" (click)="ShowPersonalInfo(search)">
-                      <td>{{ search.surname }}</td>
-                      <td>{{ search.name }}</td>
-                      <td>{{ search.patername }}</td>
-                      <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
-                      <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
+                <tr *ngIf="femaleList.doctors.length == 0">
+                  <td colspan="5">
+                    <preloader></preloader>
+                  </td>
+                </tr>
+                  <tr  *ngFor="let doctor of femaleList.doctors" (click)="ShowPersonalInfo(doctor)">
+                      <td>{{ doctor.surname }}</td>
+                      <td>{{ doctor.name }}</td>
+                      <td>{{ doctor.patername }}</td>
+                      <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                      <td>{{ doctor.Date | date: "d MMMM yyyy"}}</td>
                   </tr>
               </tbody>
-          </table>
+            </table>
+            <table class="table-striped table table-hover" *ngIf="femaleList.searchResult.length !== 0">
+                <thead>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Дата создания</th>
+                </thead>
+                <tbody>
+                    <tr  *ngFor="let search of femaleList.searchResult" (click)="ShowPersonalInfo(search)">
+                        <td>{{ search.surname }}</td>
+                        <td>{{ search.name }}</td>
+                        <td>{{ search.patername }}</td>
+                        <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
+                        <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
+                    </tr>
+                </tbody>
+            </table>
+          </div>
         </div>
       </tab>
     </tabset>
-  </div>
 </div>
