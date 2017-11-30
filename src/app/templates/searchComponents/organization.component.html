@@ -5,18 +5,18 @@
 <div class="content">
     <form action="">
         <label for="">Поиск</label>
-        <input type="text" class="form-control" (keyup)="SearchOrganization($event)">
+        <input type="text" class="form-control" (keyup)="SearchEstablishment($event, searchOrg, 'job')">
       </form>
     <preloader *ngIf="organizations.length === 0"></preloader>
-    <accordion>
-      <accordion-group [heading]="organ.name + ' (' + organ.Total + ')'" *ngFor="let organ of organizations">
+    <accordion *ngIf="searchOrg.length === 0">
+      <accordion-group [heading]="organ.name + ' (' + organ.total + ')'" *ngFor="let organ of organizations">
         <div class="DoctorList">
-            <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event)">
+            <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event, organ, 'job')">
               <form action="">
                 <label for="">Поиск</label>
-                <input type="text" class="form-control" (keyup)="Search($event)">
+                <input type="text" class="form-control" (keyup)="Search($event, organ)">
               </form>
-              <table class="table-striped table table-hover" *ngIf="searchDoctors.length === 0">
+              <table class="table-striped table table-hover" *ngIf="organ.searchResult.length === 0">
                 <thead>
                     <th>Фамилия</th>
                     <th>Имя</th>
@@ -25,7 +25,7 @@
                     <th>Дата создания</th>
                 </thead>
                 <tbody>
-                    <tr  *ngFor="let doctor of organ.List" (click)="ShowPersonalInfo(doctor)">
+                    <tr  *ngFor="let doctor of organ.doctors" (click)="ShowPersonalInfo(doctor)">
                         <td>{{ doctor.surname }}</td>
                         <td>{{ doctor.name }}</td>
                         <td>{{ doctor.patername }}</td>
@@ -34,7 +34,7 @@
                     </tr>
                 </tbody>
               </table>
-              <table class="table-striped table table-hover" *ngIf="searchDoctors.length !== 0">
+              <table class="table-striped table table-hover" *ngIf="organ.searchResult.length !== 0">
                 <thead>
                     <th>Фамилия</th>
                     <th>Имя</th>
@@ -43,7 +43,57 @@
                     <th>Дата создания</th>
                 </thead>
                 <tbody>
-                    <tr  *ngFor="let search of searchDoctors" (click)="ShowPersonalInfo(search)">
+                    <tr  *ngFor="let search of organ.searchResult" (click)="ShowPersonalInfo(search)">
+                        <td>{{ search.surname }}</td>
+                        <td>{{ search.name }}</td>
+                        <td>{{ search.patername }}</td>
+                        <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
+                        <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+      </accordion-group>
+    </accordion>
+    <preloader *ngIf="isLoading" path="assets/img/Elipsis.gif"></preloader>
+    <button *ngIf="!isLoading && searchOrg.length === 0 && organizations.length !== 0" class="btn btn-block btn-info" (click)="estAjaxLoad('job', organizations)">Загрузить ещё</button>
+    <accordion *ngIf="searchOrg.length !== 0">
+      <accordion-group [heading]="organ.name + ' (' + organ.Total + ')'" *ngFor="let organ of searchOrg">
+        <div class="DoctorList">
+            <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event, organ, 'job')">
+              <form action="">
+                <label for="">Поиск</label>
+                <input type="text" class="form-control" (keyup)="Search($event, organ)">
+              </form>
+              <table class="table-striped table table-hover" *ngIf="organ.searchResult.length === 0">
+                <thead>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Дата создания</th>
+                </thead>
+                <tbody>
+                    <tr  *ngFor="let doctor of organ.doctors" (click)="ShowPersonalInfo(doctor)">
+                        <td>{{ doctor.surname }}</td>
+                        <td>{{ doctor.name }}</td>
+                        <td>{{ doctor.patername }}</td>
+                        <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                        <td>{{ doctor.Date | date: "d MMMM yyyy"}}</td>
+                    </tr>
+                </tbody>
+              </table>
+              <table class="table-striped table table-hover" *ngIf="organ.searchResult.length !== 0">
+                <thead>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Дата создания</th>
+                </thead>
+                <tbody>
+                    <tr  *ngFor="let search of organ.searchResult" (click)="ShowPersonalInfo(search)">
                         <td>{{ search.surname }}</td>
                         <td>{{ search.name }}</td>
                         <td>{{ search.patername }}</td>

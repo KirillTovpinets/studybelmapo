@@ -17,7 +17,9 @@
 			$PersonQuery = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE personal_card.$field = $Id LIMIT $limit OFFSET $offset";
 			$PersonResult = $connection->query($PersonQuery) or die ("Ошибка выполнения запроса '$query': " . mysqli_error($connection));
 			$resultArray = array();
-
+			if(isset($data->params->estId)){
+				echo $PersonQuery;
+			}
 			if ($PersonResult->{"num_rows"} == 0) {
 				continue;
 			}
@@ -43,11 +45,18 @@
 		$limit = $data->limit;
 		$offset = $data->offset;
 		$condition = "";
+		$limitation = "";
 		if (isset($data->params->name)) {
 			$value = $data->params->name;
 			$condition .= "WHERE name LIKE '$value%'";
+		}else if (isset($data->params->estId)) {
+			$id = $data->params->estId;
+			$condition .= "WHERE id = $id";
 		}
-		$query = "SELECT * FROM $table $condition ORDER BY name ASC LIMIT $limit OFFSET $offset";
+		if($limit !== 0 || $offset !== 0){
+			$limitation = "LIMIT $limit OFFSET $offset";
+		}
+		$query = "SELECT * FROM $table $condition ORDER BY name ASC $limitation";
 		$result = $mysqli->query($query) or die ("Ошибка запроса '$query': " . mysqli_error($mysqli));
 		$data = getList($mysqli, $result, $field, $data);
 		return $data;

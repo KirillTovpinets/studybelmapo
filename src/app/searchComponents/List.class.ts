@@ -1,4 +1,5 @@
 export class List{
+	public id: number;
 	private doctors: any[];
 	public offset: number;
 	public limit: number;
@@ -8,7 +9,9 @@ export class List{
 	public searchResult: any[];
 	public total: number;
 	public name: string;
+	public canLoad:boolean;
 	constructor(){
+		this.id = 0;
 		this.offset = 0;
 		this.limit = 30;
 		this.doctors = [];
@@ -18,6 +21,7 @@ export class List{
 		this.searchResult = [];
 		this.total = 0;
 		this.name = "";
+		this.canLoad = true;
 	}
 
 	setList(data:any):void{
