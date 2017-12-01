@@ -8,6 +8,6 @@ import "rxjs/add/operator/toPromise";
 export class PersonalDataService{
 	constructor(private http: Http){}
 	getData(): Promise<any>{
-		return this.http.get("php/getData.php").toPromise();
+		return this.http.get("php/getParams.php").toPromise();
 	}
 }

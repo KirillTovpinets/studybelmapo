@@ -5,20 +5,32 @@ import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
 import { SearchSirnameService } from './services/searchSirname.service';
 import { PersonalInfoService } from '../personalInfo.service';
 import { PersonalInfoComponent } from '../personalInfo.component';
+import { MainClass } from "../MainClass.class";
+
+import { List } from "./List.class";
 @Component({
 	templateUrl: "../templates/searchComponents/speciality.component.html",
 	providers:[GetListService, PersonalInfoService,SearchSirnameService],
 	styleUrls:['../css/search.component.css']
 })
 
-export class SpecialityComponent implements OnInit{
-	constructor(private establService: GetListService,
+export class SpecialityComponent extends MainClass implements OnInit{
+	constructor(public establService: GetListService,
 				private personalInfo: PersonalInfoService,
-				private search: SearchSirnameService,
-				private PIService: BsModalService){}
-	specialities_main: any[] = [];
-	specialities_retraining: any[] = [];
-	specialities_others: any[] = [];
+				public search: SearchSirnameService,
+				private PIService: BsModalService){
+		super(search, establService);
+	}
+	specialities_main: List[] = [];
+	specialities_retraining: List[] = [];
+	specialities_others: List[] = [];
+
+	searchSpecialities_main: List[] = [];
+	searchSpecialities_retraining: List[] = [];
+	searchSpecialities_others: List[] = [];
+
+	isLoaded: boolean = false;
+
 	offset: number = 0;
 	limit: number = 30;
 	PersonalInfoModal: BsModalRef;
@@ -30,13 +42,38 @@ export class SpecialityComponent implements OnInit{
 	ListOffset:number = 0;
 	ngOnInit(): void{
 		this.establService.getList(this.limit, this.offset, "speciality", {table: "speciality_doct", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
-			this.specialities_main = data.json().data;
+			for (var i = 0; i < data.json().data.length; i++) {
+				this.specialities_main[i] = new List();
+				this.specialities_main[i].id = data.json().data[i].id;
+				this.specialities_main[i].limit = this.ListLimit;
+				this.specialities_main[i].offset = this.ListOffset;
+				this.specialities_main[i].name = data.json().data[i].name;
+				this.specialities_main[i].total = data.json().data[i].Total;
+				this.specialities_main[i].setList(data.json().data[i].List);
+			}
 		});
 		this.establService.getList(this.limit, this.offset, "speciality", {table: "speciality_retraining", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
-			this.specialities_retraining = data.json().data;
+			console.log(data._body);
+			for (var i = 0; i < data.json().data.length; i++) {
+				this.specialities_retraining[i] = new List();
+				this.specialities_retraining[i].id = data.json().data[i].id;
+				this.specialities_retraining[i].limit = this.ListLimit;
+				this.specialities_retraining[i].offset = this.ListOffset;
+				this.specialities_retraining[i].name = data.json().data[i].name;
+				this.specialities_retraining[i].total = data.json().data[i].Total;
+				this.specialities_retraining[i].setList(data.json().data[i].List);
+			}
 		});
 		this.establService.getList(this.limit, this.offset, "speciality", {table: "speciality_other", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
-			this.specialities_others = data.json().data;
+			for (var i = 0; i < data.json().data.length; i++) {
+				this.specialities_others[i] = new List();
+				this.specialities_others[i].id = data.json().data[i].id;
+				this.specialities_others[i].limit = this.ListLimit;
+				this.specialities_others[i].offset = this.ListOffset;
+				this.specialities_others[i].name = data.json().data[i].name;
+				this.specialities_others[i].total = data.json().data[i].Total;
+				this.specialities_others[i].setList(data.json().data[i].List);
+			}
 		});
 	}
 	ShowPersonalInfo(person:any): void{
@@ -44,54 +81,6 @@ export class SpecialityComponent implements OnInit{
 			this.PersonalInfoModal = this.PIService.show(PersonalInfoComponent, {class: 'modal-lg'});
 			this.PersonalInfoModal.content.title = "Профиль врача";
 			this.PersonalInfoModal.content.person = data.json();
-		});
-	}
-	ajaxLoad($event): void{
-		if($event.target.scrollTop < this.scrollCounter){
-			this.offset += 30;
-			this.scrollCounter += 200;
-			this.ngOnInit();
-		}
-	}
-
-	Search(event:any): void{
-		if (event.target.value === "") {
-			this.ngOnInit();
-			return;
-		}
-		this.searchValue = event.target.value;
-		this.search.searchPerson(this.searchValue).then(data => {
-			this.searchDoctors = data.json();
-		});
-	}
-	SearchDoctoral(event:any):void{
-		if (event.target.value === "") {
-			this.ngOnInit();
-			return;
-		}
-		this.searchValue = event.target.value;
-		this.establService.getList(30, 0, "speciality", { name: this.searchValue, table: "specialities_doct" }).then(data => {
-			this.specialities_main = data.json();
-		});
-	}
-	SearchRetraining(event:any):void{
-		if (event.target.value === "") {
-			this.ngOnInit();
-			return;
-		}
-		this.searchValue = event.target.value;
-		this.establService.getList(30, 0, "speciality", { name: this.searchValue, table: "specialities_retrain" }).then(data => {
-			this.specialities_retraining = data.json();
-		});
-	}
-	SearchOther(event:any):void{
-		if (event.target.value === "") {
-			this.ngOnInit();
-			return;
-		}
-		this.searchValue = event.target.value;
-		this.establService.getList(30, 0, "speciality", { name: this.searchValue, table: "specialities_other" }).then(data => {
-			this.specialities_others = data.json();
 		});
 	}
 }

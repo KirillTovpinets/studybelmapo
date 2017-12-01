@@ -2,23 +2,23 @@
   <h4 class="title">Список слушателей</h4>
   <p class="category">По специальности</p>
 </div>
-<div class="content" class="DoctorList">
+<div class="content DoctorList">
     
     <accordion>
       <accordion-group heading="Врачебная">
         <form action="">
           <label for="">Поиск</label>
-          <input type="text" class="form-control" (keyup)="SearchDoctoral($event)">
+          <input type="text" class="form-control" (keyup)="SearchEstablishment($event, searchSpecialities_main, 'speciality', 'speciality_doct')">
         </form>
         <preloader *ngIf="specialities_main.length === 0"></preloader>
-        <accordion>
-          <accordion-group [heading]="sp.name + ' (' + sp.Total + ')'" *ngFor="let sp of specialities_main">
-            <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event)">
+        <accordion *ngIf="searchSpecialities_main.length === 0">
+          <accordion-group [heading]="sp.name + ' (' + sp.total + ')'" *ngFor="let sp of specialities_main">
+            <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event, sp, 'speciality', 'speciality_doct')">
               <form action="">
                 <label for="">Поиск</label>
-                <input type="text" class="form-control" (keyup)="Search($event)">
+                <input type="text" class="form-control" (keyup)="Search($event, sp)">
               </form>
-              <table class="table-striped table table-hover" *ngIf="searchDoctors.length === 0">
+              <table class="table-striped table table-hover" *ngIf="sp.searchResult.length === 0">
                 <thead>
                     <th>Фамилия</th>
                     <th>Имя</th>
@@ -27,7 +27,7 @@
                     <th>Дата создания</th>
                 </thead>
                 <tbody>
-                    <tr  *ngFor="let doctor of sp.List" (click)="ShowPersonalInfo(doctor)">
+                    <tr *ngFor="let doctor of sp.doctors" (click)="ShowPersonalInfo(doctor)">
                         <td>{{ doctor.surname }}</td>
                         <td>{{ doctor.name }}</td>
                         <td>{{ doctor.patername }}</td>
@@ -36,7 +36,7 @@
                     </tr>
                 </tbody>
               </table>
-              <table class="table-striped table table-hover" *ngIf="searchDoctors.length !== 0">
+              <table class="table-striped table table-hover" *ngIf="sp.searchResult.length !== 0">
                   <thead>
                       <th>Фамилия</th>
                       <th>Имя</th>
@@ -45,7 +45,55 @@
                       <th>Дата создания</th>
                   </thead>
                   <tbody>
-                      <tr  *ngFor="let search of searchDoctors" (click)="ShowPersonalInfo(search)">
+                      <tr  *ngFor="let search of sp.searchResult" (click)="ShowPersonalInfo(search)">
+                          <td>{{ search.surname }}</td>
+                          <td>{{ search.name }}</td>
+                          <td>{{ search.patername }}</td>
+                          <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
+                          <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
+                      </tr>
+                  </tbody>
+              </table>
+            </div>  
+          </accordion-group>
+        </accordion>
+        <preloader *ngIf="isLoading" path="assets/img/Elipsis.gif"></preloader>
+        <button *ngIf="!isLoading && searchSpecialities_main.length === 0 && specialities_main.length !== 0" class="btn btn-block btn-info" (click)="estAjaxLoad('speciality', specialities_main, 'speciality_doct')">Загрузить ещё</button>
+        <accordion *ngIf="searchSpecialities_main.length !== 0">
+          <accordion-group [heading]="sp.name + ' (' + sp.total + ')'" *ngFor="let sp of searchSpecialities_main">
+            <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event, sp, 'speciality', 'speciality_doct')">
+              <form action="">
+                <label for="">Поиск</label>
+                <input type="text" class="form-control" (keyup)="Search($event, sp)">
+              </form>
+              <table class="table-striped table table-hover" *ngIf="sp.searchResult.length === 0">
+                <thead>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Дата создания</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let doctor of sp.doctors" (click)="ShowPersonalInfo(doctor)">
+                        <td>{{ doctor.surname }}</td>
+                        <td>{{ doctor.name }}</td>
+                        <td>{{ doctor.patername }}</td>
+                        <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                        <td>{{ doctor.Date | date: "d MMMM yyyy"}}</td>
+                    </tr>
+                </tbody>
+              </table>
+              <table class="table-striped table table-hover" *ngIf="sp.searchResult.length !== 0">
+                  <thead>
+                      <th>Фамилия</th>
+                      <th>Имя</th>
+                      <th>Отчество</th>
+                      <th>Дата рождения</th>
+                      <th>Дата создания</th>
+                  </thead>
+                  <tbody>
+                      <tr  *ngFor="let search of sp.searchResult" (click)="ShowPersonalInfo(search)">
                           <td>{{ search.surname }}</td>
                           <td>{{ search.name }}</td>
                           <td>{{ search.patername }}</td>
@@ -61,17 +109,17 @@
       <accordion-group heading="По переподготовке">
         <form action="">
           <label for="">Поиск</label>
-          <input type="text" class="form-control" (keyup)="SearchRetraining($event)">
+          <input type="text" class="form-control" (keyup)="SearchEstablishment($event,searchSpecialities_retraining, 'speciality', 'speciality_retraining')">
         </form>
         <preloader *ngIf="specialities_retraining.length === 0"></preloader>
-        <accordion>
-          <accordion-group [heading]="sp.name + ' (' + sp.Total + ')'" *ngFor="let sp of specialities_retraining">
-            <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event)">
+        <accordion *ngIf="searchSpecialities_retraining.length === 0">
+          <accordion-group [heading]="sp.name + ' (' + sp.total + ')'" *ngFor="let sp of specialities_retraining">
+            <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event, sp, 'speciality', 'speciality_retraining')">
               <form action="">
                 <label for="">Поиск</label>
-                <input type="text" class="form-control" (keyup)="Search($event)">
+                <input type="text" class="form-control" (keyup)="Search($event, sp)">
               </form>
-              <table class="table-striped table table-hover" *ngIf="searchDoctors.length === 0">
+              <table class="table-striped table table-hover" *ngIf="sp.searchResult.length === 0">
                 <thead>
                     <th>Фамилия</th>
                     <th>Имя</th>
@@ -80,7 +128,7 @@
                     <th>Дата создания</th>
                 </thead>
                 <tbody>
-                    <tr  *ngFor="let doctor of sp.List" (click)="ShowPersonalInfo(doctor)">
+                    <tr  *ngFor="let doctor of sp.doctors" (click)="ShowPersonalInfo(doctor)">
                         <td>{{ doctor.surname }}</td>
                         <td>{{ doctor.name }}</td>
                         <td>{{ doctor.patername }}</td>
@@ -89,7 +137,7 @@
                     </tr>
                 </tbody>
               </table>
-              <table class="table-striped table table-hover" *ngIf="searchDoctors.length !== 0">
+              <table class="table-striped table table-hover" *ngIf="sp.searchResult.length !== 0">
                   <thead>
                       <th>Фамилия</th>
                       <th>Имя</th>
@@ -98,7 +146,55 @@
                       <th>Дата создания</th>
                   </thead>
                   <tbody>
-                      <tr  *ngFor="let search of searchDoctors" (click)="ShowPersonalInfo(search)">
+                      <tr  *ngFor="let search of sp.searchResult" (click)="ShowPersonalInfo(search)">
+                          <td>{{ search.surname }}</td>
+                          <td>{{ search.name }}</td>
+                          <td>{{ search.patername }}</td>
+                          <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
+                          <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
+                      </tr>
+                  </tbody>
+              </table>
+            </div>  
+          </accordion-group>
+        </accordion>
+        <preloader *ngIf="isLoading" path="assets/img/Elipsis.gif"></preloader>
+        <button *ngIf="!isLoading && searchSpecialities_retraining.length === 0 && specialities_retraining.length !== 0" class="btn btn-block btn-info" (click)="estAjaxLoad('speciality', specialities_retraining, 'speciality_retraining')">Загрузить ещё</button>
+        <accordion *ngIf="searchSpecialities_retraining.length !== 0">
+          <accordion-group [heading]="sp.name + ' (' + sp.total + ')'" *ngFor="let sp of searchSpecialities_retraining">
+            <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event, sp, 'speciality', 'speciality_retraining')">
+              <form action="">
+                <label for="">Поиск</label>
+                <input type="text" class="form-control" (keyup)="Search($event, sp)">
+              </form>
+              <table class="table-striped table table-hover" *ngIf="sp.searchResult.length === 0">
+                <thead>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Дата создания</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let doctor of sp.doctors" (click)="ShowPersonalInfo(doctor)">
+                        <td>{{ doctor.surname }}</td>
+                        <td>{{ doctor.name }}</td>
+                        <td>{{ doctor.patername }}</td>
+                        <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                        <td>{{ doctor.Date | date: "d MMMM yyyy"}}</td>
+                    </tr>
+                </tbody>
+              </table>
+              <table class="table-striped table table-hover" *ngIf="sp.searchResult.length !== 0">
+                  <thead>
+                      <th>Фамилия</th>
+                      <th>Имя</th>
+                      <th>Отчество</th>
+                      <th>Дата рождения</th>
+                      <th>Дата создания</th>
+                  </thead>
+                  <tbody>
+                      <tr  *ngFor="let search of sp.searchResult" (click)="ShowPersonalInfo(search)">
                           <td>{{ search.surname }}</td>
                           <td>{{ search.name }}</td>
                           <td>{{ search.patername }}</td>
@@ -114,17 +210,17 @@
       <accordion-group heading="Прочие">
         <form action="">
           <label for="">Поиск</label>
-          <input type="text" class="form-control" (keyup)="SearchOther($event)">
+          <input type="text" class="form-control" (keyup)="SearchEstablishment($event, searchSpecialities_others, 'speciality', 'speciality_other')">
         </form>
         <preloader *ngIf="specialities_others.length === 0"></preloader>
-        <accordion>
-          <accordion-group [heading]="sp.name + ' (' + sp.Total + ')'" *ngFor="let sp of specialities_others">
-            <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event)">
+        <accordion *ngIf="searchSpecialities_others.length === 0">
+          <accordion-group [heading]="sp.name + ' (' + sp.total + ')'" *ngFor="let sp of specialities_others">
+            <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event, sp, 'speciality', 'speciality_other')">
               <form action="">
                 <label for="">Поиск</label>
-                <input type="text" class="form-control" (keyup)="Search($event)">
+                <input type="text" class="form-control" (keyup)="Search($event, sp)">
               </form>
-              <table class="table-striped table table-hover" *ngIf="searchDoctors.length === 0">
+              <table class="table-striped table table-hover" *ngIf="sp.searchResult.length === 0">
                 <thead>
                     <th>Фамилия</th>
                     <th>Имя</th>
@@ -133,7 +229,7 @@
                     <th>Дата создания</th>
                 </thead>
                 <tbody>
-                    <tr  *ngFor="let doctor of sp.List" (click)="ShowPersonalInfo(doctor)">
+                    <tr  *ngFor="let doctor of sp.doctors" (click)="ShowPersonalInfo(doctor)">
                         <td>{{ doctor.surname }}</td>
                         <td>{{ doctor.name }}</td>
                         <td>{{ doctor.patername }}</td>
@@ -142,7 +238,7 @@
                     </tr>
                 </tbody>
               </table>
-              <table class="table-striped table table-hover" *ngIf="searchDoctors.length !== 0">
+              <table class="table-striped table table-hover" *ngIf="sp.searchResult.length !== 0">
                   <thead>
                       <th>Фамилия</th>
                       <th>Имя</th>
@@ -151,7 +247,55 @@
                       <th>Дата создания</th>
                   </thead>
                   <tbody>
-                      <tr  *ngFor="let search of searchDoctors" (click)="ShowPersonalInfo(search)">
+                      <tr  *ngFor="let search of sp.searchResult" (click)="ShowPersonalInfo(search)">
+                          <td>{{ search.surname }}</td>
+                          <td>{{ search.name }}</td>
+                          <td>{{ search.patername }}</td>
+                          <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
+                          <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
+                      </tr>
+                  </tbody>
+              </table>
+            </div>  
+          </accordion-group>
+        </accordion>
+        <preloader *ngIf="isLoading" path="assets/img/Elipsis.gif"></preloader>
+        <button *ngIf="!isLoading && searchSpecialities_others.length === 0 && specialities_main.length !== 0" class="btn btn-block btn-info" (click)="estAjaxLoad('speciality', specialities_main, 'speciality_other')">Загрузить ещё</button>
+        <accordion *ngIf="searchSpecialities_others.length !== 0">
+          <accordion-group [heading]="sp.name + ' (' + sp.total + ')'" *ngFor="let sp of searchSpecialities_others">
+            <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event, sp, 'speciality', 'speciality_other')">
+              <form action="">
+                <label for="">Поиск</label>
+                <input type="text" class="form-control" (keyup)="Search($event, sp)">
+              </form>
+              <table class="table-striped table table-hover" *ngIf="sp.searchResult.length === 0">
+                <thead>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Дата создания</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let doctor of sp.doctors" (click)="ShowPersonalInfo(doctor)">
+                        <td>{{ doctor.surname }}</td>
+                        <td>{{ doctor.name }}</td>
+                        <td>{{ doctor.patername }}</td>
+                        <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
+                        <td>{{ doctor.Date | date: "d MMMM yyyy"}}</td>
+                    </tr>
+                </tbody>
+              </table>
+              <table class="table-striped table table-hover" *ngIf="sp.searchResult.length !== 0">
+                  <thead>
+                      <th>Фамилия</th>
+                      <th>Имя</th>
+                      <th>Отчество</th>
+                      <th>Дата рождения</th>
+                      <th>Дата создания</th>
+                  </thead>
+                  <tbody>
+                      <tr  *ngFor="let search of sp.searchResult" (click)="ShowPersonalInfo(search)">
                           <td>{{ search.surname }}</td>
                           <td>{{ search.name }}</td>
                           <td>{{ search.patername }}</td>

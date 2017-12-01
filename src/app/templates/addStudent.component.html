@@ -155,7 +155,7 @@
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Факультет</label>
-                          <div >
+                          <div *ngFor="let faculty of faculties" >
                             <input required id="faculty-{{ faculty.id }}" type="radio" name="faculty" value="{{ faculty.id }}" [(ngModel)]="doctor.facultyMAPO" class="regular-radio">
                             <label for="faculty-{{ faculty.id }}"></label>
                             <label>{{ faculty.name }}</label>
@@ -179,7 +179,7 @@
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Тип обучения</label>
-                          <div >
+                          <div *ngFor="let type of educTypes">
                             <input required id="typeEduc-{{ type.id }}" [(ngModel)]="doctor.educType" type="radio" value="{{ type.id }}" name="typeEduc" class="regular-radio">
                             <label for="typeEduc-{{ type.id }}"></label>
                             <label>{{ type.name }}</label>

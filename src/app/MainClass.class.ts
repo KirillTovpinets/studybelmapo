@@ -9,6 +9,8 @@ export class MainClass{
 	ListOffset: number = 0;
 	ListLimit: number = 30;
 
+	requestDataParams:any = {};
+
 	constructor(public search: SearchSirnameService,
 				public establService: GetListService){}
 	Search(event:any, establ:List): void{
@@ -22,10 +24,20 @@ export class MainClass{
 		});
 	}
 
-	estAjaxLoad(table:string, establs: List[]): void{
+	estAjaxLoad(table:string, establs: List[], fieldParam?:string): void{
 		this.isLoading = true;
 		this.EstOffset += this.EstLimit;
-		this.establService.getList(this.EstLimit, this.EstOffset, table, {listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+		this.requestDataParams = {
+			listLimit: this.ListLimit, 
+			listOffset: this.ListOffset
+		};
+		if (fieldParam !== undefined) {
+			this.requestDataParams.table = fieldParam;
+		}
+		console.log(table);
+		console.log(fieldParam);
+		this.establService.getList(this.EstLimit, this.EstOffset, table, this.requestDataParams).then(data => {
+			console.log(data._body);
 			for(let obj of data.json().data){
 				establs.push(new List());
 				establs[establs.length-1].limit = this.ListLimit;
@@ -39,29 +51,46 @@ export class MainClass{
 		});
 	}
 
-	ajaxLoad($event:any, establ:List, table: string): void{
+	ajaxLoad($event:any, establ:List, table: string, fieldParam?:string): void{
 		if(establ.canLoad){
 			if($event.target.scrollTop < establ.scrollCounter){
 				establ.offset += 30;
 				establ.scrollCounter += 200;
-				this.establService.getList(0, 0, table, {listLimit: establ.limit, listOffset: establ.offset, estId: establ.id}).then(data => {
+				this.requestDataParams = {
+					listLimit: establ.limit, 
+					listOffset: establ.offset, 
+					estId: establ.id
+				};
+				if (fieldParam !== undefined) {
+					this.requestDataParams.table = fieldParam;
+				}
+				this.establService.getList(0, 0, table, this.requestDataParams).then(data => {
+					console.log(data._body);	
 					if (data.json().data.length === 0 || data.json().data[0].List.length === 0) {
 						establ.canLoad = false;
 					}else{
-						establ.setList(establ.setList(data.json().data[0].List));
-						console.log(data._body);	
+						establ.setList(data.json().data[0].List);	
 					}
 				});
 			}
 		}
 	}
 
-	SearchEstablishment(event:any, searchEst:List[], table: string):void{
+	SearchEstablishment(event:any, searchEst:List[], table: string, fieldParam?:string):void{
 		if (event.target.value === "") {
 			searchEst = [];
 			return;
 		}
-		this.establService.getList(50, 0, table, { name: event.target.value, listLimit: this.ListLimit, listOffset: this.ListOffset }).then(data => {
+		this.requestDataParams = { 
+			name: event.target.value, 
+			listLimit: this.ListLimit,
+			listOffset: this.ListOffset 
+		};
+		if (fieldParam !== undefined) {
+			this.requestDataParams.table = fieldParam;
+		}
+		this.establService.getList(50, 0, table, this.requestDataParams).then(data => {
+			console.log(data._body);
 			for (var i = 0; i < data.json().data.length; i++) {
 				searchEst[i] = new List();
 				searchEst[i].limit = this.ListLimit;

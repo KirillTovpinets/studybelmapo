@@ -14,12 +14,10 @@
 		$offset = $data->params->listOffset;
 		while ($row = $SqlObject->fetch_assoc()) {
 			$Id = $row["id"];
+
 			$PersonQuery = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE personal_card.$field = $Id LIMIT $limit OFFSET $offset";
-			$PersonResult = $connection->query($PersonQuery) or die ("Ошибка выполнения запроса '$query': " . mysqli_error($connection));
+			$PersonResult = $connection->query($PersonQuery) or die ("Ошибка выполнения запроса '$PersonQuery': " . mysqli_error($connection));
 			$resultArray = array();
-			if(isset($data->params->estId)){
-				echo $PersonQuery;
-			}
 			if ($PersonResult->{"num_rows"} == 0) {
 				continue;
 			}
@@ -28,7 +26,12 @@
 			}
 
 			$row["List"] = $resultArray;
-			$row["Total"] = $PersonResult->{"num_rows"};
+
+			$CountQuery = "SELECT COUNT(*) AS total FROM personal_card WHERE personal_card.$field = $Id";
+			$CountResult = $connection->query($CountQuery) or die ("Ошибка выполнения запроса '$CountQuery': " . mysqli_error($connection));
+			$CountArray = $CountResult->fetch_assoc();
+
+			$row["Total"] = $CountArray["total"];
 
 			array_push($Arr, $row);
 		}
