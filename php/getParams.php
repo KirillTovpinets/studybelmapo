@@ -25,6 +25,7 @@
 	$appObj = getSqlObj("personal_appointment", $mysqli);
 	$orgObj = getSqlObj("personal_organizations", $mysqli);
 	$regObj = getSqlObj("regions", $mysqli);
+	$belmapo_residenceObj = getSqlObj("Residence", $mysqli);
 	$depObj = getSqlObj("personal_department", $mysqli);
 	$facObj = getSqlObj("personal_faculty", $mysqli);
 
@@ -39,6 +40,7 @@
 	$appArr = getArray($appObj);
 	$orgArr = getArray($orgObj);
 	$regArr = getArray($regObj);
+	$belmapo_residenceArr = getArray($belmapo_residenceObj);
 	$depArr = getArray($depObj);
 	$facArr = getArray($facObj);
 
@@ -55,6 +57,7 @@
 	$response['regArr'] = $regArr;
 	$response['depArr'] = $depArr;
 	$response['facArr'] = $facArr;
+	$response['belmapo_residence'] = $belmapo_residenceArr;
 
 	$response['facBel'] = $facBel;
 	$response['cathBel'] = $cathBel;

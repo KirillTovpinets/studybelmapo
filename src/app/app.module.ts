@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
-import { AccordionModule, ModalModule, TabsModule } from 'ngx-bootstrap';
+import { AccordionModule, ModalModule, TabsModule, BsDatepickerModule } from 'ngx-bootstrap';
 // Components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './loginform.component';
@@ -35,8 +35,14 @@ import { SpecialityComponent } from './searchComponents/speciality.component';
 import { QualificationComponent } from './searchComponents/qualification.component';
 import { CategoryComponent } from './searchComponents/category.component';
 import { PreloaderComponent } from './preloader.component';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 // Services
 import { CookieService } from 'ngx-cookie-service';
+
+
+import { defineLocale } from 'ngx-bootstrap/bs-moment';
+import { ru } from 'ngx-bootstrap/locale';
+defineLocale('ru', ru); 
 
 @NgModule({
   declarations: [
@@ -73,10 +79,12 @@ import { CookieService } from 'ngx-cookie-service';
     BrowserModule,
     FormsModule,
     HttpModule,
-	  AppRoutingModule,
+	AppRoutingModule,
     AccordionModule.forRoot(),
     ModalModule.forRoot(),
-    TabsModule.forRoot()
+    TabsModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [ CookieService ],
   entryComponents: [PersonalInfoComponent],
