@@ -3,7 +3,7 @@
 	require_once("config.php");
 
 	function getSqlObj($tableName, $mysqli){
-		$result = $mysqli->query("SELECT * FROM $tableName");
+		$result = $mysqli->query("SELECT * FROM $tableName ORDER BY name ASC");
 		return $result;
 	}
 	function getArray($SqlObj){

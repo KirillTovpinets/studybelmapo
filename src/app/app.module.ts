@@ -36,6 +36,8 @@ import { QualificationComponent } from './searchComponents/qualification.compone
 import { CategoryComponent } from './searchComponents/category.component';
 import { PreloaderComponent } from './preloader.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import {NotificationsModule, NotificationsService} from 'angular4-notify';
+
 // Services
 import { CookieService } from 'ngx-cookie-service';
 
@@ -84,9 +86,10 @@ defineLocale('ru', ru);
     ModalModule.forRoot(),
     TabsModule.forRoot(),
     BsDatepickerModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NotificationsModule
   ],
-  providers: [ CookieService ],
+  providers: [ CookieService, NotificationsService ],
   entryComponents: [PersonalInfoComponent],
   bootstrap: [AppComponent]
 })
