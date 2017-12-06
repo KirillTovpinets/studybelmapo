@@ -3,22 +3,28 @@ import { PersonalDataService } from "./services/personalData.service";
 import { BsDatepickerConfig } from "ngx-bootstrap/datepicker";
 import { listLocales } from 'ngx-bootstrap/bs-moment';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { SavePersonService } from './services/savePerson.service';
+import { PersonService } from './services/savePerson.service';
 import  { Person } from "./model/person.class";
 import { PreloaderComponent } from "./preloader.component";
 import {NotificationsService} from 'angular4-notify';
 
 @Component({
 	templateUrl: "templates/addStudent.component.html",
-	providers: [PersonalDataService, SavePersonService, NotificationsService],
+	providers: [PersonalDataService, PersonService, NotificationsService],
 	styles: [`
 		table tbody tr td{
-			font-size:12px;
-			color: #9A9A9A;
+			font-size:16px;
+			color: #333;
 			padding:5px;
 		}
 		small{
 			color:#fa787e;
+		}
+		.input-group-addon{
+			background-color:#c5c5c5;
+		}
+		.input-group-btn .btn{
+			border-right-width:2px;
 		}
 	`]
 })
@@ -42,6 +48,8 @@ export class AddStudentComponent implements OnInit{
 
 	private isLoaded: boolean = false;
 
+	private outputData:any = {};
+	private newValue: string = "";
 	bsValue: Date = new Date();
 	minDate = new Date(1970, 1, 1);
   	maxDate = new Date();
@@ -49,7 +57,7 @@ export class AddStudentComponent implements OnInit{
   	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: this.locale });
 
 	constructor(private dataService: PersonalDataService,
-				private saveService: SavePersonService,
+				private saveService: PersonService,
 				private notify: NotificationsService){}
 	selectCourse(courseId:number){
 		for (var course of this.belmapo_courses) {
@@ -106,5 +114,41 @@ export class AddStudentComponent implements OnInit{
 			}
 			this.isLoaded = true;
 		});
+	}
+
+	saveNewParameter(value:string, table:string, array: any[]){
+		this.outputData.value = value;
+		this.outputData.table = table;
+
+		this.saveService.saveParameter(this.outputData).then(data => {
+			array.push(data.json());
+			switch (table){
+				case "personal_establishment":{
+					this.newPerson.set_educational_establishment(data.id);
+					break;
+				}
+				case "countries":{
+					this.newPerson.set_cityzenship(data.json().id);
+					break;
+				}
+				case "personal_appointment":{
+					this.newPerson.set_appointment(data.json().id);
+					break;
+				}
+				case "personal_organizations":{
+					this.newPerson.set_organization(data.json().id);
+					break;
+				}
+				case "personal_department":{
+					this.newPerson.set_department(data.json().id);
+					break;
+				}
+				case "personal_faculty":{
+					this.newPerson.set_faculty(data.json().id);
+					break;
+				}
+			}
+			this.newValue = "";
+		})
 	}
 }

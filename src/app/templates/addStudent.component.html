@@ -57,18 +57,37 @@
                           <label>Учреждение образования</label>
                           <select [(ngModel)]="newPerson.educational_establishment" name="educational_establishment" id="ee" class="form-control">
                             <option *ngFor="let est of personal_establishments" value="{{ est.id }}"> {{ est.name }}</option>
-                            <option value="0">Другой</option>
+                            <option value="0">Другой вариант</option>
                           </select>
+                          <div class="input-group" *ngIf="newPerson.educational_establishment == 0">
+                            
+                            <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_establishm">
+                            <span class="input-group-btn">
+                              <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_establishment', personal_establishments)">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>
+                              </button>
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
                           <label>Гражданство</label>
                           <small *ngIf="cityzenship.invalid">Это обязательное поле</small>
+                          
                           <select [(ngModel)]="newPerson.cityzenship" name="cityzenship" #cityzenship="ngModel" id="country" class="form-control">
                             <option *ngFor="let cityzenship of personal_cityzenships" value="{{ cityzenship.id }}"> {{ cityzenship.name }}</option>
-                            <option value="0">Другой</option>
+                            <option value="0">Другой вариант</option>
                           </select>
+                          <div class="input-group" *ngIf="newPerson.cityzenship == 0">
+                            
+                            <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="countries')">
+                            <span class="input-group-btn">
+                              <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'countries', personal_cityzenships)">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>
+                              </button>
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -108,10 +127,20 @@
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Должность</label>
+                          
                           <select [(ngModel)]="newPerson.appointment" name="appointment" id="country" class="form-control">
                             <option *ngFor="let appointment of personal_appointments" value="{{ appointment.id }}"> {{ appointment.name }}</option>
-                            <option value="0">Другой</option>
+                            <option value="0">Другой вариант</option>
                           </select>
+                          <div class="input-group" *ngIf="newPerson.appointment == 0">
+                            
+                            <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_appointmen">
+                            <span class="input-group-btn">
+                              <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_appointment', personal_appointments)">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>
+                              </button>
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <div class="col-md-3">
@@ -125,10 +154,20 @@
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Организация</label>
+                          
                           <select [(ngModel)]="newPerson.organization" name="organization" id="country" class="form-control">
                             <option *ngFor="let organization of personal_organizations" value="{{ organization.id }}"> {{ organization.name }}</option>
-                            <option value="0">Другой</option>
+                            <option value="0">Другой вариант</option>
                           </select>
+                          <div class="input-group" *ngIf="newPerson.organization == 0">
+                            
+                            <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_organizati">
+                            <span class="input-group-btn">
+                              <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_organizations', personal_organizations)">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>
+                              </button>
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <div class="col-md-3">
@@ -136,7 +175,7 @@
                           <label>Область</label>
                           <select [(ngModel)]="newPerson.region" name="region" id="country" class="form-control">
                             <option *ngFor="let region of personal_regions" value="{{ region.id }}"> {{ region.name }}</option>
-                            <option value="0">Другой</option>
+                            <option value="0">Другой вариант</option>
                           </select>
                         </div>
                       </div>
@@ -167,8 +206,16 @@
                           <label>Отдел</label>
                           <select [(ngModel)]="newPerson.department" name="department" id="country" class="form-control">
                             <option *ngFor="let department of personal_departments" value="{{ department.id }}"> {{ department.name }}</option>
-                            <option value="0">Другой</option>
+                            <option value="0">Другой вариант</option>
                           </select>
+                          <div class="input-group" *ngIf="newPerson.department == 0">
+                            <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_department">
+                            <span class="input-group-btn">
+                              <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_department', personal_departments)">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>
+                              </button>
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <div class="col-md-4">
@@ -176,8 +223,16 @@
                           <label>Факультет</label>
                           <select [(ngModel)]="newPerson.faculty" name="faculty" id="country" class="form-control">
                             <option *ngFor="let faculty of personal_faculties" value="{{ faculty.id }}"> {{ faculty.name }}</option>
-                            <option value="0">Другой</option>
+                            <option value="0">Другой вариант</option>
                           </select>
+                          <div class="input-group" *ngIf="newPerson.faculty == 0">
+                            <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_faculty">
+                            <span class="input-group-btn">
+                              <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_faculty', personal_faculties)">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>
+                              </button>
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <div class="col-md-4">

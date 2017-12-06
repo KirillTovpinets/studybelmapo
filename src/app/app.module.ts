@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
-import { AccordionModule, ModalModule, TabsModule, BsDatepickerModule } from 'ngx-bootstrap';
+import { AccordionModule, ModalModule, TabsModule, BsDatepickerModule, TooltipModule } from 'ngx-bootstrap';
 // Components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './loginform.component';
@@ -36,7 +36,7 @@ import { QualificationComponent } from './searchComponents/qualification.compone
 import { CategoryComponent } from './searchComponents/category.component';
 import { PreloaderComponent } from './preloader.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import {NotificationsModule, NotificationsService} from 'angular4-notify';
+import { NotificationsModule, NotificationsService } from 'angular4-notify';
 
 // Services
 import { CookieService } from 'ngx-cookie-service';
@@ -86,6 +86,7 @@ defineLocale('ru', ru);
     ModalModule.forRoot(),
     TabsModule.forRoot(),
     BsDatepickerModule.forRoot(),
+    TooltipModule.forRoot(),
     BrowserAnimationsModule,
     NotificationsModule
   ],
