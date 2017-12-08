@@ -7,25 +7,26 @@
                   <h4 class="title">Выберите параметры отчёта</h4>
                 </div>
                 <div class="content">
-                  <ul class="nav nav-tabs">
-                    <li class="active"><a href="#peronalData" data-toggle="tab">Личные</a></li>
-                    <li><a href="#educationalData" data-toggle="tab">Обучение</a></li>
-                  </ul>
-                  <div class="tab-content">
-                    <div id="peronalData" class="tab-pane active">
+                  <tabset>
+                    <tab heading="Личные">
+                      <div id="peronalData" class="tab-pane active">
                       <div class="places-buttons">
                         <form>
                           <div class="row">
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Учреждение образования</label>
-                                <input type="text" name="ee" [(ngModel)]="filterParams.est" (keyup)="reportAction(1)" id="ee" class="form-control">
+                                <select [(ngModel)]="filterParams.est" (change)="reportAction(1)" class="form-control" name="educational_establishment">
+                                  <option *ngFor="let obj of personal_establishments" value="{{obj.id}}">{{obj.name}}</option>
+                                </select>
                               </div>
                             </div>
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Гражданство</label>
-                                <input type="text" name="resid" [(ngModel)]="filterParams.resid" (keyup)="reportAction(1)" id="resid" class="form-control">
+                                <select [(ngModel)]="filterParams.resid" class="form-control" (change)="reportAction(1)" name="cityzenship">
+                                  <option *ngFor="let obj of personal_cityzenships" value="{{obj.id}}">{{obj.name}}</option>
+                                </select>
                               </div>
                             </div>
                             <div class="col-md-12">
@@ -33,10 +34,10 @@
                                 <label>Дата получения диплома:</label>
                                 <div class="row">
                                   <div class="col-md-6">
-                                    <input type="text" [(ngModel)]="filterParams.DipDateFrom" (keyup)="reportAction(1)" id="DipDateFrom" class="form-control">
+                                    <input type="text" [(ngModel)]="filterParams.dipdatefrom" name="diploma_start" id="DipDateFrom" class="form-control">
                                   </div>
                                   <div class="col-md-6">
-                                    <input type="text" [(ngModel)]="filterParams.DipDateTo" (keyup)="reportAction(1)" id="DipDateTo" class="form-control">
+                                    <input type="text" [(ngModel)]="filterParams.dipdateto" name="diploma_start" id="DipDateTo" class="form-control">
                                   </div>
                                 </div>
                               </div>
@@ -44,34 +45,39 @@
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Должность</label>
-                                <input type="text" name="app" [(ngModel)]="filterParams.app" (keyup)="reportAction(1)" id="app" class="form-control">
+                                <select [(ngModel)]="filterParams.app" (change)="reportAction(1)" class="form-control" name="appointment">
+                                  <option *ngFor="let obj of personal_appointments" value="{{obj.id}}">{{obj.name}}</option>
+                                </select>
                               </div>
                             </div>
                             <div class="col-md-12">
                               <div class="form-group no-margin">
-                                <label>Кандидат медицинских наук</label>
-                                <input type="checkbox" [(ngModel)]="filterParams.isDoctor" (keyup)="reportAction(1)" id="kmn" class="regular-checkbox">
+                                
+                                <input type="checkbox" (change)="reportAction(1)" [(ngModel)]="filterParams.isDoctor" name="isDoctor" id="kmn" class="regular-checkbox">
                                 <label for="kmn"></label>
+                                <label>Кандидат медицинских наук</label>
                               </div>
                             </div>
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Организация</label>
-                                <input type="text" name="org" [(ngModel)]="filterParams.org" (keyup)="reportAction(1)" id="org" class="form-control">
+                                <select [(ngModel)]="filterParams.org" (change)="reportAction(1)" class="form-control" name="organization">
+                                  <option *ngFor="let obj of personal_organizations" value="{{obj.id}}">{{obj.name}}</option>
+                                </select>
                               </div>
                             </div>
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Область</label>
                                 <table>
-                                  <!-- <tr ng-repeat="region in regions"> -->
-                                  <tr>
-                                    <td>
-                                      <label>{{region.name}}</label>
-                                    </td>
+                                  <tr *ngFor="let region of personal_regions">
+                                    
                                     <td>
                                       <input type="checkbox" id="region-{{region.id}}" (click)="SelectRegionAction($event)" value="{{ region.id }}" class="regular-checkbox regions">
                                       <label for="region-{{ region.id }}" class="regions"> </label>
+                                    </td>
+                                    <td>
+                                      <label>{{region.name}}</label>
                                     </td>
                                   </tr>
                                 </table>
@@ -80,42 +86,48 @@
                             <div class="col-md-5">
                               <div class="form-group no-margin">
                                 <label>Пол</label>
-                                <select name="gender" [(ngModel)]="filterParams.gender" (keyup)="reportAction(1)" class="form-control">
-                                  <option value="1" selected="selected">Мужской</option>
-                                  <option value="0">Женский</option>
+                                <select [(ngModel)]="filterParams.isMale" class="form-control"  (change)="reportAction(1)" name="isMale" class="form-control">
+                                  <option value="true" selected="selected">Мужской</option>
+                                  <option value="false">Женский</option>
                                 </select>
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="form-group no-margin">
                                 <label>Сотрудник</label>
-                                <input type="checkbox" [(ngModel)]="filterParams.isCowoker" (keyup)="reportAction(1)" id="isCowoker" class="regular-checkbox">
+                                <input type="checkbox" [(ngModel)]="filterParams.isCowoker"  (change)="reportAction(1)" name="isCowoker" id="isCowoker" class="regular-checkbox">
                                 <label for="isCowoker"></label>
                               </div>
                             </div>
                             <div class="col-md-4">
                               <div class="form-group no-margin">
                                 <label>Опыт работы</label>
-                                <input type="number" [(ngModel)]="filterParams.experiance" (keyup)="reportAction(1)" class="form-control">
+                                <input type="number" [(ngModel)]="filterParams.experiance_general"  (change)="reportAction(1)"  name="experiance_general" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Отдел</label>
-                                <input type="text" name="dep" [(ngModel)]="filterParams.dep" (keyup)="reportAction(1)" id="dep" class="form-control">
+                                <select [(ngModel)]="filterParams.dep" (change)="reportAction(1)" class="form-control" name="department">
+                                  <option *ngFor="let obj of personal_departments" value="{{obj.id}}">{{obj.name}}</option>
+                                </select>
                               </div>
                             </div>
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Факультет</label>
-                                <input type="text" name="fac" [(ngModel)]="filterParams.fac" (keyup)="reportAction(1)" id="fac" class="form-control">
+                                <select [(ngModel)]="filterParams.fac"  (change)="reportAction(1)" class="form-control" name="faculty">
+                                  <option *ngFor="let obj of personal_faculties" value="{{obj.id}}">{{obj.name}}</option>
+                                </select>
                               </div>
                             </div>
                           </div>
                         </form>
                       </div>
                     </div>
-                    <div id="educationalData" class="tab-pane">
+                    </tab>
+                    <tab heading="Обучение">
+                      <div id="educationalData" class="tab-pane">
                       <div class="places-buttons">
                         <form>
                           <div class="row">
@@ -123,10 +135,9 @@
                               <div class="form-group no-margin">
                                 <label>Факультет</label>
                                 <table>
-                                  <!-- <tr ng-repeat="faculty in faculties"> -->
-                                  <tr>
+                                  <tr *ngFor="let faculty of faculties">
                                     <td>
-                                      <input type="checkbox" id="faculty-{{faculty.id}}" (click)="SelectFacultyAction($event)" value="{{ faculty.id }}" class="regular-checkbox">
+                                      <input type="checkbox" id="faculty-{{faculty.id}}" (click)="SelectFacultyAction($event)" class="regular-checkbox">
                                       <label for="faculty-{{ faculty.id }}"> </label>
                                     </td>
                                     <td>
@@ -139,27 +150,26 @@
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Кафедра</label>
-                                <input type="text" name="cathedra" [(ngModel)]="filterParams.cathedra" (keyup)="reportAction()" id="cathedra" class="form-control">
+                                <input type="text" [(ngModel)]="filterParams.cathedra" (change)="reportAction()" name="belmapo_cathedra" id="cathedra" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Курс</label>
-                                <input type="text" name="course" [(ngModel)]="filterParams.course" (keyup)="reportAction()" id="course" class="form-control">
+                                <input type="text" [(ngModel)]="filterParams.course" (change)="reportAction()" name="belmapo_course" id="course" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Форма обучения</label>
                                 <table>
-                                  <!-- <tr ng-repeat="form in forms"> -->
-                                  <tr>
+                                  <tr *ngFor="let form of educForms">
                                     <td>
-                                      <input type="checkbox" id="form-{{form.id}}" (click)="SelectFormAction($event)" value="{{ form.id }}" class="regular-checkbox">
+                                      <input type="checkbox" id="form-{{form.id}}" (click)="SelectFormAction($event)" name="belmapo_educForm" value="{{ form.id }}" class="regular-checkbox">
                                       <label for="form-{{ form.id }}"> </label>
                                     </td>
                                     <td>
-                                      <label>{{form.name}}</label>
+                                      <label>{{ form.name }}</label>
                                     </td>
                                   </tr>
                                 </table>
@@ -167,22 +177,15 @@
                             </div>
                             <div class="col-md-12">
                               <div class="form-group no-margin">
-                                <label>Номер группы</label>
-                                <input type="number" [(ngModel)]="filterParams.groupNumber" (keyup)="reportAction()" id="groupNumber" class="form-control">
-                              </div>
-                            </div>
-                            <div class="col-md-12">
-                              <div class="form-group no-margin">
                                 <label>Тип обучения</label>
                                 <table>
-                                  <!-- <tr ng-repeat="educType in educTypes"> -->
-                                  <tr>
+                                  <tr *ngFor="let educType of educTypes">
                                     <td>
-                                      <input type="checkbox" id="educType-{{educType.id}}" (click)="SelectEducTypeAction($event)" value="{{ educType.id }}" class="regular-checkbox">
+                                      <input type="checkbox" id="educType-{{educType.id}}" (click)="SelectEducTypeAction($event)" name="belmapo_educType" value="{{ educType.id }}" class="regular-checkbox">
                                       <label for="educType-{{ educType.id }}"> </label>
                                     </td>
                                     <td>
-                                      <label>{{educType.name}}</label>
+                                      <label>{{ educType.name }}</label>
                                     </td>
                                   </tr>
                                 </table>
@@ -192,6 +195,10 @@
                         </form>
                       </div>
                     </div>
+                    </tab>
+                  </tabset>
+                  <div>
+                    <button (click)="BuildReportService()" class="btn btn-success btn-block">Старт</button>
                   </div>
                 </div>
               </div>
@@ -214,8 +221,7 @@
                       <th>Показатель</th>
                     </thead>
                     <tbody>
-                      <!-- <tr ng-repeat="parameter in parameters"> -->
-                      <tr>
+                      <tr *ngFor="let parameter of parameters">
                         <td>{{ parameter.label }}</td>
                         <td>{{ parameter.value }}</td>
                       </tr>

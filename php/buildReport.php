@@ -4,7 +4,9 @@
 
 	$mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die ("Ошибка: " . mysqli_connect_error());
 	$mysqli->query("SET NAMES utf8");
-	$source = $_POST["tableIds"];
+	$data = json_decode(file_get_contents("php://input"));
+	$dataArray = (array) $data;
+	$source = $dataArray["tableIds"];
 	$tables = array();
 	$fields = array();
 	$lastPart = array();
@@ -100,8 +102,8 @@
 		$inputRegions = array();
 		$inputParamsIds = array();
 		foreach ($tablesPersonal as $key => $value) {
-			if (isset($_POST[$key]) && ($_POST[$key] != "")) {
-				$postValue = $_POST[$key];
+			if (isset($dataArray[$key]) && ($dataArray[$key] != "")) {
+				$postValue = $dataArray[$key];
 				$hasKey = true;
 				$query .= "INNER JOIN " . $value . " ON personal_card." . $fieldsPersonal[$key] . " = " . $value . ".id ";
 				if ($key == "regions") {
@@ -113,32 +115,32 @@
 						array_push($lastPartRegions, $lastPartItem);	
 					}
 				}else{
-					$lastPartItem = $value . ".name LIKE '" . $postValue . "'";
-					$result = $mysqli->query("SELECT * FROM $value WHERE name = '$postValue'") or die ("Ошибка: " . mysqli_error($mysqli));
+					$lastPartItem = $value . ".id = $postValue ";
+					$result = $mysqli->query("SELECT * FROM $value WHERE id = $postValue") or die ("Ошибка: " . mysqli_error($mysqli));
 					$inputParams = $result->fetch_assoc();
 					$inputParamsIds[$inputParams["name"]] = array($fieldsPersonal[$key] => $inputParams["id"] );
 					array_push($lastPart, $lastPartItem); 
 				}
 			}
 		}
-		if (isset($_POST["dipdatefrom"])){
-			$dipdatefrom = $_POST["dipdatefrom"];
+		if (isset($dataArray->dipdatefrom)){
+			$dipdatefrom = $dataArray->dipdatefrom;
 		}
-		if(isset($_POST["dipdateto"])){
-			$dipdateto = $_POST["dipdateto"];
+		if(isset($dataArray->dipdateto)){
+			$dipdateto = $dataArray->dipdateto;
 		}
-		if(isset($_POST["isDoctor"])){
-			$isDoctor = $_POST["isDoctor"];
+		if(isset($dataArray->isDoctor)){
+			$isDoctor = $dataArray->isDoctor;
 			$flag = ($isDoctor === "true") ? 1 : 0;
 		}
-		if(isset($_POST["gender"])){
-			$gender = $_POST["gender"];
+		if(isset($dataArray->gender)){
+			$gender = $dataArray->gender;
 		}
-		if(isset($_POST["isCowoker"])){
-			$isCowoker = ($_POST["isCowoker"] === "true") ? 1 : 0;
+		if(isset($dataArray->isCowoker)){
+			$isCowoker = ($dataArray->isCowoker === "true") ? 1 : 0;
 		}
-		if(isset($_POST["experiance"])){
-			$experiance = $_POST["experiance"];
+		if(isset($dataArray->experiance)){
+			$experiance = $dataArray->experiance;
 		}
 
 		if ($hasKey || 
@@ -251,8 +253,6 @@
 				$inputParamsIds["Опыт работы"] = array('experience_general' => $experience);
 			}
 		}
-// 		echo $query;
-		// print_r($_POST);
 		if ((count($inputParamsIds) > 1) || ((count($inputParamsIds) + count($inputRegions)) > 1)) {
 			foreach ($inputParamsIds as $key => $value) {
 				foreach ($value as $field => $id) {
@@ -282,7 +282,6 @@
 		}
 		$query = "SELECT COUNT(*) AS Total " . $query;
 		$result = $mysqli->query($query) or die ("Ошибка в '$query': " . mysqli_error($mysqli));
-// 		echo "query: " . $query . "\n";
 		mysqli_close($mysqli);
 		$sum = 0;
 		for ($i=0; $i < count($response); $i++) { 
@@ -296,7 +295,6 @@
 		$Parameterobj["label"] = 'Интегрированный';
 		$Parameterobj["value"] = $obj["Total"];
 		array_push($response, $Parameterobj);
-		// print_r($response);
 	}else if (count($source) == 1 && $source[0] == 2) {
 		$inputParamsArrs = array();
 		$inputParamsIds = array();
@@ -304,8 +302,8 @@
 		$inputParamsArrs["forms"] = array();
 		$inputParamsArrs["educType"] = array();
 		foreach ($tablesArrivals as $key => $value) {
-			if (isset($_POST[$key]) && ($_POST[$key] != "")) {
-				$postValue = $_POST[$key];
+			if (isset($dataArray[$key]) && ($dataArray[$key] != "")) {
+				$postValue = $dataArray[$key];
 				$hasKey = true;
 				$query .= "INNER JOIN " . $value . " ON arrivals." . $fieldsArrivals[$key] . " = " . $value . ".id ";
 				if ($key == "faculties") {
@@ -339,7 +337,7 @@
 					}
 					array_push($inputParamsArrs["educType"], array( 'field' => $fieldsArrivals[$key]));
 				}else{
-					$lastPartItem = $value . ".name LIKE '" . $postValue . "'";
+					$lastPartItem = $value . ".id = $postValue ";
 					$result = $mysqli->query("SELECT * FROM $value WHERE name = '$postValue'") or die ("Ошибка: " . mysqli_error($mysqli));
 					$inputParams = $result->fetch_assoc();
 					$inputParamsIds[$inputParams["name"]] = array($fieldsArrivals[$key] => $inputParams["id"] );
@@ -348,8 +346,8 @@
 			}
 		}
 
-		if (isset($_POST["groupNumber"])){
-			$groupNumber = $_POST["groupNumber"];
+		if (isset($dataArray->groupNumber)){
+			$groupNumber = $dataArray->groupNumber;
 		}
 		
 		if ($hasKey || (isset($groupNumber) && $groupNumber != "" && $groupNumber != "0" && $groupNumber != undefined)) {
@@ -410,8 +408,6 @@
 			$extraQueryPart .= " arrivals.GroupNum = '$groupNumber' ";
 			
 		}
-		// echo $query;
-		// print_r($_POST);
 		if ((count($inputParamsIds) > 1) || ((count($inputParamsIds) + count($inputParamsArrs["faculties"]) + count($inputParamsArrs["forms"]) + count($inputParamsArrs["educType"])) > 1)) {
 			foreach ($inputParamsIds as $key => $value) {
 				foreach ($value as $field => $id) {
@@ -464,11 +460,10 @@
 		$Parameterobj["label"] = 'Интегрированный';
 		$Parameterobj["value"] = $obj["Total"];
 		array_push($response, $Parameterobj);
-		// print_r($response);	
 	}else if (count($source) == 2) {
 		foreach ($tablesPersonal as $key => $value) {
-			if (isset($_POST[$key])) {
-				$postValue = $_POST[$key];
+			if (isset($dataArray[$key])) {
+				$postValue = $dataArray[$key];
 				$hasKey = true;
 				$query .= "INNER JOIN " . $value . " ON personal_card." . $fieldsPersonal[$key] . " = " . $value . ".id ";
 				if ($key == "regions") {
@@ -478,14 +473,14 @@
 						array_push($lastPartRegions, $lastPartItem);	
 					}
 				}else{
-					$lastPartItem = $value . ".name LIKE '" . $postValue . "'";
+					$lastPartItem = $value . ".id = '" . $postValue . "'";
 					array_push($lastPart, $lastPartItem); 
 				}
 			}
 		}
 		foreach ($tablesArrivals as $key => $value) {
-			if (isset($_POST[$key])) {
-				$postValue = $_POST[$key];
+			if (isset($dataArray[$key])) {
+				$postValue = $dataArray[$key];
 				$hasKey = true;
 				$query .= "INNER JOIN " . $value . " ON arrivals." . $fieldsArrivals[$key] . " = " . $value . ".id ";
 				if ($key == "faculties") {
@@ -507,36 +502,36 @@
 						array_push($lastPartEducType, $lastPartItem);	
 					}
 				}else{
-					$lastPartItem = $value . ".name LIKE '" . $postValue . "'";
+					$lastPartItem = $value . ".id = $postValue ";
 					array_push($lastPart, $lastPartItem); 
 				}
 			}
 		}
 
-		if (isset($_POST["groupNumber"])){
-			$groupNumber = $_POST["groupNumber"];
+		if (isset($dataArray->groupNumber)){
+			$groupNumber = $dataArray->groupNumber;
 		}
-		if (isset($_POST["dipdatefrom"])){
-			$dipdatefrom = $_POST["dipdatefrom"];
+		if (isset($dataArray->dipdatefrom)){
+			$dipdatefrom = $dataArray->dipdatefrom;
 		}
-		if(isset($_POST["dipdateto"])){
-			$dipdateto = $_POST["dipdateto"];
+		if(isset($dataArray->dipdateto)){
+			$dipdateto = $dataArray->dipdateto;
 		}
-		if(isset($_POST["isDoctor"])){
-			$isDoctor = $_POST["isDoctor"];
+		if(isset($dataArray->isDoctor)){
+			$isDoctor = $dataArray->isDoctor;
 		}
-		if(isset($_POST["gender"])){
-			$gender = $_POST["gender"];
+		if(isset($dataArray->gender)){
+			$gender = $dataArray->gender;
 		}
-		if(isset($_POST["isCowoker"])){
-			if ($_POST["isCowoker"] === "true") {
+		if(isset($dataArray->isCowoker)){
+			if ($dataArray->isCowoker === "true") {
 				$isCowoker = 1;
 			}else{
 				$isCowoker = 0;
 			}
 		}
-		if(isset($_POST["experiance"])){
-			$experiance = $_POST["experiance"];
+		if(isset($dataArray->experiance)){
+			$experiance = $dataArray->experiance;
 		}
 		if ($hasKey || 
 			isset($groupNumber) || 
@@ -654,14 +649,12 @@
 				$query .= " personal_card.experience_general >= '$experiance'";
 			}
 		}
-		// print_r($_POST);
+		// print_r($dataArray);
 		$extraQuery = "SELECT * " . $query;
 		$query = "SELECT COUNT(*) AS Total " . $query;
 		$result = $mysqli->query($query) or die ("Ошибка: " . mysqli_error($mysqli));
 		$response = $result->fetch_assoc();
 		print_r($response);	
 	}
-// 	echo $query;
-	// print_r($_POST);
 	echo json_encode($response);
 ?>

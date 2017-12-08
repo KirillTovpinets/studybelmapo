@@ -30,27 +30,18 @@ export class Person{
 	private belmapo_docNumber:string;
 
 	constructor(){
-		this.surname = "Товпинец";
-		this.name = "Кирилл";
-		this.patername = "Александрович";
-		this.birthday = "1994-02-10";
-		this.nameInDativeForm = "Товпинцу Кириллу Александровичу";
 		this.educational_establishment = 1;
 		this.cityzenship = 1;
 		this.isDoctor = true;
 		this.isCowoker = true;
 		this.isMale = true;
-		this.diploma_start = "2017-01-01";
-		this.organization = 1;
+		this.organization = 5333;
 		this.appointment = 1;
 		this.region = 1;
-		this.tel_number = "1111111111111111111111111111111";
 		this.experiance_general = 1;
 		this.experiance_special = 1;
-		this.insurance_number = "1111111111111111111111111111111";
 		this.department = 1;
 		this.faculty = 1;
-		this.diploma_number = "1111111111111111111111111111111";
 		this.belmapo_faculty = 1;
 		this.belmapo_cathedra = 1;
 		this.belmapo_course = 1;
@@ -58,7 +49,6 @@ export class Person{
 		this.belmapo_residense = 1;
 		this.belmapo_educForm = 1;
 		this.belmapo_paymentData = 1;
-		this.belmapo_docNumber = "2134556";
 	}
 
 	get_surname():string{

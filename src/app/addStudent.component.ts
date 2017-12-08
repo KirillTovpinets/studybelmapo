@@ -26,6 +26,9 @@ import {NotificationsService} from 'angular4-notify';
 		.input-group-btn .btn{
 			border-right-width:2px;
 		}
+		blockquote{
+			border-left-color: #9368E9;
+		}
 	`]
 })
 
@@ -68,11 +71,13 @@ export class AddStudentComponent implements OnInit{
 		}
 	}
 	SavePerson(inputData:any): void{
-		this.saveService.save(inputData).then(data => this.notify.addInfo(data._body));
+		this.saveService.save(inputData).then(data => {
+			this.notify.addInfo(data._body);
+			this.newPerson = new Person();
+		});
 	}
 	ngOnInit():void{
 		this.dataService.getData().then(data => {
-			console.log(data.json());
 			for (let faculty of data.json().facBel) {
 				this.faculties.push(faculty);
 			}
