@@ -137,7 +137,7 @@
                                 <table>
                                   <tr *ngFor="let faculty of faculties">
                                     <td>
-                                      <input type="checkbox" id="faculty-{{faculty.id}}" (click)="SelectFacultyAction($event)" class="regular-checkbox">
+                                      <input type="checkbox" id="faculty-{{faculty.id}}" value="{{faculty.id}}" (click)="SelectFacultyAction($event)" class="regular-checkbox">
                                       <label for="faculty-{{ faculty.id }}"> </label>
                                     </td>
                                     <td>
@@ -181,7 +181,7 @@
                                 <table>
                                   <tr *ngFor="let educType of educTypes">
                                     <td>
-                                      <input type="checkbox" id="educType-{{educType.id}}" (click)="SelectEducTypeAction($event)" name="belmapo_educType" value="{{ educType.id }}" class="regular-checkbox">
+                                      <input type="checkbox" id="educType-{{ educType.id }}" (click)="SelectEducTypeAction($event)" name="belmapo_educType" value="{{ educType.id }}" class="regular-checkbox">
                                       <label for="educType-{{ educType.id }}"> </label>
                                     </td>
                                     <td>
@@ -199,6 +199,7 @@
                   </tabset>
                   <div>
                     <button (click)="BuildReportService()" class="btn btn-success btn-block">Старт</button>
+                    <button (click)="ResetService()" class="btn btn-warning btn-block">Сбросить</button>
                   </div>
                 </div>
               </div>

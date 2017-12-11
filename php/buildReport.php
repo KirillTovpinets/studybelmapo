@@ -96,13 +96,14 @@
 				"courses" => "CourseId"
 			];
 
-			$query = "FROM personal_card INNER JOIN arrivals ON personal_card.unique_Id = arrivals.PersonLink ";
+			$query = "FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId ";
 	}
+	//Личная информация
 	if (count($source) == 1 && $source[0] == 1) {
 		$inputRegions = array();
 		$inputParamsIds = array();
 		foreach ($tablesPersonal as $key => $value) {
-			if (isset($dataArray[$key]) && ($dataArray[$key] != "")) {
+			if (isset($dataArray[$key]) && ($dataArray[$key] != "") && ($dataArray[$key] != 0)) {
 				$postValue = $dataArray[$key];
 				$hasKey = true;
 				$query .= "INNER JOIN " . $value . " ON personal_card." . $fieldsPersonal[$key] . " = " . $value . ".id ";
@@ -295,6 +296,7 @@
 		$Parameterobj["label"] = 'Интегрированный';
 		$Parameterobj["value"] = $obj["Total"];
 		array_push($response, $Parameterobj);
+	//Информация об обучении
 	}else if (count($source) == 1 && $source[0] == 2) {
 		$inputParamsArrs = array();
 		$inputParamsIds = array();
@@ -302,7 +304,7 @@
 		$inputParamsArrs["forms"] = array();
 		$inputParamsArrs["educType"] = array();
 		foreach ($tablesArrivals as $key => $value) {
-			if (isset($dataArray[$key]) && ($dataArray[$key] != "")) {
+			if (isset($dataArray[$key]) && ($dataArray[$key] != "") && ($dataArray[$key] != 0)) {
 				$postValue = $dataArray[$key];
 				$hasKey = true;
 				$query .= "INNER JOIN " . $value . " ON arrivals." . $fieldsArrivals[$key] . " = " . $value . ".id ";
@@ -460,9 +462,12 @@
 		$Parameterobj["label"] = 'Интегрированный';
 		$Parameterobj["value"] = $obj["Total"];
 		array_push($response, $Parameterobj);
+	//Личная информация и инфорация об обучении
 	}else if (count($source) == 2) {
+		$inputRegions = array();
+		$inputParamsIds = array();
 		foreach ($tablesPersonal as $key => $value) {
-			if (isset($dataArray[$key])) {
+			if (isset($dataArray[$key]) && ($dataArray[$key] != 0)) {
 				$postValue = $dataArray[$key];
 				$hasKey = true;
 				$query .= "INNER JOIN " . $value . " ON personal_card." . $fieldsPersonal[$key] . " = " . $value . ".id ";
@@ -470,16 +475,21 @@
 					$lastPartRegions = array();
 					foreach ($postValue as $keyReg => $valueReg) {
 						$lastPartItem = $value . ".id = '" . $valueReg . "'";
+						$nameSqj = $mysqli->query("SELECT * FROM regions WHERE id = " . $valueReg);
+						array_push($inputRegions,$nameSqj->fetch_assoc());
 						array_push($lastPartRegions, $lastPartItem);	
 					}
 				}else{
 					$lastPartItem = $value . ".id = '" . $postValue . "'";
+					$result = $mysqli->query("SELECT * FROM $value WHERE id = $postValue") or die ("Ошибка: " . mysqli_error($mysqli));
+					$inputParams = $result->fetch_assoc();
+					$inputParamsIds[$inputParams["name"]] = array($fieldsPersonal[$key] => $inputParams["id"] );
 					array_push($lastPart, $lastPartItem); 
 				}
 			}
 		}
 		foreach ($tablesArrivals as $key => $value) {
-			if (isset($dataArray[$key])) {
+			if (isset($dataArray[$key]) && ($dataArray[$key] != 0)) {
 				$postValue = $dataArray[$key];
 				$hasKey = true;
 				$query .= "INNER JOIN " . $value . " ON arrivals." . $fieldsArrivals[$key] . " = " . $value . ".id ";
@@ -503,27 +513,30 @@
 					}
 				}else{
 					$lastPartItem = $value . ".id = $postValue ";
+					$result = $mysqli->query("SELECT * FROM $value WHERE id = $postValue") or die ("Ошибка: " . mysqli_error($mysqli));
+					$inputParams = $result->fetch_assoc();
+					$inputParamsIds[$inputParams["name"]] = array($fieldsArrivals[$key] => $inputParams["id"] );
 					array_push($lastPart, $lastPartItem); 
 				}
 			}
 		}
 
-		if (isset($dataArray->groupNumber)){
+		if (isset($dataArray->groupNumber) && $dataArray->groupNumber != 0){
 			$groupNumber = $dataArray->groupNumber;
 		}
-		if (isset($dataArray->dipdatefrom)){
+		if (isset($dataArray->dipdatefrom) && $dataArray->dipdatefrom != 0){
 			$dipdatefrom = $dataArray->dipdatefrom;
 		}
-		if(isset($dataArray->dipdateto)){
+		if(isset($dataArray->dipdateto) && $dataArray->dipdateto != 0){
 			$dipdateto = $dataArray->dipdateto;
 		}
-		if(isset($dataArray->isDoctor)){
+		if(isset($dataArray->isDoctor) && $dataArray->isDoctor != 0){
 			$isDoctor = $dataArray->isDoctor;
 		}
-		if(isset($dataArray->gender)){
+		if(isset($dataArray->gender) && $dataArray->gender != 0){
 			$gender = $dataArray->gender;
 		}
-		if(isset($dataArray->isCowoker)){
+		if(isset($dataArray->isCowoker) && $dataArray->isCowoker != 0){
 			if ($dataArray->isCowoker === "true") {
 				$isCowoker = 1;
 			}else{
@@ -544,37 +557,47 @@
 			isset($groupNumber)) {
 			$query .= "WHERE ";
 		}
+		$extraQueryPart = $query;
 		if (!empty($lastPart)) {
 			$lastPartString = implode(" AND ", $lastPart);
 			$query .= $lastPartString;
+			$extraQueryPart .= $lastPartString;
 		}
-		if (isset($lastPartRegions)) {
+		if (isset($lastPartRegions) && !empty($lastPartRegions)) {
 			if (!empty($lastPart)) {
 				$query .= " AND ";
+				$extraQueryPart .= " OR ";
 			}
 			$lastPartString = implode(" OR ", $lastPartRegions);
 			$query .= "(" .$lastPartString . ")";
+			$extraQueryPart .= "(" .$lastPartString . ")";
 		}
-		if (isset($lastPartFaculties)) {
-			if (!empty($lastPart)) {
+		if (isset($lastPartFaculties) && !empty($lastPartFaculties)) {
+			if (!empty($lastPart) || !empty($lastPartRegions)) {
 				$query .= " AND ";
+				$extraQueryPart .= " OR ";
 			}
 			$lastPartString = implode(" OR ", $lastPartFaculties);
 			$query .= "(" .$lastPartString . ")";
+			$extraQueryPart .= "(" .$lastPartString . ")";
 		}
-		if (isset($lastPartForms)) {
-			if (!empty($lastPart)) {
+		if (isset($lastPartForms) && !empty($lastPartForms)) {
+			if (!empty($lastPart) || !empty($lastPartRegions) || !empty($lastPartFaculties) ) {
 				$query .= " AND ";
+				$extraQueryPart .= " OR ";
 			}
 			$lastPartString = implode(" OR ", $lastPartForms);
 			$query .= "(" .$lastPartString . ")";
+			$extraQueryPart .= "(" .$lastPartString . ")";
 		}
-		if (isset($lastPartEducType)) {
-			if (!empty($lastPart)) {
+		if (isset($lastPartEducType) && !empty($lastPartEducType)) {
+			if (!empty($lastPart) || !empty($lastPartRegions) || !empty($lastPartFaculties) || !empty($lastPartForms)) {
 				$query .= " AND ";
+				$extraQueryPart .= " OR ";
 			}
 			$lastPartString = implode(" OR ", $lastPartEducType);
 			$query .= "(" .$lastPartString . ")";
+			$extraQueryPart .= "(" .$lastPartString . ")";
 		}
 		if ((!empty($lastPart) || 
 			isset($lastPartRegions) || 
@@ -588,6 +611,7 @@
 			isset($isCowoker) || 
 			isset($experiance))) {
 			$query .= " AND ";
+		$extraQueryPart .= " OR ";
 		}
 		if (isset($dipdatefrom) || 
 			isset($groupNumber) || 
@@ -600,25 +624,31 @@
 
 			if(isset($dipdatefrom)){
 				$query .= " personal_card.diploma_start > '$dipdatefrom' ";
+				$extraQueryPart .= " personal_card.diploma_start > '$dipdatefrom' ";
 				$needAnd = true;
 			}
 			if(isset($groupNumber)){
 				if($needAnd){
 					$query .= " AND ";
+					$extraQueryPart .= " OR ";
 				}
 				$query .= " arrivals.GroupNum = '$groupNumber'";
+				$extraQueryPart .= " arrivals.GroupNum = '$groupNumber'";
 				$needAnd = true;
 			}
 			if(isset($dipdateto)){
 				if($needAnd){
 					$query .= " AND ";
+					$extraQueryPart .= " OR ";
 				}
 				$query .= " personal_card.diploma_start < '$dipdateto'";
+				$extraQueryPart .= " personal_card.diploma_start < '$dipdateto'";
 				$needAnd = true;
 			}
 			if(isset($isDoctor)){
 				if($needAnd){
 					$query .= " AND ";
+					$extraQueryPart .= " OR ";
 				}
 				if ($isDoctor === "true") {
 					$flag = 1;
@@ -626,35 +656,78 @@
 					$flag = 0;
 				}
 				$query .= " personal_card.isDoctor = '$flag'";
+				$extraQueryPart .= " personal_card.isDoctor = '$flag'";
 				$needAnd = true;
 			}
 			if(isset($gender)){
 				if($needAnd){
 					$query .= " AND ";
+					$extraQueryPart .= " OR ";
 				}
 				$query .= " personal_card.isMale = '$gender'";
+				$extraQueryPart .= " personal_card.isMale = '$gender'";
 				$needAnd = true;
 			}
 			if(isset($isCowoker)){
 				if($needAnd){
 					$query .= " AND ";
+					$extraQueryPart .= " OR ";
 				}
 				$query .= " personal_card.isCowoker = '$isCowoker'";
+				$extraQueryPart .= " personal_card.isCowoker = '$isCowoker'";
 				$needAnd = true;
 			}
 			if(isset($experiance)){
 				if($needAnd){
 					$query .= " AND ";
+					$extraQueryPart .= " OR ";
 				}
 				$query .= " personal_card.experience_general >= '$experiance'";
+				$extraQueryPart .= " personal_card.experience_general >= '$experiance'";
 			}
 		}
 		// print_r($dataArray);
-		$extraQuery = "SELECT * " . $query;
+		if ((count($inputParamsIds) > 1) || ((count($inputParamsIds) + count($inputRegions)) > 1)) {
+			foreach ($inputParamsIds as $key => $value) {
+				foreach ($value as $field => $id) {
+					$extraQueryInline = "SELECT personal_card.$field " . $extraQueryPart;
+					$extraQuery = "SELECT COUNT(*) AS value FROM ($extraQueryInline) AS subQuery WHERE subQuery.$field = '$id'";
+					$result = $mysqli->query($extraQuery) or die ("Ошибка в '$extraQuery': " . mysqli_error($mysqli));
+					$obj = $result->fetch_assoc();
+					$Parameterobj["label"] = $key;
+					$Parameterobj["value"] = $obj["value"];
+					array_push($response, $Parameterobj);
+				}
+			}
+		}
+
+		if ((count($inputRegions) > 1) || ((count($inputRegions) + count($inputParamsIds)) > 1)) {
+			for ($i=0; $i < count($inputRegions); $i++) { 
+				$region = $inputRegions[$i]["name"];
+				$id = $inputRegions[$i]["id"];
+				$extraQueryInline = "SELECT region " . $extraQueryPart;
+				$extraQuery = "SELECT COUNT(*) AS value FROM ($extraQueryInline) AS subQuery WHERE subQuery.region = '$id'";
+				$result = $mysqli->query($extraQuery) or die ("Ошибка в '$extraQuery': " . mysqli_error($mysqli));
+				$obj = $result->fetch_assoc();
+				$Parameterobj["label"] = $region;
+				$Parameterobj["value"] = $obj["value"];
+				array_push($response, $Parameterobj);
+			}
+		}
 		$query = "SELECT COUNT(*) AS Total " . $query;
 		$result = $mysqli->query($query) or die ("Ошибка: " . mysqli_error($mysqli));
-		$response = $result->fetch_assoc();
-		print_r($response);	
+		$sum = 0;
+		for ($i=0; $i < count($response); $i++) { 
+			$sum += $response[$i]["value"];
+		}
+		$total["label"] = "total";
+		$total["value"] = $sum;
+		array_push($response, $total);
+
+		$obj = $result->fetch_assoc();
+		$Parameterobj["label"] = 'Интегрированный';
+		$Parameterobj["value"] = $obj["Total"];
+		array_push($response, $Parameterobj);
 	}
 	echo json_encode($response);
 ?>

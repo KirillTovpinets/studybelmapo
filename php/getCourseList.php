@@ -2,9 +2,15 @@
 	ini_set("display_errors", 1);
 	require("config.php");
     
-    $dates = $_POST["dates"];
-    $dateFrom = $dates[0];
-    $dateTo = $dates[1];
+    $data = json_decode(file_get_contents("php://input"));
+    $dateFrom = "";
+    $dateTo = "";
+    if (isset($data->dateFrom) && ($data->dateFrom !== "")) {
+    	$dateFrom = $data->dateFrom;
+    }
+    if(isset($data->dateTo) && ($data->dateTo !== "")){
+    	$dateTo = $data->dateTo;
+    }
     
 	$mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die ("Ошибка подключения к базе: " . mysqli_connect_error());
 	$mysqli->query("SET NAMES utf8");

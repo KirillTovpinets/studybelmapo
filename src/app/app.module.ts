@@ -25,6 +25,7 @@ import { ArrivalsInfoComponent } from './arrivals.component';
 import { SearchStudentComponent } from './searchStudent.component';
 import { AddStudentComponent } from './addStudent.component';
 import { ReportComponent } from './report.component';
+import { OrderComponent } from './order.component';
 import { SirnameComponent } from './searchComponents/sirname.component';
 import { GenderComponent } from './searchComponents/gender.component';
 import { AgeComponent } from './searchComponents/age.component';
@@ -75,7 +76,8 @@ defineLocale('ru', ru);
     SpecialityComponent,
     QualificationComponent,
     CategoryComponent,
-    PreloaderComponent
+    PreloaderComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,

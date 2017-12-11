@@ -11,9 +11,10 @@ import { StudListComponent } 	from './studList.component';
 import { SearchStudentComponent } from './searchStudent.component';
 import { AddStudentComponent } from './addStudent.component';
 import { ReportComponent } from './report.component';
+import { OrderComponent } from './order.component';
+
 import { SirnameComponent } from './searchComponents/sirname.component';
 import { GenderComponent } from './searchComponents/gender.component';
-
 import { AgeComponent } from './searchComponents/age.component';
 import { EstablishmentComponent } from './searchComponents/establishment.component';
 import { OrganizationComponent } from './searchComponents/organization.component';
@@ -49,6 +50,8 @@ const routes: Routes = [
 			},
 			{ path: 'addDoctor', component: AddStudentComponent},
 			{ path: 'reports', component: ReportComponent},
+			{ path: 'orders', component: OrderComponent},
+
 		]
 	},
 

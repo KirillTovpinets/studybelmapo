@@ -34,20 +34,21 @@ export class ReportComponent implements OnInit{
     private total: number = 0;
     private filterParams:any = {
     	est: 0,
-		resid: 0,
-		DipDateFrom: 0,
-		DipDateTo: 0,
-		app: 0,
-		isDoctor: 0,
-		org: 0,
-		gender: 0,
-		isCowoker: 0,
-		experiance: 0,
-		dep: 0,
-		fac: 0,
-		cathedra: 0,
-		course: 0,
-		groupNumber: 0
+  		resid: 0,
+  		DipDateFrom: 0,
+  		DipDateTo: 0,
+  		app: 0,
+  		isDoctor: 0,
+  		org: 0,
+  		gender: 0,
+  		isCowoker: 0,
+  		experiance: 0,
+  		dep: 0,
+  		fac: 0,
+  		cathedra: 0,
+  		course: 0,
+  		groupNumber: 0,
+      regions: []
     };
     private ParamLabels:any = ["Учреждение образования", "Гражданство", "Дата получения диплома", "Должность", "Звание кандидата медицинских нук", "Организация", "Область", "Пол", "Сотрудник", "Опыт работы", "Отдел", "Факультет", "Факультет БелМАПО", "Кафедра БелМАПО", "Курс", "Форма обучения", "Номер группы", "Тип обучения"];
     private LabelsToDisplay:any = [];
@@ -161,6 +162,24 @@ export class ReportComponent implements OnInit{
       }
     });
   };
+  ResetService():void{
+    this.filterParams.est = undefined;
+    this.filterParams.resid = undefined;
+    this.filterParams.dipdatefrom = undefined;
+    this.filterParams.dipdateto = undefined;
+    this.filterParams.app = undefined;
+    this.filterParams.isDoctor = undefined;
+    this.filterParams.org = undefined;
+    this.filterParams.isMale = undefined;
+    this.filterParams.isCowoker = undefined;
+    this.filterParams.experiance_general = undefined;
+    this.filterParams.dep = undefined;
+    this.filterParams.fac = undefined;
+    this.filterParams.cathedra = undefined;
+    this.filterParams.course = undefined;
+    this.parameters = [];
+    this.total = 0;
+  }
   SelectFacultyAction($event:any): void {
     if (this.filterParams.faculties === void 0) {
       this.filterParams.faculties = [];
