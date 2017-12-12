@@ -25,56 +25,55 @@
     $infoCondition = "";
 	if($_GET["info"] == 'getStat'){
 	    if($cathedraLoged == true){
-	    	$infoCondition = "WHERE cathedras.id = $depId";
-	    	$condition = "WHERE arrivals.CathedrId = $depId";
+	    	$infoCondition = "AND cathedras.id = $depId";
+	    	$condition = "AND arrivals.CathedrId = $depId";
 	    }
-        //Информация о кафедре
-        $query = "SELECT faculties.name AS faculty, cathedras.name AS cathedra FROM cathedras INNER JOIN faculties ON cathedras.facultId = faculties.id $infoCondition GROUP BY faculty";
-	    $FacNameObj = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
-	    $CathedraInfo = array();
-	    while ($row = $FacNameObj->fetch_assoc()) {
-	    	array_push($CathedraInfo, $row);
-	    }
-	   // print_r($CathedraInfo);
-	    //Информация о курсах
-	    $query = "SELECT cources.id, cources.Number, cources.name, cources.Start, cources.Finish FROM arrivals INNER JOIN cources ON arrivals.CourseId = cources.id $condition GROUP BY cources.name";
-	    $CourceObj = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
-	    $courceList = array();
-	    $courceWithPerson = array();
-	    while($row = $CourceObj->fetch_assoc()){
-	        $courseId = $row["id"];
-	        //Весь список зачисленных
-    	    $query = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.unique_Id = arrivals.PersonLink WHERE arrivals.CourseId = $courseId";
-    	    if($cathedraLoged == true){
-    	    	$query .= " AND arrivals.CathedrId = $depId";
-    	    }
-    	    $result = $mysqli->query($query) or die("Ошибка в запросе $query: " . mysqli_error($mysqli));
-    	    
-    	    $arrivalsList = array();
-    	    while($ArrivalRow = $result->fetch_assoc()){
-    	        array_push($arrivalsList, $ArrivalRow);
-    	    }
-    	   // $courceWithPerson[$courceId] = $arrivalsList;
-    	    $row["list"] = $arrivalsList;
-    	    array_push($courceList, $row);
-	    }
-	    $response["courseList"] = $courceList;
-	    $response["cathedraInfo"] = $CathedraInfo;
-	    echo json_encode($response);
-	   // $query = "SELECT COUNT(*) AS total FROM arrivals WHERE CathedrId = $depId";
+    	$query = "SELECT * FROM faculties";
+    	$allFaculties = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
+    	$facultyList = array();
+    	$today = date("Y-m-d");
+    	while ($faculty = $allFaculties->fetch_assoc()) {
+    		$facultyId = $faculty["id"];
+    		$query = "SELECT * FROM cathedras WHERE facultId = $facultyId $infoCondition";
+    		$allCathedras = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
+    		// if ($allCathedras->{"num_rows"} === 0) {
+    		// 	continue;
+    		// }
+    		$cathedraList = array();
+    		while ($cathedra = $allCathedras->fetch_assoc()) {
+    			$cathedraId = $cathedra["id"];
+    			$query = "SELECT cources.id, cources.Number, cources.name, cources.Start, cources.Finish FROM  arrivals INNER JOIN cources ON arrivals.CourseId = cources.id WHERE arrivals.CathedrId = $cathedraId AND cources.Finish > '$today'";
+    			$allCathedraCourses = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
+    			// if ($allCathedraCourses->{"num_rows"} === 0) {
+	    		// 	continue;
+	    		// }
+    			$courseList = array();
+    			while ($course = $allCathedraCourses->fetch_assoc()) {
+    				$courseId = $course["id"];
+    				$query = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseId";
+    				$allStudents = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
+    				// if ($allStudents->{"num_rows"} === 0) {
+		    		// 	continue;
+		    		// }
+    				$studentList = array();
+    				echo count($courseList) . "\n";
+    				while ($student = $allStudents->fetch_assoc()) {
+    					array_push($studentList, $student);
+    				}
+    				$course["StudList"] = $studentList;
+    				array_push($courseList, $course);
+    			}
+    			$cathedra["CourseList"] = $courseList;
+    			array_push($cathedraList, $cathedra);
+    		}
+    		$faculty["CathedraList"] = $cathedraList;
+    		if (count($faculty["CathedraList"]) === 0) {
+    			continue;
+    		}
+    		array_push($facultyList, $faculty);
+    	}
+    	$response["data"] = $facultyList;
+    	mysqli_close($mysqli);
+    	echo json_encode($response);
 	}
-
-	else if($_GET["info"] == 'nationality'){
-		$result = $mysqli->query("SELECT name AS label, COUNT(*) AS y FROM (SELECT countries.name, arrivals.Date FROM personal_card INNER JOIN arrivals ON personal_card.unique_Id = arrivals.PersonLink INNER JOIN countries ON personal_card.citizenship = countries.id $condition LIMIT 1000) AS Last  GROUP BY name") or die ("Ошибка: " . mysqli_error($mysqli));
-	}
-
-	else if($_GET["info"] == 'faculty'){
-		$result = $mysqli->query("SELECT name AS label, COUNT(*) AS y FROM (SELECT faculties.name, arrivals.Date FROM arrivals INNER JOIN faculties ON arrivals.FacultId = faculties.id $condition) AS Last GROUP BY name") or die ("Ошибка: " . mysqli_error($mysqli));
-	}
-
-	else if($_GET["info"] == 'speciality'){
-		$result = $mysqli->query("SELECT CourseName AS label, COUNT(*) AS y FROM (SELECT cources.CourseName, arrivals.Date FROM arrivals INNER JOIN cources ON arrivals.CourseId = cources.id $condition) AS Last GROUP BY CourseName") or die ("Ошибка: " . mysqli_error($mysqli));
-	}
-	
-	mysqli_close($mysqli);
 ?>

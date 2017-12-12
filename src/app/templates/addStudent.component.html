@@ -1,3 +1,4 @@
+<angular4-notify-notifications-container></angular4-notify-notifications-container>
 <div class="content">
     <div class="container-fluid">
       <div class="row">
@@ -10,7 +11,6 @@
             <div class="content">
               <form (ngSubmit)="(addForm.valid && SavePerson(newPerson))" novalidate id="AddpersonalInfo" #addForm="ngForm">
                 {{addForm.errors}}
-                <angular4-notify-notifications-container></angular4-notify-notifications-container>
                 <div *ngIf="addForm.errors !== undefined">
                   {{addForm.errors}}
                 </div>
@@ -40,7 +40,7 @@
                         <div class="form-group">
                           <label>Дата рождения</label>
                           <small *ngIf="birthday.invalid">Это обязательное поле</small>
-                          <input required type="text" [(ngModel)]="newPerson.birthday" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValue" name="birthday" class="date-picker form-control" #birthday="ngModel">
+                          <input required type="text" [(ngModel)]="newPerson.birthdayDate" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueBirthday" name="birthday" class="date-picker form-control" #birthday="ngModel">
                         </div>
                       </div>
                     </div>
@@ -56,7 +56,9 @@
                         <div class="form-group">
                           <label>Учреждение образования</label>
                           <select [(ngModel)]="newPerson.educational_establishment" name="educational_establishment" id="ee" class="form-control">
-                            <option *ngFor="let est of personal_establishments" value="{{ est.id }}"> {{ est.name }}</option>
+                            <optgroup label="Варианты">
+                              <option *ngFor="let est of personal_establishments" value="{{ est.id }}"> {{ est.name }}</option>
+                            </optgroup>
                             <option value="0">Другой вариант</option>
                           </select>
                           <div class="input-group" *ngIf="newPerson.educational_establishment == 0">
@@ -76,7 +78,9 @@
                           <small *ngIf="cityzenship.invalid">Это обязательное поле</small>
                           
                           <select [(ngModel)]="newPerson.cityzenship" name="cityzenship" #cityzenship="ngModel" id="country" class="form-control">
-                            <option *ngFor="let cityzenship of personal_cityzenships" value="{{ cityzenship.id }}"> {{ cityzenship.name }}</option>
+                            <optgroup label="Варианты">
+                              <option *ngFor="let cityzenship of personal_cityzenships" value="{{ cityzenship.id }}"> {{ cityzenship.name }}</option>
+                            </optgroup>
                             <option value="0">Другой вариант</option>
                           </select>
                           <div class="input-group" *ngIf="newPerson.cityzenship == 0">
@@ -121,7 +125,7 @@
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Дата получения диплома</label>
-                          <input type="text" [(ngModel)]="newPerson.diploma_start" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValue" name="diploma_start" class="date-picker form-control">
+                          <input type="text" [(ngModel)]="newPerson.diploma_startDate" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueDiploma" name="diploma_start" class="date-picker form-control">
                         </div>
                       </div>
                       <div class="col-md-3">
@@ -129,7 +133,9 @@
                           <label>Должность</label>
                           
                           <select [(ngModel)]="newPerson.appointment" name="appointment" id="country" class="form-control">
-                            <option *ngFor="let appointment of personal_appointments" value="{{ appointment.id }}"> {{ appointment.name }}</option>
+                            <optgroup label="Варианты">
+                              <option *ngFor="let appointment of personal_appointments" value="{{ appointment.id }}"> {{ appointment.name }}</option>
+                            </optgroup>
                             <option value="0">Другой вариант</option>
                           </select>
                           <div class="input-group" *ngIf="newPerson.appointment == 0">
@@ -156,7 +162,9 @@
                           <label>Организация</label>
                           
                           <select [(ngModel)]="newPerson.organization" name="organization" id="country" class="form-control">
-                            <option *ngFor="let organization of personal_organizations" value="{{ organization.id }}"> {{ organization.name }}</option>
+                            <optgroup label="Варианты">
+                              <option *ngFor="let organization of personal_organizations" value="{{ organization.id }}"> {{ organization.name }}</option>
+                            </optgroup>
                             <option value="0">Другой вариант</option>
                           </select>
                           <div class="input-group" *ngIf="newPerson.organization == 0">
@@ -174,7 +182,9 @@
                         <div class="form-group">
                           <label>Область</label>
                           <select [(ngModel)]="newPerson.region" name="region" id="country" class="form-control">
-                            <option *ngFor="let region of personal_regions" value="{{ region.id }}"> {{ region.name }}</option>
+                            <optgroup label="Варианты">
+                              <option *ngFor="let region of personal_regions" value="{{ region.id }}"> {{ region.name }}</option>
+                            </optgroup>
                             <option value="0">Другой вариант</option>
                           </select>
                         </div>
@@ -205,7 +215,9 @@
                         <div class="form-group">
                           <label>Отдел</label>
                           <select [(ngModel)]="newPerson.department" name="department" id="country" class="form-control">
-                            <option *ngFor="let department of personal_departments" value="{{ department.id }}"> {{ department.name }}</option>
+                            <optgroup label="Варианты">
+                              <option *ngFor="let department of personal_departments" value="{{ department.id }}"> {{ department.name }}</option>
+                            </optgroup>
                             <option value="0">Другой вариант</option>
                           </select>
                           <div class="input-group" *ngIf="newPerson.department == 0">
@@ -222,7 +234,9 @@
                         <div class="form-group">
                           <label>Факультет</label>
                           <select [(ngModel)]="newPerson.faculty" name="faculty" id="country" class="form-control">
-                            <option *ngFor="let faculty of personal_faculties" value="{{ faculty.id }}"> {{ faculty.name }}</option>
+                            <optgroup label="Варианты">
+                              <option *ngFor="let faculty of personal_faculties" value="{{ faculty.id }}"> {{ faculty.name }}</option>
+                            </optgroup>
                             <option value="0">Другой вариант</option>
                           </select>
                           <div class="input-group" *ngIf="newPerson.faculty == 0">
@@ -247,7 +261,9 @@
                         <div class="form-group">
                           <label>Курс</label>
                           <select [(ngModel)]="newPerson.belmapo_course" name="belmapo_course" id="country" class="form-control" (change)="selectCourse(newPerson.belmapo_course)">
-                            <option *ngFor="let belmapo_course of belmapo_courses" value="{{ belmapo_course.id }}"> {{ belmapo_course.name | slice:0:20 }}... (№ {{ belmapo_course.Number}})</option>
+                            <optgroup label="Варианты">
+                              <option *ngFor="let belmapo_course of belmapo_courses" value="{{ belmapo_course.id }}"> {{ belmapo_course.name | slice:0:20 }}... (№ {{ belmapo_course.Number}})
+                              </option></optgroup>
                           </select>
                         </div>
                         <blockquote *ngIf="selectedCourse !== undefined">
@@ -262,16 +278,12 @@
                                   <td>{{ selectedCourse.Number }}</td>
                                 </tr>
                                 <tr>
-                                  <td>Тип</td>
-                                  <td>{{ selectedCourse.Type }}</td>
-                                </tr>
-                                <tr>
                                   <td>Начало</td>
-                                  <td>{{ selectedCourse.Start }}</td>
+                                  <td>{{ selectedCourse.Start | date: "dd.MM.yyyy" }}</td>
                                 </tr>
                                 <tr>
                                   <td>Конец</td>
-                                  <td>{{ selectedCourse.Finish }}</td>
+                                  <td>{{ selectedCourse.Finish | date: "dd.MM.yyyy" }}</td>
                                 </tr>
                                 <tr>
                                   <td>Примечания</td>
@@ -329,7 +341,7 @@
                     <div class="row">
                         <div class="col-md-12">
                           <button type="submit" class="btn btn-success">Сохранить</button>
-                          <button (click)="ResetBtn($event)" class="btn btn-danger">Сбросить</button>
+                          <input type="reset" class="btn btn-danger" value="Сбросить"/>
                         </div>
                     </div>
               </form>

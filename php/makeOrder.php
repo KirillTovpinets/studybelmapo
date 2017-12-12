@@ -5,8 +5,9 @@
    
    $mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die ("Ошибка подключения к базе данных: ". mysqli_connect_erro());
    $mysqli->query("SET NAMES utf8");
-   $courses = $_POST["selectedCourses"];
-   $isEnter = $_POST["isEnter"];
+   $data = json_decode(file_get_contents("php://input"));
+   $courses = $data->selectedCourses;
+   $isEnter = $data->type;
     
     if($isEnter){
         $about = "О зачислении";
@@ -58,7 +59,7 @@
                 
     $sendTo = array();
     for($i = 0; $i < count($courses); $i++){
-        $number = $courses[$i];
+        $number = $courses[$i]->Number;
         $CourseObj = $mysqli->query("SELECT name FROM cources WHERE Number = '$number'");
         $courseNameArr = $CourseObj->fetch_assoc();
         $courseName = $courseNameArr["name"];

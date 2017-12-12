@@ -3,43 +3,49 @@
   <p class="category">Список слушателей</p>
 </div>
 <div class="one" #one></div>
-<div id="List" class="content table-responsive table-full-width">
+<div class="content">
     <preloader  *ngIf="faculties.length === 0"></preloader>
     <accordion>
       <accordion-group #group *ngFor="let faculty of faculties">
         <div accordion-heading>
-          {{ faculty }}
+          {{ faculty.name }}
           <i class="pull-right float-xs-right glyphicon"
              [ngClass]="{'glyphicon-chevron-down': group?.isOpen, 'glyphicon-chevron-right': !group?.isOpen}"></i>
         </div>
-        <div *ngFor="let cathedra of cathedras">
-            <h5>{{ cathedra }}</h5>
-            <table class="table table-striped table-hover table-responsive">
-                <thead>
-                    <tr>
-                        <td>Номер</td>
-                        <td>Название курса</td>
-                        <td>Начало</td>
-                        <td>Конец</td>
-                    </tr>
-                </thead>
-                <tbody>
-                  <ng-container *ngFor="let course of coursesList">
-                    <tr (click)="showListOfListners(course)">
-                        <td>{{course.Number}}</td>
-                        <td>{{course.name}}</td>
-                        <td>{{course.Start | date: "dd.MM.yy"}}</td>
-                        <td>{{course.Finish | date: "dd.MM.yy"}}</td>
-                    </tr>
-                    <tr *ngIf="course.isOpened">
-                      <td colspan="4">
-                        <table-list [course]="course"></table-list>
-                      </td>   
-                    </tr>
-                  </ng-container>
-                </tbody>
-            </table>
-        </div>
+        <accordion>
+          <accordion-group *ngFor="let cathedra of faculty.CathedraList" #cathedraGroup>
+            <div accordion-heading>
+                {{ cathedra.name }}
+            </div>
+            <div>
+                <table class="table table-striped table-hover table-responsive" *ngIf="cathedra.CourseList.length !== 0">
+                    <thead>
+                        <tr>
+                            <td>Номер</td>
+                            <td>Название курса</td>
+                            <td>Начало</td>
+                            <td>Конец</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let course of cathedra.CourseList">
+                        <tr (click)="showListOfListners(course)">
+                            <td>{{course.Number}}</td>
+                            <td>{{course.name}}</td>
+                            <td>{{course.Start | date: "dd.MM.yy"}}</td>
+                            <td>{{course.Finish | date: "dd.MM.yy"}}</td>
+                        </tr>
+                        <tr *ngIf="course.isOpened">
+                          <td colspan="4">
+                            <table-list [course]="course"></table-list>
+                          </td>   
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                </table>
+            </div>
+          </accordion-group>
+        </accordion>   
       </accordion-group>
     </accordion>
 </div>

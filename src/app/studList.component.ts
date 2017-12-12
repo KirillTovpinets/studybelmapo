@@ -13,16 +13,13 @@ declare var $: any;
 export class StudListComponent implements OnInit{
 	coursesList: string[] = [];
 	cathedras: string[] = [];
-	faculties: string[] = [];
+	faculties: any[] = [];
 	constructor(private infoService: InfoService){}
 
 	ngOnInit(): void{
 		this.infoService.getInfo("getStat").then(data => {
-			this.coursesList = data.json().courseList;
-			for(var i = 0;  i < data.json().cathedraInfo.length; i++){
-				this.cathedras.push("Кафедра " + data.json().cathedraInfo[i].cathedra.toLowerCase());
-                this.faculties.push(data.json().cathedraInfo[i].faculty);
-			}
+			console.log(data._body);
+			this.faculties = data.json().data;
 		})
 	}
 

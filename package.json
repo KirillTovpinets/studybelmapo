@@ -23,6 +23,7 @@
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
+    "@microsoft/office-js": "^1.1.2",
     "angular-localstorage": "^1.1.5",
     "angular-material-source": "github:angular/material",
     "angular2-notifications": "^0.7.8",

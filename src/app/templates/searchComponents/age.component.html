@@ -3,7 +3,8 @@
   <p class="category">По возрасту</p>
 </div>
 <div class="content">
-  <div class="content table-responsive table-full-width">
+  <preloader *ngIf="isLoaded.indexOf(0) != -1"></preloader>
+  <div class="content table-responsive table-full-width" *ngIf="isLoaded.indexOf(0) === -1">
     <accordion>
       <accordion-group heading="От {{ age.parameters.min }} до {{ age.parameters.max }} ({{ age.total }})" *ngFor="let age of ageLists">
         <div class="DoctorList">
@@ -30,8 +31,8 @@
                       <td>{{ doctor.surname }}</td>
                       <td>{{ doctor.name }}</td>
                       <td>{{ doctor.patername }}</td>
-                      <td>{{ doctor.birthday | date: "d MMMM yyyy"}}</td>
-                      <td>{{ doctor.Date | date: "d MMMM yyyy"}}</td>
+                      <td>{{ doctor.birthday | date: "dd.MM.yyyy"}}</td>
+                      <td>{{ doctor.Date | date: "dd.MM.yyyy"}}</td>
                   </tr>
               </tbody>
             </table>
@@ -48,8 +49,8 @@
                       <td>{{ search.surname }}</td>
                       <td>{{ search.name }}</td>
                       <td>{{ search.patername }}</td>
-                      <td>{{ search.birthday | date: "d MMMM yyyy"}}</td>
-                      <td>{{ search.Date | date: "d MMMM yyyy"}}</td>
+                      <td>{{ search.birthday | date: "dd.MM.yyyy"}}</td>
+                      <td>{{ search.Date | date: "dd.MM.yyyy"}}</td>
                   </tr>
               </tbody>
             </table>

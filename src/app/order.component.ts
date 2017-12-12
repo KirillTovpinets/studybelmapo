@@ -27,11 +27,12 @@ export class OrderComponent{
   	locale = "ru";
   	locales = listLocales();
   	data:any = {
-  		dateTo: new Date()
+  		dateTo: new Date(),
+  		selectedCourses: []
   	};
   	message: string = "";
   	courses: any[] = [];
-  	selectedCourses:any[] = [];
+  	
 	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: this.locale });
 
 	constructor(private makeOrderService: MakeOrderService,
@@ -42,9 +43,18 @@ export class OrderComponent{
 	BuildOrder(): void{
 		this.makeOrderService.create(this.data).then(data => {
 			console.log(data._body);
-            var blob = new Blob([data.data], {type: 'application/vnd.msword'});
+            var blob = new Blob([data._body], {type: 'application/vnd.msword'});
             var objectUrl = URL.createObjectURL(blob);   
             var filename = "doc.doc";
+            var a = document.createElement("a");
+            a.href = objectUrl;
+            a["download"] = filename;
+
+            var e = document.createEvent("MouseEvents");
+            e.initMouseEvent("click", true, false,
+			    document.defaultView, 0, 0, 0, 0, 0,
+			    false, false, false, false, 0, null);
+			a.dispatchEvent(e);
         });
 	}
 	GetCoursesList(value:Date, flag:number){
@@ -64,11 +74,11 @@ export class OrderComponent{
 		});
 	}
 	selectCourse(course:any): void{
-		if (this.selectedCourses.indexOf(course) !== -1) {
-			var index = this.selectedCourses.indexOf(course);
-			this.selectedCourses.splice(index, 1);
+		if (this.data.selectedCourses.indexOf(course) !== -1) {
+			var index = this.data.selectedCourses.indexOf(course);
+			this.data.selectedCourses.splice(index, 1);
 		}else{
-			this.selectedCourses.push(course);
+			this.data.selectedCourses.push(course);
 		}
 	}
 }

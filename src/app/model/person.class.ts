@@ -3,6 +3,7 @@ export class Person{
 	private name: string;
 	private patername:string;
 	private birthday:string;
+	private birthdayDate: Date;
 	private nameInDativeForm:string;
 	private educational_establishment:number;
 	private cityzenship:number;
@@ -10,6 +11,7 @@ export class Person{
 	private isCowoker:boolean;
 	private isMale:boolean;
 	private diploma_start: string;
+	private diploma_startDate: Date;
 	private organization:number;
 	private appointment:number;
 	private region:number;
@@ -49,6 +51,15 @@ export class Person{
 		this.belmapo_residense = 1;
 		this.belmapo_educForm = 1;
 		this.belmapo_paymentData = 1;
+
+		this.surname = "Товпинец";
+		this.name = "Кирилл";
+		this.patername = "Александрович";
+		this.nameInDativeForm = "Товпинцу Кириллу Александровичу";
+		this.tel_number = "+375 29 853 75 96";
+		this.insurance_number = "1234556";
+		this.diploma_number = "654321";
+		this.belmapo_docNumber = "1234556";
 	}
 
 	get_surname():string{
