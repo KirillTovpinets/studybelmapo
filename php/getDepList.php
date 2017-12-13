@@ -1,7 +1,7 @@
 <?php 
     require_once("config.php");
     
-    $table = $_POST["table"];
+    $table = $_GET["table"];
     $mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die("Ошибка подключения к базе данных: " . mysqli_connect_error());
     $mysqli->query("SET NAMES utf8");
     $query = "SELECT * FROM $table ORDER BY name ASC";

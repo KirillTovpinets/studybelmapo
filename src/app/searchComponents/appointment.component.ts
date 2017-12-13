@@ -35,7 +35,6 @@ export class AppointmentComponent extends MainClass implements OnInit{
 	ListOffset:number = 0;
 	ngOnInit(): void{
 		this.establService.getList(this.limit, this.offset, "appointment", {listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
-			console.log(data._body);
 			for (var i = 0; i < data.json().data.length; i++) {
 				this.appointments[i] = new List();
 				this.appointments[i].id = data.json().data[i].id;
@@ -51,7 +50,7 @@ export class AppointmentComponent extends MainClass implements OnInit{
 		this.personalInfo.getInfo(person.id).then(data => {
 			this.PersonalInfoModal = this.PIService.show(PersonalInfoComponent, {class: 'modal-lg'});
 			this.PersonalInfoModal.content.title = "Профиль врача";
-			this.PersonalInfoModal.content.person = data.json().data;
+			this.PersonalInfoModal.content.person = data.json();
 		});
 	}
 }

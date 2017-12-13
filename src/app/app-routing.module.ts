@@ -12,6 +12,7 @@ import { SearchStudentComponent } from './searchStudent.component';
 import { AddStudentComponent } from './addStudent.component';
 import { ReportComponent } from './report.component';
 import { OrderComponent } from './order.component';
+import { AuthGuard } from "./auth.guard";
 
 import { SirnameComponent } from './searchComponents/sirname.component';
 import { GenderComponent } from './searchComponents/gender.component';
@@ -29,6 +30,7 @@ const routes: Routes = [
 	{ 
 		path: 'main', 
 		component: MainComponent,
+		// canActivate: [AuthGuard],
 		children: [
 			{ path: '', redirectTo: 'studlist', pathMatch: 'full' },
 			{ path: 'studlist', component: StudListComponent},
@@ -59,7 +61,8 @@ const routes: Routes = [
 
 @NgModule({
 	imports: [RouterModule.forRoot(routes)],
-	exports: [RouterModule]
+	exports: [RouterModule],
+	providers: [AuthGuard]
 })
 
 export class AppRoutingModule{}

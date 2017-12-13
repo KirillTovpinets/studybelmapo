@@ -4,9 +4,10 @@
 	require_once("config.php");
 	R::setup("mysql:host=$host;dbname=$dbname", $user, $passwd);
 	$admin = R::find("users", "login = ?", array('admin'));
-	$adminpass = $_POST["adminpass"];
+	$data = json_decode(file_get_contents("php://input"));
+	$adminpass = $data->adminpass;
 	if (password_verify($adminpass, $admin["1"]->pass)) {
-		$alreadyExist = R::find("users", "login = ?", array($_POST["login"]));
+		$alreadyExist = R::find("users", "login = ?", array($data->login));
 		if($alreadyExist){
 			$message = "Этот логин уже зарегистрирован";
 			$status = "danger";
@@ -15,9 +16,9 @@
 			exit();
 		}
 		$user = R::dispense("users");
-		$user->login = $_POST["login"];
-		$user->pass = password_hash($_POST["password"], PASSWORD_DEFAULT);
-		$department = $_POST["department"];
+		$user->login = $data->login;
+		$user->pass = password_hash($data->password, PASSWORD_DEFAULT);
+		$department = $data->department;
 		if($department{0} == "1"){
 		    $isCathedra = 1;
 		}else{

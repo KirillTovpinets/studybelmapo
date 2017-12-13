@@ -29,12 +29,6 @@ import {NotificationsService} from 'angular4-notify';
 		blockquote{
 			border-left-color: #9368E9;
 		}
-		angular4-notify-notifications-container{
-			position:fixed;
-			bottom:20px;
-			right:40px;
-			z-index:10;s
-		}
 	`]
 })
 
@@ -85,7 +79,6 @@ export class AddStudentComponent implements OnInit{
 		});
 	}
 	ngOnInit():void{
-		console.log(this.newPerson);
 		this.dataService.getData().then(data => {
 			for (let faculty of data.json().facBel) {
 				this.faculties.push(faculty);

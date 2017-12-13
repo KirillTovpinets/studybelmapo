@@ -1,26 +1,27 @@
-<div class="form">
-    <form class="register-form" (ngSubmit)="AddUser(user)">
-      <h1>БелМАПО</h1>
-      <select [(ngModel)]="user.department" size="10" name="department">
-          <optgroup label="Кафедры">
-              <option *ngFor="let cathedra of cathedras" value="1{{cathedra.id}}">{{cathedra.name}}</option>
-          </optgroup>
-          <optgroup label="Отделы">
-              <option *ngFor="let department of departments" value="2{{department.id}}">{{department.name}}</option>
-          </optgroup>
-      </select>
-      <input type="text" placeholder="Логин" [(ngModel)]="user.login" required name="login" />
-      <input type="password" placeholder="Пароль" [(ngModel)]="user.password" required name="password" />
-      <input type="password" placeholder="Пароль администратора" [(ngModel)]="user.adminpass" required name="admin"/>
-      <input type="submit" value="Создать">
-      <p class="message"><a href="javascript:;" (click)="slideUp()"> Войти</a></p>
-    </form>
-    <form (ngSubmit)="onSubmit(login)" class="login-form">
-      <h1>БелМАПО</h1>
-      <input type="text" placeholder="логин"  [(ngModel)]="login.log" name="login"/>
-      <input type="password" placeholder="пароль" [(ngModel)]="login.pass" name="password"/>
-      <input type="submit" value="войти">
-      <p class="message"><a href="javascript:;" (click)="slideUp()"> Создать аккаунт</a></p>
-    </form>
-
-  </div>
+<angular4-notify-notifications-container></angular4-notify-notifications-container>
+<div class="form" *ngIf="isLoged === false">
+  <form class="register-form" (ngSubmit)="AddUser(user)">
+    <h1>БелМАПО</h1>
+    <select [(ngModel)]="user.department" size="10" name="department">
+        <optgroup label="Кафедры">
+            <option *ngFor="let cathedra of cathedras" value="1{{cathedra.id}}">{{cathedra.name}}</option>
+        </optgroup>
+        <optgroup label="Отделы">
+            <option *ngFor="let department of departments" value="2{{department.id}}">{{department.name}}</option>
+        </optgroup>
+    </select>
+    <input type="text" placeholder="Логин" [(ngModel)]="user.login" required name="login" />
+    <input type="password" placeholder="Пароль" [(ngModel)]="user.password" required name="password" />
+    <input type="password" placeholder="Пароль администратора" [(ngModel)]="user.adminpass" required name="admin"/>
+    <input type="submit" value="Создать">
+    <p class="message"><a href="javascript:;" (click)="slideUp()"> Войти</a></p>
+  </form>
+  <form class="login-form" (ngSubmit)="onSubmit(login)">
+    <h1>БелМАПО</h1>
+    <input type="text" placeholder="логин"  [(ngModel)]="login.log" name="login"/>
+    <input type="password" placeholder="пароль" [(ngModel)]="login.pass" name="password"/>
+    <input type="submit" value="войти">
+    <p class="message"><a href="javascript:;" (click)="slideUp()"> Создать аккаунт</a></p>
+  </form>
+</div>
+<preloader *ngIf="isLoged"></preloader>

@@ -38,6 +38,8 @@ import { CategoryComponent } from './searchComponents/category.component';
 import { PreloaderComponent } from './preloader.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NotificationsModule, NotificationsService } from 'angular4-notify';
+import { AuthGuard } from "./auth.guard";
+import { LoginService } from './login.service';
 
 // Services
 import { CookieService } from 'ngx-cookie-service';
@@ -92,7 +94,7 @@ defineLocale('ru', ru);
     BrowserAnimationsModule,
     NotificationsModule
   ],
-  providers: [ CookieService, NotificationsService ],
+  providers: [ CookieService, NotificationsService, AuthGuard, LoginService ],
   entryComponents: [PersonalInfoComponent],
   bootstrap: [AppComponent]
 })
