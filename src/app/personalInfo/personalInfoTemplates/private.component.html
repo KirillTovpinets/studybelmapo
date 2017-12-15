@@ -8,7 +8,7 @@
           <div class="row form-group">
             <label class="col-sm-3 col-form-label">Дата рождения</label>
             <div class="col-sm-9">
-              <input type="text" value="{{ info.birthday }}" class="form-control inline">    
+              <input type="text" value="{{ info.birthday | date: 'dd.MM.yyyy' }}" class="form-control inline">    
             </div>
           </div>
           

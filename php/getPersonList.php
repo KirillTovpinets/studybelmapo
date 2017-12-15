@@ -27,7 +27,7 @@
 
 			$row["List"] = $resultArray;
 
-			$CountQuery = "SELECT COUNT(*) AS total FROM personal_card WHERE personal_card.$field = $Id";
+			$CountQuery = "SELECT COUNT(*) AS total FROM arrivals INNER JOIN personal_card ON arrivals.PersonId = personal_card.id WHERE personal_card.$field = $Id";
 			$CountResult = $connection->query($CountQuery) or die ("Ошибка выполнения запроса '$CountQuery': " . mysqli_error($connection));
 			$CountArray = $CountResult->fetch_assoc();
 
@@ -121,7 +121,12 @@
 		array_push($personsArr, $row);
 	}
 	$responseData["data"] = $personsArr;
-	$responseData["Total"] = $result->{"num_rows"};
+
+	$CountQuery = "SELECT COUNT(*) AS total FROM arrivals INNER JOIN personal_card ON arrivals.PersonId = personal_card.id $condition";
+	$CountResult = $mysqli->query($CountQuery) or die ("Ошибка выполнения запроса '$CountQuery': " . mysqli_error($mysqli));
+	$CountArray = $CountResult->fetch_assoc();
+
+	$responseData["Total"] = $CountArray["total"];
 	mysqli_close($mysqli);
 	echo json_encode($responseData);
 ?>

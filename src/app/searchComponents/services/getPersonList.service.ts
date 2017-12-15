@@ -16,8 +16,6 @@ export class GetListService{
 		if (parameters !== undefined) {
 			this.data.params = parameters;
 		}
-
-		console.log(parameters);
 		return this.http.post(this.url, this.data).toPromise();
 	}
 }

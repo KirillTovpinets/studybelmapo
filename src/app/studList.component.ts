@@ -18,7 +18,6 @@ export class StudListComponent implements OnInit{
 
 	ngOnInit(): void{
 		this.infoService.getInfo("getStat").then(data => {
-			console.log(data._body);
 			this.faculties = data.json().data;
 		})
 	}

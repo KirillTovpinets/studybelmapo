@@ -34,10 +34,7 @@ export class MainClass{
 		if (fieldParam !== undefined) {
 			this.requestDataParams.table = fieldParam;
 		}
-		console.log(table);
-		console.log(fieldParam);
 		this.establService.getList(this.EstLimit, this.EstOffset, table, this.requestDataParams).then(data => {
-			console.log(data._body);
 			for(let obj of data.json().data){
 				establs.push(new List());
 				establs[establs.length-1].limit = this.ListLimit;
@@ -65,7 +62,6 @@ export class MainClass{
 					this.requestDataParams.table = fieldParam;
 				}
 				this.establService.getList(0, 0, table, this.requestDataParams).then(data => {
-					console.log(data._body);	
 					if (data.json().data.length === 0 || data.json().data[0].List.length === 0) {
 						establ.canLoad = false;
 					}else{
@@ -90,7 +86,6 @@ export class MainClass{
 			this.requestDataParams.table = fieldParam;
 		}
 		this.establService.getList(50, 0, table, this.requestDataParams).then(data => {
-			console.log(data._body);
 			for (var i = 0; i < data.json().data.length; i++) {
 				searchEst[i] = new List();
 				searchEst[i].limit = this.ListLimit;

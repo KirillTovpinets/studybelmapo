@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit{
 			if(response._body == "success"){
 				this.isLoged = true;
 				this.loginService.setUserLogedIn();
-				console.log("this.loginService.setUserLogedIn() = " + this.loginService.getUserLogedIn());
 				this.cookieService.set("Login", "true");
 				this.router.navigate(["/main"]);
 			}else if(response._body == "pass"){
@@ -53,7 +52,6 @@ export class LoginComponent implements OnInit{
 		this.addUser.add(user).then(data => this.notify.addInfo("Пользователь добавлен"));
 	}
 	private handleError(error: any): Promise<any>{
-		console.log("An error occurred", error);
 		return Promise.reject(error.message || error);
 	}
 	slideUp(): void{

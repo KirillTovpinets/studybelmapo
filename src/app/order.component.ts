@@ -42,7 +42,6 @@ export class OrderComponent{
 	}
 	BuildOrder(): void{
 		this.makeOrderService.create(this.data).then(data => {
-			console.log(data._body);
             var blob = new Blob([data._body], {type: 'application/vnd.msword'});
             var objectUrl = URL.createObjectURL(blob);   
             var filename = "doc.doc";

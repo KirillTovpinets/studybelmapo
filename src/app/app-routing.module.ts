@@ -38,6 +38,7 @@ const routes: Routes = [
 				path: 'list', 
 				component: SearchStudentComponent,
 				children: [
+					{ path: '', redirectTo:'sirname', pathMatch: 'full'},
 					{ path: 'sirname', component: SirnameComponent },
 					{ path: 'gender', component: GenderComponent },
 					{ path: 'age', component: AgeComponent },

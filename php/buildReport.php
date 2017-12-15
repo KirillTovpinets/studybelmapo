@@ -16,7 +16,6 @@
 	$params = array();
 	$query = "";
 	$extraQuery = "";
-
 	if (count($source) == 1) {
 		if ($source[0] == 1) {
 			$query = "FROM personal_card ";
@@ -103,7 +102,7 @@
 		$inputRegions = array();
 		$inputParamsIds = array();
 		foreach ($tablesPersonal as $key => $value) {
-			if (isset($dataArray[$key]) && ($dataArray[$key] != "") && ($dataArray[$key] != 0)) {
+			if (isset($dataArray[$key]) && ($dataArray[$key] != "") && ($dataArray[$key] != 0) && (count($dataArray[$key]) != 0)) {
 				$postValue = $dataArray[$key];
 				$hasKey = true;
 				$query .= "INNER JOIN " . $value . " ON personal_card." . $fieldsPersonal[$key] . " = " . $value . ".id ";
@@ -160,7 +159,6 @@
 			$query .= $lastPartString;
 			$extraQueryPart .= $lastPartStringEx;
 		}
-
 		if (isset($lastPartRegions)) {
 			if (!empty($lastPart)) {
 				$query .= " AND ";
@@ -304,7 +302,7 @@
 		$inputParamsArrs["forms"] = array();
 		$inputParamsArrs["educType"] = array();
 		foreach ($tablesArrivals as $key => $value) {
-			if (isset($dataArray[$key]) && ($dataArray[$key] != "") && ($dataArray[$key] != 0)) {
+			if (isset($dataArray[$key]) && ($dataArray[$key] != "") && ($dataArray[$key] != 0) && (count($dataArray[$key]) != 0)) {
 				$postValue = $dataArray[$key];
 				$hasKey = true;
 				$query .= "INNER JOIN " . $value . " ON arrivals." . $fieldsArrivals[$key] . " = " . $value . ".id ";
@@ -467,7 +465,7 @@
 		$inputRegions = array();
 		$inputParamsIds = array();
 		foreach ($tablesPersonal as $key => $value) {
-			if (isset($dataArray[$key]) && ($dataArray[$key] != 0)) {
+			if (isset($dataArray[$key]) && ($dataArray[$key] != "") && ($dataArray[$key] != 0) && (count($dataArray[$key]) != 0)) {
 				$postValue = $dataArray[$key];
 				$hasKey = true;
 				$query .= "INNER JOIN " . $value . " ON personal_card." . $fieldsPersonal[$key] . " = " . $value . ".id ";

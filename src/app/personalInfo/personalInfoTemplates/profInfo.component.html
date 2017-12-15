@@ -27,7 +27,7 @@
           <div class="row form-group">
             <label class="col-sm-3 col-form-label">Дата выдачи</label>
             <div class="col-sm-9">
-              <input type="text" value="{{ info.diploma_start }}" class="form-control inline">
+              <input type="text" value="{{ info.diploma_start | date: 'dd.MM.yy' }}" class="form-control inline">
             </div>  
           </div>
         </div>

@@ -47,13 +47,18 @@ export class ReportComponent implements OnInit{
   		fac: 0,
   		cathedra: 0,
   		course: 0,
-  		groupNumber: 0,
-      regions: []
+  		groupNumber: 0
     };
     private ParamLabels:any = ["Учреждение образования", "Гражданство", "Дата получения диплома", "Должность", "Звание кандидата медицинских нук", "Организация", "Область", "Пол", "Сотрудник", "Опыт работы", "Отдел", "Факультет", "Факультет БелМАПО", "Кафедра БелМАПО", "Курс", "Форма обучения", "Номер группы", "Тип обучения"];
     private LabelsToDisplay:any = [];
 	constructor(private dataService: PersonalDataService,
-				private buildReport: BuildReportService){}
+				      private buildReport: BuildReportService){
+    this.filterParams.regions = [];
+    this.filterParams.faculties = [];
+    this.filterParams.forms = [];
+    this.filterParams.educTypes = [];
+    this.filterParams.tableIds = [];
+  }
 	ngOnInit():void{
 		this.dataService.getData().then(data => {
 			for (let faculty of data.json().facBel) {
@@ -115,21 +120,40 @@ export class ReportComponent implements OnInit{
     return this.reportAction(1);
   };
   reportAction(flag?:number): void {
-    // console.log("reportAction");
     this.parameters = [];
     var data, index;
-    if (this.filterParams.est === void 0 && this.filterParams.resid === void 0 && this.filterParams.DipDateFrom === void 0 && this.filterParams.DipDateTo === void 0 && this.filterParams.app === void 0 && this.filterParams.isDoctor === void 0 && this.filterParams.org === void 0 && this.filterParams.gender === void 0 && this.filterParams.isCowoker === void 0 && this.filterParams.experiance === void 0 && this.filterParams.dep === void 0 && this.filterParams.fac === void 0) {
+    if (this.filterParams.est === 0 && 
+      this.filterParams.resid === 0 && 
+      this.filterParams.DipDateFrom === 0 && 
+      this.filterParams.DipDateTo === 0 && 
+      this.filterParams.app === 0 && 
+      this.filterParams.isDoctor === 0 && 
+      this.filterParams.org === 0 && 
+      this.filterParams.gender === 0 && 
+      this.filterParams.isCowoker === 0 && 
+      this.filterParams.experiance === 0 && 
+      this.filterParams.dep === 0 && 
+      this.filterParams.fac === 0) {
       index = this.filterParams.tableIds.indexOf(1);
       if (index > -1) {
         this.filterParams.tableIds.splice(index, 1);
         flag = 0;
+        this.total = 0;
+        return;
       }
     }
-    if (this.filterParams.cathedra === void 0 && this.filterParams.course === void 0 && this.filterParams.groupNumber === void 0 && (this.filterParams.regions === void 0 || this.filterParams.regions.length === 0) && (this.filterParams.faculties === void 0 || this.filterParams.faculties.length === 0) && (this.filterParams.forms === void 0 || this.filterParams.forms.length === 0) && (this.filterParams.educTypes === void 0 || this.filterParams.educTypes.length === 0)) {
+    if (this.filterParams.cathedra === 0 && 
+      this.filterParams.course === 0 && 
+      this.filterParams.groupNumber === 0 && 
+      this.filterParams.faculties.length === 0 && 
+      this.filterParams.forms.length === 0 &&  
+      this.filterParams.educTypes.length === 0) {
       index = this.filterParams.tableIds.indexOf(2);
       if (index > -1) {
         this.filterParams.tableIds.splice(index, 1);
         flag = 0;
+        this.total = 0;
+        return;
       }
     }
     if (flag) {
@@ -143,9 +167,7 @@ export class ReportComponent implements OnInit{
       }
     }
     data = this.filterParams;
-    console.log(data);
     this.buildReport.build(data).then(data => {
-      console.log(data._body);
       var i, len, ref, value;
       ref = data.json();
       this.parameters = [];
@@ -163,20 +185,20 @@ export class ReportComponent implements OnInit{
     });
   };
   ResetService():void{
-    this.filterParams.est = undefined;
-    this.filterParams.resid = undefined;
-    this.filterParams.dipdatefrom = undefined;
-    this.filterParams.dipdateto = undefined;
-    this.filterParams.app = undefined;
-    this.filterParams.isDoctor = undefined;
-    this.filterParams.org = undefined;
-    this.filterParams.isMale = undefined;
-    this.filterParams.isCowoker = undefined;
-    this.filterParams.experiance_general = undefined;
-    this.filterParams.dep = undefined;
-    this.filterParams.fac = undefined;
-    this.filterParams.cathedra = undefined;
-    this.filterParams.course = undefined;
+    this.filterParams.est = 0;
+    this.filterParams.resid = 0;
+    this.filterParams.dipdatefrom = 0;
+    this.filterParams.dipdateto = 0;
+    this.filterParams.app = 0;
+    this.filterParams.isDoctor = 0;
+    this.filterParams.org = 0;
+    this.filterParams.isMale = 0;
+    this.filterParams.isCowoker = 0;
+    this.filterParams.experiance_general = 0;
+    this.filterParams.dep = 0;
+    this.filterParams.fac = 0;
+    this.filterParams.cathedra = 0;
+    this.filterParams.course = 0;
     this.parameters = [];
     this.total = 0;
   }
@@ -222,27 +244,5 @@ export class ReportComponent implements OnInit{
     
     this.LabelsToDisplay = this.ParamLabels[16];
     return this.reportAction(2);
-  };
-  checkValue(value:any, array:any[], flag?): any[] {
-    console.log("array = " + array.length);
-    var contain, i, len, valueArr, valueToRemove;
-    contain = false;
-    for (i = 0, len = array.length; i < len; i++) {
-      valueArr = array[i];
-      if (valueArr === value) {
-        contain = true;
-      }
-    }
-    if (!contain) {
-      array.push(value);
-    } else {
-      if (flag !== 1) {
-        valueToRemove = array.indexOf(value);
-        if (valueToRemove > -1) {
-          array.splice(valueToRemove, 1);
-        }
-      }
-    }
-    return array;
   };
 }

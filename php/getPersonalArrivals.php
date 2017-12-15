@@ -3,17 +3,28 @@
 	require_once("config.php");
 	
 	$mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die ("Ошибка подключения к базе " . mysqli_connect_error());
+	$mysqli->query("SET NAMES utf8");
 	$personId = $_GET["id"];
 
-	$personObj = $mysqli->query("SELECT unique_Id FROM personal_card WHERE id = $personId");
-	$personArr = $personObj->fetch_assoc();
-	$key = $personArr["unique_Id"];
-	$query = "SELECT arrivals_zip.Date, cathedras.name, faculties.name, cources_zip.name, arrivals_zip.GroupNum, educType.name, status.name FROM arrivals_zip INNER JOIN cathedras ON arrivals_zip.CathedrId = cathedras.id INNER JOIN faculties ON arrivals_zip.FacultId = faculties.id INNER JOIN cources_zip ON arrivals_zip.CourseId = cources_zip.id INNER JOIN educType ON arrivals_zip.EducType = educType.id INNER JOIN status ON arrivals_zip.Status = status.id WHERE arrivals_zip.PersonLink LIKE '$key'";
-	$result = $mysqli->query($query) or die ("Ошибка в запросе '$query': " . mysqli_error($mysqli));
+	function getArrivas($id, $table, $mysqli){
+		$query = "SELECT $table.Date, cathedras.name AS cathedra, faculties.name AS faculty, cources_zip.name AS course, $table.GroupNum, educType.name AS educType, status.name AS status FROM $table INNER JOIN cathedras ON $table.CathedrId = cathedras.id INNER JOIN faculties ON $table.FacultId = faculties.id INNER JOIN cources_zip ON $table.CourseId = cources_zip.id INNER JOIN educType ON $table.EducType = educType.id INNER JOIN status ON $table.Status = status.id WHERE $table.PersonId = $id";
+		$result = $mysqli->query($query) or die ("Ошибка в запросе '$query': " . mysqli_error($mysqli));
+		
+		return $result;	
+	}
+	// $personObj = $mysqli->query("SELECT unique_Id FROM personal_card WHERE id = $personId");
+	// $personArr = $personObj->fetch_assoc();
 
 	$response = array();
-	while ($row = $result->fetch_assoc()) {
-		array_push($resopnse, $row);
+	$currentArrivalsObj = getArrivas($personId, "arrivals_zip", $mysqli);
+
+	while ($row = $currentArrivalsObj->fetch_assoc()) {
+		array_push($response, $row);
+	}
+	$oldArrivalsObj = getArrivas($personId, "arrivals", $mysqli);
+
+	while ($row = $oldArrivalsObj->fetch_assoc()) {
+		array_push($response, $row);
 	}
 	mysqli_close($mysqli);
 	echo json_encode($response);

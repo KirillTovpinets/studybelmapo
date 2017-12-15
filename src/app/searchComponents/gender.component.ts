@@ -25,7 +25,7 @@ export class GenderComponent implements OnInit{
 		this.genderService.getList(this.maleList.limit, this.maleList.offset, "gender", { isMale: 1 }).then(data => {
 			this.maleList.setList(data.json().data);
 		});
-		this.genderService.getList(this.femaleList.limit, this.femaleList.offset, "gender", { isMale: 2 }).then(data => {
+		this.genderService.getList(this.femaleList.limit, this.femaleList.offset, "gender", { isMale: 0 }).then(data => {
 			this.femaleList.setList(data.json().data);
 		});
 	}
@@ -51,7 +51,7 @@ export class GenderComponent implements OnInit{
 		if($event.target.scrollTop < this.femaleList.scrollCounter){
 			this.femaleList.offset += 30;
 			this.femaleList.scrollCounter += 200;
-			this.genderService.getList(this.femaleList.limit, this.femaleList.offset, "gender", { isMale: 2 }).then(data => {
+			this.genderService.getList(this.femaleList.limit, this.femaleList.offset, "gender", { isMale: 0 }).then(data => {
 				this.femaleList.setList(data.json().data);
 			});
 		}

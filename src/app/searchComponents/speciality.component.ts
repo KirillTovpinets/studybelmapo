@@ -53,7 +53,6 @@ export class SpecialityComponent extends MainClass implements OnInit{
 			}
 		});
 		this.establService.getList(this.limit, this.offset, "speciality", {table: "speciality_retraining", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
-			console.log(data._body);
 			for (var i = 0; i < data.json().data.length; i++) {
 				this.specialities_retraining[i] = new List();
 				this.specialities_retraining[i].id = data.json().data[i].id;

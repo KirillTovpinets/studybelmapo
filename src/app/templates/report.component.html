@@ -17,7 +17,7 @@
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Учреждение образования</label>
-                                <select [(ngModel)]="filterParams.est" (change)="reportAction(1)" class="form-control" name="educational_establishment">
+                                <select [(ngModel)]="filterParams.est" (ngModelChange)="reportAction(1)" class="form-control" name="educational_establishment">
                                   <option *ngFor="let obj of personal_establishments" value="{{obj.id}}">{{obj.name}}</option>
                                 </select>
                               </div>
@@ -25,7 +25,7 @@
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Гражданство</label>
-                                <select [(ngModel)]="filterParams.resid" class="form-control" (change)="reportAction(1)" name="cityzenship">
+                                <select [(ngModel)]="filterParams.resid" class="form-control" (ngModelChange)="reportAction(1)" name="cityzenship">
                                   <option *ngFor="let obj of personal_cityzenships" value="{{obj.id}}">{{obj.name}}</option>
                                 </select>
                               </div>
@@ -46,7 +46,7 @@
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Должность</label>
-                                <select [(ngModel)]="filterParams.app" (change)="reportAction(1)" class="form-control" name="appointment">
+                                <select [(ngModel)]="filterParams.app" (ngModelChange)="reportAction(1)" class="form-control" name="appointment">
                                   <option *ngFor="let obj of personal_appointments" value="{{obj.id}}">{{obj.name}}</option>
                                 </select>
                               </div>
@@ -54,7 +54,7 @@
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 
-                                <input type="checkbox" (change)="reportAction(1)" [(ngModel)]="filterParams.isDoctor" name="isDoctor" id="kmn" class="regular-checkbox">
+                                <input type="checkbox" (ngModelChange)="reportAction(1)" [(ngModel)]="filterParams.isDoctor" name="isDoctor" id="kmn" class="regular-checkbox">
                                 <label for="kmn"></label>
                                 <label>Кандидат медицинских наук</label>
                               </div>
@@ -62,7 +62,7 @@
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Организация</label>
-                                <select [(ngModel)]="filterParams.org" (change)="reportAction(1)" class="form-control" name="organization">
+                                <select [(ngModel)]="filterParams.org" (ngModelChange)="reportAction(1)" class="form-control" name="organization">
                                   <option *ngFor="let obj of personal_organizations" value="{{obj.id}}">{{obj.name}}</option>
                                 </select>
                               </div>
@@ -87,7 +87,7 @@
                             <div class="col-md-5">
                               <div class="form-group no-margin">
                                 <label>Пол</label>
-                                <select [(ngModel)]="filterParams.isMale" class="form-control"  (change)="reportAction(1)" name="isMale" class="form-control">
+                                <select [(ngModel)]="filterParams.isMale" class="form-control"  (ngModelChange)="reportAction(1)" name="isMale" class="form-control">
                                   <option value="true" selected="selected">Мужской</option>
                                   <option value="false">Женский</option>
                                 </select>
@@ -96,20 +96,20 @@
                             <div class="col-md-3">
                               <div class="form-group no-margin">
                                 <label>Сотрудник</label>
-                                <input type="checkbox" [(ngModel)]="filterParams.isCowoker"  (change)="reportAction(1)" name="isCowoker" id="isCowoker" class="regular-checkbox">
+                                <input type="checkbox" [(ngModel)]="filterParams.isCowoker"  (ngModelChange)="reportAction(1)" name="isCowoker" id="isCowoker" class="regular-checkbox">
                                 <label for="isCowoker"></label>
                               </div>
                             </div>
                             <div class="col-md-4">
                               <div class="form-group no-margin">
                                 <label>Опыт работы</label>
-                                <input type="number" [(ngModel)]="filterParams.experiance_general"  (change)="reportAction(1)"  name="experiance_general" class="form-control">
+                                <input type="number" [(ngModel)]="filterParams.experiance_general"  (ngModelChange)="reportAction(1)"  name="experiance_general" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Отдел</label>
-                                <select [(ngModel)]="filterParams.dep" (change)="reportAction(1)" class="form-control" name="department">
+                                <select [(ngModel)]="filterParams.dep" (ngModelChange)="reportAction(1)" class="form-control" name="department">
                                   <option *ngFor="let obj of personal_departments" value="{{obj.id}}">{{obj.name}}</option>
                                 </select>
                               </div>
@@ -117,7 +117,7 @@
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Факультет</label>
-                                <select [(ngModel)]="filterParams.fac"  (change)="reportAction(1)" class="form-control" name="faculty">
+                                <select [(ngModel)]="filterParams.fac"  (ngModelChange)="reportAction(1)" class="form-control" name="faculty">
                                   <option *ngFor="let obj of personal_faculties" value="{{obj.id}}">{{obj.name}}</option>
                                 </select>
                               </div>
@@ -151,13 +151,13 @@
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Кафедра</label>
-                                <input type="text" [(ngModel)]="filterParams.cathedra" (change)="reportAction()" name="belmapo_cathedra" id="cathedra" class="form-control">
+                                <input type="text" [(ngModel)]="filterParams.cathedra" (ngModelChange)="reportAction()" name="belmapo_cathedra" id="cathedra" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-12">
                               <div class="form-group no-margin">
                                 <label>Курс</label>
-                                <input type="text" [(ngModel)]="filterParams.course" (change)="reportAction()" name="belmapo_course" id="course" class="form-control">
+                                <input type="text" [(ngModel)]="filterParams.course" (ngModelChange)="reportAction()" name="belmapo_course" id="course" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-12">
@@ -199,7 +199,6 @@
                     </tab>
                   </tabset>
                   <div>
-                    <button (click)="BuildReportService()" class="btn btn-success btn-block">Старт</button>
                     <button (click)="ResetService()" class="btn btn-warning btn-block">Сбросить</button>
                   </div>
                 </div>
