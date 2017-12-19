@@ -13,6 +13,7 @@ import { MainComponent } from './main.component';
 import { MenuComponent } from './menu.component';
 import { NavbarComponent } from './navbar.component';
 import { StudListComponent } from './studList.component';
+import { FillDataComponent } from './fillData.component';
 import { TableListCopmonent } from './tableList.component';
 import { PersonalInfoComponent } from './personalInfo.component';
 import { GeneralInfoComponent } from './personalInfo/generalInfo.component';
@@ -35,15 +36,17 @@ import { AppointmentComponent } from './searchComponents/appointment.component';
 import { SpecialityComponent } from './searchComponents/speciality.component';
 import { QualificationComponent } from './searchComponents/qualification.component';
 import { CategoryComponent } from './searchComponents/category.component';
+import { ChooseCourseComponent } from './FillData/chooseCourse.component';
+import { ChooseStudentComponent } from './FillData/chooseStudent.component';
 import { PreloaderComponent } from './preloader.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NotificationsModule, NotificationsService } from 'angular4-notify';
 import { AuthGuard } from "./auth.guard";
 import { LoginService } from './login.service';
-
+import { CurrentCourcesListService } from './FillData/services/getCurrentCourcesList.service';
 // Services
 import { CookieService } from 'ngx-cookie-service';
-
+import { GlobalParamsService } from './Globalparams.service';
 
 import { defineLocale } from 'ngx-bootstrap/bs-moment';
 import { ru } from 'ngx-bootstrap/locale';
@@ -79,7 +82,10 @@ defineLocale('ru', ru);
     QualificationComponent,
     CategoryComponent,
     PreloaderComponent,
-    OrderComponent
+    OrderComponent,
+    FillDataComponent,
+    ChooseCourseComponent,
+    ChooseStudentComponent
   ],
   imports: [
     BrowserModule,
@@ -94,7 +100,7 @@ defineLocale('ru', ru);
     BrowserAnimationsModule,
     NotificationsModule
   ],
-  providers: [ CookieService, NotificationsService, AuthGuard, LoginService ],
+  providers: [ CookieService, NotificationsService, AuthGuard, LoginService, CurrentCourcesListService, GlobalParamsService ],
   entryComponents: [PersonalInfoComponent],
   bootstrap: [AppComponent]
 })

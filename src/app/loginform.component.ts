@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit{
 		// this.router.navigate(['/main']);
 		this.loginService.tryLogin(login)
 		.then(response => {
+			console.log(response._body);
 			if(response._body == "success"){
 				this.isLoged = true;
 				this.loginService.setUserLogedIn();

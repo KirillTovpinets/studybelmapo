@@ -11,48 +11,119 @@
             <div class="content">
               <form (ngSubmit)="(addForm.valid && SavePerson(newPerson))" novalidate id="AddpersonalInfo" #addForm="ngForm">
                 {{addForm.errors}}
-                <div *ngIf="addForm.errors !== undefined">
-                  {{addForm.errors}}
-                </div>
-                <div class="row">
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label>Фамилия</label>
-                          <small *ngIf="suname.invalid">Это обязательное поле</small>
-                          <input required type="text"  [(ngModel)]="newPerson.surname" name="surname" class="form-control" #suname="ngModel">
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label>Имя</label>
-                          <small *ngIf="name.invalid">Это обязательное поле</small>
-                          <input required type="text" [(ngModel)]="newPerson.name" name="name" class="form-control" #name="ngModel">
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label>Отчество</label>
-                          <small *ngIf="patername.invalid">Это обязательное поле</small>
-                          <input required type="text" [(ngModel)]="newPerson.patername" name="patername" class="form-control" #patername="ngModel">
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label>Дата рождения</label>
-                          <small *ngIf="birthday.invalid">Это обязательное поле</small>
-                          <input required type="text" [(ngModel)]="newPerson.birthdayDate" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueBirthday" name="birthday" class="date-picker form-control" #birthday="ngModel">
-                        </div>
-                      </div>
-                    </div>
+                <tabset>
+
+                  <div *ngIf="addForm.errors !== undefined">
+                    {{addForm.errors}}
+                  </div>
+                  <!-- Личная информация -->
+                  <tab heading="Общая">
                     <div class="row">
+                      <fieldset>
+                        <legend>Личная информация</legend>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Фамилия</label>
+                            <small *ngIf="suname.invalid">Это обязательное поле</small>
+                            <input required type="text"  [(ngModel)]="newPerson.surname" name="surname" class="form-control" #suname="ngModel">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Имя</label>
+                            <small *ngIf="name.invalid">Это обязательное поле</small>
+                            <input required type="text" [(ngModel)]="newPerson.name" name="name" class="form-control" #name="ngModel">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Отчество</label>
+                            <small *ngIf="patername.invalid">Это обязательное поле</small>
+                            <input required type="text" [(ngModel)]="newPerson.patername" name="patername" class="form-control" #patername="ngModel">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                              <label>ФИО в дательном падеже</label>
+                              <small *ngIf="nameInDativeForm.invalid">Это обязательное поле</small>
+                              <input required type="text" [(ngModel)]="newPerson.nameInDativeForm" name="nameInDativeForm" #nameInDativeForm="ngModel" placeholder="Например: Иванову Ивану Ивановичу" class="form-control">
+                            </div>
+                          </div>
+                      </fieldset>
+                    </div>
+                  </tab>
+                  <!-- Дополнтельная информация -->
+                  <div class="row">
+                    <fieldset>
+                      <legend>Дополнтельная информация</legend>
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label>ФИО в дательном падеже</label>
-                          <small *ngIf="nameInDativeForm.invalid">Это обязательное поле</small>
-                          <input required type="text" [(ngModel)]="newPerson.nameInDativeForm" name="nameInDativeForm" #nameInDativeForm="ngModel" placeholder="Например: Иванову Ивану Ивановичу" class="form-control">
+                          <label>Должность</label>
+                          
+                          <select [(ngModel)]="newPerson.appointment" name="appointment" id="country" class="form-control">
+                            <optgroup label="Варианты">
+                              <option *ngFor="let appointment of personal_appointments" value="{{ appointment.id }}"> {{ appointment.name }}</option>
+                            </optgroup>
+                            <option value="0">Другой вариант</option>
+                          </select>
+                          <div class="input-group" *ngIf="newPerson.appointment == 0">
+                            
+                            <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_appointmen">
+                            <span class="input-group-btn">
+                              <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_appointment', personal_appointments)">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>
+                              </button>
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Учреждение</label>
+                          
+                          <select [(ngModel)]="newPerson.organization" name="organization" id="country" class="form-control">
+                            <optgroup label="Варианты">
+                              <option *ngFor="let organization of personal_organizations" value="{{ organization.id }}"> {{ organization.name }}</option>
+                            </optgroup>
+                            <option value="0">Другой вариант</option>
+                          </select>
+                          <div class="input-group" *ngIf="newPerson.organization == 0">
+                            
+                            <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_organizati">
+                            <span class="input-group-btn">
+                              <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_organizations', personal_organizations)">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Структурное подразделение</label>
+                          <select [(ngModel)]="newPerson.department" name="department" id="country" class="form-control">
+                            <optgroup label="Варианты">
+                              <option *ngFor="let department of personal_departments" value="{{ department.id }}"> {{ department.name }}</option>
+                            </optgroup>
+                            <option value="0">Другой вариант</option>
+                          </select>
+                          <div class="input-group" *ngIf="newPerson.department == 0">
+                            <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_department">
+                            <span class="input-group-btn">
+                              <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_department', personal_departments)">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                  <!-- ВУЗ -->
+                  <div class="row">
+                    <fieldset>
+                      <legend>ВУЗ</legend>
+                      <div class="col-md-3">
                         <div class="form-group">
                           <label>Учреждение образования</label>
                           <select [(ngModel)]="newPerson.educational_establishment" name="educational_establishment" id="ee" class="form-control">
@@ -72,7 +143,51 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>Факультет</label>
+                          <select [(ngModel)]="newPerson.faculty" name="faculty" id="country" class="form-control">
+                            <optgroup label="Варианты">
+                              <option *ngFor="let faculty of personal_faculties" value="{{ faculty.id }}"> {{ faculty.name }}</option>
+                            </optgroup>
+                            <option value="0">Другой вариант</option>
+                          </select>
+                          <div class="input-group" *ngIf="newPerson.faculty == 0">
+                            <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_faculty">
+                            <span class="input-group-btn">
+                              <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_faculty', personal_faculties)">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>Дата получения диплома</label>
+                          <input type="text" [(ngModel)]="newPerson.diploma_startDate" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueDiploma" name="diploma_start" class="date-picker form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>Номер диплома</label>
+                          <input type="text" [(ngModel)]="newPerson.diploma_number" name="diploma_number" class="form-control">
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                  <!-- Специальность по диплому -->
+                  <div class="row">
+                    <fieldset>
+                      <legend>Специальность по диплому</legend>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>Дата рождения</label>
+                          <small *ngIf="birthday.invalid">Это обязательное поле</small>
+                          <input required type="text" [(ngModel)]="newPerson.birthdayDate" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueBirthday" name="birthday" class="date-picker form-control" #birthday="ngModel">
+                        </div>
+                      </div>
+                      <div class="col-md-3">
                         <div class="form-group">
                           <label>Гражданство</label>
                           <small *ngIf="cityzenship.invalid">Это обязательное поле</small>
@@ -94,8 +209,12 @@
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="row">
+                      <div class="col-md-5">
+                        <div class="form-group">
+                          <label>Страховой номер</label>
+                          <input type="text" [(ngModel)]="newPerson.insurance_number" name="insurance_number" class="form-control">
+                        </div>
+                      </div>
                       <div class="col-md-3">
                         <div class="form-group col-md-6">
                           <div>
@@ -124,58 +243,8 @@
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
-                          <label>Дата получения диплома</label>
-                          <input type="text" [(ngModel)]="newPerson.diploma_startDate" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueDiploma" name="diploma_start" class="date-picker form-control">
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label>Должность</label>
-                          
-                          <select [(ngModel)]="newPerson.appointment" name="appointment" id="country" class="form-control">
-                            <optgroup label="Варианты">
-                              <option *ngFor="let appointment of personal_appointments" value="{{ appointment.id }}"> {{ appointment.name }}</option>
-                            </optgroup>
-                            <option value="0">Другой вариант</option>
-                          </select>
-                          <div class="input-group" *ngIf="newPerson.appointment == 0">
-                            
-                            <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_appointmen">
-                            <span class="input-group-btn">
-                              <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_appointment', personal_appointments)">
-                                <span class="glyphicon glyphicon-floppy-disk"></span>
-                              </button>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="form-group">
                           <label>Контактный телефон</label>
                           <input type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="newPerson.tel_number" name="tel_number" class="form-control">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label>Организация</label>
-                          
-                          <select [(ngModel)]="newPerson.organization" name="organization" id="country" class="form-control">
-                            <optgroup label="Варианты">
-                              <option *ngFor="let organization of personal_organizations" value="{{ organization.id }}"> {{ organization.name }}</option>
-                            </optgroup>
-                            <option value="0">Другой вариант</option>
-                          </select>
-                          <div class="input-group" *ngIf="newPerson.organization == 0">
-                            
-                            <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_organizati">
-                            <span class="input-group-btn">
-                              <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_organizations', personal_organizations)">
-                                <span class="glyphicon glyphicon-floppy-disk"></span>
-                              </button>
-                            </span>
-                          </div>
                         </div>
                       </div>
                       <div class="col-md-3">
@@ -203,147 +272,39 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label>Страховой номер</label>
-                          <input type="text" [(ngModel)]="newPerson.insurance_number" name="insurance_number" class="form-control">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label>Отдел</label>
-                          <select [(ngModel)]="newPerson.department" name="department" id="country" class="form-control">
-                            <optgroup label="Варианты">
-                              <option *ngFor="let department of personal_departments" value="{{ department.id }}"> {{ department.name }}</option>
-                            </optgroup>
-                            <option value="0">Другой вариант</option>
-                          </select>
-                          <div class="input-group" *ngIf="newPerson.department == 0">
-                            <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_department">
-                            <span class="input-group-btn">
-                              <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_department', personal_departments)">
-                                <span class="glyphicon glyphicon-floppy-disk"></span>
-                              </button>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label>Факультет</label>
-                          <select [(ngModel)]="newPerson.faculty" name="faculty" id="country" class="form-control">
-                            <optgroup label="Варианты">
-                              <option *ngFor="let faculty of personal_faculties" value="{{ faculty.id }}"> {{ faculty.name }}</option>
-                            </optgroup>
-                            <option value="0">Другой вариант</option>
-                          </select>
-                          <div class="input-group" *ngIf="newPerson.faculty == 0">
-                            <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_faculty">
-                            <span class="input-group-btn">
-                              <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_faculty', personal_faculties)">
-                                <span class="glyphicon glyphicon-floppy-disk"></span>
-                              </button>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label>Номер диплома</label>
-                          <input type="text" [(ngModel)]="newPerson.diploma_number" name="diploma_number" class="form-control">
-                        </div>
-                      </div>
-                    </div>
+                    </fieldset>
+                  </div>
+                  <!-- Специальность по переподготовке -->
+                  <div class="row">
+                    <fieldset>
+                      <legend>Специальность по переподготовке</legend>
+                    </fieldset>
+                  </div>
+                  <!-- Стаж -->
+                  <div class="row">
+                    <fieldset>
+                      <legend>Стаж</legend>
+                    </fieldset>
+                  </div>
+                  <!-- Квалификация -->
+                  <div class="row">
+                    <fieldset>
+                      <legend>Квалификация</legend>
+                    </fieldset>
+                  </div>
+                  <!-- Квалификационная врачебная категория -->
+                  <div class="row">
+                    <fieldset>
+                      <legend>Квалификационная врачебная категория</legend>
+                    </fieldset>
+                  </div>
+                </tabset>
                 <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label>Курс</label>
-                          <select [(ngModel)]="newPerson.belmapo_course" name="belmapo_course" id="country" class="form-control" (change)="selectCourse(newPerson.belmapo_course)">
-                            <optgroup label="Варианты">
-                              <option *ngFor="let belmapo_course of belmapo_courses" value="{{ belmapo_course.id }}"> {{ belmapo_course.name | slice:0:20 }}... (№ {{ belmapo_course.Number}})
-                              </option></optgroup>
-                          </select>
-                        </div>
-                        <blockquote *ngIf="selectedCourse !== undefined">
-                            <table>
-                              <tbody>
-                                <tr>
-                                  <td>Название</td>
-                                  <td>{{ selectedCourse.name }}</td>
-                                </tr>
-                                <tr>
-                                  <td>Номер</td>
-                                  <td>{{ selectedCourse.Number }}</td>
-                                </tr>
-                                <tr>
-                                  <td>Начало</td>
-                                  <td>{{ selectedCourse.Start | date: "dd.MM.yyyy" }}</td>
-                                </tr>
-                                <tr>
-                                  <td>Конец</td>
-                                  <td>{{ selectedCourse.Finish | date: "dd.MM.yyyy" }}</td>
-                                </tr>
-                                <tr>
-                                  <td>Примечания</td>
-                                  <td>{{ selectedCourse.Notes }}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                        </blockquote>
-                      </div>
-                      <div class="col-md-6">
-                        <!-- <div class="form-group">
-                          <label>Номер документа</label>
-                          <input [(ngModel)]="newPerson.belmapo_docNumber" name="belmapo_docNumber" type="text" class="form-control">
-                        </div> -->
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <label>Тип обучения</label>
-                              <div class="form-group" *ngFor="let type of educTypes">
-                                <input required id="typeEduc-{{ type.id }}" [(ngModel)]="newPerson.belmapo_educType" name="belmapo_educType" type="radio" value="{{ type.id }}" class="regular-radio">
-                                <label for="typeEduc-{{ type.id }}"></label>
-                                <label>{{ type.name }}</label>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Место проживания</label>
-                              <div class="form-group" *ngFor="let resid of residance">
-                                <input required id="residence-{{ resid.id }}" [(ngModel)]="newPerson.belmapo_residence" name="belmapo_residence" type="radio"  value="{{ resid.id }}" class="regular-radio">
-                                <label for="residence-{{ resid.id }}"></label>
-                                <label>{{ resid.name }}</label>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Форма обучения</label>
-                              <div class="form-group" *ngFor="let form of educForms">
-                                <input required id="form-{{ form.id }}" [(ngModel)]="newPerson.belmapo_educForm" name="belmapo_educForm" type="radio"  value="{{ form.id }}" class="regular-radio">
-                                <label for="form-{{ form.id }}"></label>
-                                <label>{{ form.name }}</label>
-                              </div>
-                              <div class="col-md-6" *ngIf="newPerson.belmapo_educForm == 2">
-                              <div class="form-group">
-                                  <label>Направление-счёт</label>
-                                  <input [(ngModel)]="newPerson.belmapo_paymentData" name="belmapo_paymentData" type="text" class="form-control">
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div class="col-md-12">
+                      <button type="submit" class="btn btn-success">Сохранить</button>
+                      <input type="reset" class="btn btn-danger" value="Сбросить"/>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                          <button type="submit" class="btn btn-success">Сохранить</button>
-                          <input type="reset" class="btn btn-danger" value="Сбросить"/>
-                        </div>
-                    </div>
+                </div>
               </form>
             </div>
           </div>

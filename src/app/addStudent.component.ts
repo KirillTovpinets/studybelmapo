@@ -29,6 +29,10 @@ import {NotificationsService} from 'angular4-notify';
 		blockquote{
 			border-left-color: #9368E9;
 		}
+		fieldset{
+			padding:20px;
+			margin-bottom:10px;
+		}
 	`]
 })
 

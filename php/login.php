@@ -10,6 +10,13 @@
 	if($user){
 	    if(password_verify($pass, $user->pass)){
 	    	session_start();
+	    	$now = date("Y-m-d H:i:s");
+	    	$loginInfo = R::dispense("loginusers");
+	    	$loginInfo->userId = $user->id;
+	    	$loginInfo->user_ip = $_SERVER["REMOTE_ADDR"];
+	    	$loginInfo->user_agent = $_SERVER["HTTP_USER_AGENT"];
+	    	$loginInfo->time = $now;
+	    	R::store($loginInfo);
 	    	$_SESSION["loged_user"] = $user;
 	    	$message = "success";
 	    }else{

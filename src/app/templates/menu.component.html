@@ -1,16 +1,16 @@
 <div data-color="purple" data-image="img/sidebar-4.jpg" class="sidebar">
   <div class="sidebar-wrapper">
-    <div class="logo"><a href="!#main" class="simple-text">БелМАПО</a></div>
+    <div class="logo"><a [routerLink]="['studlist']" class="simple-text">БелМАПО</a></div>
     <ul class="nav">
-      <li><a routerLink="studlist"> <i class="pe-7s-home"></i>
+      <li [ngClass]="{'active': selectedPage.selectedPage == 1}"><a (click)="selectPage(1)" routerLink="studlist"> <i class="pe-7s-home"></i>
           <p>Главная</p></a></li>
-      <li><a routerLink="list"> <i class="pe-7s-note2"></i>
+      <li [ngClass]="{'active': selectedPage.selectedPage == 2}"><a (click)="selectPage(2)" routerLink="list"> <i class="pe-7s-note2"></i>
           <p>Реестр врачей</p></a></li>
-      <li><a routerLink="addDoctor"> <i class="pe-7s-add-user"></i>
-          <p>Добавить</p></a></li>
-      <li><a routerLink="reports"> <i class="pe-7s-news-paper"></i>
+      <li [ngClass]="{'active': selectedPage.selectedPage == 3}"><a (click)="selectPage(3)" routerLink="addDoctor"> <i class="pe-7s-add-user"></i>
+          <p>Зачислить</p></a></li>
+      <li [ngClass]="{'active': selectedPage.selectedPage == 4}"><a (click)="selectPage(4)" routerLink="reports"> <i class="pe-7s-news-paper"></i>
           <p>Отчёты</p></a></li>
-      <li><a routerLink="orders"> <i class="pe-7s-like2"></i>
+      <li [ngClass]="{'active': selectedPage.selectedPage == 5}"><a (click)="selectPage(5)" routerLink="orders"> <i class="pe-7s-like2"></i>
           <p>Приказы</p></a></li>
     </ul>
   </div>

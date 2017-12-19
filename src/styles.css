@@ -775,7 +775,7 @@ body > .navbar-collapse {
   .main-panel .navbar {
     margin-bottom: 0; 
     position:fixed;
-    width: 86%;
+    width: calc(100% - 260px);
     z-index: 1;
   }
 
@@ -2702,7 +2702,7 @@ body > .navbar-collapse {
   .sidebar {
     display: none; }
 
-  .main-panel {
+  .main-panel, .main-panel .navbar {
     width: 100%; }
 
   .navbar-transparent {

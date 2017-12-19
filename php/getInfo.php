@@ -9,7 +9,7 @@
 	$departmentLoged = false;
 	if($LogedUser->dep_id != 0 || $LogedUser->dep_id != NULL){
 	    $depId = $LogedUser->dep_id;
-	    if($LogedUser->is_cathedra != 0 OR $LogedUser->is_cathedra != NULL){
+	    if($LogedUser->is_cathedra != 0 && $LogedUser->is_cathedra != NULL){
 	        $cathedraLoged = true;
 	    }else{
 	        $departmentLoged = true;

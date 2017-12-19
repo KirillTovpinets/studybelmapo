@@ -10,10 +10,9 @@ import { PostDiplomaService } from "./services/postDiploma.service";
 
 export class PostDiplomaInfoComponent implements OnInit{
 	@Input() personId: string = "";
-	arrivals: any[] = [];
-	constructor(public arrivalsService: PostDiplomaService){}
+	postDiplomas: any[] = [];
+	constructor(public postDiploma: PostDiplomaService){}
 	ngOnInit():void{
-		// this.arrivalsService.get(this.personId).then(data => this.arrivals = data.json());
-		this.arrivalsService.get(this.personId).then(data => console.log(data));
+		this.postDiploma.get(this.personId).then(data => this.postDiplomas = data.json());
 	}
 }

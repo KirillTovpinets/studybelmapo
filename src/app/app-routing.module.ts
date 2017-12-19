@@ -1,18 +1,19 @@
-import { NgModule } 			from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { NgModule } 				from '@angular/core';
+import { Routes, RouterModule } 	from '@angular/router';
 
-import { AppComponent } 		from './app.component';
-import { LoginComponent } 		from './loginform.component';
-import { MainComponent } 		from './main.component';
-import { MenuComponent } 		from './menu.component';
-import { NavbarComponent } 		from './navbar.component';
-import { AccordionComponent } 	from './accordion.component';
-import { StudListComponent } 	from './studList.component';
-import { SearchStudentComponent } from './searchStudent.component';
-import { AddStudentComponent } from './addStudent.component';
-import { ReportComponent } from './report.component';
-import { OrderComponent } from './order.component';
-import { AuthGuard } from "./auth.guard";
+import { AppComponent } 			from './app.component';
+import { LoginComponent } 			from './loginform.component';
+import { MainComponent } 			from './main.component';
+import { MenuComponent } 			from './menu.component';
+import { FillDataComponent } 		from './fillData.component';
+import { NavbarComponent } 			from './navbar.component';
+import { AccordionComponent } 		from './accordion.component';
+import { StudListComponent } 		from './studList.component';
+import { SearchStudentComponent } 	from './searchStudent.component';
+import { AddStudentComponent } 		from './addStudent.component';
+import { ReportComponent } 			from './report.component';
+import { OrderComponent } 			from './order.component';
+import { AuthGuard } 				from "./auth.guard";
 
 import { SirnameComponent } from './searchComponents/sirname.component';
 import { GenderComponent } from './searchComponents/gender.component';
@@ -23,6 +24,8 @@ import { AppointmentComponent } from './searchComponents/appointment.component';
 import { SpecialityComponent } from './searchComponents/speciality.component';
 import { QualificationComponent } from './searchComponents/qualification.component';
 import { CategoryComponent } from './searchComponents/category.component';
+import { ChooseCourseComponent } from './FillData/chooseCourse.component';
+import { ChooseStudentComponent } from './FillData/chooseStudent.component';
 
 const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
@@ -51,7 +54,17 @@ const routes: Routes = [
 					
 				]
 			},
-			{ path: 'addDoctor', component: AddStudentComponent},
+			// { path: 'addDoctor', component: AddStudentComponent},
+			{ 
+				path: 'addDoctor', 
+				component: FillDataComponent,
+				children: [
+					{ path: '', redirectTo: 'chooseCourse', pathMatch: 'full'},
+					{ path: 'chooseCourse', component: ChooseCourseComponent},
+					{ path: 'chooseStudent/:id', component: ChooseStudentComponent},
+					{ path: 'addNew/:id', component: AddStudentComponent},
+				]
+			},
 			{ path: 'reports', component: ReportComponent},
 			{ path: 'orders', component: OrderComponent},
 
