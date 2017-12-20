@@ -7,7 +7,13 @@
     $depId = $LogedUser->dep_id;
 	$mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die ("Ошибка подключения к базе данных: " . mysqli_connect_error());
 	$mysqli->query("SET NAMES utf8");
-	$query = "SELECT * FROM cources where cathedraId = $depId";
+	$coundition = "";
+	if (isset($_GET["id"])) {
+		$courseId = $_GET["id"];
+		$condition = "AND id = $courseId";
+	}
+
+	$query = "SELECT * FROM cources where cathedraId = $depId $condition";
 	$result = $mysqli->query($query) or die ("Ошибка запроса '$query':" . mysqli_error($mysqli));
 	$response = array();
 	while ($row = $result->fetch_assoc()) {

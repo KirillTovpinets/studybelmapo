@@ -7,6 +7,7 @@ import { PersonService } from './services/savePerson.service';
 import  { Person } from "./model/person.class";
 import { PreloaderComponent } from "./preloader.component";
 import {NotificationsService} from 'angular4-notify';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
 	templateUrl: "templates/addStudent.component.html",
@@ -33,6 +34,15 @@ import {NotificationsService} from 'angular4-notify';
 			padding:20px;
 			margin-bottom:10px;
 		}
+		.tab-content{
+			padding:20px;
+		}
+		tabset input, select{
+			margin-bottom:10px;
+		}
+		.newValue{
+			z-index:0;
+		}
 	`]
 })
 
@@ -51,6 +61,14 @@ export class AddStudentComponent implements OnInit{
 	private educTypes: any[] = [];
 	private educForms: any[] = [];
 	private residance: any[] = [];
+
+	private specialityDocArr: any[] = [];
+	private specialityRetrArr: any[] = [];
+	private specialityOtherArr: any[] = [];
+	private qualificationMainArr: any[] = [];
+	private qualificationAddArr: any[] = [];
+	private qualificationOtherArr: any[] = [];
+
 	public newPerson:Person = new Person();
 
 	private isLoaded: boolean = false;
@@ -61,11 +79,13 @@ export class AddStudentComponent implements OnInit{
 	minDate = new Date(1970, 1, 1);
   	maxDate = new Date();
   	locale = "ru";
+  	courseId:number = 0;
   	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: this.locale });
 
 	constructor(private dataService: PersonalDataService,
 				private saveService: PersonService,
-				private notify: NotificationsService){}
+				private notify: NotificationsService,
+				private router: ActivatedRoute){}
 	selectCourse(courseId:number){
 		for (var course of this.belmapo_courses) {
 			if(course.id === courseId){
@@ -83,7 +103,9 @@ export class AddStudentComponent implements OnInit{
 		});
 	}
 	ngOnInit():void{
+		this.courseId = this.router.snapshot.params["id"]
 		this.dataService.getData().then(data => {
+			console.log(data.json());
 			for (let faculty of data.json().facBel) {
 				this.faculties.push(faculty);
 			}
@@ -123,10 +145,34 @@ export class AddStudentComponent implements OnInit{
 			for (var course of data.json().coursesBel) {
 				this.belmapo_courses.push(course);
 			}
+
+			for (var obj of data.json().specialityDocArr) {
+				this.specialityDocArr.push(obj);
+			}			
+				
+			for (var obj of data.json().specialityRetrArr) {
+				this.specialityRetrArr.push(obj);
+			}				
+				
+			for (var obj of data.json().specialityOtherArr) {
+				this.specialityOtherArr.push(obj);
+			}				
+				
+			for (var obj of data.json().qualificationMainArr) {
+				this.qualificationMainArr.push(obj);
+			}				
+				
+			for (var obj of data.json().qualificationAddArr) {
+				this.qualificationAddArr.push(obj);
+			}				
+				
+			for (var obj of data.json().qualificationOtherArr) {
+				this.qualificationOtherArr.push(obj);
+			}				
+				
 			this.isLoaded = true;
 		});
 	}
-
 	saveNewParameter(value:string, table:string, array: any[]){
 		this.outputData.value = value;
 		this.outputData.table = table;

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
+import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
 import { AccordionModule, ModalModule, TabsModule, BsDatepickerModule, TooltipModule } from 'ngx-bootstrap';
 // Components
 import { AppComponent } from './app.component';
@@ -98,7 +99,8 @@ defineLocale('ru', ru);
     BsDatepickerModule.forRoot(),
     TooltipModule.forRoot(),
     BrowserAnimationsModule,
-    NotificationsModule
+    NotificationsModule,
+    Ng2AutoCompleteModule
   ],
   providers: [ CookieService, NotificationsService, AuthGuard, LoginService, CurrentCourcesListService, GlobalParamsService ],
   entryComponents: [PersonalInfoComponent],

@@ -3,14 +3,11 @@ import { Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 @Injectable()
-export class CurrentCourcesListService {
-	url = "php/getCurrentCoursesList.php"
+export class StudentListService {
+	url = "php/getStudList.php"
 	constructor(private http: Http) {}
 
 	get(): Promise<any>{
 		return this.http.get(this.url).toPromise();
-	}
-	getById(id:number):Promise<any>{
-		return this.http.get(this.url + "?id=" + id).toPromise();
 	}
 }

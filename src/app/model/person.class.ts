@@ -18,9 +18,16 @@ export class Person{
 	private tel_number:string;
 	private experiance_general:number;
 	private experiance_special:number;
+	private experiance_last:number;
 	private insurance_number:string;
 	private department:number;
 	private faculty:number;
+	private speciality_doc:number;
+	private speciality_other:number;
+	private speciality_retraining:number;
+	private qualification_main:number;
+	private qualification_add:number;
+	private qualification_other:number;
 	private diploma_number:string;
 	private belmapo_faculty:number;
 	private belmapo_cathedra:number;
@@ -42,6 +49,7 @@ export class Person{
 		this.region = 1;
 		this.experiance_general = 1;
 		this.experiance_special = 1;
+		this.experiance_last = 1;
 		this.department = 1;
 		this.faculty = 1;
 		this.belmapo_faculty = 1;
@@ -51,6 +59,12 @@ export class Person{
 		this.belmapo_residense = 1;
 		this.belmapo_educForm = 1;
 		this.belmapo_paymentData = 1;
+		this.speciality_doc = 1;
+		this.speciality_other = 1;
+		this.speciality_retraining = 1;
+		this.qualification_main = 1;
+		this.qualification_add = 1;
+		this.qualification_other = 1;
 
 		// this.surname = "Товпинец";
 		// this.name = "Кирилл";
