@@ -7,7 +7,7 @@
     $depId = $LogedUser->dep_id;
 	$mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die ("Ошибка подключения к базе данных: " . mysqli_connect_error());
 	$mysqli->query("SET NAMES utf8");
-	$coundition = "";
+	$condition = "";
 	if (isset($_GET["id"])) {
 		$courseId = $_GET["id"];
 		$condition = "AND id = $courseId";

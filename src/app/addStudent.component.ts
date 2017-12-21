@@ -181,27 +181,27 @@ export class AddStudentComponent implements OnInit{
 			array.push(data.json());
 			switch (table){
 				case "personal_establishment":{
-					this.newPerson.set_educational_establishment(data.id);
+					this.newPerson.educational_establishment = data.id;
 					break;
 				}
 				case "countries":{
-					this.newPerson.set_cityzenship(data.json().id);
+					this.newPerson.cityzenship = data.json().id;
 					break;
 				}
 				case "personal_appointment":{
-					this.newPerson.set_appointment(data.json().id);
+					this.newPerson.appointment = data.json().id;
 					break;
 				}
 				case "personal_organizations":{
-					this.newPerson.set_organization(data.json().id);
+					this.newPerson.organization = data.json().id;
 					break;
 				}
 				case "personal_department":{
-					this.newPerson.set_department(data.json().id);
+					this.newPerson.department = data.json().id;
 					break;
 				}
 				case "personal_faculty":{
-					this.newPerson.set_faculty(data.json().id);
+					this.newPerson.faculty = data.json().id;
 					break;
 				}
 			}

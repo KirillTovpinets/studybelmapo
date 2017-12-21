@@ -58,6 +58,7 @@ export class SirnameComponent implements OnInit{
 		}
 		this.searchValue = event.target.value;
 		this.search.searchPerson(this.searchValue).then(data => {
+			console.log(data._body);
 			this.searchDoctors = data.json();
 		});
 	}

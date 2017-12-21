@@ -10,8 +10,8 @@ const cathedras: string[] = [
 export class PersonalInfoService{
 	private getInfoUrl = 'php/getPersonalInfo.php';
 	constructor(private http: Http){};
-	getInfo(id:string): Promise<any>{
-		return this.http.get(this.getInfoUrl + "?id=" + id)
+	getInfo(id:string, selected?:boolean): Promise<any>{
+		return this.http.get(this.getInfoUrl + "?id=" + id + "&selected=" + selected)
 					.toPromise();
 	}
 }
