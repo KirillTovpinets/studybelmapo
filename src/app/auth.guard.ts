@@ -22,12 +22,10 @@ export class AuthGuard implements CanActivate {
     }else{
       this.checkAuth.check().subscribe(response => {
        try{
-         console.log(response.json());
          var user = response.json();
          this.isLoggedIn =  true;
          this.router.navigateByUrl(this.redirectUrl);
        }catch(e){
-         console.log("failed");
          this.isLoggedIn = false;
          this.router.navigate(["/login"]);
        }

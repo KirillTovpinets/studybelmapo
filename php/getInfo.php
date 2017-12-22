@@ -42,7 +42,7 @@
     		$cathedraList = array();
     		while ($cathedra = $allCathedras->fetch_assoc()) {
     			$cathedraId = $cathedra["id"];
-    			$query = "SELECT cources.id, cources.Number, cources.name, cources.Start, cources.Finish FROM  arrivals INNER JOIN cources ON arrivals.CourseId = cources.id WHERE arrivals.CathedrId = $cathedraId AND cources.Finish > '$today'";
+    			$query = "SELECT cources.id, cources.Number, cources.name, cources.Start, cources.Finish FROM cources WHERE cources.cathedraId = $cathedraId AND cources.Finish > '$today'";
     			$allCathedraCourses = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
     			// if ($allCathedraCourses->{"num_rows"} === 0) {
 	    		// 	continue;
@@ -52,11 +52,10 @@
     				$courseId = $course["id"];
     				$query = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseId";
     				$allStudents = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
-    				// if ($allStudents->{"num_rows"} === 0) {
-		    		// 	continue;
-		    		// }
+    				if ($allStudents->{"num_rows"} === 0) {
+		    			continue;
+		    		}
     				$studentList = array();
-    				echo count($courseList) . "\n";
     				while ($student = $allStudents->fetch_assoc()) {
     					array_push($studentList, $student);
     				}
