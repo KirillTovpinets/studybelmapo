@@ -9,7 +9,7 @@
               <h4 class="title">Информация слушателя</h4>
             </div>
             <div class="content">
-              <form (ngSubmit)="(addForm.valid && SavePerson(newPerson))" novalidate id="AddpersonalInfo" #addForm="ngForm">
+              <form (ngSubmit)="(addForm.valid && fillLastInfo(setLastInfoTpl))" novalidate id="AddpersonalInfo" #addForm="ngForm">
                 {{addForm.errors}}
                 <tabset>
 
@@ -236,14 +236,14 @@
                           <div class="col-md-6">
                             <div class="form-group">
                               <label>Основная</label>
-                              <input auto-complete [(ngModel)]="newPerson.qualificationMainCategory" [source]="qualificationOtherArr" name="qualificationOther" class="form-control">
+                              <input [(ngModel)]="newPerson.qualification_main" name="qualificationMain" class="form-control">
                             </div>
                             <div class="form-group">
                               <label>Категория</label>
                               <select name="mainCategory" [(ngModel)]="newPerson.mainCategory" class="form-control">
-                                <option value="Первая">Первая</option>
-                                <option value="Вторая">Вторая</option>
-                                <option value="Высшая">Высшая</option>
+                                <option value="1">Первая</option>
+                                <option value="2">Вторая</option>
+                                <option value="3">Высшая</option>
                               </select>
                             </div>
                             <div class="form-group">
@@ -254,14 +254,14 @@
                           <div class="col-md-6">
                             <div class="form-group">
                               <label>Дополнительная</label>
-                              <input auto-complete [(ngModel)]="newPerson.qualificationAddCategory" [source]="qualificationOtherArr" name="qualificationOther" class="form-control">
+                              <input [(ngModel)]="newPerson.qualification_add" name="qualificationAdd" class="form-control">
                             </div>
                             <div class="form-group">
                               <label>Категория</label>
                               <select name="addCategory" [(ngModel)]="newPerson.addCategory" class="form-control">
-                                <option value="Первая">Первая</option>
-                                <option value="Вторая">Вторая</option>
-                                <option value="Высшая">Высшая</option>
+                                <option value="1">Первая</option>
+                                <option value="2">Вторая</option>
+                                <option value="3">Высшая</option>
                               </select>
                             </div>
                             <div class="form-group">
@@ -323,19 +323,19 @@
                         <div class="col-md-4">
                           <div class="form-group">
                             <label>Домашний телефон</label>
-                            <input type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="newPerson.tel_number" name="tel_number" class="form-control">
+                            <input type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="newPerson.tel_number_home" name="tel_number_home" class="form-control">
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
                             <label>Рабочий телефон</label>
-                            <input type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="newPerson.tel_number" name="tel_number" class="form-control">
+                            <input type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="newPerson.tel_number_work" name="tel_number_work" class="form-control">
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
                             <label>Мобильный телефон</label>
-                            <input type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="newPerson.tel_number" name="tel_number" class="form-control">
+                            <input type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="newPerson.tel_number_mobile" name="tel_number_mobile" class="form-control">
                           </div>
                         </div>
                       </fieldset>
@@ -367,37 +367,133 @@
                         <div class="col-md-3">
                           <div class="form-group">
                             <label>Страна</label>
-                            <input type="tel" [(ngModel)]="newPerson.country" name="country" class="form-control">
+                            <input auto-complete [source]="personal_cityzenships" [(ngModel)]="newPerson.country" name="country" class="form-control">
                           </div>
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
                             <label>Область</label>
-                            <input type="tel" [(ngModel)]="newPerson.region" name="region" class="form-control">
+                            <input auto-complete [source]="personal_regions" type="text" [(ngModel)]="newPerson.region" name="region" class="form-control">
                           </div>
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
                             <label>Населённый пункт</label>
-                            <input type="tel" [(ngModel)]="newPerson.cityName" name="cityName" class="form-control">
+                            <input auto-complete [source]="personal_cities" type="text" [(ngModel)]="newPerson.city" name="cityName" class="form-control">
                           </div>
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
                             <label>Улица</label>
-                            <input type="tel" [(ngModel)]="newPerson.street" name="street" class="form-control">
+                            <input type="text" [(ngModel)]="newPerson.street" name="street" class="form-control">
+                          </div>
+                        </div>
+                        <div class="col-md-3 no-padding">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label>Дом/корпус</label>
+                              <input type="tel" [(ngModel)]="newPerson.building" name="building" class="form-control">
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label>Квартира</label>
+                              <input type="tel" [(ngModel)]="newPerson.flat" name="flat" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                  </tab>
+                  <tab heading="Научная деятельность">
+                    <div class="content">
+                      <fieldset>
+                        <legend><h5>Звание</h5></legend>
+                        <div class="col-md-6">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <input type="radio" name="isDoctor" class="regular-radio" id="Candidate" [(ngModel)]="newPerson.isDoctor" value="1">
+                              <label for="Candidate"></label>
+                              <label>Кандидат медицинских наук</label>
+
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <input type="radio" name="isDoctor" class="regular-radio" id="Doctor" [(ngModel)]="newPerson.isDoctor" value="2">
+                              <label for="Doctor"></label>
+                              <label>Доктор медицинских наук</label>
+
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                      <fieldset>
+                        <legend><h5>Степени, награды, изобретения</h5></legend>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="">Отрасль науки</label>
+                            <input type="text" class="form-control" [(ngModel)]="newPerson.researchField" name="researchField">
                           </div>
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Дом/корпус</label>
-                            <input type="tel" [(ngModel)]="newPerson.building" name="building" class="form-control">
+                            <label for="">Год утверждения</label>
+                            <input type="text" [(ngModel)]="newPerson.statusApproveDate" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueBirthday" name="approveDate" class="date-picker form-control" #approveDate="ngModel">
                           </div>
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Квартира</label>
-                            <input type="tel" [(ngModel)]="newPerson.flat" name="flat" class="form-control">
+                            <label for="">Специальность</label>
+                            <input type="text" [(ngModel)]="newPerson.statusSpeciality"  name="statusSpeciality" class="form-control">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="">Шифр</label>
+                            <input type="text" [(ngModel)]="newPerson.statusCode" name="statusCode" class="form-control">
+                          </div>
+                        </div>
+                      </fieldset>
+                      <fieldset>
+                        <legend><h5>Патенты/изобретения, публикации, монографии (количество)</h5></legend>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="">Патенты</label>
+                            <input type="text" class="form-control" [(ngModel)]="newPerson.patentNumber" name="patentNumber">
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="">Публикации</label>
+                            <input type="text" class="form-control" [(ngModel)]="newPerson.publicationsNumb" name="publicationsNumb">
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="">Монографии</label>
+                            <input type="text" [(ngModel)]="newPerson.monografsNumb" class="form-control" name="monografsNumb">
+                          </div>
+                        </div>
+                      </fieldset>
+                      <fieldset>
+                        <legend><h5>Правительственные награды (количество)</h5></legend>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="">Орденов</label>
+                            <input type="text" class="form-control" [(ngModel)]="newPerson.ordenNumb" name="ordenNumb">
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="">Медалей</label>
+                            <input type="text" class="form-control" [(ngModel)]="newPerson.medalNumb" name="medalNumb">
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="">Грамот</label>
+                            <input type="text" [(ngModel)]="newPerson.gramotaNumb" class="form-control" name="gramotaNumb">
                           </div>
                         </div>
                       </fieldset>
@@ -406,7 +502,7 @@
                 </tabset>
                 <div class="row">
                     <div class="col-md-12">
-                      <button type="submit" class="btn btn-success">Сохранить</button>
+                      <button type="submit" class="btn btn-success">Далее</button>
                       <input type="reset" class="btn btn-danger" value="Сбросить"/>
                       <a class="btn btn-primary" [routerLink]="['../../chooseStudent', courseId]">Назад</a>
                     </div>
@@ -418,3 +514,78 @@
       </div>
     </div>
   </div>
+
+  <ng-template #setLastInfoTpl>
+  <div class="modal-body">
+    <div class="card">
+          <div class="header"> 
+            <h4 class="title">Введите данные обучения</h4>
+          </div>
+          <div class="content">
+              <form #personInfo="ngForm">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                <fieldset>
+                  <legend>Форма обучения</legend>
+                  <div>
+                    <input type="radio" checked name="formEduc" [(ngModel)]="newPerson.belmapo_educForm" id="pay" class="regular-radio" value="1">
+                    <label for="pay"></label>
+                    <label>Бюджетное</label>
+                  </div>
+                  <div>
+                    <input type="radio" name="formEduc" [(ngModel)]="newPerson.belmapo_educForm" id="budget" class="regular-radio" value="2">
+                    <label for="budget"></label>
+                    <label>Платное</label>
+                  </div>
+                  <input type="text" class="form-control" *ngIf="newPerson.belmapo_educForm == 2" required [(ngModel)]="newPerson.belmapo_paymentData" name="paymentData" placeholder="Введите номер договора">
+                </fieldset>
+              </div>
+                  </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <fieldset>
+                  <legend>Место пребывания</legend>
+                  <div>
+                    <input type="radio" checked [(ngModel)]="newPerson.belmapo_residense" name="residence" class="regular-radio" id="resid1" value="1">
+                    <label for="resid1"></label>
+                    <label for="">Общежитие №1</label>
+                  </div>
+                  <div>
+                    <input type="radio" [(ngModel)]="newPerson.belmapo_residense" name="residence" class="regular-radio" id="resid2" value="2">
+                    <label for="resid2"></label>
+                    <label for="">Общежитие №2</label>
+                  </div>
+                  <div>
+                    <input type="radio" [(ngModel)]="newPerson.belmapo_residense" name="residence" class="regular-radio" id="resid3" value="3">
+                    <label for="resid3"></label>
+                    <label for="">Общежитие №3</label>
+                  </div>
+                  <div>
+                    <input type="radio" [(ngModel)]="newPerson.belmapo_residense" name="residence" class="regular-radio" id="resid4" value="4">
+                    <label for="resid4"></label>
+                    <label for="">Общежитие №4</label>
+                  </div>
+                  <div>
+                    <input type="radio" [(ngModel)]="newPerson.belmapo_residense" name="residence" class="regular-radio" id="resid5" value="5">
+                    <label for="resid5"></label>
+                    <label for="">Общежитие №5</label>
+                  </div>
+                  <div>
+                    <input type="radio" [(ngModel)]="newPerson.belmapo_residense" name="residence" class="regular-radio" id="resid6" value="6">
+                    <label for="resid6"></label>
+                    <label for="">Своё жильё</label>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+          </div>
+          <div class="text-center">
+            <a (click)="SavePerson(newPerson)" class="btn btn-success">Сохранить</a>
+            <a (click)="modal.hide(1)" class="btn btn-danger">Отмена</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>

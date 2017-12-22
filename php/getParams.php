@@ -42,6 +42,7 @@
 	$qualificationMainObj = getSqlObj("qualification_main", $mysqli);
 	$qualificationAddObj = getSqlObj("qualification_add", $mysqli);
 	$qualificationOtherObj = getSqlObj("qualification_other", $mysqli);
+	$cities = getSqlObj("cities", $mysqli);
 
 	$estArr = getArray($estObj);
 	$residArr = getArray($residObj);
@@ -65,6 +66,7 @@
 	$qualificationMainArr = getArray($qualificationMainObj);
 	$qualificationAddArr = getArray($qualificationAddObj);
 	$qualificationOtherArr = getArray($qualificationOtherObj);
+	$citiesArr = getArray($cities);
 
 	$response['estArr'] = $estArr;
 	$response['residArr'] = $residArr;
@@ -87,5 +89,6 @@
 	$response['qualificationMainArr'] = $qualificationMainArr;
 	$response['qualificationAddArr'] = $qualificationAddArr;
 	$response['qualificationOtherArr'] = $qualificationOtherArr;
+	$response['citiesArr'] = $citiesArr;
 	echo json_encode($response);
 ?>

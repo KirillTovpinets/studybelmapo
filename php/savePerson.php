@@ -8,10 +8,39 @@
 	$mysqli->query("SET NAMES utf8");
 
 	$data = json_decode(file_get_contents("php://input"));
-	$isDoctor = $data->isDoctor == true ? 1 : 0;
-	$isCowoker = $data->isCowoker == true ? 1 : 0;
-	$isMale = $data->isMale == true ? 1 : 0;
-	$mysqli->query("INSERT INTO personal_card (surname, name, patername, birthday, ee, citizenship, diploma_start, appointment, isDoctor, tel_number, organization, region, isMale, isCowoker, experience_general, experiance_special, insurance_number, department, faculty, name_in_to_form, diploma_number) VALUES ('$data->surname', '$data->name', '$data->patername', '$data->birthday', '$data->educational_establishment', '$data->cityzenship', '$data->diploma_start', '$data->appointment', '$isDoctor', '$data->tel_number', '$data->organization', '$data->region', '$isMale', '$isCowoker', '$data->experiance_general', '$data->experiance_special', '$data->insurance_number', '$data->department', '$data->faculty', '$data->nameInDativeForm', '$data->diploma_number')") or die ("Ошибка: " . mysqli_error($mysqli));
+	$isDoctor = $data->_isDoctor == true ? 1 : 0;
+	$isCowoker = $data->_organization->id == 4530 ? 1 : 0;
+	$isMale = $data->_isMale == true ? 1 : 0;
+
+	$educational_establishment = $data->_educational_establishment->id;
+	$cityzenship = $data->_cityzenship->id;
+	$appointment = $data->_appointment->id;
+	$organization = $data->_organization->id;
+	$region = $data->_region->id;
+	$department = $data->_department->id;
+	$faculty = $data->_faculty->id;
+	$mysqli->query("INSERT INTO personal_card (surname, name, patername, birthday, ee, citizenship, diploma_start, appointment, isDoctor, tel_number, organization, region, isMale, isCowoker, experience_general, experiance_special, insurance_number, department, faculty, name_in_to_form, diploma_number) VALUES (
+		'$data->_surname', 
+		'$data->_name', 
+		'$data->_patername', 
+		'$data->_birthday', 
+		'$educational_establishment',
+		'$cityzenship',
+		'$data->_diploma_start',
+		'$appointment',
+		'$data->_isDoctor', 
+		'$data->_tel_number_home', 
+		'$organization',
+		'$region',
+		'$isMale', 
+		'$isCowoker', 
+		'$data->_experiance_general', 
+		'$data->_experiance_special', 
+		'$data->_insurance_number', 
+		'$department',
+		'$faculty',
+		'$data->_nameInDativeForm', 
+		'$data->_diploma_number')") or die ("Ошибка: " . mysqli_error($mysqli));
 	
 	
 	$date = date("Y-m-d");
@@ -27,7 +56,18 @@
 	$newPersonId = $newPersonIdArr["newPersonId"];
 	$cathedraArr = $cathedraObj->fetch_assoc();
 	$faculty = $cathedraArr["facultId"];
-	$mysqli->query("INSERT INTO arrivals (date, FacultId, CathedrId, CourseId, GroupNum, EducType, ResidPlace, FormEduc, Dic_count, Status, PersonId) VALUES ('$date', '$faculty', '$cathedraId', '$data->belmapo_course', '$data->belmapo_course', '$data->belmapo_educType', '$data->belmapo_residense', '$data->belmapo_educForm', '$data->belmapo_paymentData', '0', '$newPersonId')") or die ("Ошибка: " . mysqli_error($mysqli));
+	$mysqli->query("INSERT INTO arrivals (date, FacultId, CathedrId, CourseId, GroupNum, EducType, ResidPlace, FormEduc, Dic_count, Status, PersonId) VALUES (
+		'$date', 
+		'$faculty', 
+		'$cathedraId', 
+		'$data->_belmapo_course', 
+		'$data->_belmapo_course', 
+		'$data->_belmapo_educType', 
+		'$data->_belmapo_residense', 
+		'$data->_belmapo_educForm', 
+		'$data->_belmapo_paymentData', 
+		'0', 
+		'$newPersonId')") or die ("Ошибка: " . mysqli_error($mysqli));
 
 	mysqli_close($mysqli);
 	echo "Слушатель зачислен";

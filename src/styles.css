@@ -64,7 +64,9 @@ section {
 .no-margin {
     margin: 0
 }
-
+.no-padding{
+  padding: 0;
+}
 .range-slider {
     border: 1px solid #ddd;
     margin: 1.11111rem 0;

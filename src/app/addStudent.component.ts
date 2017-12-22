@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { PersonalDataService } from "./services/personalData.service";
 import { BsDatepickerConfig } from "ngx-bootstrap/datepicker";
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { listLocales } from 'ngx-bootstrap/bs-moment';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { PersonService } from './services/savePerson.service';
@@ -11,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
 	templateUrl: "templates/addStudent.component.html",
-	providers: [PersonalDataService, PersonService, NotificationsService],
+	providers: [PersonalDataService, PersonService, NotificationsService, BsModalService],
 	styles: [`
 		table tbody tr td{
 			font-size:16px;
@@ -43,6 +44,9 @@ import { ActivatedRoute } from '@angular/router';
 		.newValue{
 			z-index:0;
 		}
+		.no-padding{
+			padding:0px;
+		}
 	`]
 })
 
@@ -52,6 +56,7 @@ export class AddStudentComponent implements OnInit{
 	private personal_appointments: any[] = [];
 	private personal_organizations: any[] = [];
 	private personal_regions: any[] = [];
+	private personal_cities:any[] = [];
 	private personal_departments: any[] = [];
 	private personal_establishments: any[] = [];
 	private belmapo_courses:any[] = [];
@@ -75,6 +80,7 @@ export class AddStudentComponent implements OnInit{
 
 	private outputData:any = {};
 	private newValue: string = "";
+	private fillDataModal: BsModalRef;
 	bsValue: Date = new Date();
 	minDate = new Date(1970, 1, 1);
   	maxDate = new Date();
@@ -85,7 +91,8 @@ export class AddStudentComponent implements OnInit{
 	constructor(private dataService: PersonalDataService,
 				private saveService: PersonService,
 				private notify: NotificationsService,
-				private router: ActivatedRoute){}
+				private router: ActivatedRoute,
+				private modal: BsModalService){}
 	selectCourse(courseId:number){
 		for (var course of this.belmapo_courses) {
 			if(course.id === courseId){
@@ -97,10 +104,17 @@ export class AddStudentComponent implements OnInit{
 	SavePerson(inputData:any): void{
 		inputData.birthday = inputData.birthdayDate.toISOString().slice(0,10);
 		inputData.diploma_start = inputData.diploma_startDate.toISOString().slice(0,10);
+		inputData.mainCategory_date = inputData.mainCategoryDate.toISOString().slice(0,10);
+		inputData.addCategory_date = inputData.addCategoryDate.toISOString().slice(0,10);
+		inputData.courseId = this.courseId;
 		this.saveService.save(inputData).then(data => {
 			this.notify.addInfo(data._body);
 			this.newPerson = new Person();
+			this.modal.hide(1);
 		});
+	}
+	fillLastInfo(template: TemplateRef<any>):void{
+		this.fillDataModal = this.modal.show(template, {class: "modal-md"});
 	}
 	ngOnInit():void{
 		this.courseId = this.router.snapshot.params["id"]
@@ -168,8 +182,10 @@ export class AddStudentComponent implements OnInit{
 				
 			for (var obj of data.json().qualificationOtherArr) {
 				this.qualificationOtherArr.push(obj);
+			}
+			for (var obj of data.json().citiesArr) {
+				this.personal_cities.push(obj);
 			}				
-				
 			this.isLoaded = true;
 		});
 	}
