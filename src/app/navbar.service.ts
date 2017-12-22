@@ -9,4 +9,8 @@ export class NavbarService {
   getInfo():Observable<any>{
   	return this.http.get("php/checkLogin.php");
   }
+
+  logout():Observable<any>{
+  	return this.http.get("php/logout.php");
+  }
 }

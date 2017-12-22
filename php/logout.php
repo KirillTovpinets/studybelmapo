@@ -5,9 +5,8 @@
 	$logedUser = $_SESSION["loged_user"];
 	$userId = $logedUser->id;
 	R::setup("mysql:host=$host;dbname=$dbname", $user, $passwd);
-	$logedInfo = R:findOne("login_users", "userId = ?", array($userId));
+	$logedInfo = R::findOne("loginusers", "user_id = ?", array($userId));
 	R::trash($logedInfo);
-    unset($_SESSION["loged_user"]);
-    $_SESSION["loged_user"] = NULL;
+	print_r($logedInfo);
 	session_destroy();
  ?>

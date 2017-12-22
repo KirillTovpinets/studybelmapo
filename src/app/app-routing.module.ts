@@ -33,7 +33,7 @@ const routes: Routes = [
 	{ 
 		path: 'main', 
 		component: MainComponent,
-		// canActivate: [AuthGuard],
+		canActivate: [AuthGuard],
 		children: [
 			{ path: '', redirectTo: 'studlist', pathMatch: 'full' },
 			{ path: 'studlist', component: StudListComponent},

@@ -48,6 +48,7 @@ import { CurrentCourcesListService } from './FillData/services/getCurrentCources
 // Services
 import { CookieService } from 'ngx-cookie-service';
 import { GlobalParamsService } from './Globalparams.service';
+import { CheckAuthService } from './services/checkAuth.service';
 
 import { defineLocale } from 'ngx-bootstrap/bs-moment';
 import { ru } from 'ngx-bootstrap/locale';
@@ -102,7 +103,13 @@ defineLocale('ru', ru);
     NotificationsModule,
     Ng2AutoCompleteModule
   ],
-  providers: [ CookieService, NotificationsService, AuthGuard, LoginService, CurrentCourcesListService, GlobalParamsService ],
+  providers: [ CookieService, 
+               NotificationsService, 
+               AuthGuard, 
+               LoginService, 
+               CurrentCourcesListService, 
+               GlobalParamsService,
+               CheckAuthService ],
   entryComponents: [PersonalInfoComponent],
   bootstrap: [AppComponent]
 })

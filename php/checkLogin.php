@@ -7,7 +7,7 @@
 	$mysqli->query("SET NAMES utf8");
 	$user_ip = $_SERVER["REMOTE_ADDR"];
 	$user_agent = $_SERVER["HTTP_USER_AGENT"];
-	$logedUser = $mysqli->query("SELECT * FROM login_users WHERE user_ip = '$user_ip' AND user_agent = '$user_agent'") or die ("Ошибка запроса: " . mysqli_error($mysqli));
+	$logedUser = $mysqli->query("SELECT * FROM loginusers WHERE user_ip = '$user_ip' AND user_agent = '$user_agent'") or die ("Ошибка запроса: " . mysqli_error($mysqli));
 	if ($logedUser->{"num_rows"} > 0) {
 		session_start();
 		$user = $_SESSION["loged_user"];

@@ -12,7 +12,7 @@
 	    	session_start();
 	    	$now = date("Y-m-d H:i:s");
 	    	$loginInfo = R::dispense("loginusers");
-	    	$loginInfo->userId = $user->id;
+	    	$loginInfo->user_id = $user->id;
 	    	$loginInfo->user_ip = $_SERVER["REMOTE_ADDR"];
 	    	$loginInfo->user_agent = $_SERVER["HTTP_USER_AGENT"];
 	    	$loginInfo->time = $now;
