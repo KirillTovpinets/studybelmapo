@@ -186,11 +186,18 @@ export class ChooseStudentComponent implements OnInit {
 	Search(event:any): void{
 		if (event.target.value === "") {
 			this.searchResult = [];
+			this.message = "";
 			return;
 		}
 		this.searchValue = event.target.value;
 		this.search.searchPerson(this.searchValue, {personal_card: "1"}).then(data => {
-			this.searchResult = data.json();
+			if (data.json().length !== 0) {
+				this.message = "";
+				this.searchResult = data.json();
+			}else{
+				this.searchResult = [];
+				this.message = "По вашему запросу ничего не найдено";
+			}
 		});
 	}
 }

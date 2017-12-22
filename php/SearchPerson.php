@@ -19,7 +19,7 @@
 		$paramsCondition .= " AND (YEAR(CURDATE()) - YEAR(personal_card.birthday)) >= $min AND (YEAR(CURDATE()) - YEAR(personal_card.birthday)) <= $max";
 	}
 	if(isset($personal_card) && $personal_card == "1"){
-		$query = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card WHERE personal_card.surname LIKE '$value%' LIMIT 50";
+		$query = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card WHERE concat(personal_card.surname, ' ', personal_card.name, ' ', personal_card.patername) LIKE '$value%' LIMIT 50";
 	}else{
 		$query = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.unique_Id = arrivals.PersonLink WHERE personal_card.surname LIKE '$value%' $paramsCondition LIMIT 50";
 	}
@@ -28,7 +28,13 @@
 	$response = array();
 
 	while ($row = $result->fetch_assoc()) {
-		array_push($response, $row);
+		$name = $row["name"];
+		$surname = $row["surname"];
+		$patername = $row["patername"];
+		$full_name = $surname . " " . $name . " " . $patername;
+		if (stristr($full_name, $value)) {
+			array_push($response, $row);
+		}
 	}
 
 	mysqli_close($mysqli);
