@@ -102,7 +102,9 @@
 		$inputRegions = array();
 		$inputParamsIds = array();
 		foreach ($tablesPersonal as $key => $value) {
-			if (isset($dataArray[$key]) && ($dataArray[$key] != "") && ($dataArray[$key] != 0) && (count($dataArray[$key]) != 0)) {
+			if (isset($dataArray[$key]) && 
+				((!is_object($dataArray[$key]) && ($dataArray[$key] != "") && ($dataArray[$key] != 0) && (count($dataArray[$key]) != 0)) || 
+					is_object($dataArray[$key]))) {
 				$postValue = $dataArray[$key];
 				$hasKey = true;
 				$query .= "INNER JOIN " . $value . " ON personal_card." . $fieldsPersonal[$key] . " = " . $value . ".id ";
@@ -115,8 +117,9 @@
 						array_push($lastPartRegions, $lastPartItem);	
 					}
 				}else{
-					$lastPartItem = $value . ".id = $postValue ";
-					$result = $mysqli->query("SELECT * FROM $value WHERE id = $postValue") or die ("Ошибка: " . mysqli_error($mysqli));
+					$paramId = $postValue->id;
+					$lastPartItem = $value . ".id = $paramId ";
+					$result = $mysqli->query("SELECT * FROM $value WHERE id = $paramId") or die ("Ошибка: " . mysqli_error($mysqli));
 					$inputParams = $result->fetch_assoc();
 					$inputParamsIds[$inputParams["name"]] = array($fieldsPersonal[$key] => $inputParams["id"] );
 					array_push($lastPart, $lastPartItem); 
@@ -281,6 +284,7 @@
 		}
 		$query = "SELECT COUNT(*) AS Total " . $query;
 		$result = $mysqli->query($query) or die ("Ошибка в '$query': " . mysqli_error($mysqli));
+		// echo $query;
 		mysqli_close($mysqli);
 		$sum = 0;
 		for ($i=0; $i < count($response); $i++) { 
@@ -302,7 +306,9 @@
 		$inputParamsArrs["forms"] = array();
 		$inputParamsArrs["educType"] = array();
 		foreach ($tablesArrivals as $key => $value) {
-			if (isset($dataArray[$key]) && ($dataArray[$key] != "") && ($dataArray[$key] != 0) && (count($dataArray[$key]) != 0)) {
+			if (isset($dataArray[$key]) && 
+				((!is_object($dataArray[$key]) && ($dataArray[$key] != "") && ($dataArray[$key] != 0) && (count($dataArray[$key]) != 0)) || 
+					is_object($dataArray[$key]))) {
 				$postValue = $dataArray[$key];
 				$hasKey = true;
 				$query .= "INNER JOIN " . $value . " ON arrivals." . $fieldsArrivals[$key] . " = " . $value . ".id ";
@@ -465,7 +471,9 @@
 		$inputRegions = array();
 		$inputParamsIds = array();
 		foreach ($tablesPersonal as $key => $value) {
-			if (isset($dataArray[$key]) && ($dataArray[$key] != "") && ($dataArray[$key] != 0) && (count($dataArray[$key]) != 0)) {
+			if (isset($dataArray[$key]) && 
+				((!is_object($dataArray[$key]) && ($dataArray[$key] != "") && ($dataArray[$key] != 0) && (count($dataArray[$key]) != 0)) || 
+					is_object($dataArray[$key]))) {
 				$postValue = $dataArray[$key];
 				$hasKey = true;
 				$query .= "INNER JOIN " . $value . " ON personal_card." . $fieldsPersonal[$key] . " = " . $value . ".id ";

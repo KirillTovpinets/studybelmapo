@@ -7,5 +7,6 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 
 export class PrivateInfoComponent{
-	@Input() info: any = {};
+	@Input('info') info: any = {};
+	@Input('change') change: boolean = false;
 }

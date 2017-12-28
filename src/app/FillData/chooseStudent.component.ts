@@ -10,6 +10,7 @@ import { PersonalDataService } from "../services/personalData.service";
 import { Person } from '../model/person.class';
 import { SaveArrivalService } from './services/saveArrival.service';
 import {NotificationsService} from 'angular4-notify';
+import { ShowPersonInfoService } from "../personalInfo/showPersonalInfo.service";
 @Component({
 	templateUrl: './templates/chooseStudent.component.html',
 	styles: [`
@@ -27,7 +28,8 @@ import {NotificationsService} from 'angular4-notify';
 				PersonalInfoService,
 				PersonalDataService, 
 				SaveArrivalService,
-				NotificationsService]
+				NotificationsService,
+				ShowPersonInfoService]
 })
 export class ChooseStudentComponent implements OnInit {
 
@@ -61,7 +63,8 @@ export class ChooseStudentComponent implements OnInit {
 				private personalInfo: PersonalInfoService,
 				private dataService: PersonalDataService,
 				private saveNew: SaveArrivalService,
-				private notify: NotificationsService) {}
+				private notify: NotificationsService,
+				private showInfo: ShowPersonInfoService) {}
 
 	students: any[] = [];
 	message: string = "";
@@ -72,6 +75,7 @@ export class ChooseStudentComponent implements OnInit {
 	setLastInfoModal: BsModalRef;
 	course: any;
 	selectedPerson: Person;
+	originalPersonInfo:Person;
 	searchResult: any[] = [];
 	searchValue:string = "";
 	hideNotify: boolean = false;
@@ -100,89 +104,25 @@ export class ChooseStudentComponent implements OnInit {
 			this.modalService.hide(2);
 			this.modalService.hide(1);
 			this.notify.addInfo("Слушатель зачислен");
-			// console.log(data._body);
-			setTimeout(() => this.hideNotify = true, 2000)
 		})
 	}
-	forward(template:TemplateRef<any>): void{
-		var id = this.selectedPerson.id;
-
-		this.dataService.getData().then(data => {
-			for (let faculty of data.json().facBel) {
-				this.faculties.push(faculty);
-			}
-			for (let type of data.json().educTypeBel) {
-				this.educTypes.push(type);
-			}
-			for (let form of data.json().formBel) {
-				this.educForms.push(form);
-			}
-			for (let resid of data.json().belmapo_residence) {
-				this.residance.push(resid);
-			}
-			for (var faculty of data.json().facArr) {
-				this.personal_faculties.push(faculty);
-			}
-			for (var citizenship of data.json().residArr) {
-				this.personal_cityzenships.push(citizenship);
-			}
-			for (var appointment of data.json().appArr) {
-				this.personal_appointments.push(appointment);
-			}
-			for (var organization of data.json().orgArr) {
-				this.personal_organizations.push(organization);
-			}
-			for (var region of data.json().regArr) {
-				this.personal_regions.push(region);
-			}
-			for (var department of data.json().depArr) {
-				this.personal_departments.push(department);
-			}
-			for (var establishment of data.json().estArr) {
-				this.personal_establishments.push(establishment);
-			}
-			for (var citizenship of data.json().residArr) {
-				this.personal_cityzenships.push(citizenship);
-			}
-			for (var course of data.json().coursesBel) {
-				this.belmapo_courses.push(course);
-			}
-
-			for (var obj of data.json().specialityDocArr) {
-				this.specialityDocArr.push(obj);
-			}			
-				
-			for (var obj of data.json().specialityRetrArr) {
-				this.specialityRetrArr.push(obj);
-			}				
-				
-			for (var obj of data.json().specialityOtherArr) {
-				this.specialityOtherArr.push(obj);
-			}				
-				
-			for (var obj of data.json().qualificationMainArr) {
-				this.qualificationMainArr.push(obj);
-			}				
-				
-			for (var obj of data.json().qualificationAddArr) {
-				this.qualificationAddArr.push(obj);
-			}				
-				
-			for (var obj of data.json().qualificationOtherArr) {
-				this.qualificationOtherArr.push(obj);
-			}				
-				
-			// this.isLoaded = true;
-			this.personalInfo.getInfo(id.toString(), true).then(data => {
-				this.selectedPerson = Object.assign(this.selectedPerson, data.json());
-				this.selectedInfoModal = this.modalService.show(template, {class: 'modal-lg'});
-			})
-		});
+	SaveChanges(person:any):void{
+		this.personalInfo.saveChanges(person).then(data => console.log(data));
+	}
+	personInfo(): void{
+		var id = this.selectedPerson.id;				
+		this.personalInfo.getInfo(id.toString(), true).then(data => {
+			var person = Object.assign(new Person(), data.json());
+			this.showInfo.ShowPersonalInfo(person, 2, true);
+		})
 	}
 	reject(): void{
 		this.modalService.hide(1);
 	}
 
+	ValueFormatter(data:any): string{
+		return `${data.value}`;
+	}
 	Search(event:any): void{
 		if (event.target.value === "") {
 			this.searchResult = [];

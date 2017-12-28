@@ -45,6 +45,7 @@ import { NotificationsModule, NotificationsService } from 'angular4-notify';
 import { AuthGuard } from "./auth.guard";
 import { LoginService } from './login.service';
 import { CurrentCourcesListService } from './FillData/services/getCurrentCourcesList.service';
+import { ShowPersonInfoService } from './personalInfo/showPersonalInfo.service';
 // Services
 import { CookieService } from 'ngx-cookie-service';
 import { GlobalParamsService } from './Globalparams.service';
@@ -109,7 +110,8 @@ defineLocale('ru', ru);
                LoginService, 
                CurrentCourcesListService, 
                GlobalParamsService,
-               CheckAuthService ],
+               CheckAuthService,
+               ShowPersonInfoService],
   entryComponents: [PersonalInfoComponent],
   bootstrap: [AppComponent]
 })

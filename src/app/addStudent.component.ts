@@ -102,12 +102,21 @@ export class AddStudentComponent implements OnInit{
 		}
 	}
 	SavePerson(inputData:any): void{
-		inputData.birthday = inputData.birthdayDate.toISOString().slice(0,10);
-		inputData.diploma_start = inputData.diploma_startDate.toISOString().slice(0,10);
-		inputData.mainCategory_date = inputData.mainCategoryDate.toISOString().slice(0,10);
-		inputData.addCategory_date = inputData.addCategoryDate.toISOString().slice(0,10);
-		inputData.courseId = this.courseId;
+		if (inputData.personal.birthdayDate !== undefined) {
+			inputData.personal.birthday = inputData.personal.birthdayDate.toISOString().slice(0,10);
+		}
+		if (inputData.profesional.diploma_startDate !== undefined) {
+			inputData.profesional.diploma_start = inputData.profesional.diploma_startDate.toISOString().slice(0,10);
+		}
+		if (inputData.profesional.mainCategoryDate !== undefined) {
+			inputData.profesional.mainCategory_date = inputData.profesional.mainCategoryDate.toISOString().slice(0,10);
+		}
+		if (inputData.profesional.addCategoryDate !== undefined) {
+			inputData.profesional.addCategory_date = inputData.profesional.addCategoryDate.toISOString().slice(0,10);
+		}
+		inputData.belmapo_couse = this.courseId;
 		this.saveService.save(inputData).then(data => {
+			console.log(data._body);
 			this.notify.addInfo(data._body);
 			this.newPerson = new Person();
 			this.modal.hide(1);
@@ -119,7 +128,6 @@ export class AddStudentComponent implements OnInit{
 	ngOnInit():void{
 		this.courseId = this.router.snapshot.params["id"]
 		this.dataService.getData().then(data => {
-			console.log(data.json());
 			for (let faculty of data.json().facBel) {
 				this.faculties.push(faculty);
 			}
@@ -197,27 +205,27 @@ export class AddStudentComponent implements OnInit{
 			array.push(data.json());
 			switch (table){
 				case "personal_establishment":{
-					this.newPerson.educational_establishment = data.id;
+					this.newPerson.profesional.educational_establishment = data.id;
 					break;
 				}
 				case "countries":{
-					this.newPerson.cityzenship = data.json().id;
+					this.newPerson.personal.cityzenship = data.json().id;
 					break;
 				}
 				case "personal_appointment":{
-					this.newPerson.appointment = data.json().id;
+					this.newPerson.general.appointment = data.json().id;
 					break;
 				}
 				case "personal_organizations":{
-					this.newPerson.organization = data.json().id;
+					this.newPerson.general.organization = data.json().id;
 					break;
 				}
 				case "personal_department":{
-					this.newPerson.department = data.json().id;
+					this.newPerson.general.department = data.json().id;
 					break;
 				}
 				case "personal_faculty":{
-					this.newPerson.faculty = data.json().id;
+					this.newPerson.profesional.faculty = data.json().id;
 					break;
 				}
 			}

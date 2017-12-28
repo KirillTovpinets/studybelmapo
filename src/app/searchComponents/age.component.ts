@@ -6,10 +6,10 @@ import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
 import { PersonalInfoService } from '../personalInfo.service';
 import { PersonalInfoComponent } from '../personalInfo.component';
 import { List } from "./List.class";
-
+import { ShowPersonInfoService } from "../personalInfo/showPersonalInfo.service";
 @Component({
 	templateUrl: "../templates/searchComponents/age.component.html",
-	providers: [GetListService, PersonalInfoService,SearchSirnameService],
+	providers: [GetListService, PersonalInfoService,SearchSirnameService, ShowPersonInfoService],
 	styleUrls:['../css/search.component.css']
 })
 
@@ -30,7 +30,8 @@ export class AgeComponent implements OnInit{
 	constructor(private ageService: GetListService,
 				private personalInfo: PersonalInfoService,
 				private search: SearchSirnameService,
-				private PIService: BsModalService
+				private PIService: BsModalService, 
+				private showInfo: ShowPersonInfoService
 		){
 		for (var i = 0; i < this.ageLists.length; i++) {
 			this.ageLists[i] = new List();

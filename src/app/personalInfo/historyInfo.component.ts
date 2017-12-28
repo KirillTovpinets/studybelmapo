@@ -7,5 +7,5 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 
 export class HistoryInfoComponent{
-	@Input() info: any = {};
+	@Input('info') info: any = {};
 }

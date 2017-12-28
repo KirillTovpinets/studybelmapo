@@ -1,6 +1,6 @@
 <div class="modal-header">
-  <h4 class="modal-title pull-left">{{title}}</h4>
-  <button type="button" class="close pull-right" aria-label="Close" (click)="PIModal.hide()">
+  <h4 class="modal-title pull-left">{{title}} </h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="service.hide(level)">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -8,27 +8,27 @@
   <tabset>
     <tab heading="Общая" id="tab1">
       <div class="content" *ngIf="person.general">
-        <general-info [info]="person.general"></general-info>
+        <general-info [info]="person.general" [change]=change></general-info>
       </div>
     </tab>
     <tab heading="Проф. информация">
-      <div class="content" *ngIf="person.prof">
-        <prof-info [info]="person.prof"></prof-info>
+      <div class="content" *ngIf="person.profesional">
+        <prof-info [info]="person.profesional" [change]=change></prof-info>
       </div>
     </tab>
   <tab heading="Личная">
     <div class="content" *ngIf="person.personal">
-        <private-info [info]="person.personal"></private-info>
+        <private-info [info]="person.personal" [change]=change></private-info>
       </div>
   </tab>
   <tab heading="Приезды">
     <div class="content" *ngIf="person.general">
-      <arrivals [personId]="person.general.id"></arrivals>
+      <arrivals [personId]="person.id"></arrivals>
     </div>
   </tab>
   <tab heading="Последипломная подготовка">
     <div class="content" *ngIf="person.general">
-      <post-diploma [personId]="person.general.id"></post-diploma>
+      <post-diploma [personId]="person.id"></post-diploma>
     </div>
   </tab>
   <tab heading="Прочие">
@@ -44,5 +44,8 @@
 </tabset>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-default" (click)="PIModal.hide()">Закрыть</button>
+  <button class="btn btn-warning" *ngIf="canChange && !change" (click)="Change()">Изменить</button>
+  <button class="btn btn-success" *ngIf="change" (click)="SaveChanges(person)">Сохранить</button>
+  <button class="btn btn-danger" *ngIf="change" (click)="Cansel()">Отмена</button>
+  <button type="button" class="btn btn-default" *ngIf="!change" (click)="service.hide(level)">Закрыть</button>
 </div>

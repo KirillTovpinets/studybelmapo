@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Global } from "../global.class";
 
 @Component({
 	selector: 'prof-info',
@@ -7,5 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 
 export class ProfInfoComponent{
-	@Input() info: any = {};
+	@Input('info') info: any = {};
+	@Input('change') change: boolean = false;
+	globalPrams: Global = new Global();
 }

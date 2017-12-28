@@ -168,6 +168,7 @@ export class ReportComponent implements OnInit{
     }
     data = this.filterParams;
     this.buildReport.build(data).then(data => {
+      console.log(data._body);
       var i, len, ref, value;
       ref = data.json();
       this.parameters = [];

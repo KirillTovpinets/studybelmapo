@@ -11,6 +11,7 @@ export class ArrivalsService{
 	constructor(public http: Http){}
 
 	get(id:string): Promise<any>{
+		console.log(id);
 		return this.http.get(this.path + "?id=" + id)
 					.toPromise();
 	}

@@ -13,6 +13,10 @@ export class PostDiplomaInfoComponent implements OnInit{
 	postDiplomas: any[] = [];
 	constructor(public postDiploma: PostDiplomaService){}
 	ngOnInit():void{
-		this.postDiploma.get(this.personId).then(data => this.postDiplomas = data.json());
+		this.postDiploma.get(this.personId).then(data => {
+			console.log(this.personId);
+				console.log(data._body);
+			this.postDiplomas = data.json()
+		});
 	}
 }

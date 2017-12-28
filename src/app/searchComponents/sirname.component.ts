@@ -4,12 +4,14 @@ import { SearchSirnameService } from './services/searchSirname.service';
 import { PersonalInfoService } from '../personalInfo.service';
 import { BsModalService } from "ngx-bootstrap/modal";
 import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
-
+import { Person } from '../model/person.class';
 import { PreloaderComponent } from '../preloader.component';
 import { PersonalInfoComponent } from '../personalInfo.component'; 
+
+import { ShowPersonInfoService } from "../personalInfo/showPersonalInfo.service";
 @Component({
 	templateUrl: "../templates/searchComponents/sirname.component.html",
-	providers: [GetListService, SearchSirnameService, PersonalInfoService],
+	providers: [GetListService, SearchSirnameService, PersonalInfoService, ShowPersonInfoService],
 	styleUrls:['../css/search.component.css']
 })
 
@@ -17,7 +19,8 @@ export class SirnameComponent implements OnInit{
 	constructor(private sirnameServ: GetListService,
 				private search: SearchSirnameService,
 				private personalInfo: PersonalInfoService,
-				private PIService: BsModalService
+				private PIService: BsModalService,
+				private showInfo: ShowPersonInfoService
 		){}
 	doctors: any[] = []
 	scrollCounter:number = 400;
@@ -60,14 +63,6 @@ export class SirnameComponent implements OnInit{
 		this.search.searchPerson(this.searchValue).then(data => {
 			console.log(data._body);
 			this.searchDoctors = data.json();
-		});
-	}
-
-	ShowPersonalInfo(person:any): void{
-		this.personalInfo.getInfo(person.id).then(data => {
-			this.PersonalInfoModal = this.PIService.show(PersonalInfoComponent, {class: 'modal-lg'});
-			this.PersonalInfoModal.content.title = "Профиль врача";
-			this.PersonalInfoModal.content.person = data.json();
 		});
 	}
 }

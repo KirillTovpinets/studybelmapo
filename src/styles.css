@@ -62,10 +62,10 @@ section {
 }
 
 .no-margin {
-    margin: 0
+    margin: 0 !important;
 }
 .no-padding{
-  padding: 0;
+  padding: 0 !important;
 }
 .range-slider {
     border: 1px solid #ddd;
@@ -159,7 +159,8 @@ personal-info .inline{
 #personalSp,
 #save,
 .regular-checkbox,
-.regular-radio {
+.regular-radio,
+.regular-radio-gender {
     display: none
 }
 .card form#personalInfo [class*="col-"]{
@@ -240,6 +241,7 @@ span.fa-plus {
     color: #99a1a7
 }
 
+
 .regular-checkbox:checked+label:after,
 .regular-radio:checked+label:after {
     content: '\2714';
@@ -250,6 +252,9 @@ span.fa-plus {
     color: #0f0
 }
 
+.regular-radio-gender:checked+label{
+  color: #0f0;
+}
 .regular-radio:checked+label:after {
     content: '\25CF';
     font-size: 24px;
@@ -277,7 +282,8 @@ span.fa-plus {
 }
 
 .regular-checkbox+label:hover,
-.regular-radio+label:hover {
+.regular-radio+label:hover,
+.regular-radio-gender+label:hover {
     cursor: pointer
 }
 
@@ -478,6 +484,16 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
 input:focus {
   outline: 0 !important; }
 
+input.form-control[disabled],
+select.form-control[disabled]{
+  background-color:   transparent;
+  border:   none;
+  color: #333;
+}
+input.form-control[disabled]:hover,
+select.form-control[disabled]{
+  cursor: auto;
+}
 /*           Animations              */
 .form-control,
 .input-group-addon,

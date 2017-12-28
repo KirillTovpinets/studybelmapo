@@ -6,12 +6,12 @@ import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
 import { PersonalInfoService } from '../personalInfo.service';
 import { PersonalInfoComponent } from '../personalInfo.component';
 import { MainClass } from "../MainClass.class";
-
+import { ShowPersonInfoService } from "../personalInfo/showPersonalInfo.service";
 import { List } from "./List.class";
 
 @Component({
 	templateUrl: "../templates/searchComponents/qualification.component.html",
-	providers: [GetListService, PersonalInfoService,SearchSirnameService],
+	providers: [GetListService, PersonalInfoService,SearchSirnameService, ShowPersonInfoService],
 	styleUrls:['../css/search.component.css']
 })
 
@@ -19,7 +19,8 @@ export class QualificationComponent extends MainClass implements OnInit{
 	constructor(public listService: GetListService,
 				private personalInfo: PersonalInfoService,
 				public search: SearchSirnameService,
-				private PIService: BsModalService){
+				private PIService: BsModalService,
+				private showInfo: ShowPersonInfoService){
 		super(search, listService);
 	}
 	qualification_main:List[] = [];

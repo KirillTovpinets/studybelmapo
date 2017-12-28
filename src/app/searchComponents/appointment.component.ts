@@ -5,13 +5,13 @@ import { SearchSirnameService } from './services/searchSirname.service';
 import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
 import { PersonalInfoService } from '../personalInfo.service';
 import { PersonalInfoComponent } from '../personalInfo.component';
-
+import { ShowPersonInfoService } from "../personalInfo/showPersonalInfo.service";
 import { MainClass } from "../MainClass.class";
 import { List } from "./List.class";
 
 @Component({
 	templateUrl: "../templates/searchComponents/appointment.component.html",
-	providers:[GetListService, PersonalInfoService,SearchSirnameService],
+	providers:[GetListService, PersonalInfoService,SearchSirnameService, ShowPersonInfoService],
 	styleUrls:['../css/search.component.css']
 })
 
@@ -19,7 +19,8 @@ export class AppointmentComponent extends MainClass implements OnInit{
 	constructor(public establService: GetListService,
 				private personalInfo: PersonalInfoService,
 				public search: SearchSirnameService,
-				private PIService: BsModalService){
+				private PIService: BsModalService, 
+				private showInfo: ShowPersonInfoService){
 		super(search, establService);
 	}
 	appointments: List[] = [];

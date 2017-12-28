@@ -6,9 +6,10 @@ import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
 import { PersonalInfoService } from '../personalInfo.service';
 import { PersonalInfoComponent } from '../personalInfo.component'; 
 import { List } from "./List.class";
+import { ShowPersonInfoService } from "../personalInfo/showPersonalInfo.service";
 @Component({
 	templateUrl: '../templates/searchComponents/gender.component.html',
-	providers:[GetListService, PersonalInfoService,SearchSirnameService],
+	providers:[GetListService, PersonalInfoService,SearchSirnameService, ShowPersonInfoService],
 	styleUrls:['../css/search.component.css']
 })
 
@@ -16,7 +17,8 @@ export class GenderComponent implements OnInit{
 	constructor(private genderService: GetListService,
 				private personalInfo: PersonalInfoService,
 				private search: SearchSirnameService,
-				private PIService: BsModalService
+				private PIService: BsModalService, 
+				private showInfo: ShowPersonInfoService
 		){}
 	PersonalInfoModal: BsModalRef;
 	maleList: List = new List();

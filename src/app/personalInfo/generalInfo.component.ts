@@ -8,4 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 export class GeneralInfoComponent{
 	@Input('info') info: any = {};
+	@Input('change') change: boolean = false;
+
+	constructor(){}
 }

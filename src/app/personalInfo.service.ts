@@ -9,9 +9,13 @@ const cathedras: string[] = [
 @Injectable()
 export class PersonalInfoService{
 	private getInfoUrl = 'php/getPersonalInfo.php';
+	private saveChangesUrl = 'php/saveChanges.php'
 	constructor(private http: Http){};
 	getInfo(id:string, selected?:boolean): Promise<any>{
 		return this.http.get(this.getInfoUrl + "?id=" + id + "&selected=" + selected)
 					.toPromise();
+	}
+	saveChanges(person:any){
+		return this.http.post(this.saveChangesUrl, person).toPromise();
 	}
 }

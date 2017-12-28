@@ -5,16 +5,18 @@ import { BsModalService } from "ngx-bootstrap/modal";
 import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
 import { PersonalInfoService } from '../personalInfo.service';
 import { PersonalInfoComponent } from '../personalInfo.component';
+import { ShowPersonInfoService } from "../personalInfo/showPersonalInfo.service";
 @Component({
 	templateUrl: "../templates/searchComponents/category.component.html",
-	providers:[GetListService, PersonalInfoService, SearchSirnameService],
+	providers:[GetListService, PersonalInfoService, SearchSirnameService, ShowPersonInfoService],
 	styleUrls:['../css/search.component.css']
 })
 
 export class CategoryComponent implements OnInit{
 	constructor(private personalInfo: PersonalInfoService,
 				private search: SearchSirnameService,
-				private PIService: BsModalService){}
+				private PIService: BsModalService, 
+				private showInfo: ShowPersonInfoService){}
 	PersonalInfoModal: BsModalRef;
 	scrollCounter:number = 400;
 	searchValue: string = "";

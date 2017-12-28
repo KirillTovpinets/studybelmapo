@@ -25,7 +25,7 @@
                     <preloader></preloader>
                   </td>
                 </tr>
-                  <tr  *ngFor="let doctor of maleList.doctors" (click)="ShowPersonalInfo(doctor)">
+                  <tr  *ngFor="let doctor of maleList.doctors" (click)="showInfo.ShowPersonalInfo(doctor)">
                       <td>{{ doctor.surname }}</td>
                       <td>{{ doctor.name }}</td>
                       <td>{{ doctor.patername }}</td>
@@ -43,7 +43,7 @@
                     <th>Дата создания</th>
                 </thead>
                 <tbody>
-                    <tr  *ngFor="let search of maleList.searchResult" (click)="ShowPersonalInfo(search)">
+                    <tr  *ngFor="let search of maleList.searchResult" (click)="showInfo.ShowPersonalInfo(search)">
                         <td>{{ search.surname }}</td>
                         <td>{{ search.name }}</td>
                         <td>{{ search.patername }}</td>
@@ -76,7 +76,7 @@
                     <preloader></preloader>
                   </td>
                 </tr>
-                  <tr  *ngFor="let doctor of femaleList.doctors" (click)="ShowPersonalInfo(doctor)">
+                  <tr  *ngFor="let doctor of femaleList.doctors" (click)="showInfo.ShowPersonalInfo(doctor)">
                       <td>{{ doctor.surname }}</td>
                       <td>{{ doctor.name }}</td>
                       <td>{{ doctor.patername }}</td>
@@ -94,7 +94,7 @@
                     <th>Дата создания</th>
                 </thead>
                 <tbody>
-                    <tr  *ngFor="let search of femaleList.searchResult" (click)="ShowPersonalInfo(search)">
+                    <tr  *ngFor="let search of femaleList.searchResult" (click)="showInfo.ShowPersonalInfo(search)">
                         <td>{{ search.surname }}</td>
                         <td>{{ search.name }}</td>
                         <td>{{ search.patername }}</td>

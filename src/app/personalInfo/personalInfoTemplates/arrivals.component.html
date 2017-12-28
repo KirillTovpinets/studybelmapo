@@ -1,34 +1,36 @@
-<div class="col-md-12">
-  <div class="card">
-    <div class="content">
-      <h4 class="title">Приезды</h4>
-      <p class="category">Приезды слушателя</p>    
-      <hr>
-      <div>
-        <table class="table table-striped table-hover table-responsive">
-            <thead>
-                <tr>
-                    <td>Номер</td>
-                    <td>Дата приезда</td>
-                    <td>Факультет</td>
-                    <td>Кафедра</td>
-                    <td>Название курса</td>
-                    <td>Тип обучения</td>
-                    <td>Статус</td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let arrival of arrivals">
-                    <td>{{ arrival.GroupNum }}</td>
-                    <td>{{ arrival.Date | date: "dd.MM.yyyy" }}</td>
-                    <td>{{ arrival.faculty }}</td>
-                    <td>{{ arrival.cathedra }}</td>
-                    <td>{{ arrival.course }}</td>
-                    <td>{{ arrival.educType }}</td>
-                    <td>{{ arrival.status }}</td>
-                </tr>
-            </tbody>
-        </table>
+<div class="row"> 
+  <div class="col-md-12">
+    <div class="card">
+      <div class="content">
+        <h4 class="title">Приезды</h4>
+        <p class="category">Приезды слушателя</p>    
+        <hr>
+        <div>
+          <table class="table table-striped table-hover table-responsive">
+              <thead>
+                  <tr>
+                      <td>Номер</td>
+                      <td>Дата приезда</td>
+                      <td>Факультет</td>
+                      <td>Кафедра</td>
+                      <td>Название курса</td>
+                      <td>Тип обучения</td>
+                      <td>Статус</td>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let arrival of arrivals">
+                      <td>{{ arrival.GroupNum }}</td>
+                      <td>{{ arrival.Date | date: "dd.MM.yyyy" }}</td>
+                      <td>{{ arrival.faculty }}</td>
+                      <td>{{ arrival.cathedra }}</td>
+                      <td>{{ arrival.course }}</td>
+                      <td>{{ arrival.educType }}</td>
+                      <td>{{ arrival.status }}</td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
