@@ -10,4 +10,7 @@ export class PersonalDataService{
 	getData(): Promise<any>{
 		return this.http.get("php/getParams.php").toPromise();
 	}
+	DropdownList(data:any):string{
+		return data.value;
+	}
 }

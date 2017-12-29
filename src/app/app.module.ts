@@ -46,6 +46,7 @@ import { AuthGuard } from "./auth.guard";
 import { LoginService } from './login.service';
 import { CurrentCourcesListService } from './FillData/services/getCurrentCourcesList.service';
 import { ShowPersonInfoService } from './personalInfo/showPersonalInfo.service';
+import { ShareService } from './services/share.service';
 // Services
 import { CookieService } from 'ngx-cookie-service';
 import { GlobalParamsService } from './Globalparams.service';
@@ -53,6 +54,7 @@ import { CheckAuthService } from './services/checkAuth.service';
 
 import { defineLocale } from 'ngx-bootstrap/bs-moment';
 import { ru } from 'ngx-bootstrap/locale';
+import { ForMenuDirective } from './directives/for-menu.directive';
 defineLocale('ru', ru); 
 
 @NgModule({
@@ -88,7 +90,8 @@ defineLocale('ru', ru);
     OrderComponent,
     FillDataComponent,
     ChooseCourseComponent,
-    ChooseStudentComponent
+    ChooseStudentComponent,
+    ForMenuDirective
   ],
   imports: [
     BrowserModule,
@@ -111,7 +114,8 @@ defineLocale('ru', ru);
                CurrentCourcesListService, 
                GlobalParamsService,
                CheckAuthService,
-               ShowPersonInfoService],
+               ShowPersonInfoService,
+               ShareService],
   entryComponents: [PersonalInfoComponent],
   bootstrap: [AppComponent]
 })

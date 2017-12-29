@@ -7,7 +7,11 @@ export class SaveChangesService {
 	
 	constructor(private http: Http) {}
 
-	save(person:Person): Observable<any>{
-		return this.http.post("php/saveChanges.php", person);
+	save(person:Person, original:Person): Observable<any>{
+		var data = {
+			old: original,
+			new: person
+		}
+		return this.http.post("php/saveChanges.php", data);
 	}
 }

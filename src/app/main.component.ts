@@ -18,5 +18,4 @@ import { BsModalService } from "ngx-bootstrap/modal";
 })
 
 export class MainComponent{
-	
 }

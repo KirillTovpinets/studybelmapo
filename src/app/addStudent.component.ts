@@ -52,11 +52,13 @@ import { ActivatedRoute } from '@angular/router';
 
 export class AddStudentComponent implements OnInit{
 	private personal_faculties: any[] = [];
-	private personal_cityzenships: any[] = [];
+	
 	private personal_appointments: any[] = [];
 	private personal_organizations: any[] = [];
+	private personal_cityzenships: any[] = [];
 	private personal_regions: any[] = [];
 	private personal_cities:any[] = [];
+	
 	private personal_departments: any[] = [];
 	private personal_establishments: any[] = [];
 	private belmapo_courses:any[] = [];
@@ -122,78 +124,35 @@ export class AddStudentComponent implements OnInit{
 			this.modal.hide(1);
 		});
 	}
+	DropdownList(data:any):string{
+		return data.value;
+	}
 	fillLastInfo(template: TemplateRef<any>):void{
 		this.fillDataModal = this.modal.show(template, {class: "modal-md"});
 	}
 	ngOnInit():void{
 		this.courseId = this.router.snapshot.params["id"]
 		this.dataService.getData().then(data => {
-			for (let faculty of data.json().facBel) {
-				this.faculties.push(faculty);
-			}
-			for (let type of data.json().educTypeBel) {
-				this.educTypes.push(type);
-			}
-			for (let form of data.json().formBel) {
-				this.educForms.push(form);
-			}
-			for (let resid of data.json().belmapo_residence) {
-				this.residance.push(resid);
-			}
-			for (var faculty of data.json().facArr) {
-				this.personal_faculties.push(faculty);
-			}
-			for (var citizenship of data.json().residArr) {
-				this.personal_cityzenships.push(citizenship);
-			}
-			for (var appointment of data.json().appArr) {
-				this.personal_appointments.push(appointment);
-			}
-			for (var organization of data.json().orgArr) {
-				this.personal_organizations.push(organization);
-			}
-			for (var region of data.json().regArr) {
-				this.personal_regions.push(region);
-			}
-			for (var department of data.json().depArr) {
-				this.personal_departments.push(department);
-			}
-			for (var establishment of data.json().estArr) {
-				this.personal_establishments.push(establishment);
-			}
-			for (var citizenship of data.json().residArr) {
-				this.personal_cityzenships.push(citizenship);
-			}
-			for (var course of data.json().coursesBel) {
-				this.belmapo_courses.push(course);
-			}
-
-			for (var obj of data.json().specialityDocArr) {
-				this.specialityDocArr.push(obj);
-			}			
-				
-			for (var obj of data.json().specialityRetrArr) {
-				this.specialityRetrArr.push(obj);
-			}				
-				
-			for (var obj of data.json().specialityOtherArr) {
-				this.specialityOtherArr.push(obj);
-			}				
-				
-			for (var obj of data.json().qualificationMainArr) {
-				this.qualificationMainArr.push(obj);
-			}				
-				
-			for (var obj of data.json().qualificationAddArr) {
-				this.qualificationAddArr.push(obj);
-			}				
-				
-			for (var obj of data.json().qualificationOtherArr) {
-				this.qualificationOtherArr.push(obj);
-			}
-			for (var obj of data.json().citiesArr) {
-				this.personal_cities.push(obj);
-			}				
+			this.faculties = data.json().facBel;
+			this.educTypes = data.json().educTypeBel;
+			this.educForms = data.json().formBel;
+			this.residance = data.json().belmapo_residence;
+			this.personal_faculties = data.json().facArr;
+			this.personal_cityzenships = data.json().residArr;
+			this.personal_appointments = data.json().appArr;
+			this.personal_organizations = data.json().orgArr;
+			this.personal_regions = data.json().regArr;
+			this.personal_departments = data.json().depArr;
+			this.personal_establishments = data.json().estArr;
+			this.personal_cityzenships = data.json().residArr;
+			this.belmapo_courses = data.json().coursesBel;
+			this.specialityDocArr = data.json().specialityDocArr;
+			this.specialityRetrArr = data.json().specialityRetrArr;
+			this.specialityOtherArr = data.json().specialityOtherArr;
+			this.qualificationMainArr = data.json().qualificationMainArr;
+			this.qualificationAddArr = data.json().qualificationAddArr;
+			this.qualificationOtherArr = data.json().qualificationOtherArr;
+			this.personal_cities = data.json().citiesArr;
 			this.isLoaded = true;
 		});
 	}

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { GlobalParamsService } from './Globalparams.service';
+import { ShareService } from './services/share.service';
 @Component({
 	selector: 'menu',
 	templateUrl: 'templates/menu.component.html',
@@ -8,9 +9,16 @@ import { GlobalParamsService } from './Globalparams.service';
 })
 
 export class MenuComponent implements OnInit{
-	constructor(private selectedPage: GlobalParamsService){
+	constructor(private selectedPage: GlobalParamsService,
+				private menuManip: ShareService,
+				private element: ElementRef){
 	}
 	ngOnInit(): void{
+		this.menuManip.currentMessage.subscribe(message =>{
+			this.element.nativeElement.style.display = message ? "block": "none";
+			this.element.nativeElement.style.right = "0";
+			this.element.nativeElement.style.left = "initial";
+		 });
 		this.selectedPage._selectedPage = 1;
 		return;
 	}

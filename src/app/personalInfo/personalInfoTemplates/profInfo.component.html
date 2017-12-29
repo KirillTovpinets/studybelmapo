@@ -1,35 +1,31 @@
 <!-- ВУЗ -->
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-lg-12 col-md-12">
     <div class="card">
       <div class="content">
         <fieldset>
           <legend><h5>ВУЗ</h5></legend>
-          <div class="col-md-6">
+          <div class="col-lg-6 col-md-6">
             <div class="form-group">
-              <label>Учреждение образования</label>
-              <small *ngIf="establishment.invalid">*</small>
-              <input value="info.educational_establishment == null ? 'Не указано' : info.educational_establishment" [attr.disabled]="change ? null : ''" #establishment="ngModel" required [(ngModel)]="info.educational_establishment" name="department" class="form-control">
+              <label>Учреждение образования <small *ngIf="establishment.invalid">*</small></label>
+              <input value="info.educational_establishment == null ? 'Не указано' : info.educational_establishment" auto-complete [list-formatter]="dataService.DropdownList" [source]="personal_establishments" [attr.disabled]="change ? null : ''" #establishment="ngModel" required [(ngModel)]="info.educational_establishment" name="department" class="form-control">
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-lg-6 col-md-6">
             <div class="form-group">
-              <label>Факультет</label>
-              <small *ngIf="faculty.invalid">*</small>
-              <input value="info.faculty == null ? 'Не указано' : info.faculty" [attr.disabled]="change ? null : ''" #faculty="ngModel" required [(ngModel)]="info.faculty" name="faculty" class="form-control">
+              <label>Факультет <small *ngIf="faculty.invalid">*</small></label>
+              <input value="info.faculty == null ? 'Не указано' : info.faculty" auto-complete [list-formatter]="dataService.DropdownList" [source]="personal_faculties" [attr.disabled]="change ? null : ''" #faculty="ngModel" required [(ngModel)]="info.faculty" name="faculty" class="form-control">
             </div>
           </div>
-          <div class="col-md-2">
+          <div class="col-lg-3 col-md-3">
             <div class="form-group">
-              <label>Дата получения диплома</label>
-              <small *ngIf="diplomaStart.invalid">*</small>
+              <label>Дата получения диплома <small *ngIf="diplomaStart.invalid">*</small></label>
               <input value="info.diploma_startDate == null ? 'Не указано' : info.diploma_startDate" [attr.disabled]="change ? null : ''" #diplomaStart="ngModel" required type="text" [(ngModel)]="info.diploma_startDate" [minDate]="globalPrams.minDate" [maxDate]="globalPrams.maxDate" #dp="bsDatepicker" [bsConfig]="globalPrams.bsConfig" bsDatepicker [(bsValue)]="bsValueDiploma" name="diploma_start" class="date-picker form-control">
             </div>
           </div>
-          <div class="col-md-2">
+          <div class="col-lg-3 col-md-3">
             <div class="form-group">
-              <label>Номер диплома</label>
-              <small *ngIf="diplomaNumber.invalid">*</small>
+              <label>Номер диплома <small *ngIf="diplomaNumber.invalid">*</small></label>
               <input value="info.diploma_number == null ? 'Не указано' : info.diploma_number" [attr.disabled]="change ? null : ''" #diplomaNumber="ngModel" required type="text" [(ngModel)]="info.diploma_number" name="diploma_number" class="form-control">
             </div>
           </div>
@@ -40,70 +36,64 @@
 </div>
 <!-- Специальность по диплому -->
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-lg-6 col-md-6">
     <div class="card">
       <div class="content">
           <fieldset>
             <legend><h5>Специальность по диплому</h5></legend>
-            <div class="col-md-6">
+            <div class="col-lg-6 col-md-6">
               <div class="form-group">
-                <label>Врачебная</label>
-                <small *ngIf="speciality.invalid">*</small>
-                <input value="info.speciality_doc == null ? 'Не указано' : info.speciality_doc" [attr.disabled]="change ? null : ''" #speciality="ngModel" required [(ngModel)]="info.speciality_doc" name="specialityDoc" class="form-control">
+                <label>Врачебная <small *ngIf="speciality.invalid">*</small></label>
+                <input value="info.speciality_doc == null ? 'Не указано' : info.speciality_doc" auto-complete [list-formatter]="dataService.DropdownList" [source]="specialityDocArr" [attr.disabled]="change ? null : ''" #speciality="ngModel" required [(ngModel)]="info.speciality_doc" name="specialityDoc" class="form-control">
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-lg-6 col-md-6">
               <div class="form-group">
                 <label>Прочие</label>
-                <input value="info.speciality_other == null ? 'Не указано' : info.speciality_other" [attr.disabled]="change ? null : ''" [(ngModel)]="info.speciality_other" name="specialityOther" class="form-control">
+                <input value="info.speciality_other == null ? 'Не указано' : info.speciality_other" auto-complete [list-formatter]="dataService.DropdownList" [source]="specialityOtherArr" [attr.disabled]="change ? null : ''" [(ngModel)]="info.speciality_other" name="specialityOther" class="form-control">
               </div>
             </div>
           </fieldset>
           <!-- Специальность по переподготовке -->
           <fieldset>
             <legend><h5>Специальность по переподготовке</h5></legend>
-            <div class="col-md-6">
+            <div class="col-lg-6 col-md-12">
               <div class="form-group">
                 <label>Переподготовка</label>
-                <input value="info.speciality_retraining == null ? 'Не указано' : info.speciality_retraining" [attr.disabled]="change ? null : ''" [(ngModel)]="info.speciality_retraining" name="specialityRetr" class="form-control">
+                <input value="info.speciality_retraining == null ? 'Не указано' : info.speciality_retraining" auto-complete [list-formatter]="dataService.DropdownList" [source]="specialityRetrArr" [attr.disabled]="change ? null : ''" [(ngModel)]="info.speciality_retraining" name="specialityRetr" class="form-control">
               </div>
             </div>
-            <div class="col-md-3" *ngIf="info.speciality_retraining != ''">
+            <div class="col-lg-3 col-md-12" *ngIf="info.speciality_retraining != '' || info.speciality_retraining != null">
               <div class="form-group">
-                <label>№ диплома</label>
-                <small *ngIf="repNumber.invalid">*</small>
+                <label>№ диплома <small *ngIf="repNumber.invalid">*</small></label>
                 <input value="info.speciality_retraining_diploma == null ? 'Не указано' : info.speciality_retraining_diploma" [attr.disabled]="change ? null : ''" #repNumber="ngModel" [(ngModel)]="info.speciality_retraining_diploma" required name="speciality_retraining_diploma" class="form-control">
               </div>
             </div>
-            <div class="col-md-3" *ngIf="info.speciality_retraining != ''">
+            <div class="col-lg-3 col-md-12  " *ngIf="info.speciality_retraining != ''">
               <div class="form-group">
-                <label>Дата выдачи</label>
-                <small *ngIf="repDate.invalid">*</small>
-                <input value="" [attr.disabled]="change ? null : ''" #repDate="ngModel" [minDate]="globalPrams.minDate" [maxDate]="globalPrams.maxDate" #dp="bsDatepicker" [bsConfig]="globalPrams.bsConfig" bsDatepicker [(bsValue)]="bsValueRetrainingDate" [(ngModel)]="info.speciality_retraining_diploma_start" required name="speciality_retraining_diploma_start" class="date-picker form-control">
+                <label>Дата выдачи <small *ngIf="repDate.invalid">*</small></label>
+                <input [attr.disabled]="change ? null : ''" #repDate="ngModel" [minDate]="globalPrams.minDate" [maxDate]="globalPrams.maxDate" #dp="bsDatepicker" [bsConfig]="globalPrams.bsConfig" bsDatepicker [(bsValue)]="bsValueRetrainingDate" [(ngModel)]="info.speciality_retraining_diploma_start" required name="speciality_retraining_diploma_start" class="date-picker form-control">
               </div>
             </div>
           </fieldset>
           <!-- Стаж -->
           <fieldset>
             <legend><h5>Стаж</h5></legend>
-            <div class="col-md-4">
+            <div class="col-lg-4 col-md-4">
               <div class="form-group">
-                <label>Общий</label>
-                <small *ngIf="expGeneral.invalid">*</small>
+                <label>Общий <small *ngIf="expGeneral.invalid">*</small></label>
                 <input value="info.experiance_general == null ? 'Не указано' : info.experiance_general" [attr.disabled]="change ? null : ''" type="number" #expGeneral="ngModel" required [(ngModel)]="info.experiance_general" name="experiance_general" class="form-control">
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4 col-md-4">
               <div class="form-group">
-                <label>По специальности</label>
-                <small *ngIf="expSpecial.invalid">*</small>
+                <label>По специальности <small *ngIf="expSpecial.invalid">*</small></label>
                 <input value="info.experiance_special == null ? 'Не указано' : info.experiance_special" [attr.disabled]="change ? null : ''" type="number" #expSpecial="ngModel" required [(ngModel)]="info.experiance_special" name="experiance_special" class="form-control">
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4 col-md-4">
               <div class="form-group">
-                <label>В последней должности</label>
-                <small *ngIf="expLast.invalid">*</small>
+                <label>В последней должности <small *ngIf="expLast.invalid">*</small></label>
                 <input value="info.experiance_last == null ? 'Не указано' : info.experiance_last" [attr.disabled]="change ? null : ''" type="number" #expLast="ngModel" required [(ngModel)]="info.experiance_last" name="experiance_last" class="form-control">
               </div>
             </div>
@@ -112,18 +102,17 @@
     </div>
   </div>
   <!-- Квалификация -->
-  <div class="col-md-6">
+  <div class="col-lg-6 col-md-6">
     <div class="card">
       <div class="content">
         <fieldset>
            <legend><h5>Квалификация</h5></legend>
-           <div class="col-md-12 no-padding">
-             <div class="form-group col-md-6">
-               <label>Врачебная (осн.)</label>
-               <small *ngIf="qualification.invalid">*</small>
-               <input value="info.qualification_main == null ? 'Не указано' : info.qualification_main" [attr.disabled]="change ? null : ''" required #qualification="ngModel" [(ngModel)]="info.qualification_main" name="qualificationMain" class="form-control">
+           <div class="col-lg-12 col-md-12 no-padding">
+             <div class="form-group col-lg-6 col-md-6">
+               <label>Врачебная (осн <small *ngIf="qualification.invalid">*</small>.)</label>
+               <input value="info.qualification_main == null ? 'Не указано' : info.qualification_main" auto-complete [list-formatter]="dataService.DropdownList" [source]="qualificationMainArr" [attr.disabled]="change ? null : ''" required #qualification="ngModel" [(ngModel)]="info.qualification_main" name="qualificationMain" class="form-control">
              </div>
-             <div class="form-group col-md-3">
+             <div class="form-group col-lg-3 col-md-3">
                <label>Категория</label>
                <select [attr.disabled]="change ? null : ''" name="mainCategory" [(ngModel)]="info.mainCategory" class="form-control">
                  <option value="1">Первая</option>
@@ -132,18 +121,17 @@
                  <option value="0" selected>Нет</option>
                </select>
              </div>
-             <div class="foinfo.mainCategory  == null ? 'Не указано' : info.mainCategory rm-group col-md-3" *ngIf="info.mainCategory != 0">
-               <label>Дата присвоения</label>
-               <small *ngIf="mainCategoryDate.invalid">*</small>
+             <div class="foinfo.mainCategory  == null ? 'Не указано' : info.mainCategory rm-group col-lg-3 col-md-3" *ngIf="info.mainCategory != 0">
+               <label>Дата присвоения <small *ngIf="mainCategoryDate.invalid">*</small></label>
                <input value="info.mainCategoryDate == null ? 'Не указано' : info.mainCategoryDate" [attr.disabled]="change ? null : ''" type="text" required [(ngModel)]="info.mainCategoryDate" [minDate]="globalPrams.minDate" [maxDate]="globalPrams.maxDate" #dp="bsDatepicker" [bsConfig]="globalPrams.bsConfig" bsDatepicker [(bsValue)]="bsValueMainCategoryDate" name="mainCategoryDate" class="date-picker form-control" #mainCategoryDate="ngModel">
              </div>
            </div>
-           <div class="col-md-12 no-padding">
-             <div class="form-group col-md-6">
+           <div class="col-lg-12 col-md-12 no-padding">
+             <div class="form-group col-lg-6 col-md-6">
                <label>Врачебная (доп.)</label>
-               <input value="info.qualification_add == null ? 'Не указано' : info.qualification_add" [attr.disabled]="change ? null : ''" [(ngModel)]="info.qualification_add" name="qualificationAdd" class="form-control">
+               <input value="info.qualification_add == null ? 'Не указано' : info.qualification_add" auto-complete [list-formatter]="dataService.DropdownList" [source]="qualificationAddArr" [attr.disabled]="change ? null : ''" [(ngModel)]="info.qualification_add" name="qualificationAdd" class="form-control">
              </div>
-             <div class="form-group col-md-3">
+             <div class="form-group col-lg-3 col-md-3">
                <label>Категория</label>
                <select [attr.disabled]="change ? null : ''" name="addCategory" [(ngModel)]="info.addCategory" class="form-control">
                  <option value="1">Первая</option>
@@ -152,16 +140,15 @@
                  <option value="0" selected>Нет</option>
                </select>
              </div>
-             <div class="foinfo.addCategory  == null ? 'Не указано' : info.addCategory rm-group col-md-3" *ngIf="info.addCategory != 0">
-               <label>Дата присвоения</label>
-               <small *ngIf="addCategoryDate.invalid">*</small>
-               <input value="info.addCategoryDate == null ? 'Не указано' : info.addCategoryDate" [attr.disabled]="change ? null : ''" type="text" required [(ngModel)]="info.addCategoryDate" [minDate]="globalPrams.minDate" [maxDate]="globalPrams.maxDate" #dp="bsDatepicker" [bsConfig]="globalPrams.bsConfig" bsDatepicker [(bsValue)]="bsValueAddCategoryDate" name="addCategoryDate" class="date-picker form-control" #addCategoryDate="ngModel">
+             <div class="foinfo.addCategory  == null ? 'Не указано' : info.addCategory rm-group col-lg-3 col-md-3" *ngIf="info.addCategory != 0">
+               <label>Дата присвоения <small *ngIf="addCategoryDate.invalid">*</small></label>
+               <input value="info.addCategoryDate == null ? 'Не указано' : info.addCategoryDate" auto-complete [list-formatter]="dataService.DropdownList" [source]="qualificationOtherArr" [attr.disabled]="change ? null : ''" type="text" required [(ngModel)]="info.addCategoryDate" [minDate]="globalPrams.minDate" [maxDate]="globalPrams.maxDate" #dp="bsDatepicker" [bsConfig]="globalPrams.bsConfig" bsDatepicker [(bsValue)]="bsValueAddCategoryDate" name="addCategoryDate" class="date-picker form-control" #addCategoryDate="ngModel">
              </div>
            </div>
-           <div class="col-md-12">
+           <div class="col-lg-12 col-md-12">
              <div class="form-group">
                <label>Прочие</label>
-               <input value="info.qualification_other == null ? 'Не указано' : info.qualification_other" [attr.disabled]="change ? null : ''" [(ngModel)]="info.qualification_other" name="qualificationOther" class="form-control">
+               <input value="info.qualification_other == null ? 'Не указано' : info.qualification_other" auto-complete [list-formatter]="dataService.DropdownList" [source]="qualificationOtherArr" [attr.disabled]="change ? null : ''" [(ngModel)]="info.qualification_other" name="qualificationOther" class="form-control">
              </div>
            </div>
         </fieldset>

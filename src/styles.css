@@ -484,12 +484,6 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
 input:focus {
   outline: 0 !important; }
 
-input.form-control[disabled],
-select.form-control[disabled]{
-  background-color:   transparent;
-  border:   none;
-  color: #333;
-}
 input.form-control[disabled]:hover,
 select.form-control[disabled]{
   cursor: auto;
@@ -546,6 +540,11 @@ body > .navbar-collapse {
   font-weight: 200;
   background-size: cover;
   background-position: center center; }
+menu.collapse .sidebar{
+  right:0;
+  left:initial;
+}
+
   .sidebar .sidebar-wrapper,
   body > .navbar-collapse .sidebar-wrapper {
     position: relative;
@@ -1955,7 +1954,12 @@ body > .navbar-collapse {
   .card label {
     font-size: 12px;
     margin-bottom: 5px;
-    text-transform: uppercase; }
+    text-transform: uppercase; 
+    white-space: nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+  }
   .card .title {
     margin: 0;
     color: #333333;
@@ -3175,3 +3179,35 @@ body > .navbar-collapse {
     overflow-y: hidden;
     -ms-overflow-style: -ms-autohiding-scrollbar;
     -webkit-overflow-scrolling: touch; } }
+
+@media (max-width:1200px){
+  .navbar-header .collapse,
+  .navbar-toggle{
+    display: block !important;
+  }
+  .navbar .navbar-collapse.collapse,
+  .navbar .navbar-collapse.collapse.in,
+  .navbar .navbar-collapse.collapsing{
+    display: none !important;
+  }
+  .navbar-collapse.collapse{
+    height:100% !important;
+  }
+  .navbar-header{
+    float:none;
+  }
+  .sidebar{
+    left:initial;
+    right:0;
+    z-index: 12;
+  }
+  dashboard + menu{
+    display: none;
+  }
+  .main-panel{
+    width: 100%;
+  }
+  .main-panel .navbar{
+    width: 100%;
+  }
+}

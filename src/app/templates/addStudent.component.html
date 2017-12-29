@@ -57,7 +57,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Должность</label>
-                              <input required auto-complete [(ngModel)]="newPerson.general.appointment" [source]="personal_appointments" name="appointment" class="form-control">
+                              <input required auto-complete [list-formatter]="DropdownList" [(ngModel)]="newPerson.general.appointment" [source]="personal_appointments" name="appointment" class="form-control">
                               <div class="input-group newValue" *ngIf="newPerson.general.appointment == 0">
                                 <input type="text" class="form-control" required placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_appointmen">
                                 <span class="input-group-btn">
@@ -71,7 +71,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Учреждение</label>
-                              <input auto-complete required [(ngModel)]="newPerson.general.organization" [source]="personal_organizations" name="organization" class="form-control">
+                              <input auto-complete [list-formatter]="DropdownList" required [(ngModel)]="newPerson.general.organization" [source]="personal_organizations" name="organization" class="form-control">
                               <div class="input-group newValue" *ngIf="newPerson.general.organization == 0">
                                 <input type="text" class="form-control" required placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_organizati">
                                 <span class="input-group-btn">
@@ -85,7 +85,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Структурное подразделение</label>
-                              <input auto-complete [(ngModel)]="newPerson.general.department" [source]="personal_departments" name="department" class="form-control">
+                              <input auto-complete [list-formatter]="DropdownList" [(ngModel)]="newPerson.general.department" [source]="personal_departments" name="department" class="form-control">
                               <div class="input-group newValue" *ngIf="newPerson.general.department == 0">
                                 <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_department">
                                 <span class="input-group-btn">
@@ -110,7 +110,7 @@
                             <div class="form-group">
                               <label>Учреждение образования</label>
                               <small *ngIf="establishment.invalid">*</small>
-                              <input #establishment="ngModel" auto-complete required [(ngModel)]="newPerson.profesional.educational_establishment" [source]="personal_establishments" name="department" class="form-control">
+                              <input #establishment="ngModel" auto-complete [list-formatter]="DropdownList" required [(ngModel)]="newPerson.profesional.educational_establishment" [source]="personal_establishments" name="department" class="form-control">
                               <div class="input-group newValue" *ngIf="newPerson.profesional.educational_establishment == 0">
                                 <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_establishm">
                                 <span class="input-group-btn">
@@ -125,7 +125,7 @@
                             <div class="form-group">
                               <label>Факультет</label>
                               <small *ngIf="faculty.invalid">*</small>
-                              <input #faculty="ngModel" required auto-complete [(ngModel)]="newPerson.profesional.faculty" [source]="personal_faculties" name="faculty" class="form-control">
+                              <input #faculty="ngModel" required auto-complete [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.faculty" [source]="personal_faculties" name="faculty" class="form-control">
                               <div class="input-group newValue" *ngIf="newPerson.profesional.faculty == 0">
                                 <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_faculty">
                                 <span class="input-group-btn">
@@ -161,13 +161,13 @@
                               <div class="form-group">
                                 <label>Врачебная</label>
                                 <small *ngIf="speciality.invalid">*</small>
-                                <input #speciality="ngModel" auto-complete required [(ngModel)]="newPerson.profesional.speciality_doc" [source]="specialityDocArr" name="specialityDoc" class="form-control">
+                                <input #speciality="ngModel" auto-complete [list-formatter]="DropdownList" required [(ngModel)]="newPerson.profesional.speciality_doc" [source]="specialityDocArr" name="specialityDoc" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-6">
                               <div class="form-group">
                                 <label>Прочие</label>
-                                <input auto-complete [(ngModel)]="newPerson.profesional.speciality_other" [source]="specialityOtherArr" name="specialityOther" class="form-control">
+                                <input auto-complete [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.speciality_other" [source]="specialityOtherArr" name="specialityOther" class="form-control">
                               </div>
                             </div>
                           </fieldset>
@@ -177,7 +177,7 @@
                             <div class="col-md-6">
                               <div class="form-group">
                                 <label>Переподготовка</label>
-                                <input auto-complete [(ngModel)]="newPerson.profesional.speciality_retraining" [source]="specialityRetrArr" name="specialityRetr" class="form-control">
+                                <input auto-complete [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.speciality_retraining" [source]="specialityRetrArr" name="specialityRetr" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-3" *ngIf="newPerson.profesional.speciality_retraining != ''">
@@ -229,7 +229,7 @@
                               <div class="form-group col-md-6">
                                 <label>Врачебная (осн.)</label>
                                 <small *ngIf="qualification.invalid">*</small>
-                                <input auto-complete required #qualification="ngModel" [(ngModel)]="newPerson.profesional.qualification_main" [source]="qualificationMainArr" name="qualificationMain" class="form-control">
+                                <input auto-complete [list-formatter]="DropdownList" required #qualification="ngModel" [(ngModel)]="newPerson.profesional.qualification_main" [source]="qualificationMainArr" name="qualificationMain" class="form-control">
                               </div>
                               <div class="form-group col-md-3">
                                 <label>Категория</label>
@@ -249,7 +249,7 @@
                             <div class="col-md-12 no-padding">
                               <div class="form-group col-md-6">
                                 <label>Врачебная (доп.)</label>
-                                <input auto-complete [(ngModel)]="newPerson.profesional.qualification_add" [source]="qualificationAddArr" name="qualificationAdd" class="form-control">
+                                <input auto-complete [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.qualification_add" [source]="qualificationAddArr" name="qualificationAdd" class="form-control">
                               </div>
                               <div class="form-group col-md-3">
                                 <label>Категория</label>
@@ -269,7 +269,7 @@
                             <div class="col-md-12">
                               <div class="form-group">
                                 <label>Прочие</label>
-                                <input auto-complete [(ngModel)]="newPerson.profesional.qualification_other" [source]="qualificationOtherArr" name="qualificationOther" class="form-control">
+                                <input auto-complete [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.qualification_other" [source]="qualificationOtherArr" name="qualificationOther" class="form-control">
                               </div>
                             </div>
                           </fieldset>
@@ -308,7 +308,7 @@
                             <div class="form-group">
                               <label>Гражданство</label>
                               <small *ngIf="cityzenship.invalid">*</small>
-                              <input auto-complete required [(ngModel)]="newPerson.personal.cityzenship" [source]="personal_cityzenships" #cityzenship="ngModel" name="cityzenship" class="form-control">
+                              <input auto-complete [list-formatter]="DropdownList" required [(ngModel)]="newPerson.personal.cityzenship" [source]="personal_cityzenships" #cityzenship="ngModel" name="cityzenship" class="form-control">
                               <div class="input-group newValue" *ngIf="newPerson.personal.cityzenship == 0">
                                 <input required type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="countries')">
                                 <span class="input-group-btn">
@@ -406,19 +406,19 @@
                           <div class="col-md-3">
                             <div class="form-group">
                               <label>Страна</label>
-                              <input auto-complete [source]="personal_cityzenships" [(ngModel)]="newPerson.personal.country" name="country" class="form-control">
+                              <input auto-complete [list-formatter]="DropdownList" [source]="personal_cityzenships" [(ngModel)]="newPerson.personal.country" name="country" class="form-control">
                             </div>
                           </div>
                           <div class="col-md-3" *ngIf="newPerson.personal.country == 'Беларусь'">
                             <div class="form-group">
                               <label>Область</label>
-                              <input auto-complete [source]="personal_regions" type="text" [(ngModel)]="newPerson.personal.region" name="region" class="form-control">
+                              <input auto-complete [list-formatter]="DropdownList" [source]="personal_regions" type="text" [(ngModel)]="newPerson.personal.region" name="region" class="form-control">
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
                               <label>Населённый пункт</label>
-                              <input auto-complete [source]="personal_cities" type="text" [(ngModel)]="newPerson.personal.city" name="cityName" class="form-control">
+                              <input auto-complete [list-formatter]="DropdownList" [source]="personal_cities" type="text" [(ngModel)]="newPerson.personal.city" name="cityName" class="form-control">
                             </div>
                           </div>
                           <div class="col-md-3">

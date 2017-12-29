@@ -18,6 +18,7 @@ export class PersonalInfoComponent{
 	level: number = 1;
 	canChange: boolean = false;
 	change: boolean = false;
+	originalData:Person = new Person();
 	constructor(public PIModal: BsModalRef,
 				private saveChanges: SaveChangesService ){
 	}
@@ -28,6 +29,6 @@ export class PersonalInfoComponent{
 		this.change = false;
 	}
 	SaveChanges(person: Person){
-		this.saveChanges.save(person).subscribe(data => console.log(data._body));
+		this.saveChanges.save(person, this.originalData).subscribe(data => console.log(data._body));
 	}
 }
