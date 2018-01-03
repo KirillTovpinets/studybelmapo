@@ -20,8 +20,20 @@ export class ProfesionalInfo{
 	private _mainCategoryDate: Date;
 	private _addCategoryDate: Date;
 	private _speciality_retraining_diploma_startDate:Date;
-	private _mainCategory_date: string;
-	private _addCategory_date: string;
+	private _addCategory_date : string;
+	private _mainCategory_date : string;
+	public get addCategory_date() : string {
+		return this._addCategory_date;
+	}
+	public set addCategory_date(v : string) {
+		this._addCategory_date = v;
+	}
+	public get mainCategory_date() : string {
+		return this._mainCategory_date;
+	}
+	public set mainCategory_date(v : string) {
+		this._mainCategory_date = v;
+	}
 
 	public get educational_establishment() :number {
 		return this._educational_establishment; 
@@ -151,22 +163,22 @@ export class ProfesionalInfo{
 		this._diploma_start = v; 
 	}
 	constructor(){
-		this._faculty = {id: 152, value: "Автоматизированная система управления"};
-		this._educational_establishment = {id: 115, value: "1-й Московский государственный медицинский институт"};
-		this._speciality_doc = {id: 21, value: "Валеология"};
-		this._speciality_other = {id: 112, value: "Агроном"};
-		this._speciality_retraining = {id: 17, value: "Аллергология и иммунология"};
-		this._qualification_main = {id: 6, value: "Врач лабораторной диагностики"};
-		this._qualification_other = {id: 42, value: "Врач магнито-резонансной томографии"};
-		this._qualification_add = {id: 59, value: "Биолог-аналитик, преподаватель биологии"};
-		this._diploma_start = "";
-		this._diploma_number = "test";	
-		this._mainCategory_date = "";
-		this._addCategory_date = "";
-		this._experiance_general = 1;
-		this._experiance_special = 1;
-		this._experiance_last = 1;
-		this._mainCategory = 0;
-		this._addCategory = 0;
+		// this._faculty = {id: 152, value: "Автоматизированная система управления"};
+		// this._educational_establishment = {id: 115, value: "1-й Московский государственный медицинский институт"};
+		// this._speciality_doc = {id: 21, value: "Валеология"};
+		// this._speciality_other = {id: 112, value: "Агроном"};
+		// this._speciality_retraining = {id: 17, value: "Аллергология и иммунология"};
+		// this._qualification_main = {id: 6, value: "Врач лабораторной диагностики"};
+		// this._qualification_other = {id: 42, value: "Врач магнито-резонансной томографии"};
+		// this._qualification_add = {id: 59, value: "Биолог-аналитик, преподаватель биологии"};
+		// this._diploma_start = "";
+		// this._diploma_number = "test";	
+		// this._mainCategory_date = "";
+		// this._addCategory_date = "";
+		// this._experiance_general = 1;
+		// this._experiance_special = 1;
+		// this._experiance_last = 1;
+		// this._mainCategory = 0;
+		// this._addCategory = 0;
 	}
 }

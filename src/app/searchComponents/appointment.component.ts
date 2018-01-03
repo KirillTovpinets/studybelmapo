@@ -34,8 +34,13 @@ export class AppointmentComponent extends MainClass implements OnInit{
 	isLoading: boolean = false;
 	ListLimit:number = 30;
 	ListOffset:number = 0;
+	message: string;
 	ngOnInit(): void{
 		this.establService.getList(this.limit, this.offset, "appointment", {listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+			console.log(data.json().data.length);
+			if (data.json().data.length == 0) {
+				this.message = "Список пуст";
+			}
 			for (var i = 0; i < data.json().data.length; i++) {
 				this.appointments[i] = new List();
 				this.appointments[i].id = data.json().data[i].id;

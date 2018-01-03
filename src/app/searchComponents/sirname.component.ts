@@ -28,8 +28,12 @@ export class SirnameComponent implements OnInit{
 	searchValue: string = "";
 	searchDoctors: any[] = [];
 	PersonalInfoModal: BsModalRef;
+	message:string;
 	ngOnInit(): void{
 		this.sirnameServ.getList(30, this.offset, "sirname").then(data => {
+			if (data.json().data.length == 0) {
+				this.message = "Список пуст";
+			}
 			this.doctors = this.doctors.concat(data.json().data);
 			this.doctors.sort((a, b) => {
 	          var sirname_first, sirname_second;

@@ -31,6 +31,10 @@ export class QualificationComponent extends MainClass implements OnInit{
 	searchQualification_add:List[] = [];
 	searchQualification_others:List[] = [];
 
+	main_message:string;
+	add_message:string;
+	others_message:string;
+
 	limit: number = 30;
 	offset: number = 0;
 	PersonalInfoModal: BsModalRef;
@@ -43,6 +47,9 @@ export class QualificationComponent extends MainClass implements OnInit{
 	ngOnInit(): void{
 
 		this.listService.getList(this.limit, this.offset, "qualification", {table: "qualification_main", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+			if (data.json().data.length == 0) {
+				this.main_message = "Список пуст";
+			}
 			for (var i = 0; i < data.json().data.length; i++) {
 				this.qualification_main[i] = new List();
 				this.qualification_main[i].id = data.json().data[i].id;
@@ -54,6 +61,9 @@ export class QualificationComponent extends MainClass implements OnInit{
 			}
 		});
 		this.listService.getList(this.limit, this.offset, "qualification", {table: "qualification_add", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+			if (data.json().data.length == 0) {
+				this.add_message = "Список пуст";
+			}
 			for (var i = 0; i < data.json().data.length; i++) {
 				this.qualification_add[i] = new List();
 				this.qualification_add[i].id = data.json().data[i].id;
@@ -65,6 +75,9 @@ export class QualificationComponent extends MainClass implements OnInit{
 			}
 		});
 		this.listService.getList(this.limit, this.offset, "qualification", {table: "qualification_other", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+			if (data.json().data.length == 0) {
+				this.others_message = "Список пуст";
+			}
 			for (var i = 0; i < data.json().data.length; i++) {
 				this.qualification_others[i] = new List();
 				this.qualification_others[i].id = data.json().data[i].id;

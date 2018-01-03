@@ -10,7 +10,6 @@
             </div>
             <div class="content">
               <form (ngSubmit)="(addForm.valid && fillLastInfo(setLastInfoTpl))" novalidate id="AddpersonalInfo" #addForm="ngForm">
-                {{addForm.errors}}
                 <tabset>
 
                   <div *ngIf="addForm.errors !== undefined">
@@ -24,28 +23,24 @@
                           <div class="col-md-3">
                             <div class="form-group">
                               <label>Фамилия</label>
-                              <small *ngIf="suname.invalid">*</small>
-                              <input required type="text"  [(ngModel)]="newPerson.general.surname" name="surname" class="form-control" #suname="ngModel">
+                              <input required type="text"  [pattern]="'^[А-Я]{1}[а-я]*$'" [(ngModel)]="newPerson.general.surname" name="surname" class="form-control" #suname="ngModel">
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
                               <label>Имя</label>
-                              <small *ngIf="name.invalid">*</small>
-                              <input required type="text" [(ngModel)]="newPerson.general.name" name="name" class="form-control" #name="ngModel">
+                              <input required type="text" [pattern]="'^[А-Я]{1}[а-я]*$'" [(ngModel)]="newPerson.general.name" name="name" class="form-control" #name="ngModel">
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
                               <label>Отчество</label>
-                              <small *ngIf="patername.invalid">*</small>
-                              <input required type="text" [(ngModel)]="newPerson.general.patername" name="patername" class="form-control" #patername="ngModel">
+                              <input required type="text" [pattern]="'^[А-Я]{1}[а-я]*$'" [(ngModel)]="newPerson.general.patername" name="patername" class="form-control" #patername="ngModel">
                             </div>
                           </div>
                           <div class="col-md-3">
                               <div class="form-group">
                                 <label>ФИО в дательном падеже</label>
-                                <small *ngIf="nameInDativeForm.invalid">*</small>
                                 <input required type="text" [(ngModel)]="newPerson.general.nameInDativeForm" name="nameInDativeForm" #nameInDativeForm="ngModel" placeholder="Например: Иванову Ивану Ивановичу" class="form-control">
                               </div>
                             </div>
@@ -109,8 +104,7 @@
                           <div class="col-md-6">
                             <div class="form-group">
                               <label>Учреждение образования</label>
-                              <small *ngIf="establishment.invalid">*</small>
-                              <input #establishment="ngModel" auto-complete [list-formatter]="DropdownList" required [(ngModel)]="newPerson.profesional.educational_establishment" [source]="personal_establishments" name="department" class="form-control">
+                              <input #establishment="ngModel" auto-complete [list-formatter]="DropdownList" required [(ngModel)]="newPerson.profesional.educational_establishment" [source]="personal_establishments" name="establishment" class="form-control">
                               <div class="input-group newValue" *ngIf="newPerson.profesional.educational_establishment == 0">
                                 <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_establishm">
                                 <span class="input-group-btn">
@@ -124,7 +118,6 @@
                           <div class="col-md-6">
                             <div class="form-group">
                               <label>Факультет</label>
-                              <small *ngIf="faculty.invalid">*</small>
                               <input #faculty="ngModel" required auto-complete [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.faculty" [source]="personal_faculties" name="faculty" class="form-control">
                               <div class="input-group newValue" *ngIf="newPerson.profesional.faculty == 0">
                                 <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_faculty">
@@ -139,14 +132,12 @@
                           <div class="col-md-2">
                             <div class="form-group">
                               <label>Дата получения диплома</label>
-                              <small *ngIf="diplomaStart.invalid">*</small>
-                              <input #diplomaStart="ngModel" required type="text" [(ngModel)]="newPerson.profesional.diploma_startDate" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueDiploma" name="diploma_start" class="date-picker form-control">
+                              <input #diplomaStart="ngModel" required type="text" [(ngModel)]="newPerson.profesional.diploma_startDate" [minDate]="minDate" [maxDate]="maxDate" #DiplomaStartDp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueDiploma" name="diploma_start" class="date-picker form-control">
                             </div>
                           </div>
                           <div class="col-md-2">
                             <div class="form-group">
                               <label>Номер диплома</label>
-                              <small *ngIf="diplomaNumber.invalid">*</small>
                               <input #diplomaNumber="ngModel" required type="text" [(ngModel)]="newPerson.profesional.diploma_number" name="diploma_number" class="form-control">
                             </div>
                           </div>
@@ -160,7 +151,6 @@
                             <div class="col-md-6">
                               <div class="form-group">
                                 <label>Врачебная</label>
-                                <small *ngIf="speciality.invalid">*</small>
                                 <input #speciality="ngModel" auto-complete [list-formatter]="DropdownList" required [(ngModel)]="newPerson.profesional.speciality_doc" [source]="specialityDocArr" name="specialityDoc" class="form-control">
                               </div>
                             </div>
@@ -183,15 +173,13 @@
                             <div class="col-md-3" *ngIf="newPerson.profesional.speciality_retraining != ''">
                               <div class="form-group">
                                 <label>№ диплома</label>
-                                <small *ngIf="repNumber.invalid">*</small>
                                 <input #repNumber="ngModel" [(ngModel)]="newPerson.profesional.speciality_retraining_diploma" required name="speciality_retraining_diploma" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-3" *ngIf="newPerson.profesional.speciality_retraining != ''">
                               <div class="form-group">
                                 <label>Дата выдачи</label>
-                                <small *ngIf="repDate.invalid">*</small>
-                                <input #repDate="ngModel" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueRetrainingDate" [(ngModel)]="newPerson.profesional.speciality_retraining_diploma_start" required name="speciality_retraining_diploma_start" class="date-picker form-control">
+                                <input #repDate="ngModel" [minDate]="minDate" [maxDate]="maxDate" #RetrainingDp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueRetrainingDate" [(ngModel)]="newPerson.profesional.speciality_retraining_diploma_start" required name="speciality_retraining_diploma_start" class="date-picker form-control">
                               </div>
                             </div>
                           </fieldset>
@@ -201,21 +189,18 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label>Общий</label>
-                                <small *ngIf="expGeneral.invalid">*</small>
                                 <input type="number" #expGeneral="ngModel" required [(ngModel)]="newPerson.profesional.experiance_general" name="experiance_general" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label>По специальности</label>
-                                <small *ngIf="expSpecial.invalid">*</small>
                                 <input type="number" #expSpecial="ngModel" required [(ngModel)]="newPerson.profesional.experiance_special" name="experiance_special" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label>В последней должности</label>
-                                <small *ngIf="expLast.invalid">*</small>
                                 <input type="number" #expLast="ngModel" required [(ngModel)]="newPerson.profesional.experiance_last" name="experiance_last" class="form-control">
                               </div>
                             </div>
@@ -228,7 +213,6 @@
                             <div class="col-md-12 no-padding">
                               <div class="form-group col-md-6">
                                 <label>Врачебная (осн.)</label>
-                                <small *ngIf="qualification.invalid">*</small>
                                 <input auto-complete [list-formatter]="DropdownList" required #qualification="ngModel" [(ngModel)]="newPerson.profesional.qualification_main" [source]="qualificationMainArr" name="qualificationMain" class="form-control">
                               </div>
                               <div class="form-group col-md-3">
@@ -242,8 +226,7 @@
                               </div>
                               <div class="form-group col-md-3" *ngIf="newPerson.profesional.mainCategory != 0">
                                 <label>Дата присвоения</label>
-                                <small *ngIf="mainCategoryDate.invalid">*</small>
-                                <input type="text" required [(ngModel)]="newPerson.profesional.mainCategoryDate" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueMainCategoryDate" name="mainCategoryDate" class="date-picker form-control" #mainCategoryDate="ngModel">
+                                <input type="text" required [(ngModel)]="newPerson.profesional.mainCategoryDate" [minDate]="minDate" [maxDate]="maxDate" #QualificationMainDp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueMainCategoryDate" name="mainCategoryDate" class="date-picker form-control" #mainCategoryDate="ngModel">
                               </div>
                             </div>
                             <div class="col-md-12 no-padding">
@@ -262,8 +245,7 @@
                               </div>
                               <div class="form-group col-md-3" *ngIf="newPerson.profesional.addCategory != 0">
                                 <label>Дата присвоения</label>
-                                <small *ngIf="addCategoryDate.invalid">*</small>
-                                <input type="text" required [(ngModel)]="newPerson.profesional.addCategoryDate" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueAddCategoryDate" name="addCategoryDate" class="date-picker form-control" #addCategoryDate="ngModel">
+                                <input type="text" required [(ngModel)]="newPerson.profesional.addCategoryDate" [minDate]="minDate" [maxDate]="maxDate" #QualificationAddDp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueAddCategoryDate" name="addCategoryDate" class="date-picker form-control" #addCategoryDate="ngModel">
                               </div>
                             </div>
                             <div class="col-md-12">
@@ -279,169 +261,166 @@
                   </tab>
                   <tab heading="Личная">
                     <div class="content">
-                      <div class="col-md-6 no-padding">
-                        <fieldset>
-                          <legend><h5>Основная информация</h5></legend>
-                          <div class="col-md-4">
-                            <div class="form-group">
-                              <label>Дата рождения</label>
-                              <small *ngIf="birthday.invalid">*</small>
-                              <input required type="text" [(ngModel)]="newPerson.personal.birthdayDate" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueBirthday" name="birthday" class="date-picker form-control" #birthday="ngModel">
-                            </div>
-                          </div>
-                          <div class="col-md-4">
-                            <label>Пол</label>
-                            <div class="col-md-12 no-padding">
-                              <div class="col-md-6 text-center">
-                                <input type="radio"  value="true" [(ngModel)]="newPerson.personal.isMale" name="isMale" id="isMale" class="regular-radio-gender">
-                                <label for="isMale" class="fa fa-male" style="font-size:2em;">
-                                </label>
-                              </div>
-                              <div class="col-md-6 text-center">
-                                <input type="radio"  value="false" [(ngModel)]="newPerson.personal.isMale" name="isMale" id="isFemale" class="regular-radio-gender">
-                                <label for="isFemale" class="fa fa-female" style="font-size:2em;">
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-4">
-                            <div class="form-group">
-                              <label>Гражданство</label>
-                              <small *ngIf="cityzenship.invalid">*</small>
-                              <input auto-complete [list-formatter]="DropdownList" required [(ngModel)]="newPerson.personal.cityzenship" [source]="personal_cityzenships" #cityzenship="ngModel" name="cityzenship" class="form-control">
-                              <div class="input-group newValue" *ngIf="newPerson.personal.cityzenship == 0">
-                                <input required type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="countries')">
-                                <span class="input-group-btn">
-                                  <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'countries', personal_cityzenships)">
-                                    <span class="glyphicon glyphicon-floppy-disk"></span>
-                                  </button>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-4">
-                            <div class="form-group">
-                              <label>Домашний телефон</label>
-                              <input type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="newPerson.personal.tel_number_home" name="tel_number_home" class="form-control">
-                            </div>
-                          </div>
-                          <div class="col-md-4">
-                            <div class="form-group">
-                              <label>Рабочий телефон</label>
-                              <input type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="newPerson.personal.tel_number_work" name="tel_number_work" class="form-control">
-                            </div>
-                          </div>
-                          <div class="col-md-4">
-                            <div class="form-group">
-                              <label>Мобильный телефон</label>
-                              <input type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="newPerson.personal.tel_number_mobile" name="tel_number_mobile" class="form-control">
-                            </div>
-                          </div>
-                        </fieldset>
-                      </div>
-                       <div class="col-md-6 no-padding">
-                        <fieldset>
-                         <legend><h5>Паспортные данные</h5></legend>
-                         <div class="col-md-3">
-                           <div class="form-group">
-                             <label>Серия</label>
-                             <small *ngIf="seria.invalid">*</small>
-                             <input required type="text" #seria="ngModel" [(ngModel)]="newPerson.personal.pasport_seria" name="pasport_seria" class="form-control">
-                           </div>
-                         </div>
-                         <div class="col-md-5">
-                           <label>№</label>
-                           <small *ngIf="number.invalid">*</small>
-                           <input required type="text" #number="ngModel" [(ngModel)]="newPerson.personal.pasport_number" name="pasport_number" class="form-control">
-                         </div>
-                         <div class="col-md-4">
-                           <div class="form-group">
-                             <label>Дата выдачи</label>
-                             <small *ngIf="pasportStart.invalid">*</small>
-                             <input required type="text" #pasportStart="ngModel" [(ngModel)]="newPerson.personal.pasportDate" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValuePasport" name="pasportDate" class="date-picker form-control" #pasportDate="ngModel">
-                           </div>
-                         </div>
-                         <div class="col-md-6">
-                           <div class="form-group">
-                             <label>Орган, выдавший паспорт</label>
-                             <small *ngIf="organ.invalid">*</small>
-                             <input type="text" required #organ="ngModel" [(ngModel)]="newPerson.personal.pasport_organ" name="pasport_organ" class="form-control">
-                           </div>
-                         </div>
-                         <div class="col-md-6">
-                           <div class="form-group">
-                             <label>Страховой номер</label>
-                             <small *ngIf="insurance.invalid">*</small>
-                             <input type="text" required #insurance="ngModel" [(ngModel)]="newPerson.personal.insurance_number" name="insurance_number" class="form-control">
-                           </div>
-                         </div>
-                       </fieldset>
-                     </div>
-                      <div class="col-md-12">
-                        <fieldset>
-                          <legend><h5>Домашний адрес</h5></legend>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Тип населённого пункта</label>
-                              <div>
-  
-                                <div>
-                                  <input class="regular-radio" value="1" type="radio" name="cityType" id="city" [(ngModel)]="newPerson.personal.cityType">
-                                  <label for="city"></label>
-                                  <label>Город</label>
-                                </div>
-                                <div>
-                                  <input class="regular-radio" value="2" type="radio" name="cityType" id="town" [(ngModel)]="newPerson.personal.cityType">
-                                  <label for="town"></label>
-                                  <label>Городской посёлок</label>
-                                </div>
-                                <div>
-                                  <input class="regular-radio" value="3" type="radio" name="cityType" id="village" [(ngModel)]="newPerson.personal.cityType">
-                                  <label for="village"></label>
-                                  <label>Деревня</label>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Страна</label>
-                              <input auto-complete [list-formatter]="DropdownList" [source]="personal_cityzenships" [(ngModel)]="newPerson.personal.country" name="country" class="form-control">
-                            </div>
-                          </div>
-                          <div class="col-md-3" *ngIf="newPerson.personal.country == 'Беларусь'">
-                            <div class="form-group">
-                              <label>Область</label>
-                              <input auto-complete [list-formatter]="DropdownList" [source]="personal_regions" type="text" [(ngModel)]="newPerson.personal.region" name="region" class="form-control">
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Населённый пункт</label>
-                              <input auto-complete [list-formatter]="DropdownList" [source]="personal_cities" type="text" [(ngModel)]="newPerson.personal.city" name="cityName" class="form-control">
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Улица</label>
-                              <input type="text" [(ngModel)]="newPerson.personal.street" name="street" class="form-control">
-                            </div>
-                          </div>
-                          <div class="col-md-3 no-padding">
-                            <div class="col-md-6">
+                      <div class="row">
+                        <div class="col-md-6 no-padding">
+                          <fieldset>
+                            <legend><h5>Основная информация</h5></legend>
+                            <div class="col-md-4">
                               <div class="form-group">
-                                <label>Дом/корпус</label>
-                                <input type="tel" [(ngModel)]="newPerson.personal.building" name="building" class="form-control">
+                                <label>Дата рождения</label>
+                                <input required type="text" [(ngModel)]="newPerson.personal.birthdayDate" [minDate]="minDate" [maxDate]="maxDate" #BirthdayDp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueBirthday" name="birthday" class="date-picker form-control" #birthday="ngModel">
                               </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                              <label>Пол</label>
+                              <div class="col-md-12 no-padding">
+                                <div class="col-md-6 text-center">
+                                  <input type="radio"  value="true" [(ngModel)]="newPerson.personal.isMale" name="isMale" id="isMale" class="regular-radio-gender">
+                                  <label for="isMale" class="fa fa-male" style="font-size:2em;">
+                                  </label>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                  <input type="radio"  value="false" [(ngModel)]="newPerson.personal.isMale" name="isMale" id="isFemale" class="regular-radio-gender">
+                                  <label for="isFemale" class="fa fa-female" style="font-size:2em;">
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
                               <div class="form-group">
-                                <label>Квартира</label>
-                                <input type="tel" [(ngModel)]="newPerson.personal.flat" name="flat" class="form-control">
+                                <label>Гражданство</label>
+                                <input auto-complete [list-formatter]="DropdownList" required [(ngModel)]="newPerson.personal.cityzenship" [source]="personal_cityzenships" #cityzenship="ngModel" name="cityzenship" class="form-control">
+                                <div class="input-group newValue" *ngIf="newPerson.personal.cityzenship == 0">
+                                  <input required type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="countries')">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'countries', personal_cityzenships)">
+                                      <span class="glyphicon glyphicon-floppy-disk"></span>
+                                    </button>
+                                  </span>
+                                </div>
                               </div>
                             </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>Домашний телефон</label>
+                                <input type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="newPerson.personal.tel_number_home" name="tel_number_home" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>Рабочий телефон</label>
+                                <input type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="newPerson.personal.tel_number_work" name="tel_number_work" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>Мобильный телефон</label>
+                                <input type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="newPerson.personal.tel_number_mobile" name="tel_number_mobile" class="form-control">
+                              </div>
+                            </div>
+                          </fieldset>
+                        </div>
+                         <div class="col-md-6 no-padding">
+                            <fieldset>
+                             <legend><h5>Паспортные данные</h5></legend>
+                             <div class="col-md-3">
+                               <div class="form-group">
+                                 <label>Серия</label>
+                                 <input required type="text" #seria="ngModel" [(ngModel)]="newPerson.personal.pasport_seria" name="pasport_seria" class="form-control">
+                               </div>
+                             </div>
+                             <div class="col-md-5">
+                               <label>№</label>
+                               <input required type="text" #number="ngModel" [(ngModel)]="newPerson.personal.pasport_number" name="pasport_number" class="form-control">
+                             </div>
+                             <div class="col-md-4">
+                               <div class="form-group">
+                                 <label>Дата выдачи</label>
+                                 <input required type="text" [(ngModel)]="newPerson.personal.pasportDate" [minDate]="minDate" [maxDate]="maxDate" #PasportDp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValuePasport" name="pasportDate" class="date-picker form-control" #pasportDate="ngModel">
+                               </div>
+                             </div>
+                             <div class="col-md-6">
+                               <div class="form-group">
+                                 <label>Орган, выдавший паспорт</label>
+                                 <input type="text" required #organ="ngModel" [(ngModel)]="newPerson.personal.pasport_organ" name="pasport_organ" class="form-control">
+                               </div>
+                             </div>
+                             <div class="col-md-6">
+                               <div class="form-group">
+                                 <label>Страховой номер</label>
+                                 <input type="text" required #insurance="ngModel" [(ngModel)]="newPerson.personal.insurance_number" name="insurance_number" class="form-control">
+                               </div>
+                             </div>
+                            </fieldset>
                           </div>
-                        </fieldset>
+                        </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <fieldset>
+                            <legend><h5>Домашний адрес</h5></legend>
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label>Тип населённого пункта</label>
+                                <div>
+    
+                                  <div>
+                                    <input class="regular-radio" value="1" type="radio" name="cityType" id="city" [(ngModel)]="newPerson.personal.cityType">
+                                    <label for="city"></label>
+                                    <label>Город</label>
+                                  </div>
+                                  <div>
+                                    <input class="regular-radio" value="2" type="radio" name="cityType" id="town" [(ngModel)]="newPerson.personal.cityType">
+                                    <label for="town"></label>
+                                    <label>Городской посёлок</label>
+                                  </div>
+                                  <div>
+                                    <input class="regular-radio" value="3" type="radio" name="cityType" id="village" [(ngModel)]="newPerson.personal.cityType">
+                                    <label for="village"></label>
+                                    <label>Деревня</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label>Страна</label>
+                                <input auto-complete [list-formatter]="DropdownList" [source]="personal_cityzenships" [(ngModel)]="newPerson.personal.country" name="country" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-md-3" *ngIf="newPerson.personal.country == 'Беларусь'">
+                              <div class="form-group">
+                                <label>Область</label>
+                                <input auto-complete [list-formatter]="DropdownList" [source]="personal_regions" type="text" [(ngModel)]="newPerson.personal.region" name="region" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label>Населённый пункт</label>
+                                <input auto-complete [list-formatter]="DropdownList" [source]="personal_cities" type="text" [(ngModel)]="newPerson.personal.city" name="cityName" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label>Улица</label>
+                                <input type="text" [(ngModel)]="newPerson.personal.street" name="street" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-md-3 no-padding">
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Дом/корпус</label>
+                                  <input type="tel" [(ngModel)]="newPerson.personal.building" name="building" class="form-control">
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Квартира</label>
+                                  <input type="tel" [(ngModel)]="newPerson.personal.flat" name="flat" class="form-control">
+                                </div>
+                              </div>
+                            </div>
+                          </fieldset>
+                        </div>
                       </div>
                     </div>
                   </tab>
@@ -479,7 +458,7 @@
                         <div class="col-md-3">
                           <div class="form-group">
                             <label for="">Год утверждения</label>
-                            <input type="text" [(ngModel)]="newPerson.sience.statusApproveDate" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueBirthday" name="approveDate" class="date-picker form-control" #approveDate="ngModel">
+                            <input type="text" [(ngModel)]="newPerson.sience.statusApproveDate" [minDate]="minDate" [maxDate]="maxDate" #SienceStatusDp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueBirthday" name="approveDate" class="date-picker form-control" #approveDate="ngModel">
                           </div>
                         </div>
                         <div class="col-md-3">
@@ -540,6 +519,59 @@
                     </div>
                   </tab>
                 </tabset>
+                <div class="alert alert-danger" *ngIf="addForm.invalid && addForm.touched &&
+                                                  ((suname !== undefined && suname.invalid && suname.dirty) ||
+                                                  (name !== undefined && name.invalid && name.dirty) ||
+                                                  (patername !== undefined && patername.invalid && patername.dirty) ||
+                                                  (nameInDativeForm !== undefined && nameInDativeForm.invalid && nameInDativeForm.dirty) ||
+                                                  (establishment !== undefined && establishment.invalid && establishment.dirty) ||
+                                                  (faculty !== undefined && faculty.invalid && faculty.dirty) ||
+                                                  (diplomaStart !== undefined && diplomaStart.invalid && diplomaStart.dirty) ||
+                                                  (diplomaNumber !== undefined && diplomaNumber.invalid && diplomaNumber.dirty) ||
+                                                  (speciality !== undefined && speciality.invalid && speciality.dirty) ||
+                                                  (repNumber !== undefined && repNumber.invalid && repNumber.dirty) ||
+                                                  (repDate !== undefined && repDate.invalid && repDate.dirty) ||
+                                                  (expGeneral !== undefined && expGeneral.invalid && expGeneral.dirty) ||
+                                                  (expSpecial !== undefined && expSpecial.invalid && expSpecial.dirty) ||
+                                                  (expLast !== undefined && expLast.invalid && expLast.dirty) ||
+                                                  (qualification !== undefined && qualification.invalid && qualification.dirty) ||
+                                                  (mainCategoryDate !== undefined && mainCategoryDate.invalid && mainCategoryDate.dirty) ||
+                                                  (birthday !== undefined && birthday.invalid && birthday.dirty) ||
+                                                  (cityzenship !== undefined && cityzenship.invalid && cityzenship.dirty) ||
+                                                  (seria !== undefined && seria.invalid && seria.dirty) ||
+                                                  (number !== undefined && number.invalid && number.dirty) ||
+                                                  (pasportDate !== undefined && pasportDate.invalid && pasportDate.dirty) ||
+                                                  (organ !== undefined && organ.invalid && organ.dirty) ||
+                                                  (insurance !== undefined && insurance.invalid && insurance.dirty) ||
+                                                  (approveDate !== undefined && approveDate.invalid && approveDate.dirty))">
+                  <p>Проверьте правильность заполнения данных</p>
+                  <ul>
+                    <li *ngIf="suname !== undefined && suname.invalid && suname.dirty">Ошибка в поле "Фамилия"</li>
+                    <li *ngIf="name !== undefined && name.invalid && name.dirty">Ошибка в поле "Имя"</li>
+                    <li *ngIf="patername !== undefined && patername.invalid && patername.dirty">Ошибка в поле "Отчество"</li>
+                    <li *ngIf="nameInDativeForm !== undefined && nameInDativeForm.invalid && nameInDativeForm.dirty">Ошибка в поле "ФИО в дательном падеже"</li>
+                    <li *ngIf="establishment !== undefined && establishment.invalid && establishment.dirty">Ошибка в поле "Учреждение образования"</li>
+                    <li *ngIf="faculty !== undefined && faculty.invalid && faculty.dirty">Ошибка в поле "Факультет"</li>
+                    <li *ngIf="diplomaStart !== undefined && diplomaStart.invalid && diplomaStart.dirty">Ошибка в поле "Дата получения диплома"</li>
+                    <li *ngIf="diplomaNumber !== undefined && diplomaNumber.invalid && diplomaNumber.dirty">Ошибка в поле "Номер диплома"</li>
+                    <li *ngIf="speciality !== undefined && speciality.invalid && speciality.dirty">Ошибка в поле "Специальность по дилому (врачебная)"</li>
+                    <li *ngIf="repNumber !== undefined && repNumber.invalid && repNumber.dirty">Ошибка в поле "Номер диплома по переподготовке"</li>
+                    <li *ngIf="repDate !== undefined && repDate.invalid && repDate.dirty">Ошибка в поле даты переподготовки</li>
+                    <li *ngIf="expGeneral !== undefined && expGeneral.invalid && expGeneral.dirty">Ошибка в поле "Общий стаж"</li>
+                    <li *ngIf="expSpecial !== undefined && expSpecial.invalid && expSpecial.dirty">Ошибка в поле "Стаж по специальности"</li>
+                    <li *ngIf="expLast !== undefined && expLast.invalid && expLast.dirty">Ошибка в поле "Стаж в последней должности"</li>
+                    <li *ngIf="qualification !== undefined && qualification.invalid && qualification.dirty">Ошибка в поле "Квалификация"</li>
+                    <li *ngIf="mainCategoryDate !== undefined && mainCategoryDate.invalid && mainCategoryDate.dirty">Ошибка в поле "Дата присвоения основной категории"</li>
+                    <li *ngIf="birthday !== undefined && birthday.invalid && birthday.dirty">Ошибка в поле "Дата рождения"</li>
+                    <li *ngIf="cityzenship !== undefined && cityzenship.invalid && cityzenship.dirty">Ошибка в поле "Гражданство"</li>
+                    <li *ngIf="seria !== undefined && seria.invalid && seria.dirty">Ошибка в поле "Серия паспорта"</li>
+                    <li *ngIf="number !== undefined && number.invalid && number.dirty">Ошибка в поле "Номер паспорта"</li>
+                    <li *ngIf="pasportDate !== undefined && pasportDate.invalid && pasportDate.dirty">Ошибка в поле "Дата получения паспорта"</li>
+                    <li *ngIf="organ !== undefined && organ.invalid && organ.dirty">Ошибка в поле "Орган выдавший паспорт"</li>
+                    <li *ngIf="insurance !== undefined && insurance.invalid && insurance.dirty">Ошибка в поле "Страховой номер"</li>
+                    <li *ngIf="approveDate !== undefined && approveDate.invalid && approveDate.dirty">Ошибка в поле "Дата присвоения звания"</li>
+                  </ul>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                       <button type="submit" class="btn btn-success">Далее</button>
@@ -619,6 +651,9 @@
                 </fieldset>
               </div>
             </div>
+          </div>
+          <div class="errors">
+            <p></p>
           </div>
           <div class="text-center">
             <a (click)="SavePerson(newPerson)" class="btn btn-success">Сохранить</a>

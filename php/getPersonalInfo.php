@@ -6,6 +6,22 @@
 	$mysqli->query("SET NAMES utf8");
 	$id = $_GET["id"];
 
+	$correspondings = array(
+		"appointment" => "personal_appointment.",
+		"organization" => "personal_organizations",
+		"department" => "personal_department",
+		"establishmentId" => "personal_establishment",
+		"facultyId" => "personal_faculty",
+		"qualification_add" => "qualification_add",
+		"qualification_main" => "qualification_main",
+		"qualification_other" => "qualification_other",
+		"speciality_doc" => "speciality_doct",
+		"speciality_other" => "speciality_other",
+		"speciality_retraining" => "speciality_retraining",
+		"citizenshi" => "ountries",
+		"region" => "regions"
+	);
+
 	//Общая информация
 	$infoQuery = "SELECT personal_card.id, 
 						personal_card.surname AS surname,  
@@ -63,11 +79,34 @@
 	
 	$result = $mysqli->query($infoQuery) or die ("Ошибка запроса в запросе\n$infoQuery\n " . mysqli_error($mysqli));
 	
-		$resultProf = $mysqli->query($profInfoQuery) or die ("Ошибка запроса в запросе\n$profInfoQuery\n " . mysqli_error($mysqli));
+	$resultProf = $mysqli->query($profInfoQuery) or die ("Ошибка запроса в запросе\n$profInfoQuery\n " . mysqli_error($mysqli));
 	$resultPrivate = $mysqli->query($privateInfoQuery) or die ("Ошибка запроса в запросе\n$privateInfoQuery\n " . mysqli_error($mysqli));
 	$response["general"] = $result->fetch_assoc();
 	$response["personal"] = $resultPrivate->fetch_assoc();
 	$response["profesional"] = $resultProf->fetch_assoc();
+
+	$updateData = "SELECT * FROM history_of_changes WHERE personId = $id ORDER BY id ASC";
+	$updateObj = $mysqli->query($updateData) or die ("Error in '$updateData': " . mysqli_error($mysqli));
+	while ($row = $updateObj->fetch_assoc()) {
+		foreach ($response as $key => $value) {
+			foreach ($value as $keyIn => $valueIn) {
+				if ($keyIn == $row["field"]) {
+					$newValue = $row["new_value"];
+					foreach ($correspondings as $keyOut => $valueOut) {
+						if ($keyOut == $keyIn) {
+							$table = $valueOut;
+							$query = "SELECT name FROM $table WHERE id = $newValue";
+							$result = $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));
+							$newNameArr = $result->fetch_assoc();
+							$newName = $newNameArr["name"];
+							$value[$keyIn] = $newName;
+							$response[$key] = $value;
+						}
+					}
+				}
+			}
+		}
+	}
 	mysqli_close($mysqli);
 	echo json_encode($response);
 ?>

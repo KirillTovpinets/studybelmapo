@@ -8,15 +8,11 @@
 	$mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die("Ошибка подклчюения: " . mysqli_connect_error());
 	$mysqli->query("SET NAMES utf8");
 
-	$cathderaId = $course->cathedraId;
-	$cathedraObj = $mysqli->query("SELECT * FROM cathedras WHERE id=$cathderaId");
-	$cathedra = $cathedraObj->fetch_assoc();
-	$Date = date("Y-m-d");
-	$FacultId = $cathedra["facultId"];
-	$CathedrId = $cathedra["id"];
 	$CourseId = $course->id;
-	$GroupNum = $course->Number;
-	$EducType = $course->Type;
+	$courseObj = $mysqli->query("SELECT Start FROM cources where id = $CourseId");
+	$courseArr = $courseObj->fetch_assoc();
+	$courseDate = $courseArr["Start"];
+
 	$ResidPlace = $person->_belmapo_residense;
 	$FormEduc = $person->_belmapo_educForm;
 	if (isset($person->_belmapo_paymentData)) {
@@ -28,7 +24,7 @@
 	$isDeleted = 0;
 	$Status = 0;
 	$PersonId = $person->_id;
-	$query = "INSERT INTO `arrivals`(`Date`, `FacultId`, `CathedrId`, `CourseId`, `GroupNum`, `EducType`, `ResidPlace`, `FormEduc`, `Dic_count`, `DocNumber`, `IsDeleted`, `Status`, `PersonId`) VALUES ('$Date', '$FacultId','$CathedrId', '$CourseId', '$GroupNum', '$EducType', '$ResidPlace', '$FormEduc', '$Dic_count', '$DocNumber', '$isDeleted', '$Status', '$PersonId')";
+	$query = "INSERT INTO `arrivals`(`Date`, `CourseId`, `ResidPlace`, `FormEduc`, `Dic_count`, `DocNumber`, `Status`, `PersonId`) VALUES ('$courseDate', '$CourseId', '$ResidPlace', '$FormEduc', '$Dic_count', '$DocNumber', '$Status', '$PersonId')";
 	$mysqli->query($query) or die ("Ошибка выполнения запроса $query: " . mysqli_error($mysqli));
 	mysqli_close($mysqli);
 

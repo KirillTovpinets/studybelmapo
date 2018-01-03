@@ -6,7 +6,12 @@
     <tabset>
       <tab heading="Мужской">
         <div class="DoctorList">
-          <div class="content" (scroll)="ajaxLoadMale($event)">
+          <div class="content" *ngIf="maleList.message != undefined">
+            <div class="alert alert-warning" > 
+              <p>{{ maleList.message }}</p>
+            </div>
+          </div>
+          <div class="content" (scroll)="ajaxLoadMale($event)" *ngIf="maleList.message == undefined">
             <form action="">
               <label for="">Поиск</label>
               <input type="text" class="form-control" (keyup)="SearchMale($event, 1)">
@@ -57,7 +62,12 @@
       </tab>
       <tab heading="Женский">
         <div class="DoctorList">
-          <div class="content" (scroll)="ajaxLoadFemale($event)">
+          <div class="content" *ngIf="femaleList.message != undefined">
+            <div class="alert alert-warning" > 
+              <p>{{ femaleList.message }}</p>
+            </div>
+          </div>
+          <div class="content" (scroll)="ajaxLoadFemale($event)"  *ngIf="femaleList.message == undefined">
             <form action="">
               <label for="">Поиск</label>
               <input type="text" class="form-control" (keyup)="SearchFemale($event, 0)">

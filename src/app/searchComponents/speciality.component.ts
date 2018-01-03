@@ -26,6 +26,10 @@ export class SpecialityComponent extends MainClass implements OnInit{
 	specialities_retraining: List[] = [];
 	specialities_others: List[] = [];
 
+	main_message:string;
+	retraining_message:string;
+	others_message:string;
+
 	searchSpecialities_main: List[] = [];
 	searchSpecialities_retraining: List[] = [];
 	searchSpecialities_others: List[] = [];
@@ -43,6 +47,9 @@ export class SpecialityComponent extends MainClass implements OnInit{
 	ListOffset:number = 0;
 	ngOnInit(): void{
 		this.establService.getList(this.limit, this.offset, "speciality", {table: "speciality_doct", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+			if (data.json().data.length == 0) {
+				this.main_message = "Список пуст";
+			}
 			for (var i = 0; i < data.json().data.length; i++) {
 				this.specialities_main[i] = new List();
 				this.specialities_main[i].id = data.json().data[i].id;
@@ -54,6 +61,9 @@ export class SpecialityComponent extends MainClass implements OnInit{
 			}
 		});
 		this.establService.getList(this.limit, this.offset, "speciality", {table: "speciality_retraining", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+			if (data.json().data.length == 0) {
+				this.retraining_message = "Список пуст";
+			}
 			for (var i = 0; i < data.json().data.length; i++) {
 				this.specialities_retraining[i] = new List();
 				this.specialities_retraining[i].id = data.json().data[i].id;
@@ -65,6 +75,9 @@ export class SpecialityComponent extends MainClass implements OnInit{
 			}
 		});
 		this.establService.getList(this.limit, this.offset, "speciality", {table: "speciality_other", listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+			if (data.json().data.length == 0) {
+				this.others_message = "Список пуст";
+			}
 			for (var i = 0; i < data.json().data.length; i++) {
 				this.specialities_others[i] = new List();
 				this.specialities_others[i].id = data.json().data[i].id;

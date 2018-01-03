@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
 	templateUrl: "templates/addStudent.component.html",
-	providers: [PersonalDataService, PersonService, NotificationsService, BsModalService],
+	providers: [PersonalDataService, PersonService, BsModalService],
 	styles: [`
 		table tbody tr td{
 			font-size:16px;
@@ -116,7 +116,7 @@ export class AddStudentComponent implements OnInit{
 		if (inputData.profesional.addCategoryDate !== undefined) {
 			inputData.profesional.addCategory_date = inputData.profesional.addCategoryDate.toISOString().slice(0,10);
 		}
-		inputData.belmapo_couse = this.courseId;
+		inputData.belmapo_course = this.courseId;
 		this.saveService.save(inputData).then(data => {
 			console.log(data._body);
 			this.notify.addInfo(data._body);

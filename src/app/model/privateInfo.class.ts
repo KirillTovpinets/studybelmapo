@@ -151,20 +151,20 @@ export class PrivateInfo{
 		this._pasport_organ = v;
 	}
 	constructor(){
-		this._cityzenship = {id: 3, value: "Армения"};
-		this._country = {id: 3, value: "Армения"};
-		this._region = {id: 1, value: "Брестская"};
-		this._city = {id: 1, value: "Минск"};
-		this._birthday = "test";
-		this._tel_number = "test";
-		this._insurance_number = "test";
-		this._cityType = 2;
-		this._street = "проспект Пушкина";
-		this._building = "29";
-		this._flat = "137";
-		this._tel_number_home = "+37529853756";
-		this._tel_number_work = "80298537596";
-		this._tel_number_mobile = "2985396596";
-		this._isMale = true;
+		// this._cityzenship = {id: 3, value: "Армения"};
+		// this._country = {id: 3, value: "Армения"};
+		// this._region = {id: 1, value: "Брестская"};
+		// this._city = {id: 1, value: "Минск"};
+		// this._birthday = "test";
+		// this._tel_number = "test";
+		// this._insurance_number = "test";
+		// this._cityType = 2;
+		// this._street = "проспект Пушкина";
+		// this._building = "29";
+		// this._flat = "137";
+		// this._tel_number_home = "+37529853756";
+		// this._tel_number_work = "80298537596";
+		// this._tel_number_mobile = "2985396596";
+		// this._isMale = true;
 	}
 }

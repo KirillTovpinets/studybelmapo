@@ -2,7 +2,12 @@
   <h4 class="title">Список слушателей</h4>
   <p class="category">По фамилии</p>
 </div>
-<div class="content DoctorList">
+<div class="content" *ngIf="message != undefined">
+  <div class="alert alert-warning" > 
+    <p>{{ message }}</p>
+  </div>
+</div>
+<div class="content DoctorList" *ngIf="message == undefined">
   <form action="">
     <label for="">Поиск</label>
     <input type="text" class="form-control" (keyup)="Search($event)">

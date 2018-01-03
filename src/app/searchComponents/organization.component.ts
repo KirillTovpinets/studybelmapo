@@ -34,9 +34,12 @@ export class OrganizationComponent extends MainClass implements OnInit{
 	ListOffset: number = 0;
 	ListLimit: number = 30;
 	isLoading: boolean = false;
-
+	message:string;
 	ngOnInit(): void{
 		this.establService.getList(this.limit, this.offset, "job", {listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+			if (data.json().data.length == 0) {
+				this.message = "Список пуст";
+			}
 			for (var i = 0; i < data.json().data.length; i++) {
 				this.organizations[i] = new List();
 				this.organizations[i].limit = this.ListLimit;

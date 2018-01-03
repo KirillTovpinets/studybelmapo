@@ -4,6 +4,7 @@ import { TableListCopmonent } from "./tableList.component";
 import { Person } from "./model/person.class";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { SaveChangesService } from './personalInfo/services/saveChanges.service';
+import {NotificationsService} from 'angular4-notify';
 @Component({
 	selector: 'personal-info',
 	templateUrl: 'templates/personalInfo.component.html',
@@ -20,7 +21,8 @@ export class PersonalInfoComponent{
 	change: boolean = false;
 	originalData:Person = new Person();
 	constructor(public PIModal: BsModalRef,
-				private saveChanges: SaveChangesService ){
+				private saveChanges: SaveChangesService,
+				private notify: NotificationsService ){
 	}
 	Change(){
 		this.change = true;
@@ -29,6 +31,10 @@ export class PersonalInfoComponent{
 		this.change = false;
 	}
 	SaveChanges(person: Person){
-		this.saveChanges.save(person, this.originalData).subscribe(data => console.log(data._body));
+		this.saveChanges.save(person, this.originalData).subscribe(data => {
+			this.change = false;
+			this.originalData = Object.assign(new Person(), this.person);
+			this.notify.addInfo(data._body);
+		});
 	}
 }

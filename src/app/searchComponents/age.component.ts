@@ -37,49 +37,97 @@ export class AgeComponent implements OnInit{
 			this.ageLists[i] = new List();
 		}
 	}
-	isLoaded:number[] = [0, 0, 0, 0, 0, 0]
+	isLoaded:number[] = [0, 0, 0, 0, 0, 0];
 	ngOnInit(): void{
 
 		this.ageService.getList(30, 0, "age", {min: 18, max: 21}).then(data => {
-			this.ageLists[0] = new List();
-			this.ageLists[0].parameters = this.params[0];
-			this.ageLists[0].setList(data.json().data);
-			this.ageLists[0].total = data.json().Total;
+			try{
+				this.ageLists[0] = new List();
+				if(data.json().data == 0){
+					this.ageLists[0].message = "Список пуст";
+				}
+				this.ageLists[0].id = 0;
+				this.ageLists[0].parameters = this.params[0];
+				this.ageLists[0].setList(data.json().data);
+				this.ageLists[0].total = data.json().Total;
+			}catch(e){
+				this.ageLists[0].message = "Информация не найдена";				
+			}
 			this.isLoaded[0] = 1;
 		});
 		this.ageService.getList(30, 0, "age", {min: 22, max: 28}).then(data => {
-			this.ageLists[1] = new List();
-			this.ageLists[1].parameters = this.params[1];
-			this.ageLists[1].setList(data.json().data);
-			this.ageLists[1].total = data.json().Total;
+			try{
+				this.ageLists[1] = new List();
+				if(data.json().data == 0){
+					this.ageLists[1].message = "Список пуст";
+				}
+				this.ageLists[1].id = 1;
+				this.ageLists[1].parameters = this.params[1];
+				this.ageLists[1].setList(data.json().data);
+				this.ageLists[1].total = data.json().Total;
+			}catch(e){
+				this.ageLists[1].message = "Информация не найдена";				
+			}
 			this.isLoaded[1] = 1;
 		});
 		this.ageService.getList(30, 0, "age", {min: 29, max: 35}).then(data => {
-			this.ageLists[2] = new List();
-			this.ageLists[2].parameters = this.params[2];
-			this.ageLists[2].setList(data.json().data);
-			this.ageLists[2].total = data.json().Total;
+			try{
+				this.ageLists[2] = new List();
+				if(data.json().data == 0){
+					this.ageLists[2].message = "Список пуст";
+				}
+				this.ageLists[2].id = 2;
+				this.ageLists[2].parameters = this.params[2];
+				this.ageLists[2].setList(data.json().data);
+				this.ageLists[2].total = data.json().Total;
+			}catch(e){
+				this.ageLists[2].message = "Информация не найдена";
+			}
 			this.isLoaded[2] = 1;
 		});
 		this.ageService.getList(30, 0, "age", {min: 36, max: 43}).then(data => {
-			this.ageLists[3] = new List();
-			this.ageLists[3].parameters = this.params[3];
-			this.ageLists[3].setList(data.json().data);
-			this.ageLists[3].total = data.json().Total;
+			try{
+				this.ageLists[3] = new List();
+				if(data.json().data == 0){
+					this.ageLists[3].message = "Список пуст";
+				}
+				this.ageLists[3].id = 3;
+				this.ageLists[3].parameters = this.params[3];
+				this.ageLists[3].setList(data.json().data);
+				this.ageLists[3].total = data.json().Total;
+			}catch(e){
+				this.ageLists[3].message = "Информация не найдена";
+			}
 			this.isLoaded[3] = 1;
 		});
 		this.ageService.getList(30, 0, "age", {min: 44, max: 52}).then(data => {
-			this.ageLists[4] = new List();
-			this.ageLists[4].parameters = this.params[4];
-			this.ageLists[4].setList(data.json().data);
-			this.ageLists[4].total = data.json().Total;
+			try{
+				this.ageLists[4] = new List();
+				if(data.json().data == 0){
+					this.ageLists[4].message = "Список пуст";
+				}
+				this.ageLists[4].id = 4;
+				this.ageLists[4].parameters = this.params[4];
+				this.ageLists[4].setList(data.json().data);
+				this.ageLists[4].total = data.json().Total;
+			}catch(e){
+				this.ageLists[4].message = "Информация не найдена";
+			}
 			this.isLoaded[4] = 1;
 		});
 		this.ageService.getList(30, 0, "age", {min: 53, max: 100}).then(data => {
-			this.ageLists[5] = new List();
-			this.ageLists[5].parameters = this.params[5];
-			this.ageLists[5].setList(data.json().data);
-			this.ageLists[5].total = data.json().Total;
+			try{
+				this.ageLists[5] = new List();
+				if(data.json().data == 0){
+					this.ageLists[5].message = "Список пуст";
+				}
+				this.ageLists[5].id = 5;
+				this.ageLists[5].parameters = this.params[5];
+				this.ageLists[5].setList(data.json().data);
+				this.ageLists[5].total = data.json().Total;
+			}catch(e){
+				this.ageLists[5].message = "Информация не найдена";
+			}
 			this.isLoaded[5] = 1;
 		});
 	}

@@ -25,9 +25,15 @@ export class GenderComponent implements OnInit{
 	femaleList: List = new List();
 	ngOnInit(): void {
 		this.genderService.getList(this.maleList.limit, this.maleList.offset, "gender", { isMale: 1 }).then(data => {
+			if (data.json().data.length == 0) {
+				this.maleList.message = "Список пуст";
+			}
 			this.maleList.setList(data.json().data);
 		});
 		this.genderService.getList(this.femaleList.limit, this.femaleList.offset, "gender", { isMale: 0 }).then(data => {
+			if (data.json().data.length == 0) {
+				this.femaleList.message = "Список пуст";
+			}
 			this.femaleList.setList(data.json().data);
 		});
 	}

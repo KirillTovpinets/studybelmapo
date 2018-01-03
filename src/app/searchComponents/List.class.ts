@@ -10,6 +10,7 @@ export class List{
 	public total: number;
 	public name: string;
 	public canLoad:boolean;
+	public message: string;
 	constructor(){
 		this.id = 0;
 		this.offset = 0;

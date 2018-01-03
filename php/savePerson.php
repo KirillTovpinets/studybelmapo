@@ -1,5 +1,5 @@
 <?php 
-	ini_set("display_errors", 1);
+	// ini_set("display_errors", 1);
 	require_once("rb.php");
 	require_once("config.php");
 	session_start();
@@ -23,7 +23,11 @@
 	$cityzenship = $data->personal->_cityzenship->id;
 	$appointment = $data->general->_appointment->id;
 	$organization = $data->general->_organization->id;
-	$region = $data->personal->_region->id;
+	if (isset($region)) {
+		$region = $data->personal->_region->id;
+	}else{
+		$region = 0;
+	}
 	$department = $data->general->_department->id;
 	$faculty = $data->profesional->_faculty->id;
 
@@ -35,7 +39,6 @@
 	$qualification_other = $data->profesional->_qualification_other->id;
 
 	$country = $data->personal->_country->id;
-	$region = $data->personal->_region->id;
 	$city = $data->personal->_city->id;
 
 	$birthday = $data->personal->_birthday;
@@ -62,9 +65,24 @@
 	$patername = $data->general->_patername;
 	$nameInDativeForm = $data->general->_nameInDativeForm;
 
-	$isDoctor = $data->sience->_isDoctor;
-	$researchField = $data->sience->_researchField;
-	$statusApproveDate = $data->sience->_statusApproveDate;
+	if (isset($data->sience->_isDoctor)) {
+		$isDoctor = $data->sience->_isDoctor;
+	}else{
+		$isDoctor = 0;
+	}
+	
+	if (isset($data->sience->_researchField)) {
+		$researchField = $data->sience->_researchField;
+	}else{
+		$researchField = 0;
+	}
+	
+	if (isset($data->sience->_statusApproveDate)) {
+		$statusApproveDate = $data->sience->_statusApproveDate;
+	}else{
+		$statusApproveDate = 0;
+	}
+	
 
 	$isDoctor = 0;
 	$mysqli->query("INSERT INTO personal_card (surname, name, patername, birthday, ee, citizenship, diploma_start, appointment, isDoctor, tel_number, organization, region, isMale, isCowoker, experience_general, experiance_special, insurance_number, department, faculty, name_in_to_form, diploma_number) VALUES (
@@ -96,6 +114,7 @@
 
 	$mysqli->query("INSERT INTO `personal_prof_info`(`PersonId`, `id`, `establishmentId`, `facultyId`, `diploma_number`, `speciality_doc`, `speciality_rep`, `speciality_other`, `experiance_general`, `experiance_special`, `experiance_last`, `qualification_main`, `qualification_add`, `qualification_other`, `main_category`, `main_category_date`, `add_category`, `add_category_date`, `diploma_start`) VALUES (
 		'$newPersonId',
+		'$educational_establishment',
 		'$faculty',
 		'$diploma_number',
 		'$speciality_doc',
@@ -151,16 +170,21 @@
 	$newPersonId = $newPersonIdArr["newPersonId"];
 	$cathedraArr = $cathedraObj->fetch_assoc();
 	$faculty = $cathedraArr["facultId"];
-	$mysqli->query("INSERT INTO arrivals (date, FacultId, CathedrId, CourseId, GroupNum, EducType, ResidPlace, FormEduc, Dic_count, Status, PersonId) VALUES (
-		'$date', 
-		'$faculty', 
-		'$cathedraId', 
+	if (isset($data->_belmapo_paymentData)) {
+		$paymentInfo = $data->_belmapo_paymentData;
+	}else{
+		$paymentInfo = "";
+	}
+	$courseObj = $mysqli->query("SELECT Start FROM cources where id = $data->belmapo_course");
+	$courseArr = $courseObj->fetch_assoc();
+	$courseDate = $courseArr["Start"];
+
+	$mysqli->query("INSERT INTO arrivals (date,CourseId, ResidPlace, FormEduc, Dic_count, Status, PersonId) VALUES (
+		'$courseDate', 
 		'$data->_belmapo_course', 
-		'$data->_belmapo_course', 
-		'$data->_belmapo_educType', 
 		'$data->_belmapo_residense', 
 		'$data->_belmapo_educForm', 
-		'$data->_belmapo_paymentData', 
+		'$paymentInfo', 
 		'0', 
 		'$newPersonId')") or die ("Ошибка: " . mysqli_error($mysqli));
 

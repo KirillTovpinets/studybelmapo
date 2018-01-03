@@ -112,6 +112,7 @@ export class ChooseStudentComponent implements OnInit {
 	personInfo(): void{
 		var id = this.selectedPerson.id;				
 		this.personalInfo.getInfo(id.toString(), true).then(data => {
+			console.log(data._body);
 			var person = Object.assign(new Person(), data.json());
 			this.showInfo.ShowPersonalInfo(person, 2, true);
 		})

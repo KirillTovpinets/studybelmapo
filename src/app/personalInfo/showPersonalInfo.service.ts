@@ -19,10 +19,16 @@ export class ShowPersonInfoService {
 			id = person.id;
 		}
 		this.personalInfo.getInfo(id).then(data => {
+			console.log(data._body);
 			var person = Object.assign(new Person(), data.json());
 			var copy = Object.assign(new Person(), data.json());
+
 			person.personal.birthdayDate = new Date(person.personal.birthday);
 			person.profesional.diploma_startDate = new Date(person.profesional.diploma_start);
+
+			copy.personal.birthdayDate = new Date(person.personal.birthday);
+			copy.profesional.diploma_startDate = new Date(person.profesional.diploma_start);
+
 			this.PersonalInfoModal = this.PIService.show(PersonalInfoComponent, {class: 'modal-lg'});
 			this.PersonalInfoModal.content.title = "Профиль врача (" + person.general.surname + " " + person.general.name + " " + person.general.patername + ")";
 			this.PersonalInfoModal.content.person = person;

@@ -33,8 +33,12 @@ export class EstablishmentComponent extends MainClass implements OnInit{
 	searchEst:List[] = [];
 	PersonalInfoModal: BsModalRef;
 	isLoading: boolean = false;
+	message:string;
 	ngOnInit(): void{
 		this.establService.getList(this.EstLimit, this.EstOffset, "establishment", {listLimit: this.ListLimit, listOffset: this.ListOffset}).then(data => {
+			if (data.json().data.length == 0) {
+				this.message = "Список пуст";
+			}
 			for (var i = 0; i < data.json().data.length; i++) {
 				this.establs[i] = new List();
 				this.establs[i].id = data.json().data[i].id;
