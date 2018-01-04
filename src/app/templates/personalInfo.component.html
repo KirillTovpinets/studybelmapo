@@ -23,13 +23,13 @@
       </div>
   </tab>
   <tab heading="Приезды">
-    <div class="content" *ngIf="person.general">
-      <arrivals [personId]="person.id"></arrivals>
+    <div class="content" *ngIf="person.general.id">
+      <arrivals [personId]="person.general.id"></arrivals>
     </div>
   </tab>
   <tab heading="Последипломная подготовка">
-    <div class="content" *ngIf="person.general">
-      <post-diploma [personId]="person.id"></post-diploma>
+    <div class="content" *ngIf="person.general.id">
+      <post-diploma [personId]="person.general.id"></post-diploma>
     </div>
   </tab>
   <tab heading="Прочие">

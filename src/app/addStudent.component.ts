@@ -9,6 +9,7 @@ import  { Person } from "./model/person.class";
 import { PreloaderComponent } from "./preloader.component";
 import {NotificationsService} from 'angular4-notify';
 import { ActivatedRoute } from '@angular/router';
+import { Retraining } from './model/profesionInfo.class';
 
 @Component({
 	templateUrl: "templates/addStudent.component.html",
@@ -107,6 +108,10 @@ export class AddStudentComponent implements OnInit{
 		if (inputData.personal.birthdayDate !== undefined) {
 			inputData.personal.birthday = inputData.personal.birthdayDate.toISOString().slice(0,10);
 		}
+		if (inputData.personal.pasportDate !== undefined) {
+			inputData.personal.pasport_date = inputData.personal.pasportDate.toISOString().slice(0,10);
+		}
+
 		if (inputData.profesional.diploma_startDate !== undefined) {
 			inputData.profesional.diploma_start = inputData.profesional.diploma_startDate.toISOString().slice(0,10);
 		}
@@ -115,6 +120,14 @@ export class AddStudentComponent implements OnInit{
 		}
 		if (inputData.profesional.addCategoryDate !== undefined) {
 			inputData.profesional.addCategory_date = inputData.profesional.addCategoryDate.toISOString().slice(0,10);
+		}
+		if (inputData.profesional.speciality_retraining_diploma_startDate !== undefined) {
+			inputData.profesional.speciality_retraining_diploma_start_date = inputData.profesional.speciality_retraining_diploma_startDate.toISOString().slice(0,10);
+		}
+		if (inputData.profesional.speciality_retraining.length > 0) {
+			for (var i = 0; i < inputData.profesional.speciality_retraining.length; i++) {
+				inputData.profesional.speciality_retraining[i].diploma_start = inputData.profesional.speciality_retraining[i].diploma_startDate.toISOString().slice(0,10);
+			}
 		}
 		inputData.belmapo_course = this.courseId;
 		this.saveService.save(inputData).then(data => {
@@ -155,6 +168,9 @@ export class AddStudentComponent implements OnInit{
 			this.personal_cities = data.json().citiesArr;
 			this.isLoaded = true;
 		});
+	}
+	AddRetraining(){
+		this.newPerson.profesional.speciality_retraining.push(new Retraining());
 	}
 	saveNewParameter(value:string, table:string, array: any[]){
 		this.outputData.value = value;

@@ -1,5 +1,5 @@
 <?php 
-	// ini_set("display_errors", 1);
+	ini_set("display_errors", 1);
 	require_once("rb.php");
 	require_once("config.php");
 	session_start();
@@ -15,15 +15,11 @@
 	$isCowoker = $data->general->_organization->id == 4530 ? 1 : 0;
 	$isMale = $data->personal->_isMale == true ? 1 : 0;
 
-	// general
-	// profesional
-	// personal
-	// sience
 	$educational_establishment = $data->profesional->_educational_establishment->id;
 	$cityzenship = $data->personal->_cityzenship->id;
 	$appointment = $data->general->_appointment->id;
 	$organization = $data->general->_organization->id;
-	if (isset($region)) {
+	if (isset($data->personal->_region)) {
 		$region = $data->personal->_region->id;
 	}else{
 		$region = 0;
@@ -33,7 +29,6 @@
 
 	$speciality_doc = $data->profesional->_speciality_doc->id;
 	$speciality_other = $data->profesional->_speciality_other->id;
-	$speciality_retraining = $data->profesional->_speciality_retraining->id;
 	$qualification_main = $data->profesional->_qualification_main->id;
 	$qualification_add = $data->profesional->_qualification_add->id;
 	$qualification_other = $data->profesional->_qualification_other->id;
@@ -42,6 +37,10 @@
 	$city = $data->personal->_city->id;
 
 	$birthday = $data->personal->_birthday;
+	$pasport_seria = $data->personal->_pasport_seria;
+	$pasport_number = $data->personal->_pasport_number;
+	$pasport_date = $data->personal->_pasport_date;
+	$pasport_organ = $data->personal->_pasport_organ;
 	$insurance_number  = $data->personal->_insurance_number;
 	$cityType = $data->personal->_cityType;
 	$street = $data->personal->_street;
@@ -106,19 +105,28 @@
 		'$department',
 		'$faculty',
 		'$nameInDativeForm', 
-		'$diploma_number')") or die ("Ошибка: " . mysqli_error($mysqli));
+		'$diploma_number')") or die ("Ошибка personal_card: " . mysqli_error($mysqli));
 	
 	$newPerson = $mysqli->query("SELECT MAX(id) AS newId FROM personal_card");
 	$newPersonArr = $newPerson->fetch_assoc();
 	$newPersonId = $newPersonArr["newId"];
 
-	$mysqli->query("INSERT INTO `personal_prof_info`(`PersonId`, `id`, `establishmentId`, `facultyId`, `diploma_number`, `speciality_doc`, `speciality_rep`, `speciality_other`, `experiance_general`, `experiance_special`, `experiance_last`, `qualification_main`, `qualification_add`, `qualification_other`, `main_category`, `main_category_date`, `add_category`, `add_category_date`, `diploma_start`) VALUES (
+	if (count($data->profesional->_speciality_retraining) > 0) {
+		foreach ($data->profesional->_speciality_retraining as $key => $item) {
+			$speciality_retraining = $item->_name->id;
+			$retraining_diploma_number = $item->_diploma_number;
+			$retraining_diploma_start = $item->_diploma_start;
+
+			$mysqli->query("INSERT INTO personal_retrainings(`personId`, `specialityId`, `diploma_number`,`diploma_start`) VALUES ('$newPersonId', '$speciality_retraining','$retraining_diploma_number','$retraining_diploma_start')") or die ("Error personal_retrainings: " . mysqli_error($mysqli));
+		}
+	}
+
+	$mysqli->query("INSERT INTO `personal_prof_info`(`PersonId`, `establishmentId`, `facultyId`, `diploma_number`, `speciality_doc`, `speciality_other`, `experiance_general`, `experiance_special`, `experiance_last`, `qualification_main`, `qualification_add`, `qualification_other`, `main_category`, `main_category_date`, `add_category`, `add_category_date`, `diploma_start`) VALUES (
 		'$newPersonId',
 		'$educational_establishment',
 		'$faculty',
 		'$diploma_number',
 		'$speciality_doc',
-		'$speciality_retraining',
 		'$speciality_other',
 		'$experiance_general', 
 		'$experiance_special',
@@ -131,13 +139,17 @@
 		'$addCategory',
 		'$addCategory_date',
 		'$diploma_start'
-	)");
+	)") or die ("Ошибка personal_prof_info: " . mysqli_error($mysqli));
 
-	$mysqli->query("INSERT INTO `personal_private_info`(`personalId`, `birthday`, `isMale`, `cityzenship`, `insuranse_number`, `city_type`, `city`, `street`, `region`, `building`, `country`, `tel_number_home`, `tel_number_work`, `tel_number_mobile`) VALUES (
+	$mysqli->query("INSERT INTO `personal_private_info`(`PersonId`, `birthday`, `isMale`, `cityzenship`, `pasport_seria`, `pasport_number`, `pasport_date`, `pasport_organ`, `insurance_number`, `city_type`, `city`, `street`, `region`, `building`, `country`, `tel_number_home`, `tel_number_work`, `tel_number_mobile`) VALUES (
 		'$newPersonId',
 		'$birthday',
 		'$isMale', 
 		'$cityzenship',
+		'$pasport_seria',
+		'$pasport_number',
+		'$pasport_date',
+		'$pasport_organ',
 		'$insurance_number', 
 		'$cityType',
 		'$city',
@@ -148,15 +160,25 @@
 		'$tel_number_home',
 		'$tel_number_work',
 		'$tel_number_mobile'
-	)");
+	)") or die ("Ошибка personal_private_info: " . mysqli_error($mysqli));
 
-	$mysqli->query("INSERT INTO `personal_sience`(`pesron_id`, `status`, `sience_field`, `start_date`, `speciality`, `code`, `patents`, `publications`, `monographs`, `ordens`, `medals`, `gramots`) VALUES (
-		'$newPersonId',
-		'$isDoctor',
-		'$researchField',
-		'$statusApproveDate'
-		
-	)");
+	if (isset($data->sience->_isDoctor)) {
+			$mysqli->query("INSERT INTO `personal_sience`(`pesron_id`, `status`, `sience_field`, `start_date`, `speciality`, `code`, `patents`, `publications`, `monographs`, `ordens`, `medals`, `gramots`) VALUES (
+				'$newPersonId',
+				'$data->sience->_isDoctor',
+				'$data->sience->_researchField',
+				'$data->sience->_statusApprove_date'
+				'$data->sience->_statusSpeciality',
+				'$data->sience->_statusCode',
+				'$data->sience->_patentNumber',
+				'$data->sience->_publicationsNumb',
+				'$data->sience->_monografsNumb',
+				'$data->sience->_ordenNumb',
+				'$data->sience->_medalNumb',
+				'$data->sience->_gramotaNumb'
+			)") or die ("Ошибка personal_sience: " . mysqli_error($mysqli));
+	}
+
 	$date = date("Y-m-d");
 
 	$Loged_user = $_SESSION["loged_user"];
@@ -175,7 +197,7 @@
 	}else{
 		$paymentInfo = "";
 	}
-	$courseObj = $mysqli->query("SELECT Start FROM cources where id = $data->belmapo_course");
+	$courseObj = $mysqli->query("SELECT Start FROM cources where id = $data->_belmapo_course");
 	$courseArr = $courseObj->fetch_assoc();
 	$courseDate = $courseArr["Start"];
 
@@ -185,8 +207,8 @@
 		'$data->_belmapo_residense', 
 		'$data->_belmapo_educForm', 
 		'$paymentInfo', 
-		'0', 
-		'$newPersonId')") or die ("Ошибка: " . mysqli_error($mysqli));
+		'1', 
+		'$newPersonId')") or die ("Ошибка arrivals: " . mysqli_error($mysqli));
 
 	mysqli_close($mysqli);
 	echo "Слушатель зачислен";

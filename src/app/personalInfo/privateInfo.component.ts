@@ -23,6 +23,12 @@ export class PrivateInfoComponent{
 			this.personal_cityzenships = data.json().residArr;
 			this.personal_regions = data.json().regArr;
 			this.personal_cities = data.json().citiesArr;
+			for(let country of this.personal_cityzenships){
+				if (country.id == this.info.country) {
+					this.info.contry = country.value;
+					break;
+				}
+			}
 		});
 	}
 }

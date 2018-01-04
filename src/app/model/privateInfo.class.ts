@@ -1,9 +1,8 @@
 export class PrivateInfo{
-	private _birthdayDate: Date;
 	private _isMale:boolean;
 	private _cityType:number;
 	private _birthday:string;
-	private _tel_number:string;
+	// private _tel_number:string;
 	private _insurance_number:string;
 	private _street: string;
 	private _building: string;
@@ -20,12 +19,16 @@ export class PrivateInfo{
 	private _pasportDate: Date;
 	private _pasport_date: string;
 	private _pasport_organ: string;
+	private _birthdayDate : Date;
 
+	public get birthdayDate() : Date {
+		return this._birthdayDate;
+	}
+	public set birthdayDate(v : Date) {
+		this._birthdayDate = v;
+	}
 	public get birthday() :string {
 		return this._birthday; 
-	}
-	public get birthdayDate(): Date {
-		return this._birthdayDate; 
 	}
 	public get cityzenship() :number {
 		return this._cityzenship; 
@@ -36,9 +39,9 @@ export class PrivateInfo{
 	public get region() :any {
 		return this._region; 
 	}
-	public get tel_number() :string {
-		return this._tel_number; 
-	}
+	// public get tel_number() :string {
+	// 	return this._tel_number; 
+	// }
 	public get insurance_number() :string {
 		return this._insurance_number; 
 	}
@@ -102,9 +105,6 @@ export class PrivateInfo{
 	public set birthday(v: string) {
 		this._birthday = v; 
 	}
-	public set birthdayDate(v: Date){
-		this._birthdayDate = v; 
-	}
 	public set cityzenship(v: number) {
 		this._cityzenship = v; 
 	}
@@ -114,9 +114,9 @@ export class PrivateInfo{
 	public set region(v: any) {
 		this._region = v; 
 	}
-	public set tel_number(v: string) {
-		this._tel_number = v; 
-	}
+	// public set tel_number(v: string) {
+	// 	this._tel_number = v; 
+	// }
 	public set insurance_number(v: string) {
 		this._insurance_number = v; 
 	}
@@ -151,20 +151,24 @@ export class PrivateInfo{
 		this._pasport_organ = v;
 	}
 	constructor(){
-		// this._cityzenship = {id: 3, value: "Армения"};
-		// this._country = {id: 3, value: "Армения"};
-		// this._region = {id: 1, value: "Брестская"};
-		// this._city = {id: 1, value: "Минск"};
-		// this._birthday = "test";
-		// this._tel_number = "test";
-		// this._insurance_number = "test";
-		// this._cityType = 2;
-		// this._street = "проспект Пушкина";
-		// this._building = "29";
-		// this._flat = "137";
-		// this._tel_number_home = "+37529853756";
-		// this._tel_number_work = "80298537596";
-		// this._tel_number_mobile = "2985396596";
-		// this._isMale = true;
+		this._cityzenship = {id: 5, value: "Беларусь"};
+		this._country = {id: 5, value: "Беларусь"};
+		this._region = {id: 2, value: "Витебская"};
+		this._city = {id: 54, value: "Новолукомль"};
+		// this._tel_number = "+375298537596";
+		this._insurance_number = "123456789";
+		this._cityType = 2;
+		this._street = "бульвар Озмителя";
+		this._building = "2";
+		this._flat = "37";
+		this._tel_number_home = "+37529853756";
+		this._tel_number_work = "80298537596";
+		this._tel_number_mobile = "2985396596";
+		this._isMale = true;
+		this._birthdayDate = new Date(2009,30,1);
+		this._pasport_seria = "BM";
+		this._pasport_number = "1770368" 
+		this._pasportDate = new Date(2009,30,1);
+		this._pasport_organ = "Новолукомльское ГОМ Чашникского РОВД Витебской облалсти";
 	}
 }

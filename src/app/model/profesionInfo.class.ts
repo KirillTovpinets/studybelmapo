@@ -1,3 +1,33 @@
+export class Retraining{
+	private _name : any;
+	private _diploma_number : string;
+	private _diploma_start : string;
+	private _diploma_startDate : Date;
+	public get diploma_startDate() : Date {
+		return this._diploma_startDate;
+	}
+	public set diploma_startDate(v : Date) {
+		this._diploma_startDate = v;
+	}
+	public get diploma_start() : string {
+		return this._diploma_start;
+	}
+	public set diploma_start(v : string) {
+		this._diploma_start = v;
+	}
+	public get diploma_number() : string {
+		return this._diploma_number;
+	}
+	public set diploma_number(v : string) {
+		this._diploma_number = v;
+	}
+	public get name() : any {
+		return this._name;
+	}
+	public set name(v : any) {
+		this._name = v;
+	}
+}
 export class ProfesionalInfo{
 	private _experiance_general:number;
 	private _experiance_special:number;
@@ -10,16 +40,13 @@ export class ProfesionalInfo{
 	private _faculty:any;
 	private _speciality_doc:any;
 	private _speciality_other:any;
-	private _speciality_retraining:any;
-	private _speciality_retraining_diploma:string;
-	private _speciality_retraining_diploma_start_date:string;
+	private _speciality_retraining:Retraining[];
 	private _qualification_main:any;
 	private _qualification_add:any;
 	private _qualification_other:any;
 	private _diploma_startDate: Date;
 	private _mainCategoryDate: Date;
 	private _addCategoryDate: Date;
-	private _speciality_retraining_diploma_startDate:Date;
 	private _addCategory_date : string;
 	private _mainCategory_date : string;
 	public get addCategory_date() : string {
@@ -62,7 +89,7 @@ export class ProfesionalInfo{
 	public get speciality_other() :number {
 		return this._speciality_other; 
 	}
-	public get speciality_retraining() :number {
+	public get speciality_retraining() :Retraining[] {
 		return this._speciality_retraining; 
 	}
 	public get qualification_main() :number {
@@ -83,25 +110,6 @@ export class ProfesionalInfo{
 	public get addCategory() : number {
 	 	return this._addCategory;
 	 }
-
-	public set speciality_retraining_diploma(v : string) {
-		this._speciality_retraining_diploma = v;
-	}
-	public get speciality_retraining_diploma() : string {
-		return this._speciality_retraining_diploma;
-	}
-	public set speciality_retraining_diploma_start_date(v : string) {
-		this._speciality_retraining_diploma_start_date = v;
-	}
-	public get speciality_retraining_diploma_start_date() : string {
-		return this._speciality_retraining_diploma_start_date;
-	}
-	public set speciality_retraining_diploma_startDate(v : Date) {
-		this._speciality_retraining_diploma_startDate = v;
-	}
-	public get speciality_retraining_diploma_startDate() : Date {
-		return this._speciality_retraining_diploma_startDate;
-	}
 	public get mainCategoryDate() : Date {
 		return this._mainCategoryDate;
 	}
@@ -126,7 +134,7 @@ export class ProfesionalInfo{
 	public set speciality_other(v: number) {
 		this._speciality_other = v; 
 	}
-	public set speciality_retraining(v: number) {
+	public set speciality_retraining(v: Retraining[]) {
 		this._speciality_retraining = v; 
 	}
 	public set qualification_main(v: number) {
@@ -163,22 +171,22 @@ export class ProfesionalInfo{
 		this._diploma_start = v; 
 	}
 	constructor(){
-		// this._faculty = {id: 152, value: "Автоматизированная система управления"};
-		// this._educational_establishment = {id: 115, value: "1-й Московский государственный медицинский институт"};
-		// this._speciality_doc = {id: 21, value: "Валеология"};
-		// this._speciality_other = {id: 112, value: "Агроном"};
-		// this._speciality_retraining = {id: 17, value: "Аллергология и иммунология"};
-		// this._qualification_main = {id: 6, value: "Врач лабораторной диагностики"};
-		// this._qualification_other = {id: 42, value: "Врач магнито-резонансной томографии"};
-		// this._qualification_add = {id: 59, value: "Биолог-аналитик, преподаватель биологии"};
-		// this._diploma_start = "";
-		// this._diploma_number = "test";	
-		// this._mainCategory_date = "";
-		// this._addCategory_date = "";
-		// this._experiance_general = 1;
-		// this._experiance_special = 1;
-		// this._experiance_last = 1;
-		// this._mainCategory = 0;
-		// this._addCategory = 0;
+		this._speciality_retraining = [];
+		this._faculty = {id: 152, value: "Автоматизированная система управления"};
+		this._educational_establishment = {id: 115, value: "1-й Московский государственный медицинский институт"};
+		this._speciality_doc = {id: 21, value: "Валеология"};
+		this._speciality_other = {id: 112, value: "Агроном"};
+		this._qualification_main = {id: 6, value: "Врач лабораторной диагностики"};
+		this._qualification_other = {id: 42, value: "Врач магнито-резонансной томографии"};
+		this._qualification_add = {id: 59, value: "Биолог-аналитик, преподаватель биологии"};
+		this._diploma_startDate = new Date(2017,3,3);
+		this._diploma_number = "13579";	
+		this._mainCategoryDate = new Date(2017,2,5);
+		this._addCategoryDate = new Date(2017,12,5);
+		this._experiance_general = 12;
+		this._experiance_special = 20;
+		this._experiance_last = 5;
+		this._mainCategory = 1;
+		this._addCategory = 1;
 	}
 }

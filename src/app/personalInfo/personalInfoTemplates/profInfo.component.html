@@ -57,22 +57,24 @@
           <!-- Специальность по переподготовке -->
           <fieldset>
             <legend><h5>Специальность по переподготовке</h5></legend>
-            <div class="col-lg-6 col-md-12">
-              <div class="form-group">
-                <label>Переподготовка</label>
-                <input value="info.speciality_retraining == null ? 'Не указано' : info.speciality_retraining" auto-complete [list-formatter]="dataService.DropdownList" [source]="specialityRetrArr" [attr.disabled]="change ? null : ''" [(ngModel)]="info.speciality_retraining" name="specialityRetr" class="form-control">
+            <div *ngFor="let retr of info.retrainings">
+              <div class="col-lg-6 col-md-12">
+                <div class="form-group">
+                  <label>Переподготовка</label>
+                  <input auto-complete [list-formatter]="dataService.DropdownList" [source]="specialityRetrArr" [attr.disabled]="change ? null : ''" [(ngModel)]="retr.name" name="specialityRetr-{{retr.id}}" class="form-control">
+                </div>
               </div>
-            </div>
-            <div class="col-lg-3 col-md-12" *ngIf="info.speciality_retraining != '' || info.speciality_retraining != null">
-              <div class="form-group">
-                <label>№ диплома <small *ngIf="repNumber.invalid">*</small></label>
-                <input value="info.speciality_retraining_diploma == null ? 'Не указано' : info.speciality_retraining_diploma" [attr.disabled]="change ? null : ''" #repNumber="ngModel" [(ngModel)]="info.speciality_retraining_diploma" required name="speciality_retraining_diploma" class="form-control">
+              <div class="col-lg-3 col-md-12" *ngIf="retr.speciality_retraining != '' || retr.speciality_retraining != null">
+                <div class="form-group">
+                  <label>№ диплома</label>
+                  <input [attr.disabled]="change ? null : ''" #repNumber="ngModel" [(ngModel)]="retr.diploma_number" required name="speciality_retraining_diploma-{{retr.id}}" class="form-control">
+                </div>
               </div>
-            </div>
-            <div class="col-lg-3 col-md-12  " *ngIf="info.speciality_retraining != ''">
-              <div class="form-group">
-                <label>Дата выдачи <small *ngIf="repDate.invalid">*</small></label>
-                <input [attr.disabled]="change ? null : ''" #repDate="ngModel" [minDate]="globalPrams.minDate" [maxDate]="globalPrams.maxDate" #dp="bsDatepicker" [bsConfig]="globalPrams.bsConfig" bsDatepicker [(bsValue)]="bsValueRetrainingDate" [(ngModel)]="info.speciality_retraining_diploma_start" required name="speciality_retraining_diploma_start" class="date-picker form-control">
+              <div class="col-lg-3 col-md-12  " *ngIf="info.speciality_retraining != ''">
+                <div class="form-group">
+                  <label>Дата выдачи <small *ngIf="repDate.invalid">*</small></label>
+                  <input [attr.disabled]="change ? null : ''" #repDate="ngModel" [minDate]="globalPrams.minDate" [maxDate]="globalPrams.maxDate" #dp="bsDatepicker" [bsConfig]="globalPrams.bsConfig" bsDatepicker [(ngModel)]="retr.diploma_start" required name="speciality_retraining_diploma_start-{{retr.id}}" class="date-picker form-control">
+                </div>
               </div>
             </div>
           </fieldset>

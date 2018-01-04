@@ -9,7 +9,7 @@ import { Global } from "../global.class";
 })
 
 export class ArrivalsInfoComponent implements OnInit{
-	@Input() personId: string = "";
+	@Input('personId') personId: string = "";
 	arrivals: any[] = [];
 	globalPrams: Global = new Global();
 	constructor(public arrivalsService: ArrivalsService){}

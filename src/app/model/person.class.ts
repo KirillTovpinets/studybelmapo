@@ -20,22 +20,7 @@ export class Person{
 	private _belmapo_paymentData:number;
 	
 	private _belmapo_docNumber:string;
-	constructor(){
-		this.general = new GeneralInfo();
-		this.profesional = new ProfesionalInfo();
-		this.personal = new PrivateInfo();
-		this.sience = new SienceInfo();
-		// this._belmapo_docNumber = "test";
 
-		// this._id = 1;
-		// this._belmapo_faculty = 1;
-		// this._belmapo_cathedra = 1;
-		// this._belmapo_course = 1;
-		// this._belmapo_educType = 1;
-		// this._belmapo_residense = 1;
-		// this._belmapo_educForm = 1;
-		// this._belmapo_paymentData = 1;
-	}
 	public get id():  number {
 		return this._id; 
 	}
@@ -97,4 +82,20 @@ export class Person{
 		this._belmapo_docNumber = v; 
 	}
 	
+	constructor(){
+		this.general = new GeneralInfo();
+		this.profesional = new ProfesionalInfo();
+		this.personal = new PrivateInfo();
+		this.sience = new SienceInfo();
+		// this._belmapo_docNumber = "test";
+
+		// this._id = 1;
+		// this._belmapo_faculty = 1;
+		// this._belmapo_cathedra = 1;
+		// this._belmapo_course = 1;
+		// this._belmapo_educType = 1;
+		// this._belmapo_residense = 1;
+		// this._belmapo_educForm = 1;
+		// this._belmapo_paymentData = 1;
+	}
 }

@@ -67,23 +67,47 @@
 	//Личная информация
 	$privateInfoQuery = "SELECT personal_private_info.birthday AS birthday,  
 								countries.name AS cityzenship,
-								personal_private_info.isMale, 
+								personal_private_info.isMale,
+								personal_private_info.city_type AS cityType, 
+								personal_private_info.city, 
+								personal_private_info.street, 
+								personal_private_info.region, 
+								personal_private_info.building,
+								personal_private_info.flat, 
+								personal_private_info.country, 
+								personal_private_info.pasport_seria, 
+								personal_private_info.pasport_number, 
+								personal_private_info.pasport_date, 
+								personal_private_info.pasport_organ,  
 								personal_private_info.insurance_number,  
 								personal_private_info.tel_number_mobile,
 								personal_private_info.tel_number_home,  
 								personal_private_info.tel_number_work,
 								regions.name AS region
 						FROM personal_private_info LEFT JOIN countries  
-								ON personal_private_info.citizenship=countries.id LEFT JOIN regions  
+								ON personal_private_info.cityzenship=countries.id LEFT JOIN regions  
 								ON personal_private_info.region = regions.id WHERE personal_private_info.PersonId = $id";
+
+	$getRetrainings = "SELECT personal_retrainings.id, personal_retrainings.personId, speciality_retraining.name, personal_retrainings.diploma_number, personal_retrainings.diploma_start FROM `personal_retrainings` INNER JOIN speciality_retraining ON personal_retrainings.specialityId = speciality_retraining.id WHERE personal_retrainings.personId = $id";
 	
 	$result = $mysqli->query($infoQuery) or die ("Ошибка запроса в запросе\n$infoQuery\n " . mysqli_error($mysqli));
 	
 	$resultProf = $mysqli->query($profInfoQuery) or die ("Ошибка запроса в запросе\n$profInfoQuery\n " . mysqli_error($mysqli));
 	$resultPrivate = $mysqli->query($privateInfoQuery) or die ("Ошибка запроса в запросе\n$privateInfoQuery\n " . mysqli_error($mysqli));
+	$resultRetraining = $mysqli->query($getRetrainings) or die ("Ошибка запроса в запросе\n$getRetrainings\n " . mysqli_error($mysqli));
+
 	$response["general"] = $result->fetch_assoc();
 	$response["personal"] = $resultPrivate->fetch_assoc();
 	$response["profesional"] = $resultProf->fetch_assoc();
+		$retrainings = array();
+	if ($resultRetraining->{"num_rows"} > 0) {
+		while ($row = $resultRetraining->fetch_assoc()) {
+			array_push($retrainings, $row);
+		}
+		$response['profesional']["retrainings"] = $retrainings;
+	}else{
+		$response['profesional']["retrainings"] = array();
+	}
 
 	$updateData = "SELECT * FROM history_of_changes WHERE personId = $id ORDER BY id ASC";
 	$updateObj = $mysqli->query($updateData) or die ("Error in '$updateData': " . mysqli_error($mysqli));

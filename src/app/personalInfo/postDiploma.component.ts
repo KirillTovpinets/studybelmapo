@@ -9,7 +9,7 @@ import { PostDiplomaService } from "./services/postDiploma.service";
 })
 
 export class PostDiplomaInfoComponent implements OnInit{
-	@Input() personId: string = "";
+	@Input('personId') personId: string = "";
 	postDiplomas: any[] = [];
 	constructor(public postDiploma: PostDiplomaService){}
 	ngOnInit():void{

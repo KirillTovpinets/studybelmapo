@@ -164,23 +164,28 @@
                           <!-- Специальность по переподготовке -->
                           <fieldset>
                             <legend><h5>Специальность по переподготовке</h5></legend>
-                            <div class="col-md-6">
-                              <div class="form-group">
-                                <label>Переподготовка</label>
-                                <input auto-complete [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.speciality_retraining" [source]="specialityRetrArr" name="specialityRetr" class="form-control">
+                            <div *ngFor="let rep of newPerson.profesional.speciality_retraining; let i = index;">
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Переподготовка</label>
+                                  <input auto-complete [list-formatter]="DropdownList" [(ngModel)]="rep.name" [source]="specialityRetrArr" name="specialityRetr-{{i}}" class="form-control">
+                                </div>
+                              </div>
+                              <div class="col-md-3" *ngIf="rep.name != ''">
+                                <div class="form-group">
+                                  <label>№ диплома</label>
+                                  <input #repNumber="ngModel" [(ngModel)]="rep.diploma_number" required name="speciality_retraining_diploma-{{i}}" class="form-control">
+                                </div>
+                              </div>
+                              <div class="col-md-3" *ngIf="rep.name != ''">
+                                <div class="form-group">
+                                  <label>Дата выдачи</label>
+                                  <input [minDate]="minDate" [maxDate]="maxDate" #RetrainingDp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(ngModel)]="rep.diploma_startDate" required name="diploma_start-{{i}}" class="date-picker form-control">
+                                </div>
                               </div>
                             </div>
-                            <div class="col-md-3" *ngIf="newPerson.profesional.speciality_retraining != ''">
-                              <div class="form-group">
-                                <label>№ диплома</label>
-                                <input #repNumber="ngModel" [(ngModel)]="newPerson.profesional.speciality_retraining_diploma" required name="speciality_retraining_diploma" class="form-control">
-                              </div>
-                            </div>
-                            <div class="col-md-3" *ngIf="newPerson.profesional.speciality_retraining != ''">
-                              <div class="form-group">
-                                <label>Дата выдачи</label>
-                                <input #repDate="ngModel" [minDate]="minDate" [maxDate]="maxDate" #RetrainingDp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueRetrainingDate" [(ngModel)]="newPerson.profesional.speciality_retraining_diploma_start" required name="speciality_retraining_diploma_start" class="date-picker form-control">
-                              </div>
+                            <div class="col-md-12">
+                              <button class="btn btn-primary btn-block" (click)="AddRetraining()">Добавить</button>
                             </div>
                           </fieldset>
                           <!-- Стаж -->
@@ -268,7 +273,7 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label>Дата рождения</label>
-                                <input required type="text" [(ngModel)]="newPerson.personal.birthdayDate" [minDate]="minDate" [maxDate]="maxDate" #BirthdayDp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueBirthday" name="birthday" class="date-picker form-control" #birthday="ngModel">
+                                <input required type="text" [(ngModel)]="newPerson.personal.birthdayDate" [minDate]="minDate" [maxDate]="maxDate" #BirthdayDp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueBirthday" name="birthdayDate" class="date-picker form-control" #birthdayDate="ngModel">
                               </div>
                             </div>
                             <div class="col-md-4">
@@ -574,9 +579,9 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                      <button type="submit" class="btn btn-success">Далее</button>
-                      <input type="reset" class="btn btn-danger" value="Сбросить"/>
                       <a class="btn btn-primary" [routerLink]="['../../chooseStudent', courseId]">Назад</a>
+                      <input type="reset" class="btn btn-danger" value="Сбросить"/>
+                      <button type="submit" class="btn btn-success">Далее</button>
                     </div>
                 </div>
               </form>
