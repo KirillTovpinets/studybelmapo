@@ -60,11 +60,12 @@
     $sendTo = array();
     for($i = 0; $i < count($courses); $i++){
         $number = $courses[$i]->Number;
-        $CourseObj = $mysqli->query("SELECT name FROM cources WHERE Number = '$number'");
+        $id = $courses[$i]->id;
+        $CourseObj = $mysqli->query("SELECT name FROM cources WHERE id = '$id'");
         $courseNameArr = $CourseObj->fetch_assoc();
         $courseName = $courseNameArr["name"];
-        
-        $CathedraObj = $mysqli->query("SELECT name FROM cathedras INNER JOIN arrivals ON cathedras.id = arrivals.CathedrId WHERE arrivals.CourseId = '$number'");
+        // print_r($data);
+        $CathedraObj = $mysqli->query("SELECT cathedras.name FROM cathedras INNER JOIN cources ON cathedras.id = cources.cathedraId WHERE cources.id = '$id'") or die ("Ошибка выполнения запроса: " . mysqli_error($mysqli));
         $CathedraNameObj = $CathedraObj->fetch_assoc();
         $cathedraName = $CathedraNameObj["name"];
         array_push($sendTo, $cathedraName);
@@ -76,8 +77,8 @@
                         <ol class='StudList'>";
         $result = $mysqli->query("SELECT personal_card.surname, personal_card.name, personal_card.patername 
         FROM personal_card 
-        INNER JOIN arrivals ON personal_card.unique_Id = arrivals.PersonLink 
-        WHERE arrivals.CourseId = '$number' AND arrivals.Status = 0") or die ("Ошибка выполнения запроса: " . mysqli_error($mysqli));
+        INNER JOIN arrivals ON personal_card.id = arrivals.PersonId 
+        WHERE arrivals.CourseId = '$id' AND arrivals.Status = 1") or die ("Ошибка выполнения запроса: " . mysqli_error($mysqli));
         $countRows = 0;
         while($row = $result->fetch_assoc()){
             $name = $row["name"];

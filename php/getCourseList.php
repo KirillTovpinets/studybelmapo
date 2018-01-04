@@ -14,9 +14,8 @@
     
 	$mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die ("Ошибка подключения к базе: " . mysqli_connect_error());
 	$mysqli->query("SET NAMES utf8");
-	$currentYear = date("Y");
 	$courseTable = "cources";
-	$query = "SELECT * FROM $courseTable INNER JOIN arrivals ON $courseTable.Number = arrivals.CourseId WHERE arrivals.Status = 0 AND cources.Start BETWEEN '$dateFrom' AND '$dateTo'";
+	$query = "SELECT DISTINCT * FROM (SELECT $courseTable.`id`, $courseTable.`Number`, $courseTable.`Type`, $courseTable.`name`, $courseTable.`year`, $courseTable.`Start`, $courseTable.`Finish`, $courseTable.`Duration`, $courseTable.`Size`, $courseTable.`Notes`, $courseTable.`cathedraId` FROM $courseTable INNER JOIN arrivals ON $courseTable.id = arrivals.CourseId WHERE arrivals.Status = 1 AND cources.Start BETWEEN '$dateFrom' AND '$dateTo') AS main";
 	$result = $mysqli->query($query) or die ("Ошибка запроса '$query':" . mysqli_error($mysqli));
 	$response = array();
 	while ($row = $result->fetch_assoc()) {

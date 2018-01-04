@@ -3,6 +3,7 @@ import { BsDatepickerConfig } from "ngx-bootstrap/datepicker";
 import { listLocales } from 'ngx-bootstrap/bs-moment';
 import { MakeOrderService } from "./services/makeOrder.service";
 import { Http } from "@angular/http";
+import { Global } from './global.class';
 import "rxjs/add/operator/toPromise";
 
 @Component({
@@ -22,18 +23,17 @@ import "rxjs/add/operator/toPromise";
 
 export class OrderComponent{
 	bsValue: Date = new Date();
-	minDate = new Date(1970, 1, 1);
-  	maxDate = new Date();
-  	locale = "ru";
+	globalParams: Global = new Global();
   	locales = listLocales();
   	data:any = {
   		dateTo: new Date(),
-  		selectedCourses: []
+  		selectedCourses: [],
+  		dateFrom: new Date()
   	};
   	message: string = "";
   	courses: any[] = [];
   	
-	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: this.locale });
+	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: this.globalParams.locale });
 
 	constructor(private makeOrderService: MakeOrderService,
 				private http: Http){}
@@ -65,8 +65,10 @@ export class OrderComponent{
 		this.makeOrderService.getList(this.data).then(data => {
 			try{
 				this.courses = data.json();
+				this.message = "";
 			}
 			catch(e){
+				console.log(data._body);
 				this.courses = [];
 				this.message = "Нет курсов удовлетворяющих запросу";
 			}

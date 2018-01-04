@@ -1,7 +1,7 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { PersonalDataService } from "./services/personalData.service";
 import { BsDatepickerConfig } from "ngx-bootstrap/datepicker";
-import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { BsModalService, BsModalRef, TabsetComponent } from 'ngx-bootstrap';
 import { listLocales } from 'ngx-bootstrap/bs-moment';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { PersonService } from './services/savePerson.service';
@@ -39,9 +39,6 @@ import { Retraining } from './model/profesionInfo.class';
 		.tab-content{
 			padding:20px;
 		}
-		tabset input, select{
-			margin-bottom:10px;
-		}
 		.newValue{
 			z-index:0;
 		}
@@ -52,6 +49,7 @@ import { Retraining } from './model/profesionInfo.class';
 })
 
 export class AddStudentComponent implements OnInit{
+	@ViewChild("tabSet") tabSet: TabsetComponent;
 	private personal_faculties: any[] = [];
 	
 	private personal_appointments: any[] = [];
@@ -90,6 +88,8 @@ export class AddStudentComponent implements OnInit{
   	locale = "ru";
   	courseId:number = 0;
   	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: this.locale });
+
+  	private ActiveTab:boolean[] = [false, false, false, false];
 
 	constructor(private dataService: PersonalDataService,
 				private saveService: PersonService,
@@ -172,6 +172,9 @@ export class AddStudentComponent implements OnInit{
 	AddRetraining(){
 		this.newPerson.profesional.speciality_retraining.push(new Retraining());
 	}
+	RemoveRetraining(){
+		this.newPerson.profesional.speciality_retraining.pop();	
+	}
 	saveNewParameter(value:string, table:string, array: any[]){
 		this.outputData.value = value;
 		this.outputData.table = table;
@@ -206,5 +209,11 @@ export class AddStudentComponent implements OnInit{
 			}
 			this.newValue = "";
 		})
+	}
+	NextTab(tabId:number){
+		this.tabSet.tabs[tabId].active = true;
+	}
+	Check(){
+		alert("PRIVET");
 	}
 }

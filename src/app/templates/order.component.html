@@ -10,10 +10,10 @@
             <div class="content">
               <div class="row">
                 <div class="col-md-6">
-                  <input required type="text" [(ngModel)]="data.dateFrom" [minDate]="minDate" (ngModelChange)="GetCoursesList(data.dateFrom, 0)" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueFrom" name="DateFrom" #DateFrom="ngModel" class="date-picker form-control">
+                  <input required type="text" [(ngModel)]="data.dateFrom" [minDate]="globalParams.minDate" (ngModelChange)="GetCoursesList(data.dateFrom, 0)" [maxDate]="globalParams.maxCourse" #dp="bsDatepicker" [bsConfig]="globalParams.bsConfig" bsDatepicker [(bsValue)]="bsValueFrom" name="DateFrom" #DateFrom="ngModel" class="date-picker form-control">
                 </div>
                 <div class="col-md-6">
-                  <input required type="text" [(ngModel)]="data.dateTo" [minDate]="minDate" (ngModelChange)="GetCoursesList(data.dateTo, 1)" [maxDate]="maxDate" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueTo" name="DateTo" #DateTo="ngModel" class="date-picker form-control">
+                  <input required type="text" [(ngModel)]="data.dateTo" [minDate]="globalParams.minDate" (ngModelChange)="GetCoursesList(data.dateTo, 1)" [maxDate]="globalParams.maxCourse" #dp="bsDatepicker" [bsConfig]="globalParams.bsConfig" bsDatepicker [(bsValue)]="bsValueTo" name="DateTo" #DateTo="ngModel" class="date-picker form-control">
                 </div>
               </div>
             </div>
@@ -39,6 +39,7 @@
             <div class="content table-responsive table-full-width">
               <table class="table table-hover table-striped">
                 <thead>
+                  <th>id</th>
                   <th>Номер</th>
                   <th>Название</th>
                   <th>Начало</th>
@@ -49,6 +50,7 @@
                     <td colspan="5">{{message}}</td>
                   </tr>
                   <tr *ngFor="let course of courses" (click)="selectCourse(course)" [ngClass]="{'selected': data.selectedCourses.indexOf(course) !== -1}" class="clickable-row">
+                    <td>{{ course.id }}</td>
                     <td class="uniqueId">{{ course.Number }} </td>
                     <td>{{ course.name }}</td>
                     <td>{{ course.Start | date: "dd.MM.yyyy"}}</td>

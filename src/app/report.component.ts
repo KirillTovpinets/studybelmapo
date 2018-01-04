@@ -33,20 +33,20 @@ export class ReportComponent implements OnInit{
     private params:any = {};
     private total: number = 0;
     private filterParams:any = {
-    	est: 0,
-  		resid: 0,
+    	est: "",
+  		resid: "",
   		DipDateFrom: 0,
   		DipDateTo: 0,
-  		app: 0,
-  		isDoctor: 0,
-  		org: 0,
-  		gender: 0,
-  		isCowoker: 0,
-  		experiance: 0,
-  		dep: 0,
-  		fac: 0,
-  		cathedra: 0,
-  		course: 0,
+  		app: "",
+  		isDoctor: "",
+  		org: "",
+  		gender: "",
+  		isCowoker: "",
+  		experiance: "",
+  		dep: "",
+  		fac: "",
+  		cathedra: "",
+  		course: "",
   		groupNumber: 0
     };
     private ParamLabels:any = ["Учреждение образования", "Гражданство", "Дата получения диплома", "Должность", "Звание кандидата медицинских нук", "Организация", "Область", "Пол", "Сотрудник", "Опыт работы", "Отдел", "Факультет", "Факультет БелМАПО", "Кафедра БелМАПО", "Курс", "Форма обучения", "Номер группы", "Тип обучения"];

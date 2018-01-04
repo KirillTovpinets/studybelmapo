@@ -117,7 +117,11 @@
 			$retraining_diploma_number = $item->_diploma_number;
 			$retraining_diploma_start = $item->_diploma_start;
 
-			$mysqli->query("INSERT INTO personal_retrainings(`personId`, `specialityId`, `diploma_number`,`diploma_start`) VALUES ('$newPersonId', '$speciality_retraining','$retraining_diploma_number','$retraining_diploma_start')") or die ("Error personal_retrainings: " . mysqli_error($mysqli));
+			if ($speciality_retraining != "" &&
+				$retraining_diploma_number != "" &&
+				$retraining_diploma_start != "" &&) {
+				$mysqli->query("INSERT INTO personal_retrainings(`personId`, `specialityId`, `diploma_number`,`diploma_start`) VALUES ('$newPersonId', '$speciality_retraining','$retraining_diploma_number','$retraining_diploma_start')") or die ("Error personal_retrainings: " . mysqli_error($mysqli));
+			}
 		}
 	}
 
