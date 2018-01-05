@@ -103,6 +103,12 @@ export class ChooseStudentComponent implements OnInit {
 		this.saveNew.save(this.selectedPerson, this.course).then(data =>{
 			this.modalService.hide(2);
 			this.modalService.hide(1);
+			for (var i = 0; i < this.students.length; i++) {
+				if(this.students[i].id == this.selectedPerson.id){
+					this.students.splice(i, 1);
+					break;
+				}
+			}
 			this.notify.addInfo("Слушатель зачислен");
 		})
 	}

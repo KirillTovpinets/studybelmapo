@@ -1,6 +1,6 @@
 import {Injectable } from "@angular/core";
 import {Http} from "@angular/http";
-
+import { Person } from '../model/person.class';
 import "rxjs/add/operator/toPromise";
 
 @Injectable()
@@ -12,5 +12,8 @@ export class PersonalDataService{
 	}
 	DropdownList(data:any):string{
 		return data.value;
+	}
+	check(person: Person): Promise<any>{
+		return this.http.post("php/checkPerson.php", person).toPromise();
 	}
 }

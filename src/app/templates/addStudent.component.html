@@ -284,7 +284,7 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label>Дата рождения</label>
-                                <input required type="text" [(ngModel)]="newPerson.personal.birthdayDate" [minDate]="minDate" [maxDate]="maxDate" #BirthdayDp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueBirthday" name="birthdayDate" class="date-picker form-control" #birthdayDate="ngModel">
+                                <input required type="text" [(ngModel)]="newPerson.personal.birthdayDate" #birthday [minDate]="minDate" [maxDate]="maxDate" #BirthdayDp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueBirthday" name="birthdayDate" class="date-picker form-control" #birthdayDate="ngModel">
                               </div>
                             </div>
                             <div class="col-md-4">
@@ -683,6 +683,18 @@
             <a (click)="modal.hide(1)" class="btn btn-danger">Отмена</a>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #existTpl>
+  <div class="modal-body text-center">
+    <div class="card">
+      <div class="content">
+        <div class="header"><p>Этот слушатель уже есть в базе данных. Хотите изменить его данные или найти его в списке базы данных?</p></div>
+        <button class="btn btn-success" (click)="Confirm()">Найти в списке</button>
+        <button class="btn btn-warning" (click)="Hide()">Изменить данные</button>
       </div>
     </div>
   </div>

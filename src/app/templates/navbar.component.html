@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default navbar-fixed">
   <div class="container-fluid">
     <div class="navbar-header" *ngIf="loginInfo !== undefined">
-      <button type="button" (click)="ToggleMenu()" class="navbar-toggle">
+      <button type="button" (click)="ToggleMenu()" class="navbar-toggle" [ngClass]="{'toggle': toggle}">
         <span class="sr-only">Toggle Navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>

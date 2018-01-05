@@ -30,6 +30,7 @@
     "angular4-notify": "^1.2.0",
     "bulma": "^0.6.0",
     "core-js": "^2.4.1",
+    "enjoyhint": "^1.0.1",
     "ng2-auto-complete": "^0.12.0",
     "ngx-bootstrap": "^1.9.3",
     "ngx-cookie-service": "^1.0.9",

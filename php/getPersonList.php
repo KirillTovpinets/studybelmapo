@@ -81,7 +81,7 @@
 			break;
 		}
 		case "all":{
-			$query = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card LIMIT $limit OFFSET $offset";
+			$query = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card LEFT JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.id IS NULL LIMIT $limit OFFSET $offset";
 			break;
 		}
 		case 'age':{

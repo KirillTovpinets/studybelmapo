@@ -22,7 +22,7 @@
 	}
 	$DocNumber = "";
 	$isDeleted = 0;
-	$Status = 0;
+	$Status = 1;
 	$PersonId = $person->_id;
 	$query = "INSERT INTO `arrivals`(`Date`, `CourseId`, `ResidPlace`, `FormEduc`, `Dic_count`, `DocNumber`, `Status`, `PersonId`) VALUES ('$courseDate', '$CourseId', '$ResidPlace', '$FormEduc', '$Dic_count', '$DocNumber', '$Status', '$PersonId')";
 	$mysqli->query($query) or die ("Ошибка выполнения запроса $query: " . mysqli_error($mysqli));

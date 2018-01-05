@@ -55,6 +55,7 @@ import { CheckAuthService } from './services/checkAuth.service';
 import { defineLocale } from 'ngx-bootstrap/bs-moment';
 import { ru } from 'ngx-bootstrap/locale';
 import { ForMenuDirective } from './directives/for-menu.directive';
+import { MobilemenuComponent } from './mobilemenu/mobilemenu.component';
 defineLocale('ru', ru); 
 
 @NgModule({
@@ -91,7 +92,8 @@ defineLocale('ru', ru);
     FillDataComponent,
     ChooseCourseComponent,
     ChooseStudentComponent,
-    ForMenuDirective
+    ForMenuDirective,
+    MobilemenuComponent
   ],
   imports: [
     BrowserModule,
