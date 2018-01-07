@@ -8,6 +8,6 @@ import "rxjs/add/operator/toPromise";
 export class BuildReportService{
 	constructor(private http: Http){}
 	build(params:any): Promise<any>{
-		return this.http.post("php/buildReport.php", params).toPromise();
+		return this.http.post("assets/php/buildReport.php", params).toPromise();
 	}
 }

@@ -8,9 +8,9 @@ import "rxjs/add/operator/toPromise";
 export class MakeOrderService{
 	constructor(private http: Http){}
 	create(data:any): Promise<any>{
-		return this.http.post("php/makeOrder.php", data).toPromise();
+		return this.http.post("assets/php/makeOrder.php", data).toPromise();
 	}
 	getList(data:any): Promise<any>{
-		return this.http.post("php/getCourseList.php", data).toPromise();
+		return this.http.post("assets/php/getCourseList.php", data).toPromise();
 	}
 }

@@ -7,7 +7,7 @@ import 'rxjs/add/operator/toPromise';
 export class GetListService{
 	constructor(private http: Http){}
 
-	url:string = "php/getPersonList.php";
+	url:string = "assets/php/getPersonList.php";
 	data:any = {};
 	getList(limit:number, offset:number, info:string, parameters?:any): Promise<any>{
 		this.data.limit = limit;

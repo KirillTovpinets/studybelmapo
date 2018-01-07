@@ -6,7 +6,7 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class LoginService{
-	private loginUrl = 'php/login.php';
+	private loginUrl = 'assets/php/login.php';
 	private isLogedIn = false;
 
 	constructor(private http: Http){};
@@ -16,7 +16,7 @@ export class LoginService{
 					.toPromise();
 	}
 	getDepList(table:string): Promise<any>{
-		return this.http.get("php/getDepList.php?table=" + table).toPromise();
+		return this.http.get("assets/php/getDepList.php?table=" + table).toPromise();
 	}
 	setUserLogedIn(): void {
 		this.isLogedIn = true;

@@ -8,7 +8,7 @@ const cathedras: string[] = [
 ]
 @Injectable()
 export class InfoService{
-	private getInfoUrl = 'php/getInfo.php';
+	private getInfoUrl = 'assets/php/getInfo.php';
 	constructor(private http: Http){};
 	getInfo(info:string): Promise<any>{
 		return this.http.get(this.getInfoUrl + "?info=" + info)

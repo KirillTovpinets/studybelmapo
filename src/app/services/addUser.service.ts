@@ -8,6 +8,6 @@ export class AddUserService{
 	constructor(private http: Http){}
 
 	add(user:any): Promise<any>{
-		return this.http.post("php/saveNewUser.php", user).toPromise();
+		return this.http.post("assets/php/saveNewUser.php", user).toPromise();
 	}
 }

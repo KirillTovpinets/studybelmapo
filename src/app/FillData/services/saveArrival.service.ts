@@ -4,7 +4,7 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class SaveArrivalService {
-	url = "php/saveNewArrival.php"
+	url = "assets/php/saveNewArrival.php"
 	constructor(private http: Http) {}
 	private data: any = {};
 	save(person:any, course:any): Promise<any>{

@@ -7,7 +7,7 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 
 export class PostDiplomaService{
-	private path: string = "php/getPostDiploma.php";
+	private path: string = "assets/php/getPostDiploma.php";
 	constructor(public http: Http){}
 
 	get(id:string): Promise<any>{

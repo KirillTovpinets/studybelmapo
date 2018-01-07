@@ -8,6 +8,6 @@ export class CheckAuthService {
 	constructor(private http: Http) {}
 
 	check():Observable<any>{
-		return this.http.get("php/checkLogin.php");
+		return this.http.get("assets/php/checkLogin.php");
 	}
 }

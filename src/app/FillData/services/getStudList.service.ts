@@ -4,7 +4,7 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class StudentListService {
-	url = "php/getStudList.php"
+	url = "assets/php/getStudList.php"
 	constructor(private http: Http) {}
 
 	get(): Promise<any>{

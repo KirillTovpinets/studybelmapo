@@ -7,7 +7,7 @@ import "rxjs/add/operator/toPromise";
 
 export class SearchSirnameService{
 	constructor(private http: Http){}
-	url:string = "php/SearchPerson.php";
+	url:string = "assets/php/SearchPerson.php";
 	params:string = "";
 	searchPerson(value, params?:any): Promise<any>{
 		if (params !== undefined) {

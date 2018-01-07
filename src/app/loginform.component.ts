@@ -13,7 +13,7 @@ declare var $: any;
 	selector: 'login-form',
 	templateUrl: 'templates/loginform.component.html',
 	styleUrls: ['css/login.component.css'],
-	providers: [LoginService, CookieService, AddUserService, NotificationsService]
+	providers: [LoginService, CookieService, AddUserService]
 })
 
 export class LoginComponent implements OnInit{
@@ -31,23 +31,40 @@ export class LoginComponent implements OnInit{
 		// this.router.navigate(['/main']);
 		this.loginService.tryLogin(login)
 		.then(response => {
-			console.log(response._body);
-			if(response._body == "success"){
-				this.isLoged = true;
-				this.loginService.setUserLogedIn();
-				this.cookieService.set("Login", "true");
-				this.router.navigate(["/main"]);
-			}else if(response._body == "pass"){
-				alert("Неправильный пароль");
-			}else if(response._body == "log"){
-				alert("Неправильный логин");
+			try{
+				if(response._body == "success"){
+					this.isLoged = true;
+					this.loginService.setUserLogedIn();
+					this.cookieService.set("Login", "true");
+					this.router.navigate(["/main"]);
+				}else if(response._body == "pass"){
+					this.notify.addError("Нерпавильный пароль");
+				}else if(response._body == "login"){
+					this.notify.addError("Нерпавильный логин");
+				}
+			}catch(e){
+				console.log(e);
+				console.log(response._body);
 			}
 		})
 		.catch(this.handleError);
 	}
 	ngOnInit(): void {
-		this.loginService.getDepList("cathedras").then(data => this.cathedras = data.json());
-		this.loginService.getDepList("belmapo_departments").then(data => this.departments = data.json());
+		this.loginService.getDepList("cathedras").then(data => {
+			try{
+				this.cathedras = data.json();
+			}catch(e){
+				console.log(data._body);
+			}
+		});
+
+		this.loginService.getDepList("belmapo_departments").then(data => {
+			try{
+				this.departments = data.json();
+			}catch(e){
+				console.log(data._body);
+			}
+		});
 	}
 	AddUser(user:User):void{
 		this.addUser.add(user).then(data => this.notify.addInfo("Пользователь добавлен"));

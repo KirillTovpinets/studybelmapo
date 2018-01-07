@@ -12,6 +12,6 @@ export class SaveChangesService {
 			old: original,
 			new: person
 		}
-		return this.http.post("php/saveChanges.php", data);
+		return this.http.post("assets/php/saveChanges.php", data);
 	}
 }

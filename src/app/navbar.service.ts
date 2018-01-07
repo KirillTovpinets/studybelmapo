@@ -7,10 +7,10 @@ export class NavbarService {
   constructor(private http: Http) { }
 
   getInfo():Observable<any>{
-  	return this.http.get("php/checkLogin.php");
+  	return this.http.get("assets/php/checkLogin.php");
   }
 
   logout():Observable<any>{
-  	return this.http.get("php/logout.php");
+  	return this.http.get("assets/php/logout.php");
   }
 }

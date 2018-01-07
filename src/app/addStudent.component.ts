@@ -1,15 +1,14 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { PersonalDataService } from "./services/personalData.service";
 import { BsDatepickerConfig } from "ngx-bootstrap/datepicker";
-import { BsModalService, BsModalRef, TabsetComponent } from 'ngx-bootstrap';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { listLocales } from 'ngx-bootstrap/bs-moment';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { PersonService } from './services/savePerson.service';
-import { Person } from "./model/person.class";
+import  { Person } from "./model/person.class";
 import { PreloaderComponent } from "./preloader.component";
-import { NotificationsService} from 'angular4-notify';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Retraining } from './model/profesionInfo.class';
+import {NotificationsService} from 'angular4-notify';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
 	templateUrl: "templates/addStudent.component.html",
@@ -39,6 +38,9 @@ import { Retraining } from './model/profesionInfo.class';
 		.tab-content{
 			padding:20px;
 		}
+		tabset input, select{
+			margin-bottom:10px;
+		}
 		.newValue{
 			z-index:0;
 		}
@@ -49,8 +51,6 @@ import { Retraining } from './model/profesionInfo.class';
 })
 
 export class AddStudentComponent implements OnInit{
-	@ViewChild("tabSet") tabSet: TabsetComponent;
-	@ViewChild("existTpl") exist: TemplateRef<any>;
 	private personal_faculties: any[] = [];
 	
 	private personal_appointments: any[] = [];
@@ -77,7 +77,7 @@ export class AddStudentComponent implements OnInit{
 	private qualificationOtherArr: any[] = [];
 
 	public newPerson:Person = new Person();
-	private tempData: Person = new Person();
+
 	private isLoaded: boolean = false;
 
 	private outputData:any = {};
@@ -88,18 +88,13 @@ export class AddStudentComponent implements OnInit{
   	maxDate = new Date();
   	locale = "ru";
   	courseId:number = 0;
-  	isChecked: boolean = false;
-  	private alreadyExist: BsModalRef;
   	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: this.locale });
-
-  	private ActiveTab:boolean[] = [false, false, false, false];
 
 	constructor(private dataService: PersonalDataService,
 				private saveService: PersonService,
 				private notify: NotificationsService,
 				private router: ActivatedRoute,
-				private modal: BsModalService,
-				private routerNav: Router){}
+				private modal: BsModalService){}
 	selectCourse(courseId:number){
 		for (var course of this.belmapo_courses) {
 			if(course.id === courseId){
@@ -112,10 +107,6 @@ export class AddStudentComponent implements OnInit{
 		if (inputData.personal.birthdayDate !== undefined) {
 			inputData.personal.birthday = inputData.personal.birthdayDate.toISOString().slice(0,10);
 		}
-		if (inputData.personal.pasportDate !== undefined) {
-			inputData.personal.pasport_date = inputData.personal.pasportDate.toISOString().slice(0,10);
-		}
-
 		if (inputData.profesional.diploma_startDate !== undefined) {
 			inputData.profesional.diploma_start = inputData.profesional.diploma_startDate.toISOString().slice(0,10);
 		}
@@ -124,14 +115,6 @@ export class AddStudentComponent implements OnInit{
 		}
 		if (inputData.profesional.addCategoryDate !== undefined) {
 			inputData.profesional.addCategory_date = inputData.profesional.addCategoryDate.toISOString().slice(0,10);
-		}
-		if (inputData.profesional.speciality_retraining_diploma_startDate !== undefined) {
-			inputData.profesional.speciality_retraining_diploma_start_date = inputData.profesional.speciality_retraining_diploma_startDate.toISOString().slice(0,10);
-		}
-		if (inputData.profesional.speciality_retraining.length > 0) {
-			for (var i = 0; i < inputData.profesional.speciality_retraining.length; i++) {
-				inputData.profesional.speciality_retraining[i].diploma_start = inputData.profesional.speciality_retraining[i].diploma_startDate.toISOString().slice(0,10);
-			}
 		}
 		inputData.belmapo_course = this.courseId;
 		this.saveService.save(inputData).then(data => {
@@ -173,18 +156,76 @@ export class AddStudentComponent implements OnInit{
 			this.isLoaded = true;
 		});
 	}
-	AddRetraining(){
-		this.newPerson.profesional.speciality_retraining.push(new Retraining());
-	}
-	RemoveRetraining(){
-		this.newPerson.profesional.speciality_retraining.pop();	
-	}
 	saveNewParameter(value:string, table:string, array: any[]){
 		this.outputData.value = value;
 		this.outputData.table = table;
 
+		switch (table){
+			case "personal_establishment":{
+				for (var i = this.personal_establishments.length - 1; i >= 0; i--) {
+					if (this.personal_establishments[i].value == value) {
+						this.notify.addWarning("Этот вариант уже существует");
+						return;
+					}
+					
+				}
+				break;
+			}
+			case "countries":{
+				for (var i = this.personal_cityzenships.length - 1; i >= 0; i--) {
+					if (this.personal_cityzenships[i].value == value) {
+						this.notify.addWarning("Этот вариант уже существует");
+						return;
+					}
+					
+				}
+				break;
+			}
+			case "personal_appointment":{
+				for (var i = this.personal_appointments.length - 1; i >= 0; i--) {
+					if (this.personal_appointments[i].value == value) {
+						this.notify.addWarning("Этот вариант уже существует");
+						return;
+					}
+					
+				}
+				break;
+			}
+			case "personal_organizations":{
+				for (var i = this.personal_organizations.length - 1; i >= 0; i--) {
+					if (this.personal_organizations[i].value == value) {
+						this.notify.addWarning("Этот вариант уже существует");
+						return;
+					}
+					
+				}
+				break;
+			}
+			case "personal_department":{
+				for (var i = this.personal_departments.length - 1; i >= 0; i--) {
+					if (this.personal_departments[i].value == value) {
+						this.notify.addWarning("Этот вариант уже существует");
+						return;
+					}
+					
+				}
+				break;
+			}
+			case "personal_faculty":{
+				for (var i = this.personal_faculties.length - 1; i >= 0; i--) {
+					if (this.personal_faculties[i].value == value) {
+						this.notify.addWarning("Этот вариант уже существует");
+						return;
+					}
+					
+				}
+				break;
+			}
+		}
+
 		this.saveService.saveParameter(this.outputData).then(data => {
 			array.push(data.json());
+
 			switch (table){
 				case "personal_establishment":{
 					this.newPerson.profesional.educational_establishment = data.id;
@@ -213,49 +254,5 @@ export class AddStudentComponent implements OnInit{
 			}
 			this.newValue = "";
 		})
-	}
-	NextTab(tabId:number){
-		this.tabSet.tabs[tabId].active = true;
-	}
-	Check(){
-		if (!this.isChecked) {
-			this.dataService.check(this.newPerson).then(response => {
-				try{
-					this.tempData = Object.assign(new Person(), response.json());
-					if (this.tempData.profesional.addCategory_date !== undefined) {
-						this.tempData.profesional.addCategoryDate = new Date(this.tempData.profesional.addCategory_date);
-					}
-					if (this.tempData.profesional.mainCategory_date !== undefined) {
-						this.tempData.profesional.mainCategoryDate = new Date(this.tempData.profesional.mainCategory_date);
-					}
-					if (this.tempData.personal.pasport_date !== undefined) {
-						this.tempData.personal.pasportDate = new Date(this.tempData.personal.pasport_date);
-					}
-					if (this.tempData.profesional.diploma_start !== undefined) {
-						this.tempData.profesional.diploma_startDate = new Date(this.tempData.profesional.diploma_start);
-					}
-					if (this.tempData.personal.birthday !== undefined) {
-						this.tempData.personal.birthdayDate = new Date(this.tempData.personal.birthday);
-					}
-					if (this.tempData.profesional.speciality_retraining.length !== 0) {
-						for (var i = 0; i < this.tempData.profesional.speciality_retraining.length; i++) {
-							this.tempData.profesional.speciality_retraining[i].diploma_startDate = new Date(this.tempData.profesional.speciality_retraining[i].diploma_start);
-						}
-					}
-					this.alreadyExist = this.modal.show(this.exist, {class: "modal-md"});
-				}catch(e){
-					console.log("clear");
-				}
-				this.isChecked = true;
-			});
-		}
-	}
-	Confirm(){
-		this.routerNav.navigate(['../../chooseStudent', this.courseId], {relativeTo: this.router});
-		this.modal.hide(1);
-	}
-	Hide(){
-		this.newPerson = Object.assign(new Person(), this.tempData);
-		this.modal.hide(1);
 	}
 }
