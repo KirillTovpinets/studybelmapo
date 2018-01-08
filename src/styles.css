@@ -326,7 +326,7 @@ menu {
     cursor: pointer;
 }
 .panel-body{
-    margin-left:30px;
+    /*margin-left:30px;*/
 }
 .panel-body>[ng-repeat]{
     overflow-x:scroll;
@@ -1159,7 +1159,7 @@ menu.collapse .sidebar{
 
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
   background-color: #F5F5F5;
-  color: #888888;
+  color: #333;
   cursor: not-allowed; }
 
 .input-group-btn .btn {
@@ -2646,7 +2646,7 @@ menu.collapse .sidebar{
     top: 0;
     left: 0; }
 
-@media (min-width: 1201px) {
+@media (min-width: 992px) {
   .navbar-form {
     margin-top: 21px;
     margin-bottom: 21px;
@@ -2720,7 +2720,7 @@ menu.collapse .sidebar{
     padding-right: 15px; } }*/
 }
 /*          Changes for small display      */
-@media (max-width: 1200px) {
+@media (max-width: 991px) {
   .sidebar {
     display: none; }
 
@@ -2815,11 +2815,11 @@ menu.collapse .sidebar{
       padding: 10px 15px; }
 
   .nav-open .navbar-collapse {
-    -webkit-transform: translate3d(0px, 0, 0) !important;
-    -moz-transform: translate3d(0px, 0, 0) !important;
-    -o-transform: translate3d(0px, 0, 0) !important;
-    -ms-transform: translate3d(0px, 0, 0) !important;
-    transform: translate3d(0px, 0, 0) !important; }
+    -webkit-transform: translate3d(0px, 0, 0);
+    -moz-transform: translate3d(0px, 0, 0);
+    -o-transform: translate3d(0px, 0, 0);
+    -ms-transform: translate3d(0px, 0, 0);
+    transform: translate3d(0px, 0, 0); }
 
   .nav-open .navbar .container {
     left: -250px; }
@@ -3197,89 +3197,17 @@ menu.collapse .sidebar{
     float:none;
   }
   .sidebar{
-    display:none;
+    left:initial;
+    right:0;
+    z-index: 12;
   }
-/*  dashboard + menu{
+  dashboard + menu{
     display: none;
-  }*/
+  }
   .main-panel{
     width: 100%;
   }
   .main-panel .navbar{
     width: 100%;
   }
-  body > .navbar-collase{
-    position: fixed;
-    top:0;
-    right: 0;
-    left: auto;
-    z-index: 1032;
-    visibility: visible;
-    border-top: none;
-    text-align: left;
-    padding: 0;
-    transform: translate3d(260px, 0 ,0);
-    transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
-  }
-  .navbar-collapse.collapse {
-    display: block!important;
-    height: auto!important;
-    padding-bottom: 0;
-    overflow: visible!important;
-  }
-   body > .navbar-collapse::before {
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      background-color: #282828;
-      display: block;
-      content: "";
-      z-index: 1; 
-    }
-
-    body > .navbar-collapse {
-    position: fixed;
-    display: block;
-    top: 0;
-    height: 100%;
-    right: 0;
-    left: auto;
-    z-index: 1032;
-    visibility: visible;
-    background-color: #999;
-    overflow-y: visible;
-    border-top: none;
-    text-align: left;
-    padding: 0;
-    -webkit-transform: translate3d(260px, 0, 0);
-    -moz-transform: translate3d(260px, 0, 0);
-    -o-transform: translate3d(260px, 0, 0);
-    -ms-transform: translate3d(260px, 0, 0);
-    transform: translate3d(260px, 0, 0);
-    -webkit-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
-    -moz-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
-    -o-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
-    -ms-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
-    transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1); }
-
-    .nav-open .navbar-collapse {
-    -webkit-transform: translate3d(0px, 0, 0);
-    -moz-transform: translate3d(0px, 0, 0);
-    -o-transform: translate3d(0px, 0, 0);
-    -ms-transform: translate3d(0px, 0, 0);
-    transform: translate3d(0px, 0, 0); }
-
-    #bodyClick {
-    height: 100%;
-    width: 100%;
-    position: fixed;
-    opacity: 0;
-    top: 0;
-    left: auto;
-    right: 250px;
-    content: "";
-    z-index: 9999;
-    overflow-x: hidden; }
 }

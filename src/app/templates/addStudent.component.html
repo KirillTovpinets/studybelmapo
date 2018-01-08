@@ -11,7 +11,7 @@
             <div class="content">
               <form (ngSubmit)="(addForm.valid && fillLastInfo(setLastInfoTpl))" novalidate id="AddpersonalInfo" #addForm="ngForm">
                 <tabset #tabSet>
-                  <tab [disabled]="ActiveTab[0]" (deselect)="Check()" heading="Общая">
+                  <tab (deselect)="Check()" heading="Общая">
                     <div class="content">
                       <div class="row">
                         <fieldset>
@@ -93,12 +93,12 @@
                     <div class="row">
                       <div class="col-md-12">
                         <a class="btn btn-primary" [routerLink]="['../../chooseStudent', courseId]">Назад</a>
-                        <input type="reset" class="btn btn-danger" value="Сбросить"/>
+                        <button type="reset" class="btn btn-danger">Сбросить</button>
                         <button class="btn btn-success" (click)="NextTab(1)">Далее</button>
                       </div>
                     </div>
                   </tab>
-                  <tab [disabled]="ActiveTab[1]" heading="Проф. информация">
+                  <tab heading="Проф. информация">
                     <div class="content">
                       <!-- ВУЗ -->
                       <div class="row">
@@ -270,12 +270,12 @@
                     <div class="row">
                         <div class="col-md-12">
                           <a class="btn btn-primary" (click)="NextTab(0)">Назад</a>
-                          <input type="reset" class="btn btn-danger" value="Сбросить"/>
+                          <button type="reset" class="btn btn-danger">Сбросить</button>
                           <button class="btn btn-success" (click)="NextTab(2)">Далее</button>
                         </div>
                     </div>
                   </tab>
-                  <tab [disabled]="ActiveTab[2]" heading="Личная">
+                  <tab heading="Личная">
                     <div class="content">
                       <div class="row">
                         <div class="col-md-6 no-padding">
@@ -442,12 +442,12 @@
                     <div class="row">
                         <div class="col-md-12">
                           <a class="btn btn-primary" (click)="NextTab(1)">Назад</a>
-                          <input type="reset" class="btn btn-danger" value="Сбросить"/>
+                          <button type="reset" class="btn btn-danger">Сбросить</button>
                           <button class="btn btn-success" (click)="NextTab(3)">Далее</button>
                         </div>
                     </div>
                   </tab>
-                  <tab [disabled]="ActiveTab[3]" heading="Научная деятельность">
+                  <tab heading="Научная деятельность">
                     <div class="content">
                       <fieldset>
                         <legend><h5>Звание</h5></legend>
@@ -543,7 +543,7 @@
                     <div class="row">
                         <div class="col-md-12">
                           <a class="btn btn-primary" (click)="NextTab(2)">Назад</a>
-                          <input type="reset" class="btn btn-danger" value="Сбросить"/>
+                          <button type="reset" class="btn btn-danger">Сбросить</button>
                           <button type="submit" class="btn btn-success">Сохранить</button>
                         </div>
                     </div>

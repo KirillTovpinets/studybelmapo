@@ -131,7 +131,7 @@
 		'$addCategory',
 		'$addCategory_date',
 		'$diploma_start'
-	)");
+	)") or die ("Error: " . mysqli_error($mysqli));
 
 	$mysqli->query("INSERT INTO `personal_private_info`(`personalId`, `birthday`, `isMale`, `cityzenship`, `insuranse_number`, `city_type`, `city`, `street`, `region`, `building`, `country`, `tel_number_home`, `tel_number_work`, `tel_number_mobile`) VALUES (
 		'$newPersonId',
@@ -148,7 +148,7 @@
 		'$tel_number_home',
 		'$tel_number_work',
 		'$tel_number_mobile'
-	)");
+	)") or die ("Error: " . mysqli_error($mysqli));
 
 	$mysqli->query("INSERT INTO `personal_sience`(`pesron_id`, `status`, `sience_field`, `start_date`, `speciality`, `code`, `patents`, `publications`, `monographs`, `ordens`, `medals`, `gramots`) VALUES (
 		'$newPersonId',
@@ -156,7 +156,7 @@
 		'$researchField',
 		'$statusApproveDate'
 		
-	)");
+	)") or die ("Error: " . mysqli_error($mysqli));
 	$date = date("Y-m-d");
 
 	$Loged_user = $_SESSION["loged_user"];
@@ -165,7 +165,7 @@
 	$cathedraId = $Loged_user->dep_id;
 
 	$cathedraObj = $mysqli->query("SELECT * FROM cathedras WHERE id = $cathedraId") or die ("Ошибка запроса 'SELECT * FROM cathedra WHERE id = $cathedraId': " . mysqli_error($mysqli));
-	$newPersonIdObj = $mysqli->query("SELECT MAX(id) AS newPersonId FROM personal_card");
+	$newPersonIdObj = $mysqli->query("SELECT MAX(id) AS newPersonId FROM personal_card") or die ("Error: " . mysqli_error($mysqli));
 	$newPersonIdArr = $newPersonIdObj->fetch_assoc();
 	$newPersonId = $newPersonIdArr["newPersonId"];
 	$cathedraArr = $cathedraObj->fetch_assoc();
@@ -175,7 +175,7 @@
 	}else{
 		$paymentInfo = "";
 	}
-	$courseObj = $mysqli->query("SELECT Start FROM cources where id = $data->belmapo_course");
+	$courseObj = $mysqli->query("SELECT Start FROM cources where id = $data->belmapo_course") or die ("Error: " . mysqli_error($mysqli));
 	$courseArr = $courseObj->fetch_assoc();
 	$courseDate = $courseArr["Start"];
 
