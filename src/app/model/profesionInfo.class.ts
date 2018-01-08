@@ -172,21 +172,21 @@ export class ProfesionalInfo{
 	}
 	constructor(){
 		this._speciality_retraining = [];
-		this._faculty = {id: 152, value: "Автоматизированная система управления"};
-		this._educational_establishment = {id: 115, value: "1-й Московский государственный медицинский институт"};
-		this._speciality_doc = {id: 21, value: "Валеология"};
-		this._speciality_other = {id: 112, value: "Агроном"};
-		this._qualification_main = {id: 6, value: "Врач лабораторной диагностики"};
-		this._qualification_other = {id: 42, value: "Врач магнито-резонансной томографии"};
-		this._qualification_add = {id: 59, value: "Биолог-аналитик, преподаватель биологии"};
-		this._diploma_startDate = new Date(2017,3,3);
-		this._diploma_number = "13579";	
-		this._mainCategoryDate = new Date(2017,2,5);
-		this._addCategoryDate = new Date(2017,12,5);
-		this._experiance_general = 12;
-		this._experiance_special = 20;
-		this._experiance_last = 5;
-		this._mainCategory = 1;
-		this._addCategory = 1;
+		// this._faculty = {id: 152, value: "Автоматизированная система управления"};
+		// this._educational_establishment = {id: 115, value: "1-й Московский государственный медицинский институт"};
+		// this._speciality_doc = {id: 21, value: "Валеология"};
+		// this._speciality_other = {id: 112, value: "Агроном"};
+		// this._qualification_main = {id: 6, value: "Врач лабораторной диагностики"};
+		// this._qualification_other = {id: 42, value: "Врач магнито-резонансной томографии"};
+		// this._qualification_add = {id: 59, value: "Биолог-аналитик, преподаватель биологии"};
+		// this._diploma_startDate = new Date(2017,3,3);
+		// this._diploma_number = "13579";	
+		// this._mainCategoryDate = new Date(2017,2,5);
+		// this._addCategoryDate = new Date(2017,12,5);
+		// this._experiance_general = 12;
+		// this._experiance_special = 20;
+		// this._experiance_last = 5;
+		// this._mainCategory = 1;
+		// this._addCategory = 1;
 	}
 }

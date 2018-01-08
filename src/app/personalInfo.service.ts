@@ -18,4 +18,8 @@ export class PersonalInfoService{
 	saveChanges(person:any){
 		return this.http.post(this.saveChangesUrl, person).toPromise();
 	}
+
+	Deduct(person:any){
+		
+	}
 }

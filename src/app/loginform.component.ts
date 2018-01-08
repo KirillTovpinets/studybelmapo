@@ -29,17 +29,22 @@ export class LoginComponent implements OnInit{
 				private router: Router){}
 	onSubmit(login): void{
 		// this.router.navigate(['/main']);
+		console.log("PRIVET");
 		this.loginService.tryLogin(login)
 		.then(response => {
+			console.log(response._body);
 			try{
 				if(response._body == "success"){
+					console.log("PRIVET");
 					this.isLoged = true;
 					this.loginService.setUserLogedIn();
 					this.cookieService.set("Login", "true");
 					this.router.navigate(["/main"]);
 				}else if(response._body == "pass"){
+					console.log("PRIVET");
 					this.notify.addError("Нерпавильный пароль");
 				}else if(response._body == "login"){
+					console.log("PRIVET");
 					this.notify.addError("Нерпавильный логин");
 				}
 			}catch(e){

@@ -14,6 +14,6 @@ export class PersonalDataService{
 		return data.value;
 	}
 	check(person: Person): Promise<any>{
-		return this.http.get("assets/php/checkPerson.php").toPromise();
+		return this.http.post("assets/php/checkPerson.php", person).toPromise();
 	}
 }

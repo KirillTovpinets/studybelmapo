@@ -80,6 +80,7 @@ export class AddStudentComponent implements OnInit{
 
 	public newPerson:Person = new Person();
 	public tempData:Person = new Person();
+	public originalData:Person = new Person();
 	private isLoaded: boolean = false;
 	private isChecked:boolean = false;
 
@@ -133,14 +134,14 @@ export class AddStudentComponent implements OnInit{
  				inputData.profesional.speciality_retraining[i].diploma_start = inputData.profesional.speciality_retraining[i].diploma_startDate.toISOString().slice(0,10);
  			}
  		}
- 		console.log(inputData.sience.statusApproveDate);
  		if (inputData.sience.statusApproveDate !== undefined) {
  			inputData.sience.statusApprove_date = inputData.sience.statusApproveDate.toISOString().slice(0,10);
  		}
  		inputData.belmapo_course = this.courseId;
  		this.saveService.save(inputData).then(data => {
+ 			this.notify.addInfo("Cлушатель зачислен");
  			console.log(data._body);
- 			this.notify.addInfo(data._body);
+ 			this.isChecked = false;
  			this.newPerson = new Person();
  			this.modal.hide(1);
  		});
@@ -312,7 +313,7 @@ export class AddStudentComponent implements OnInit{
 					}
 					this.alreadyExist = this.modal.show(this.exist, {class: "modal-md"});
 				}catch(e){
-					console.log("clear");
+					console.log(response._body);
 				}
 				this.isChecked = true;
 			});
@@ -323,7 +324,6 @@ export class AddStudentComponent implements OnInit{
 		this.modal.hide(1);
 	}
 	Hide(){
-		this.newPerson = Object.assign(new Person(), this.tempData);
 		this.modal.hide(1);
   	}
 }

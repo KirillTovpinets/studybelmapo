@@ -6,6 +6,7 @@
 	$mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die ("Ошибка подключения: " . mysqli_connect_error());
 	$mysqli->query("SET NAMES utf8");
 	$data = json_decode(file_get_contents("php://input"));
+	print_r($data);
 	$isDoctor = 0;
 	if (isset($data->sience->_isDoctor)) {
 		$isDoctor = $data->sience->_isDoctor == true ? 1 : 0;

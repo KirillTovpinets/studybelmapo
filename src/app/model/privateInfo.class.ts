@@ -151,24 +151,24 @@ export class PrivateInfo{
 		this._pasport_organ = v;
 	}
 	constructor(){
-		this._cityzenship = {id: 5, value: "Беларусь"};
-		this._country = {id: 5, value: "Беларусь"};
-		this._region = {id: 2, value: "Витебская"};
-		this._city = {id: 54, value: "Новолукомль"};
-		// this._tel_number = "+375298537596";
-		this._insurance_number = "123456789";
-		this._cityType = 2;
-		this._street = "бульвар Озмителя";
-		this._building = "2";
-		this._flat = "37";
-		this._tel_number_home = "+37529853756";
-		this._tel_number_work = "80298537596";
-		this._tel_number_mobile = "2985396596";
-		this._isMale = true;
-		this._birthdayDate = new Date(2009,30,1);
-		this._pasport_seria = "BM";
-		this._pasport_number = "1770368" 
-		this._pasportDate = new Date(2009,30,1);
-		this._pasport_organ = "Новолукомльское ГОМ Чашникского РОВД Витебской облалсти";
+		// this._cityzenship = {id: 5, value: "Беларусь"};
+		// this._country = {id: 5, value: "Беларусь"};
+		// this._region = {id: 2, value: "Витебская"};
+		// this._city = {id: 54, value: "Новолукомль"};
+		// // this._tel_number = "+375298537596";
+		// this._insurance_number = "123456789";
+		// this._cityType = 2;
+		// this._street = "бульвар Озмителя";
+		// this._building = "2";
+		// this._flat = "37";
+		// this._tel_number_home = "+37529853756";
+		// this._tel_number_work = "80298537596";
+		// this._tel_number_mobile = "2985396596";
+		// this._isMale = true;
+		// this._birthdayDate = new Date(2009,30,1);
+		// this._pasport_seria = "BM";
+		// this._pasport_number = "1770368" 
+		// this._pasportDate = new Date(2009,30,1);
+		// this._pasport_organ = "Новолукомльское ГОМ Чашникского РОВД Витебской облалсти";
 	}
 }

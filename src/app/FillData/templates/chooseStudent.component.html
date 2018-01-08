@@ -6,7 +6,7 @@
 	</div>
 </div>
 <form>
-	<label for="">Поиск по фамилии</label>
+	<label for="">Поиск по ФИО</label>
 	<input type="text" class="form-control" (keyup)="Search($event)">
 </form>
 <div class="content table-responsive table-full-width">
@@ -44,6 +44,9 @@
 			<td colspan="4">{{ message }}</td>
 		</tr>
 	</table>
+	<div>
+		<button class="btn btn-block btn-info" (click)="LoadMore()">Загрузить ещё</button>
+	</div>
 </div>
 <ng-template #confirmTpl>
 	<div class="modal-body text-center">

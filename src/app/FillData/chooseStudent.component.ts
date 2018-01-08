@@ -82,6 +82,7 @@ export class ChooseStudentComponent implements OnInit {
 	ngOnInit() {
 		this.getList.getList(30, this.offset, "all").then(response =>{
 			this.students = response.json().data;
+			this.offset +=30;
 		})
 
 		this.courseId = this.router.snapshot.params["id"];
@@ -146,5 +147,20 @@ export class ChooseStudentComponent implements OnInit {
 				this.message = "По вашему запросу ничего не найдено";
 			}
 		});
+	}
+
+	LoadMore(){
+		this.getList.getList(30, this.offset, "all").then(response =>{
+			try{
+				for (var i = 0; i < response.json().data.length; i++) {
+					this.students.push(response.json().data[i]);
+				}
+				console.log(this.students);
+				this.offset += 30;
+			}catch(e){
+				console.log(e);
+				console.log(console.log(response._body));
+			}
+		})
 	}
 }

@@ -53,12 +53,12 @@ export class GeneralInfo{
 		this._department = v; 
 	}
 	constructor(){
-		this._appointment = {id: 4, value: "Акушерка"};
-		this._organization = {id: 4639, value: "1-я центральная клиническая районная поликлиника Центрального района г.Минска"};
-		this._department = {id: 438, value: "1-е неврологическое отделение"};
-		this._surname = "Товпинец";
-		this._name = "Кирилл";
-		this._patername = "Александрович";
-		this._nameInDativeForm = "Товпинцу Кириллу Александровичу";
+		// this._appointment = {id: 4, value: "Акушерка"};
+		// this._organization = {id: 4639, value: "1-я центральная клиническая районная поликлиника Центрального района г.Минска"};
+		// this._department = {id: 438, value: "1-е неврологическое отделение"};
+		// this._surname = "Товпинец";
+		// this._name = "Кирилл";
+		// this._patername = "Александрович";
+		// this._nameInDativeForm = "Товпинцу Кириллу Александровичу";
 	}
 }
