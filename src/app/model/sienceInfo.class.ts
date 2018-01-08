@@ -94,16 +94,16 @@ export class SienceInfo{
 		this._isDoctor = v; 
 	}
 	constructor(){
-		// this._statusSpeciality = "12313";
-		// this._statusCode = '1';
-		// this._patentNumber = 1;
-		// this._publicationsNumb = 1;
-		// this._monografsNumb = 1;
-		// this._ordenNumb = 1;
-		// this._medalNumb = 1;
-		// this._gramotaNumb = 1;
-		// this._isDoctor = 1;
-		// this._researchField = '1';
-		// this._statusApprove_date = "";
+		this._statusSpeciality = "12313";
+		this._statusCode = '1';
+		this._patentNumber = 1;
+		this._publicationsNumb = 1;
+		this._monografsNumb = 1;
+		this._ordenNumb = 1;
+		this._medalNumb = 1;
+		this._gramotaNumb = 1;
+		this._isDoctor = 1;
+		this._researchField = '1';
+		this._statusApprove_date = "";
 	}
 }

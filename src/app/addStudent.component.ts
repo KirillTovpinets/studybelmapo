@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { PersonalDataService } from "./services/personalData.service";
 import { BsDatepickerConfig } from "ngx-bootstrap/datepicker";
-import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { BsModalService, BsModalRef, TabsetComponent } from 'ngx-bootstrap';
 import { listLocales } from 'ngx-bootstrap/bs-moment';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { PersonService } from './services/savePerson.service';
@@ -9,7 +9,7 @@ import  { Person } from "./model/person.class";
 import { PreloaderComponent } from "./preloader.component";
 import {NotificationsService} from 'angular4-notify';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { Retraining } from './model/profesionInfo.class';
 @Component({
 	templateUrl: "templates/addStudent.component.html",
 	providers: [PersonalDataService, PersonService, BsModalService],
@@ -51,6 +51,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 
 export class AddStudentComponent implements OnInit{
+	@ViewChild("tabSet") tabSet: TabsetComponent
 	@ViewChild("existTpl") exist: TemplateRef<any>;
 	private personal_faculties: any[] = [];
 	
@@ -128,6 +129,9 @@ export class AddStudentComponent implements OnInit{
 			this.modal.hide(1);
 		});
 	}
+	NextTab(tabId:number){
+  		this.tabSet.tabs[tabId].active = true;
+  	}
 	DropdownList(data:any):string{
 		return data.value;
 	}
@@ -259,6 +263,12 @@ export class AddStudentComponent implements OnInit{
 			this.newValue = "";
 		})
 	}
+	AddRetraining(){
+ 		this.newPerson.profesional.speciality_retraining.push(new Retraining());
+ 	}
+ 	RemoveRetraining(){
+ 		this.newPerson.profesional.speciality_retraining.pop();	
+ 	}
 	Check(){
 		if (!this.isChecked) {
 			this.dataService.check(this.newPerson).then(response => {

@@ -87,15 +87,15 @@ export class Person{
 		this.profesional = new ProfesionalInfo();
 		this.personal = new PrivateInfo();
 		this.sience = new SienceInfo();
-		// this._belmapo_docNumber = "test";
+		this._belmapo_docNumber = "test";
 
-		// this._id = 1;
-		// this._belmapo_faculty = 1;
-		// this._belmapo_cathedra = 1;
-		// this._belmapo_course = 1;
-		// this._belmapo_educType = 1;
-		// this._belmapo_residense = 1;
-		// this._belmapo_educForm = 1;
-		// this._belmapo_paymentData = 1;
+		this._id = 1;
+		this._belmapo_faculty = 1;
+		this._belmapo_cathedra = 1;
+		this._belmapo_course = 1;
+		this._belmapo_educType = 1;
+		this._belmapo_residense = 1;
+		this._belmapo_educForm = 1;
+		this._belmapo_paymentData = 1;
 	}
 }
