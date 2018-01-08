@@ -109,26 +109,42 @@ export class AddStudentComponent implements OnInit{
 		}
 	}
 	SavePerson(inputData:any): void{
-		if (inputData.personal.birthdayDate !== undefined) {
-			inputData.personal.birthday = inputData.personal.birthdayDate.toISOString().slice(0,10);
-		}
-		if (inputData.profesional.diploma_startDate !== undefined) {
-			inputData.profesional.diploma_start = inputData.profesional.diploma_startDate.toISOString().slice(0,10);
-		}
-		if (inputData.profesional.mainCategoryDate !== undefined) {
-			inputData.profesional.mainCategory_date = inputData.profesional.mainCategoryDate.toISOString().slice(0,10);
-		}
-		if (inputData.profesional.addCategoryDate !== undefined) {
-			inputData.profesional.addCategory_date = inputData.profesional.addCategoryDate.toISOString().slice(0,10);
-		}
-		inputData.belmapo_course = this.courseId;
-		this.saveService.save(inputData).then(data => {
-			console.log(data._body);
-			this.notify.addInfo(data._body);
-			this.newPerson = new Person();
-			this.modal.hide(1);
-		});
-	}
+ 		if (inputData.personal.birthdayDate !== undefined) {
+ 			inputData.personal.birthday = inputData.personal.birthdayDate.toISOString().slice(0,10);
+ 		}
+ 		if (inputData.personal.pasportDate !== undefined) {
+ 			inputData.personal.pasport_date = inputData.personal.pasportDate.toISOString().slice(0,10);
+ 		}
+ 
+ 		if (inputData.profesional.diploma_startDate !== undefined) {
+ 			inputData.profesional.diploma_start = inputData.profesional.diploma_startDate.toISOString().slice(0,10);
+ 		}
+ 		if (inputData.profesional.mainCategoryDate !== undefined) {
+ 			inputData.profesional.mainCategory_date = inputData.profesional.mainCategoryDate.toISOString().slice(0,10);
+ 		}
+ 		if (inputData.profesional.addCategoryDate !== undefined) {
+ 			inputData.profesional.addCategory_date = inputData.profesional.addCategoryDate.toISOString().slice(0,10);
+ 		}
+ 		if (inputData.profesional.speciality_retraining_diploma_startDate !== undefined) {
+ 			inputData.profesional.speciality_retraining_diploma_start_date = inputData.profesional.speciality_retraining_diploma_startDate.toISOString().slice(0,10);
+ 		}
+ 		if (inputData.profesional.speciality_retraining.length > 0) {
+ 			for (var i = 0; i < inputData.profesional.speciality_retraining.length; i++) {
+ 				inputData.profesional.speciality_retraining[i].diploma_start = inputData.profesional.speciality_retraining[i].diploma_startDate.toISOString().slice(0,10);
+ 			}
+ 		}
+ 		console.log(inputData.sience.statusApproveDate);
+ 		if (inputData.sience.statusApproveDate !== undefined) {
+ 			inputData.sience.statusApprove_date = inputData.sience.statusApproveDate.toISOString().slice(0,10);
+ 		}
+ 		inputData.belmapo_course = this.courseId;
+ 		this.saveService.save(inputData).then(data => {
+ 			console.log(data._body);
+ 			this.notify.addInfo(data._body);
+ 			this.newPerson = new Person();
+ 			this.modal.hide(1);
+ 		});
+ 	}
 	NextTab(tabId:number){
   		this.tabSet.tabs[tabId].active = true;
   	}

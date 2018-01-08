@@ -104,6 +104,6 @@ export class SienceInfo{
 		this._gramotaNumb = 1;
 		this._isDoctor = 1;
 		this._researchField = '1';
-		this._statusApprove_date = "";
+		this._statusApproveDate = new Date();
 	}
 }
