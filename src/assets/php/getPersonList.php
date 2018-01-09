@@ -1,6 +1,9 @@
 <?php 
 	ini_set("display_errors", 1);
+	require_once("rb.php");
 	require_once("config.php");
+	session_start();
+	$logeduser = $_SESSION["loged_user"];
 	$mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die ("Ошибка подклчюения: " . mysqli_connect_error());
 	$mysqli->query("SET NAMES utf8");
 	$data = json_decode(file_get_contents("php://input"));
@@ -15,7 +18,7 @@
 		while ($row = $SqlObject->fetch_assoc()) {
 			$Id = $row["id"];
 
-			$PersonQuery = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE personal_card.$field = $Id LIMIT $limit OFFSET $offset";
+			$PersonQuery = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId INNER JOIN course ON arrivals.CourseId = course.id WHERE personal_card.$field = $Id AND course.cathedraId = $logeduser->dep_id LIMIT $limit OFFSET $offset";
 			$PersonResult = $connection->query($PersonQuery) or die ("Ошибка выполнения запроса '$PersonQuery': " . mysqli_error($connection));
 			$resultArray = array();
 			if ($PersonResult->{"num_rows"} == 0) {

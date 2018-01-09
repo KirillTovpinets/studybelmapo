@@ -50,7 +50,7 @@
     			$courseList = array();
     			while ($course = $allCathedraCourses->fetch_assoc()) {
     				$courseId = $course["id"];
-    				$query = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseId";
+    				$query = "SELECT arrivals.id AS arrivalId,arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseId";
     				$allStudents = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
     				if ($allStudents->{"num_rows"} === 0) {
 		    			continue;

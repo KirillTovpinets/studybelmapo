@@ -14,4 +14,7 @@ export class InfoService{
 		return this.http.get(this.getInfoUrl + "?info=" + info)
 					.toPromise();
 	}
+	saveCourse(data:any): Promise<any>{
+		return this.http.post("assets/php/saveCourse.php", data).toPromise();
+	}
 }

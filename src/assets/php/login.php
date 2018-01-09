@@ -17,13 +17,16 @@
 	    	$loginInfo->user_agent = $_SERVER["HTTP_USER_AGENT"];
 	    	$loginInfo->time = $now;
 	    	R::store($loginInfo);
+	    	$user->pass = "";
 	    	$_SESSION["loged_user"] = $user;
-	    	$message = "success";
+	    	echo json_encode($user);
 	    }else{
 	        $message = "pass";
 	    }
 	}else{
 	    $message = "login";
 	}
-	echo $message
+	if (isset($message)) {
+		echo $message;
+	}
 ?>

@@ -20,6 +20,20 @@
 	$mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die ("Ошибка подключения: " . mysqli_connect_error());
 	$mysqli->query("SET NAMES utf8");
 
+	if (isset($_GET["marks"])) {
+		$marksObj = getSqlObj("marks", $mysqli);
+		$marksArr = getArray($marksObj);
+		
+		echo json_encode($marksArr);
+		return;
+	}
+	if (isset($_GET["type"])) {
+		$obj = getSqlObj("educType", $mysqli);
+		$arr = getArray($obj);
+		
+		echo json_encode($arr);
+		return;
+	}
 	$estObj = getSqlObj("personal_establishment", $mysqli);
 	$residObj = getSqlObj("countries", $mysqli);
 	$appObj = getSqlObj("personal_appointment", $mysqli);

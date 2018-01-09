@@ -17,6 +17,13 @@
 	$result = $mysqli->query($query) or die ("Ошибка запроса '$query':" . mysqli_error($mysqli));
 	$response = array();
 	while ($row = $result->fetch_assoc()) {
+		$courseId = $row["id"];
+		$studListObj = $mysqli->query("SELECT arrivals.id AS arrivalId,arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseId") or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
+		$studList = array();
+		while ($student = $studListObj->fetch_assoc()) {
+			array_push($studList, $student);
+		}
+		$row["StudList"] = $studList;
 		array_push($response, $row);
 	}
     

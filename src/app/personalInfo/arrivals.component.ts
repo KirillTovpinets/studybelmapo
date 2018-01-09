@@ -15,9 +15,7 @@ export class ArrivalsInfoComponent implements OnInit{
 	constructor(public arrivalsService: ArrivalsService){}
 	ngOnInit():void{
 		// this.arrivalsService.get(this.personId).then(data => this.arrivals = data.json());
-		console.log(this.personId);
 		this.arrivalsService.get(this.personId).then(data => {
-			console.log(data._body);
 			this.arrivals = data.json();
 		});
 	}

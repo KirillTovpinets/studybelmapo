@@ -19,7 +19,6 @@ export class ShowPersonInfoService {
 			id = person.id;
 		}
 		this.personalInfo.getInfo(id).then(data => {
-			console.log(data._body);
 			var person = Object.assign(new Person(), data.json());
 			var copy = Object.assign(new Person(), data.json());
 

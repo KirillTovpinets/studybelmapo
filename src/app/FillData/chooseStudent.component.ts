@@ -79,6 +79,7 @@ export class ChooseStudentComponent implements OnInit {
 	searchResult: any[] = [];
 	searchValue:string = "";
 	hideNotify: boolean = false;
+	isLoading: boolean = false;
 	ngOnInit() {
 		this.getList.getList(30, this.offset, "all").then(response =>{
 			this.students = response.json().data;
@@ -150,6 +151,7 @@ export class ChooseStudentComponent implements OnInit {
 	}
 
 	LoadMore(){
+		this.isLoading = true;
 		this.getList.getList(30, this.offset, "all").then(response =>{
 			try{
 				for (var i = 0; i < response.json().data.length; i++) {
@@ -161,6 +163,7 @@ export class ChooseStudentComponent implements OnInit {
 				console.log(e);
 				console.log(console.log(response._body));
 			}
+			this.isLoading = false;
 		})
 	}
 }

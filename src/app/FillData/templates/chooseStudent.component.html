@@ -1,7 +1,7 @@
 <angular4-notify-notifications-container *ngIf="!hideNotify"></angular4-notify-notifications-container>
 <div class="row">
 	<div class="col-md-12">
-		<a [routerLink]="['../../chooseCourse']" class="btn btn-primary pull-right">Назад</a>
+		<a [routerLink]="['../../../studlist']" class="btn btn-primary pull-right">Назад</a>
 		<a [routerLink]="['../../addNew', courseId]" class="btn btn-success pull-right">Создать</a>
 	</div>
 </div>
@@ -44,7 +44,8 @@
 			<td colspan="4">{{ message }}</td>
 		</tr>
 	</table>
-	<div>
+	<preloader path="assets/img/Elipsis.gif" *ngIf="isLoading"></preloader>
+	<div *ngIf="!isLoading">
 		<button class="btn btn-block btn-info" (click)="LoadMore()">Загрузить ещё</button>
 	</div>
 </div>
