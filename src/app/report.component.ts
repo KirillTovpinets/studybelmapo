@@ -27,6 +27,7 @@ export class ReportComponent implements OnInit{
 	private residance: any[] = [];
 
 	private isLoaded:boolean = false;
+  private getResult:boolean = true;
 	private parameters:any[] = [];
 	// private filterParams: Person = new Person();
 
@@ -120,6 +121,7 @@ export class ReportComponent implements OnInit{
     return this.reportAction(1);
   };
   reportAction(flag?:number): void {
+    this.getResult = false;
     this.parameters = [];
     var data, index;
     if (this.filterParams.est === 0 && 
@@ -167,6 +169,7 @@ export class ReportComponent implements OnInit{
       }
     }
     data = this.filterParams;
+    console.log(data);
     this.buildReport.build(data).then(data => {
       console.log(data._body);
       var i, len, ref, value;
@@ -183,6 +186,7 @@ export class ReportComponent implements OnInit{
       if (this.parameters.length === 1) {
         this.total = this.parameters[0].value;
       }
+      this.getResult = true;
     });
   };
   ResetService():void{

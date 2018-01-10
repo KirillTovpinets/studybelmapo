@@ -11,36 +11,59 @@
             <div class="content">
               <form (ngSubmit)="(addForm.valid && fillLastInfo(setLastInfoTpl))" novalidate id="AddpersonalInfo" #addForm="ngForm">
                 <tabset #tabSet>
-                  <tab (deselect)="Check()" heading="Общая">
+                  <tab heading="Паспорт">
                     <div class="content">
                       <div class="row">
-                        <fieldset>
-                          <legend><h5>Личная информация</h5></legend>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Фамилия</label>
-                              <input required type="text"  [pattern]="'^[А-Я]{1}[а-я]*$'" [(ngModel)]="newPerson.general.surname" name="surname" class="form-control" #suname="ngModel">
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Имя</label>
-                              <input required type="text" [pattern]="'^[А-Я]{1}[а-я]*$'" [(ngModel)]="newPerson.general.name" name="name" class="form-control" #name="ngModel">
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Отчество</label>
-                              <input required type="text" [pattern]="'^[А-Я]{1}[а-я]*$'" [(ngModel)]="newPerson.general.patername" name="patername" class="form-control" #patername="ngModel">
-                            </div>
-                          </div>
-                          <div class="col-md-3">
+                        <div class="col-lg-12 col-md-12">
+                          <form>
+                             <div class="col-lg-4 col-md-4">
+                               <div class="form-group">
+                                  <label for="">Идентификационный номер паспорта</label>
+                                  <div class="input-group">
+                                    <input type="text" class="form-control" name="id" [(ngModel)]="newPerson.personal.insurance_number">
+                                    <span class="input-group-btn">
+                                      <button class="btn btn-success" (click)="Check()">Проветить</button>
+                                    </span>
+                                  </div>
+                                </div>
+                             </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </tab>
+                  <tab heading="Общая" [disabled]="!activateTab">
+                    <div class="content">
+                      <div class="row">
+                        <div class="col-md-12 no-padding">
+                          <fieldset>
+                            <legend><h5>Личная информация</h5></legend>
+                            <div class="col-md-3">
                               <div class="form-group">
-                                <label>ФИО в дательном падеже</label>
-                                <input required type="text" [(ngModel)]="newPerson.general.nameInDativeForm" name="nameInDativeForm" #nameInDativeForm="ngModel" placeholder="Например: Иванову Ивану Ивановичу" class="form-control">
+                                <label>Фамилия</label>
+                                <input required type="text"  [pattern]="'^[А-Я]{1}[а-я]*$'" [(ngModel)]="newPerson.general.surname" name="surname" class="form-control" #suname="ngModel">
                               </div>
                             </div>
-                        </fieldset>
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label>Имя</label>
+                                <input required type="text" [pattern]="'^[А-Я]{1}[а-я]*$'" [(ngModel)]="newPerson.general.name" name="name" class="form-control" #name="ngModel">
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label>Отчество</label>
+                                <input required type="text" [pattern]="'^[А-Я]{1}[а-я]*$'" [(ngModel)]="newPerson.general.patername" name="patername" class="form-control" #patername="ngModel">
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                  <label>ФИО в дательном падеже</label>
+                                  <input required type="text" [(ngModel)]="newPerson.general.nameInDativeForm" name="nameInDativeForm" #nameInDativeForm="ngModel" placeholder="Например: Иванову Ивану Ивановичу" class="form-control">
+                                </div>
+                              </div>
+                          </fieldset>
+                        </div>
                       </div>
                       <div class="row">
                         <fieldset>
@@ -98,7 +121,7 @@
                       </div>
                     </div>
                   </tab>
-                  <tab heading="Проф. информация">
+                  <tab heading="Проф. информация" [disabled]="!activateTab"> 
                     <div class="content">
                       <!-- ВУЗ -->
                       <div class="row">
@@ -275,7 +298,7 @@
                         </div>
                     </div>
                   </tab>
-                  <tab heading="Личная">
+                  <tab heading="Личная" [disabled]="!activateTab">
                     <div class="content">
                       <div class="row">
                         <div class="col-md-6 no-padding">
@@ -336,7 +359,7 @@
                             </div>
                           </fieldset>
                         </div>
-                         <div class="col-md-6 no-padding">
+                        <div class="col-md-6 no-padding">
                             <fieldset>
                              <legend><h5>Паспортные данные</h5></legend>
                              <div class="col-md-3">
@@ -447,7 +470,7 @@
                         </div>
                     </div>
                   </tab>
-                  <tab heading="Научная деятельность">
+                  <tab heading="Научная деятельность" [disabled]="!activateTab">
                     <div class="content">
                       <fieldset>
                         <legend><h5>Звание</h5></legend>
@@ -693,7 +716,7 @@
     <div class="card">
       <div class="content">
         <div class="header"><p>Этот слушатель уже есть в базе данных. Хотите найти его в списке базы данных?</p></div>
-        <button class="btn btn-success" (click)="Confirm()">Да</button>
+        <button class="btn btn-success" (click)="Confirm()">Перейти к списку</button>
         <button class="btn btn-danger" (click)="Hide()">Отмена</button>
       </div>
     </div>

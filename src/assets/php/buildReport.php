@@ -126,24 +126,24 @@
 				}
 			}
 		}
-		if (isset($dataArray->dipdatefrom)){
-			$dipdatefrom = $dataArray->dipdatefrom;
+		if (isset($dataArray["dipdatefrom"])){
+			$dipdatefrom = $dataArray["dipdatefrom"];
 		}
-		if(isset($dataArray->dipdateto)){
-			$dipdateto = $dataArray->dipdateto;
+		if(isset($dataArray["dipdateto"])){
+			$dipdateto = $dataArray["dipdateto"];
 		}
-		if(isset($dataArray->isDoctor)){
-			$isDoctor = $dataArray->isDoctor;
+		if(isset($dataArray["isDoctor"])){
+			$isDoctor = $dataArray["isDoctor"];
 			$flag = ($isDoctor === "true") ? 1 : 0;
 		}
-		if(isset($dataArray->gender)){
-			$gender = $dataArray->gender;
+		if(isset($dataArray["isMale"])){
+			$gender = $dataArray["isMale"];
 		}
-		if(isset($dataArray->isCowoker)){
-			$isCowoker = ($dataArray->isCowoker === "true") ? 1 : 0;
+		if(isset($dataArray["isCowoker"])){
+			$isCowoker = ($dataArray["isCowoker"] === "true") ? 1 : 0;
 		}
-		if(isset($dataArray->experiance)){
-			$experiance = $dataArray->experiance;
+		if(isset($dataArray["experiance"])){
+			$experiance = $dataArray["experiance"];
 		}
 
 		if ($hasKey || 

@@ -10,9 +10,7 @@ export class ForMenuDirective implements OnInit{
   }
 
   ngOnInit(): void{
-  	console.log(this.element);
   	this.menu.currentMessage.subscribe(message => {
-  		console.log("mesage");
   		this.element.nativeElement.style.transform = "translateX(-280px);"
   	})
   }

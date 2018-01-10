@@ -5,6 +5,7 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { PersonalDataService } from './services/personalData.service';
 import { Certificate } from './model/certificate.class';
 import { Global } from './global.class';
+import {NotificationsService} from 'angular4-notify';
 @Component({
 	selector: "table-list",
 	templateUrl: "./templates/tableList.component.html",
@@ -23,6 +24,9 @@ import { Global } from './global.class';
 		.no-hover:hover{
 			background:transparent !important;
 		}
+		th{
+			text-align:center;
+		}
 	`]
 })
 
@@ -34,14 +38,15 @@ export class TableListCopmonent{
 	selectedPerson:any = {};
 	constructor(private showInfo: ShowPersonInfoService,
 				private deductData: PersonalDataService,
-				private modal: BsModalService){}
+				private modal: BsModalService,
+				private notify: NotificationsService){}
 
 	private sure: BsModalRef;
 	private deductInfo: BsModalRef;
 	marks: any[] = [];
 	certificate: Certificate;
 	global: Global = new Global();
-	currentUser = localStorage.getItem('currentUser');
+	currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	Deduct(person:any, $event:any){
 		$event.stopPropagation();
 		this.selectedPerson = person;
@@ -63,7 +68,7 @@ export class TableListCopmonent{
 		this.certificate.courseId = this.course.id;
 		this.certificate.arrivalId = this.selectedPerson.arrivalId;
 		this.certificate.DateGet = this.certificate.DateGetDate.toISOString().slice(0,10);
-		this.deductData.deduct(this.certificate).then(res => console.log(res._body));
+		this.deductData.deduct(this.certificate).then(res => this.notify.addInfo("Слушатель отчислен"));
 		this.modal.hide(1);
 		this.modal.hide(1);
 	}

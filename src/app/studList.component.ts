@@ -21,6 +21,12 @@ declare var $: any;
 		.nested{
 			background:#FFF !important;
 		}
+		[accordion-heading]:first-letter{
+			text-transform: capitalize;
+		}
+		.pull-right{
+			font-style:italic;
+		}
 	`]
 })
 
@@ -38,43 +44,45 @@ export class StudListComponent implements OnInit{
 	global: Global = new Global();
 	types: any[] = [];
 	currentUser: any;
+	cathedraClass: string = "panel-default";
 	constructor(private info: InfoService,
 				private getList: CurrentCourcesListService,
 				private dataSrv: PersonalDataService,
 				private notify: NotificationsService){}
 
 	ngOnInit(): void{
-		// this.info.getInfo("getStat").then(data => {
-		// 	// console.log(data._body);
-		// 	this.faculties = data.json().data;
-		// })
+		this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
 		this.isLoading = true;
-		this.getList.get().then(data => {
-			try{
-				this.courseList = data.json();
-				console.log(data.json());
-				var today = new Date();
-				for (var i = 0; i < this.courseList.length; i++) {
-					var start = new Date(this.courseList[i].Start);
-					var finish = new Date(this.courseList[i].Finish);
-					
-					if (start < today && finish < today) {
-						this.oldCourses.push(this.courseList[i]);
-						this.courseList[i].class=1;
-					}else if(start < today && finish > today){
-						this.currentCourses.push(this.courseList[i]);
-						this.courseList[i].class=2;
-					}else if(start > today && finish > today){
-						this.futureCourses.push(this.courseList[i]);
-						this.courseList[i].class=3;
+		if (this.currentUser.is_cathedra == 0) {
+			this.info.getInfo("getStat").then(data => this.faculties = data.json().data);
+		}else{
+			this.getList.get().then(data => {
+				try{
+					this.courseList = data.json();
+					var today = new Date();
+					for (var i = 0; i < this.courseList.length; i++) {
+						var start = new Date(this.courseList[i].Start);
+						var finish = new Date(this.courseList[i].Finish);
+						
+						if (start < today && finish < today) {
+							this.oldCourses.push(this.courseList[i]);
+							this.courseList[i].class=1;
+						}else if(start < today && finish > today){
+							this.currentCourses.push(this.courseList[i]);
+							this.courseList[i].class=2;
+						}else if(start > today && finish > today){
+							this.futureCourses.push(this.courseList[i]);
+							this.courseList[i].class=3;
+						}
 					}
+					this.isLoading = false;
+				}catch(e){
+					this.message = data._body;
 				}
-				this.isLoading = false;
-			}catch(e){
-				this.message = data._body;
-			}
-		});
-		this.dataSrv.getTypeList().then(res => this.types = res.json());
+			});
+			this.dataSrv.getTypeList().then(res => this.types = res.json());
+		}
+		this.isLoading = false;
 	}
 
 	showListOfListners(course:any): void {

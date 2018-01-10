@@ -1,3 +1,4 @@
+<angular4-notify-notifications-container></angular4-notify-notifications-container>
 <div class="content">
   <div class="container-fluid">
     <div class="row">
@@ -10,9 +11,11 @@
             <div class="content">
               <div class="row">
                 <div class="col-md-6">
+                  <label>С:</label>
                   <input required type="text" [(ngModel)]="data.dateFrom" [minDate]="globalParams.minDate" (ngModelChange)="GetCoursesList(data.dateFrom, 0)" [maxDate]="globalParams.maxCourse" #dp="bsDatepicker" [bsConfig]="globalParams.bsConfig" bsDatepicker [(bsValue)]="bsValueFrom" name="DateFrom" #DateFrom="ngModel" class="date-picker form-control">
                 </div>
                 <div class="col-md-6">
+                  <label>По:</label>
                   <input required type="text" [(ngModel)]="data.dateTo" [minDate]="globalParams.minDate" (ngModelChange)="GetCoursesList(data.dateTo, 1)" [maxDate]="globalParams.maxCourse" #dp="bsDatepicker" [bsConfig]="globalParams.bsConfig" bsDatepicker [(bsValue)]="bsValueTo" name="DateTo" #DateTo="ngModel" class="date-picker form-control">
                 </div>
               </div>

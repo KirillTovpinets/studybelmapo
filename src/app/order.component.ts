@@ -5,6 +5,7 @@ import { MakeOrderService } from "./services/makeOrder.service";
 import { Http } from "@angular/http";
 import { Global } from './global.class';
 import "rxjs/add/operator/toPromise";
+import {NotificationsService} from 'angular4-notify';
 
 @Component({
 	templateUrl: './templates/order.component.html',
@@ -36,11 +37,19 @@ export class OrderComponent{
 	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: this.globalParams.locale });
 
 	constructor(private makeOrderService: MakeOrderService,
-				private http: Http){}
+				private http: Http,
+				private notify: NotificationsService){}
 	EnterAction(flag:number):void{
 		this.data.type = flag;
 	}
 	BuildOrder(): void{
+		if (this.data.selectedCourses.length === 0) {
+			this.notify.addError("Виберите курс");
+			return;
+		}else if(this.data.type == undefined){
+			this.notify.addError("Виберите приказ");
+			return;
+		}
 		this.makeOrderService.create(this.data).then(data => {
             var blob = new Blob([data._body], {type: 'application/vnd.msword'});
             var objectUrl = URL.createObjectURL(blob);   

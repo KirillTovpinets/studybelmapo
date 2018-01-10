@@ -32,7 +32,6 @@ export class LoginComponent implements OnInit{
 		// this.router.navigate(['/main']);
 		this.loginService.tryLogin(login)
 		.then(response => {
-			console.log(response._body);
 			try{
 				this.logedUser = response.json();
 				this.isLoged = true;
@@ -70,7 +69,7 @@ export class LoginComponent implements OnInit{
 		});
 	}
 	AddUser(user:User):void{
-		this.addUser.add(user).then(data => this.notify.addInfo("Пользователь добавлен"));
+		this.addUser.add(user).then(data => this.notify.addInfo(data.json().message));
 	}
 	private handleError(error: any): Promise<any>{
 		return Promise.reject(error.message || error);

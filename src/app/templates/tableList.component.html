@@ -1,6 +1,7 @@
-<table class="table table-hover">
+<angular4-notify-notifications-container></angular4-notify-notifications-container>
+<table class="table table-hover text-center">
     <thead>
-        <tr align="center">
+        <tr>
             <th>Дата приезда</th>
             <th>Фамилия</th>
             <th>Имя</th>
@@ -29,7 +30,7 @@
                 </td>
             </tr>
         </ng-container>   
-        <tr class="button">
+        <tr class="button" *ngIf="currentUser.is_cathedra != 0">
             <td colspan="6">
                 <button class="btn btn-success btn-block" [routerLink]="['../addDoctor/chooseStudent', course.id]">Зачислить</button>
             </td>

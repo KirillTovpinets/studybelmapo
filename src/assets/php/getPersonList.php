@@ -17,8 +17,11 @@
 		$offset = $data->params->listOffset;
 		while ($row = $SqlObject->fetch_assoc()) {
 			$Id = $row["id"];
-
-			$PersonQuery = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId INNER JOIN course ON arrivals.CourseId = course.id WHERE personal_card.$field = $Id AND course.cathedraId = $logeduser->dep_id LIMIT $limit OFFSET $offset";
+			$condition = "";
+			if ($logeduser->is_cathedra == 1) {
+				$condition = "AND course.cathedraId = $logeduser->dep_id";
+			}
+			$PersonQuery = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId INNER JOIN course ON arrivals.CourseId = course.id WHERE personal_card.$field = $Id $condition LIMIT $limit OFFSET $offset";
 			$PersonResult = $connection->query($PersonQuery) or die ("Ошибка выполнения запроса '$PersonQuery': " . mysqli_error($connection));
 			$resultArray = array();
 			if ($PersonResult->{"num_rows"} == 0) {

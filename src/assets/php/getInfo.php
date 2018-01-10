@@ -34,7 +34,8 @@
     	$today = date("Y-m-d");
     	while ($faculty = $allFaculties->fetch_assoc()) {
     		$facultyId = $faculty["id"];
-    		$query = "SELECT * FROM cathedras WHERE facultId = $facultyId $infoCondition";
+            $totalFaculty = 0;
+    		$query = "SELECT * FROM cathedras WHERE facultId = $facultyId $infoCondition ORDER BY name ASC";
     		$allCathedras = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
     		// if ($allCathedras->{"num_rows"} === 0) {
     		// 	continue;
@@ -42,7 +43,8 @@
     		$cathedraList = array();
     		while ($cathedra = $allCathedras->fetch_assoc()) {
     			$cathedraId = $cathedra["id"];
-    			$query = "SELECT cources.id, cources.Number, cources.name, cources.Start, cources.Finish FROM cources WHERE cources.cathedraId = $cathedraId AND cources.Finish > '$today'";
+                $totalCathedra = 0;
+    			$query = "SELECT cources.id, cources.Number, cources.Size, cources.name, cources.Start, cources.Finish FROM cources WHERE cources.cathedraId = $cathedraId AND cources.Finish > '$today'";
     			$allCathedraCourses = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
     			// if ($allCathedraCourses->{"num_rows"} === 0) {
 	    		// 	continue;
@@ -50,6 +52,7 @@
     			$courseList = array();
     			while ($course = $allCathedraCourses->fetch_assoc()) {
     				$courseId = $course["id"];
+                    $totalCourse = 0;
     				$query = "SELECT arrivals.id AS arrivalId,arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseId";
     				$allStudents = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
     				if ($allStudents->{"num_rows"} === 0) {
@@ -59,12 +62,17 @@
     				while ($student = $allStudents->fetch_assoc()) {
     					array_push($studentList, $student);
     				}
+                    $course["Total"] = $allStudents->{"num_rows"};
+                    $totalCathedra += $allStudents->{"num_rows"};
+                    $totalFaculty += $allStudents->{"num_rows"};
     				$course["StudList"] = $studentList;
     				array_push($courseList, $course);
     			}
+                $cathedra["Total"] = $totalCathedra;
     			$cathedra["CourseList"] = $courseList;
     			array_push($cathedraList, $cathedra);
     		}
+            $faculty["Total"] = $totalFaculty;
     		$faculty["CathedraList"] = $cathedraList;
     		if (count($faculty["CathedraList"]) === 0) {
     			continue;

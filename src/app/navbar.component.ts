@@ -25,6 +25,7 @@ export class NavbarComponent implements OnInit{
 	loginInfo:any;
 	message:boolean;
 	toggle:boolean = false;
+    logedUser: any;
 	lbd:any = {
 		navbar_menu_visible: 0,
 	    navbar_initialized: false,
@@ -74,6 +75,7 @@ export class NavbarComponent implements OnInit{
 	}
 	ngOnInit():void{
 		this.navInfo.getInfo().subscribe(response => this.loginInfo = response.json());
+        this.logedUser = localStorage.getItem("currentUser");
 		// if ($(window).width() <= 1200) {
 		// 	this.lbd.initRightMenu();
 		// }

@@ -15,8 +15,7 @@ export class MenuComponent implements OnInit{
 	}
 	currentUser: any;
 	ngOnInit(): void{
-		this.currentUser = localStorage.getItem('currentUser');
-		console.log(this.currentUser);
+		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 		this.menuManip.currentMessage.subscribe(message =>{
 			this.element.nativeElement.style.display = message ? "block": "none";
 			this.element.nativeElement.style.right = "0";

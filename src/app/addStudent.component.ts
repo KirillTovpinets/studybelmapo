@@ -47,6 +47,12 @@ import { Retraining } from './model/profesionInfo.class';
 		.no-padding{
 			padding:0px;
 		}
+		tabset input{
+			margin:0px;
+		}
+		tabset .input-group{
+			margin-top:10px;
+		}
 	`]
 })
 
@@ -94,6 +100,7 @@ export class AddStudentComponent implements OnInit{
   	courseId:number = 0;
   	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: this.locale });
   	alreadyExist: BsModalRef;
+  	activateTab: boolean = false;
 
 	constructor(private dataService: PersonalDataService,
 				private saveService: PersonService,
@@ -140,7 +147,6 @@ export class AddStudentComponent implements OnInit{
  		inputData.belmapo_course = this.courseId;
  		this.saveService.save(inputData).then(data => {
  			this.notify.addInfo("Cлушатель зачислен");
- 			console.log(data._body);
  			this.isChecked = false;
  			this.newPerson = new Person();
  			this.modal.hide(1);
@@ -289,33 +295,43 @@ export class AddStudentComponent implements OnInit{
 	Check(){
 		if (!this.isChecked) {
 			this.dataService.check(this.newPerson).then(response => {
-				try{
-					this.tempData = Object.assign(new Person(), response.json());
-					if (this.tempData.profesional.addCategory_date !== undefined) {
-						this.tempData.profesional.addCategoryDate = new Date(this.tempData.profesional.addCategory_date);
-					}
-					if (this.tempData.profesional.mainCategory_date !== undefined) {
-						this.tempData.profesional.mainCategoryDate = new Date(this.tempData.profesional.mainCategory_date);
-					}
-					if (this.tempData.personal.pasport_date !== undefined) {
-						this.tempData.personal.pasportDate = new Date(this.tempData.personal.pasport_date);
-					}
-					if (this.tempData.profesional.diploma_start !== undefined) {
-						this.tempData.profesional.diploma_startDate = new Date(this.tempData.profesional.diploma_start);
-					}
-					if (this.tempData.personal.birthday !== undefined) {
-						this.tempData.personal.birthdayDate = new Date(this.tempData.personal.birthday);
-					}
-					if (this.tempData.profesional.speciality_retraining.length !== 0) {
-						for (var i = 0; i < this.tempData.profesional.speciality_retraining.length; i++) {
-							this.tempData.profesional.speciality_retraining[i].diploma_startDate = new Date(this.tempData.profesional.speciality_retraining[i].diploma_start);
-						}
-					}
+				// try{
+				// 	this.tempData = Object.assign(new Person(), response.json());
+				// 	if (this.tempData.profesional.addCategory_date !== undefined) {
+				// 		this.tempData.profesional.addCategoryDate = new Date(this.tempData.profesional.addCategory_date);
+				// 	}
+				// 	if (this.tempData.profesional.mainCategory_date !== undefined) {
+				// 		this.tempData.profesional.mainCategoryDate = new Date(this.tempData.profesional.mainCategory_date);
+				// 	}
+				// 	if (this.tempData.personal.pasport_date !== undefined) {
+				// 		this.tempData.personal.pasportDate = new Date(this.tempData.personal.pasport_date);
+				// 	}
+				// 	if (this.tempData.profesional.diploma_start !== undefined) {
+				// 		this.tempData.profesional.diploma_startDate = new Date(this.tempData.profesional.diploma_start);
+				// 	}
+				// 	if (this.tempData.personal.birthday !== undefined) {
+				// 		this.tempData.personal.birthdayDate = new Date(this.tempData.personal.birthday);
+				// 	}
+				// 	if (this.tempData.profesional.speciality_retraining.length !== 0) {
+				// 		for (var i = 0; i < this.tempData.profesional.speciality_retraining.length; i++) {
+				// 			this.tempData.profesional.speciality_retraining[i].diploma_startDate = new Date(this.tempData.profesional.speciality_retraining[i].diploma_start);
+				// 		}
+				// 	}
+				// 	this.alreadyExist = this.modal.show(this.exist, {class: "modal-md"});
+				// }catch(e){
+				// 	console.log(response._body);
+				// 	this.tabSet.tabs.splice(0, 1);
+				// }
+				if (response._body == "Exist") {
 					this.alreadyExist = this.modal.show(this.exist, {class: "modal-md"});
-				}catch(e){
+				}else if(response._body == "Not exist"){
+					this.activateTab = true;
+					setTimeout(() => {
+						this.tabSet.tabs[1].active = true
+					}, 200);
+				}else{
 					console.log(response._body);
 				}
-				this.isChecked = true;
 			});
 		}
 	}
