@@ -5,55 +5,103 @@
 		<a [routerLink]="['../../addNew', courseId]" class="btn btn-success pull-right">Создать</a>
 	</div>
 </div>
-<form>
-	<label for="">Поиск по ФИО</label>
-	<input type="text" class="form-control" (keyup)="Search($event)">
-</form>
-<div class="content table-responsive table-full-width">
-	<table class="table table-striped table-hover" *ngIf="searchResult.length === 0 && message.length === 0">
-		<tr>
-			<th>Фамилия</th>
-			<th>Имя</th>
-			<th>Отчество</th>
-			<th>Дата рождения</th>
-		</tr>
-		<tr *ngFor="let doctor of students" (click)='confirmation(doctor, confirmTpl)' [ngClass]="{'active': selectedPerson === doctor}">
-			<td>{{ doctor.surname }}</td>
-			<td>{{ doctor.name }}</td>
-			<td>{{ doctor.patername }}</td>
-			<td>{{ doctor.birthday | date: "dd.MM.yyyy"}}</td>
-		</tr>
-		<tr *ngIf="message.length != 0">
-			<td>{{ message }}</td>
-		</tr>
-	</table>
-	<table class="table table-striped table-hover" *ngIf="searchResult.length !== 0 || message.length !== 0">
-		<tr>
-			<th>Фамилия</th>
-			<th>Имя</th>
-			<th>Отчество</th>
-			<th>Дата рождения</th>
-		</tr>
-		<tr *ngFor="let doctor of searchResult" (click)='confirmation(doctor, confirmTpl)'>
-			<td>{{ doctor.surname }}</td>
-			<td>{{ doctor.name }}</td>
-			<td>{{ doctor.patername }}</td>
-			<td>{{ doctor.birthday | date: "dd.MM.yyyy"}}</td>
-		</tr>
-		<tr *ngIf="message.length != 0" class="danger" align="center">
-			<td colspan="4">{{ message }}</td>
-		</tr>
-	</table>
-	<preloader path="assets/img/Elipsis.gif" *ngIf="isLoading"></preloader>
-	<div *ngIf="!isLoading">
-		<button class="btn btn-block btn-info" (click)="LoadMore()">Загрузить ещё</button>
+<div class="row">
+	<div class="col-lg-6 col-md-6">
+		<div class="content">
+			<form>
+				<label for="">Поиск по ФИО</label>
+				<input type="text" class="form-control" (keyup)="Search($event)">
+			</form>
+			<div class="content table-responsive table-full-width">
+				<table class="table table-striped table-hover" *ngIf="searchResult.length === 0 && message.length === 0">
+					<tr>
+						<th>Фамилия</th>
+						<th>Имя</th>
+						<th>Отчество</th>
+						<th>Дата рождения</th>
+					</tr>
+					<tr *ngFor="let doctor of students" (click)='confirmation(doctor, confirmTpl)' [ngClass]="{'active': selectedPerson === doctor}">
+						<td>{{ doctor.surname }}</td>
+						<td>{{ doctor.name }}</td>
+						<td>{{ doctor.patername }}</td>
+						<td>{{ doctor.birthday | date: "dd.MM.yyyy"}}</td>
+					</tr>
+					<tr *ngIf="message.length != 0">
+						<td>{{ message }}</td>
+					</tr>
+				</table>
+				<table class="table table-striped table-hover" *ngIf="searchResult.length !== 0 || message.length !== 0">
+					<tr>
+						<th>Фамилия</th>
+						<th>Имя</th>
+						<th>Отчество</th>
+						<th>Дата рождения</th>
+					</tr>
+					<tr *ngFor="let doctor of searchResult" (click)='confirmation(doctor, confirmTpl)'>
+						<td>{{ doctor.surname }}</td>
+						<td>{{ doctor.name }}</td>
+						<td>{{ doctor.patername }}</td>
+						<td>{{ doctor.birthday | date: "dd.MM.yyyy"}}</td>
+					</tr>
+					<tr *ngIf="message.length != 0" class="danger" align="center">
+						<td colspan="4">{{ message }}</td>
+					</tr>
+				</table>
+				<preloader path="assets/img/Elipsis.gif" *ngIf="isLoading"></preloader>
+				<div *ngIf="!isLoading">
+					<button class="btn btn-block btn-info" (click)="LoadMore()">Загрузить ещё</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-6 col-md-6"  *ngIf="course !== undefined">
+		<div class="content">
+			<label>Данные курса</label>
+			<div class="card">
+				<div class="content">
+					<div class="table table-responsive teble-full-width">
+						<table class="table table-striped">
+							<caption>Таблица зачисленных на курс <b>"{{course.name}}"</b></caption>
+							<thead>
+								<tr>
+									<th>Фамилия</th>
+									<th>Имя</th>
+									<th>Отчество</th>
+									<th>Дата рождения</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngIf="course.StudList.length == 0 && enteredStudents.length == 0">
+									<td colspan="4" class="danger" align="center">Список пуст</td>
+								</tr>
+								<ng-container>
+									<tr *ngFor="let student of course.StudList" class="warning" [ngClass]="{'last-tr': student === course.StudList[course.StudList.length - 1]}">
+										<td>{{ student.surname }}</td>
+										<td>{{ student.name }}</td>
+										<td>{{ student.patername }}</td>
+										<td>{{ student.birthday | date: "dd.MM.yyyy"}}</td>
+									</tr>
+								</ng-container>
+								<tr *ngFor="let student of enteredStudents" class="success">
+									<td>{{ student.surname }}</td>
+									<td>{{ student.name }}</td>
+									<td>{{ student.patername }}</td>
+									<td>{{ student.birthday | date: "dd.MM.yyyy"}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <ng-template #confirmTpl>
 	<div class="modal-body text-center">
 		<p>Вы действительно хотите зачислить этого слушателя?</p>
-		<div class="content table-responsive table-full-width">
-			<table class="table table-striped table-hover">
+		<preloader *ngIf="isClicked"></preloader>	
+		<div class="content table-responsive table-full-width" *ngIf="!isClicked">
+			<table class="table table-striped">
 				<tbody>
 					<tr>
 						<th>Слушатель</th>

@@ -18,57 +18,25 @@
                                 <div class="col-md-12">
                                   <div class="form-group no-margin">
                                     <label>Учреждение образования</label>
-                                    <input type="text" auto-complete [source]="personal_establishments" [(ngModel)]="filterParams.est" (ngModelChange)="reportAction(1)" class="form-control" name="educational_establishment">
-                                    <!-- <select [(ngModel)]="filterParams.est" (ngModelChange)="reportAction(1)" class="form-control" name="educational_establishment">
-                                      <option *ngFor="let obj of personal_establishments" value="{{obj.id}}">{{obj.value}}</option>
-                                    </select> -->
+                                    <input type="text" auto-complete [source]="personal_establishments" [(ngModel)]="filterParams.establishmentId" (ngModelChange)="reportAction(PROFESIONAL)" class="form-control" name="educational_establishment">
                                   </div>
                                 </div>
                                 <div class="col-md-12">
                                   <div class="form-group no-margin">
                                     <label>Гражданство</label>
-                                    <input type="text" auto-complete [source]="personal_cityzenships" [(ngModel)]="filterParams.resid" (ngModelChange)="reportAction(1)" class="form-control" name="cityzenship">
-                                    <!-- <select [(ngModel)]="filterParams.resid" class="form-control" (ngModelChange)="reportAction(1)" name="cityzenship">
-                                      <option *ngFor="let obj of personal_cityzenships" value="{{obj.id}}">{{obj.value}}</option>
-                                    </select> -->
+                                    <input type="text" auto-complete [source]="personal_cityzenships" [(ngModel)]="filterParams.cityzenship" (ngModelChange)="reportAction(PERSONAL)" class="form-control" name="cityzenship">
                                   </div>
                                 </div>
-    <!--                             <div class="col-md-12">
-                                  <div class="form-group no-margin">
-                                    <label>Дата получения диплома:</label>
-                                    <div class="row">
-                                      <div class="col-md-6">
-                                        <input type="text" [(ngModel)]="filterParams.dipdatefrom" name="diploma_start" id="DipDateFrom" class="form-control">
-                                      </div>
-                                      <div class="col-md-6">
-                                        <input type="text" [(ngModel)]="filterParams.dipdateto" name="diploma_start" id="DipDateTo" class="form-control">
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div> -->
                                 <div class="col-md-12">
                                   <div class="form-group no-margin">
                                     <label>Должность</label>
-                                    <input type="text" auto-complete [source]="personal_appointments" [(ngModel)]="filterParams.app" (ngModelChange)="reportAction(1)" class="form-control" name="appointment">
-                                    <!-- <select [(ngModel)]="filterParams.app" (ngModelChange)="reportAction(1)" class="form-control" name="appointment">
-                                      <option *ngFor="let obj of personal_appointments" value="{{obj.id}}">{{obj.value}}</option>
-                                    </select> -->
+                                    <input type="text" auto-complete [source]="personal_appointments" [(ngModel)]="filterParams.appointment" (ngModelChange)="reportAction(GENERAL)" class="form-control" name="appointment">
                                   </div>
                                 </div>
-    <!--                             <div class="col-md-12">
-                                  <div class="form-group no-margin">
-                                    <input type="checkbox" (ngModelChange)="reportAction(1)" [(ngModel)]="filterParams.isDoctor" name="isDoctor" id="kmn" class="regular-checkbox">
-                                    <label for="kmn"></label>
-                                    <label>Кандидат медицинских наук</label>
-                                  </div>
-                                </div> -->
                                 <div class="col-md-12">
                                   <div class="form-group no-margin">
                                     <label>Организация</label>
-                                    <input type="text" auto-complete [source]="personal_organizations" [(ngModel)]="filterParams.org" (ngModelChange)="reportAction(1)" class="form-control" name="organization">
-                                    <!-- <select [(ngModel)]="filterParams.org" (ngModelChange)="reportAction(1)" class="form-control" name="organization">
-                                      <option *ngFor="let obj of personal_organizations" value="{{obj.id}}">{{obj.value}}</option>
-                                    </select> -->
+                                    <input type="text" auto-complete [source]="personal_organizations" [(ngModel)]="filterParams.organization" (ngModelChange)="reportAction(GENERAL)" class="form-control" name="organization">
                                   </div>
                                 </div>
                                 <div class="col-md-12">
@@ -78,7 +46,7 @@
                                       <tr *ngFor="let region of personal_regions">
                                         
                                         <td>
-                                          <input type="checkbox" id="region-{{region.id}}" (click)="SelectRegionAction($event)" value="{{ region.id }}" class="regular-checkbox regions">
+                                          <input type="checkbox" id="region-{{region.id}}" (click)="SelectRegionAction(region)" class="regular-checkbox regions">
                                           <label for="region-{{ region.id }}" class="regions"> </label>
                                         </td>
                                         <td>
@@ -91,41 +59,22 @@
                                 <div class="col-md-5">
                                   <div class="form-group no-margin">
                                     <label>Пол</label>
-                                    <select [(ngModel)]="filterParams.isMale" class="form-control"  (ngModelChange)="reportAction(1)" name="isMale" class="form-control">
+                                    <select [(ngModel)]="filterParams.isMale" class="form-control"  (ngModelChange)="reportAction(PERSONAL)" name="isMale" class="form-control">
                                       <option value="1" selected="selected">Мужской</option>
                                       <option value="0">Женский</option>
                                     </select>
                                   </div>
                                 </div>
-    <!--                             <div class="col-md-3">
-                                  <div class="form-group no-margin">
-                                    <label>Сотрудник</label>
-                                    <input type="checkbox" [(ngModel)]="filterParams.isCowoker"  (ngModelChange)="reportAction(1)" name="isCowoker" id="isCowoker" class="regular-checkbox">
-                                    <label for="isCowoker"></label>
-                                  </div>
-                                </div> -->
-    <!--                             <div class="col-md-4">
-                                  <div class="form-group no-margin">
-                                    <label>Опыт работы</label>
-                                    <input type="number" [(ngModel)]="filterParams.experiance_general"  (ngModelChange)="reportAction(1)"  name="experiance_general" class="form-control">
-                                  </div>
-                                </div> -->
                                 <div class="col-md-12">
                                   <div class="form-group no-margin">
                                     <label>Отдел</label>
-                                    <input type="text" auto-complete [source]="personal_departments" [(ngModel)]="filterParams.dep" (ngModelChange)="reportAction(1)" class="form-control" name="department">
-                                    <!-- <select [(ngModel)]="filterParams.dep" (ngModelChange)="reportAction(1)" class="form-control" name="department">
-                                      <option *ngFor="let obj of personal_departments" value="{{obj.id}}">{{obj.value}}</option>
-                                    </select> -->
+                                    <input type="text" auto-complete [source]="personal_departments" [(ngModel)]="filterParams.department" (ngModelChange)="reportAction(GENERAL)" class="form-control" name="department">
                                   </div>
                                 </div>
                                 <div class="col-md-12">
                                   <div class="form-group no-margin">
                                     <label>Факультет</label>
-                                    <input type="text" auto-complete [source]="personal_faculties" [(ngModel)]="filterParams.fac" (ngModelChange)="reportAction(1)" class="form-control" name="faculty">
-                                    <!-- <select [(ngModel)]="filterParams.fac"  (ngModelChange)="reportAction(1)" class="form-control" name="faculty">
-                                      <option *ngFor="let obj of personal_faculties" value="{{obj.id}}">{{obj.value}}</option>
-                                    </select> -->
+                                    <input type="text" auto-complete [source]="personal_faculties" [(ngModel)]="filterParams.facultyId" (ngModelChange)="reportAction(PROFESIONAL)" class="form-control" name="faculty">
                                   </div>
                                 </div>
                               </div>
@@ -146,7 +95,7 @@
                                     <table>
                                       <tr *ngFor="let form of educForms">
                                         <td>
-                                          <input type="checkbox" id="form-{{form.id}}" (click)="SelectFormAction($event)" name="belmapo_educForm" value="{{ form.id }}" class="regular-checkbox">
+                                          <input type="checkbox" id="form-{{form.id}}" (click)="SelectFormAction(form)" name="belmapo_educForm" class="regular-checkbox">
                                           <label for="form-{{ form.id }}"> </label>
                                         </td>
                                         <td>
@@ -162,7 +111,7 @@
                                     <table>
                                       <tr *ngFor="let educType of educTypes">
                                         <td>
-                                          <input type="checkbox" id="educType-{{ educType.id }}" (click)="SelectEducTypeAction($event)" name="belmapo_educType" value="{{ educType.id }}" class="regular-checkbox">
+                                          <input type="checkbox" id="educType-{{ educType.id }}" (click)="SelectEducTypeAction(educType)" name="belmapo_educType" class="regular-checkbox">
                                           <label for="educType-{{ educType.id }}"> </label>
                                         </td>
                                         <td>

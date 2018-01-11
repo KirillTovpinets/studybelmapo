@@ -20,6 +20,9 @@ import { ShowPersonInfoService } from "../personalInfo/showPersonalInfo.service"
 		.newValue{
 			z-index:0;
 		}
+		.last-tr{
+			border-bottom: 2px solid #666;
+		}
 	`],
 	providers: [GetListService,
 				BsModalService,
@@ -80,23 +83,30 @@ export class ChooseStudentComponent implements OnInit {
 	searchValue:string = "";
 	hideNotify: boolean = false;
 	isLoading: boolean = false;
+	isClicked: boolean = false;
+	enteredStudents: any[] = [];
 	ngOnInit() {
 		this.getList.getList(30, this.offset, "all").then(response =>{
 			this.students = response.json().data;
 			this.offset +=30;
 		})
-
 		this.courseId = this.router.snapshot.params["id"];
+
+		this.getCourse.getById(this.courseId).then(data => {
+			try{
+				for (var obj of data.json()) {
+					this.course = obj;
+				}
+			}catch(e){
+				console.log(e);
+				console.log(data._body);
+			}
+		});
 	}
 	confirmation(person:any, template: TemplateRef<any>): void{
 		this.hideNotify = false;
-		this.getCourse.getById(this.courseId).then(data => {
-			for (var obj of data.json()) {
-				this.course = obj;
-			}
-			this.selectedPerson = Object.assign(new Person(), person);
-			this.modalRef = this.modalService.show(template, {class: 'modal-md'});
-		});
+		this.selectedPerson = Object.assign(new Person(), person);
+		this.modalRef = this.modalService.show(template, {class: 'modal-md'});
 	}
 	setLastInfo(template:TemplateRef<any>):void{
 		this.setLastInfoModal = this.modalService.show(template, {class: 'modal-md'});
@@ -107,6 +117,7 @@ export class ChooseStudentComponent implements OnInit {
 			this.modalService.hide(1);
 			for (var i = 0; i < this.students.length; i++) {
 				if(this.students[i].id == this.selectedPerson.id){
+					this.enteredStudents.push(this.students[i]);
 					this.students.splice(i, 1);
 					break;
 				}
@@ -118,12 +129,21 @@ export class ChooseStudentComponent implements OnInit {
 		this.personalInfo.saveChanges(person).then(data => console.log(data));
 	}
 	personInfo(): void{
-		var id = this.selectedPerson.id;				
-		this.personalInfo.getInfo(id.toString(), true).then(data => {
-			console.log(data._body);
-			var person = Object.assign(new Person(), data.json());
+		var id = this.selectedPerson.id;
+		if (localStorage.getItem("person-" + id) !== null) {
+			this.isClicked = true;
+			var person = JSON.parse(localStorage.getItem("person-" + id));
 			this.showInfo.ShowPersonalInfo(person, 2, true);
-		})
+			this.isClicked = false;
+		}else{
+			this.isClicked = true;
+			this.personalInfo.getInfo(id.toString(), true).then(data => {
+				var person = Object.assign(new Person(), data.json());
+				localStorage.setItem("person-" + id, JSON.stringify(data.json()));
+				this.showInfo.ShowPersonalInfo(person, 2, true);
+				this.isClicked = false;
+			})
+		}
 	}
 	reject(): void{
 		this.modalService.hide(1);

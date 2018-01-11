@@ -29,35 +29,50 @@ export class ReportComponent implements OnInit{
 	private isLoaded:boolean = false;
   private getResult:boolean = true;
 	private parameters:any[] = [];
+
+  private PROFESIONAL: string = "personal_prof_info";
+  private PERSONAL: string = "personal_private_info";
+  private GENERAL: string = "personal_card";
+  private SCIENCE: string = "personal_sience";
+  private ARRIVAL: string = "arrivals";
+  private COURSE: string = "cources";
+
+
 	// private filterParams: Person = new Person();
 
     private params:any = {};
     private total: number = 0;
     private filterParams:any = {
-    	est: "",
-  		resid: "",
+    	establishmentId: "",
+  		cityzenship: "",
   		DipDateFrom: 0,
   		DipDateTo: 0,
-  		app: "",
+  		appointment: "",
   		isDoctor: "",
-  		org: "",
+  		organization: "",
   		gender: "",
   		isCowoker: "",
   		experiance: "",
-  		dep: "",
-  		fac: "",
+  		department: "",
+  		facultyId: "",
   		cathedra: "",
   		course: "",
   		groupNumber: 0
     };
+
+    private fieldAndArray:any = {
+      region: this.personal_regions,
+      FormEduc: this.educForms,
+      Type: this.educTypes
+    };
     private ParamLabels:any = ["Учреждение образования", "Гражданство", "Дата получения диплома", "Должность", "Звание кандидата медицинских нук", "Организация", "Область", "Пол", "Сотрудник", "Опыт работы", "Отдел", "Факультет", "Факультет БелМАПО", "Кафедра БелМАПО", "Курс", "Форма обучения", "Номер группы", "Тип обучения"];
-    private LabelsToDisplay:any = [];
+    private LabelsToDisplay:any = {};
 	constructor(private dataService: PersonalDataService,
 				      private buildReport: BuildReportService){
-    this.filterParams.regions = [];
+    this.filterParams.region = [];
     this.filterParams.faculties = [];
-    this.filterParams.forms = [];
-    this.filterParams.educTypes = [];
+    this.filterParams.FormEduc = [];
+    this.filterParams.Type = [];
     this.filterParams.tableIds = [];
   }
 	ngOnInit():void{
@@ -105,105 +120,91 @@ export class ReportComponent implements OnInit{
 		});
 	}
 
-	SelectRegionAction($event:any):void {
-  // console.log("SelectRegionAction");
-      if (this.filterParams.regions === undefined || this.filterParams.regions.length === 0) {
-        this.filterParams.regions = [];
-      }
-      var value = $event.currentTarget.value * 1;
-      if (this.filterParams.regions.indexOf(value) == -1) {
-        this.filterParams.regions.push(value);
-      }else{
-        var index = this.filterParams.regions.indexOf(value);
-        this.filterParams.regions.splice(index, 1);
-      }
+	SelectRegionAction(region:any):void {
+    if (this.filterParams.region.indexOf(region.id) < 0) {
+      this.filterParams.region.push(region.id);
+    }else{
+      this.filterParams.region.splice(this.filterParams.region.indexOf(region.id), 1);
+    }
     this.LabelsToDisplay = this.ParamLabels[5];
-    return this.reportAction(1);
+    return this.reportAction(this.PERSONAL);
   };
-  reportAction(flag?:number): void {
-    this.getResult = false;
-    this.parameters = [];
-    var data, index;
-    if (this.filterParams.est === 0 && 
-      this.filterParams.resid === 0 && 
-      this.filterParams.DipDateFrom === 0 && 
-      this.filterParams.DipDateTo === 0 && 
-      this.filterParams.app === 0 && 
-      this.filterParams.isDoctor === 0 && 
-      this.filterParams.org === 0 && 
-      this.filterParams.gender === 0 && 
-      this.filterParams.isCowoker === 0 && 
-      this.filterParams.experiance === 0 && 
-      this.filterParams.dep === 0 && 
-      this.filterParams.fac === 0) {
-      index = this.filterParams.tableIds.indexOf(1);
-      if (index > -1) {
-        this.filterParams.tableIds.splice(index, 1);
-        flag = 0;
-        this.total = 0;
-        return;
-      }
+  reportAction(table:string): void {
+    if (this.filterParams.tableIds.indexOf(table) < 0) {
+      this.filterParams.tableIds.push(table);
     }
-    if (this.filterParams.cathedra === 0 && 
-      this.filterParams.course === 0 && 
-      this.filterParams.groupNumber === 0 && 
-      this.filterParams.faculties.length === 0 && 
-      this.filterParams.forms.length === 0 &&  
-      this.filterParams.educTypes.length === 0) {
-      index = this.filterParams.tableIds.indexOf(2);
-      if (index > -1) {
-        this.filterParams.tableIds.splice(index, 1);
-        flag = 0;
-        this.total = 0;
-        return;
-      }
-    }
-    if (flag) {
-      if(this.filterParams.tableIds === undefined){
-        this.filterParams.tableIds = [];
-      }
-
-      var value = flag * 1;
-      if (this.filterParams.tableIds.indexOf(value) == -1) {
-        this.filterParams.tableIds.push(value);
-      }
-    }
-    data = this.filterParams;
-    console.log(data);
-    this.buildReport.build(data).then(data => {
-      console.log(data._body);
+    this.buildReport.build(this.filterParams).then(data => {
       var i, len, ref, value;
-      ref = data.json();
-      this.parameters = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        value = ref[i];
-        if (value.label !== "total") {
-          this.parameters.push(value);
-        } else {
-          this.total = value.value;
+      try{
+        ref = data.json();
+        this.parameters = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          value = ref[i];
+          if (value.label !== "total" && value.label !== undefined) {
+            for (var key in this.filterParams) {
+              if (key === value.label) {
+                value.label = this.filterParams[key];
+                break;
+              }else{
+                var str = value.label + '';
+                var index = str.split("-")[1];
+                var field = str.split("-")[0];
+                var indexNumber = Number(index);
+                var flag = false;
+                for(let obj of this.fieldAndArray[field]){
+                  if(obj.id == indexNumber){
+                    value.label = obj.value;
+                    flag = true;
+                    break;
+                  }
+                }
+                if (!flag) {
+                  switch (field) {
+                    case "region":
+                      value.label = "Всего по регионам"
+                      break;
+                    case "FormEduc":
+                      value.label = "Всего по форме обучения"
+                      break;
+                    case "Type":
+                      value.label = "Всего по типам обучения"
+                      break;
+                  }
+                }
+                break;
+              }
+            }
+            this.parameters.push(value);
+          } else {
+            this.total = value.value;
+          }
         }
-      }
-      if (this.parameters.length === 1) {
-        this.total = this.parameters[0].value;
+        if (this.parameters.length === 1) {
+          this.total = this.parameters[0].value;
+        }
+      }catch(e){
+        console.log(e);
+        console.log(data._body);
       }
       this.getResult = true;
     });
   };
   ResetService():void{
-    this.filterParams.est = 0;
-    this.filterParams.resid = 0;
-    this.filterParams.dipdatefrom = 0;
-    this.filterParams.dipdateto = 0;
-    this.filterParams.app = 0;
-    this.filterParams.isDoctor = 0;
-    this.filterParams.org = 0;
-    this.filterParams.isMale = 0;
-    this.filterParams.isCowoker = 0;
-    this.filterParams.experiance_general = 0;
-    this.filterParams.dep = 0;
-    this.filterParams.fac = 0;
-    this.filterParams.cathedra = 0;
-    this.filterParams.course = 0;
+    this.filterParams.establishmentId = "",
+    this.filterParams.cityzenship = "",
+    this.filterParams.DipDateFrom = 0,
+    this.filterParams.DipDateTo = 0,
+    this.filterParams.appointment = "",
+    this.filterParams.isDoctor = "",
+    this.filterParams.organization = "",
+    this.filterParams.gender = "",
+    this.filterParams.isCowoker = "",
+    this.filterParams.experiance = "",
+    this.filterParams.department = "",
+    this.filterParams.facultyId = "",
+    this.filterParams.cathedra = "",
+    this.filterParams.course = "",
+    this.filterParams.groupNumber = 0
     this.parameters = [];
     this.total = 0;
   }
@@ -219,35 +220,30 @@ export class ReportComponent implements OnInit{
         this.filterParams.faculties.splice(index, 1);
       }
     this.LabelsToDisplay = this.ParamLabels[11];
-    return this.reportAction(2);
+    // return this.reportAction(2);
   };
-  SelectFormAction($event:any): void {
-    if (this.filterParams.forms === void 0) {
-      this.filterParams.forms = [];
-    }
-    var value = $event.currentTarget.value * 1;
-    if (this.filterParams.forms.indexOf(value) == -1) {
-      this.filterParams.forms.push(value);
+  SelectFormAction(form:any): void {
+    if (this.filterParams.FormEduc.indexOf(form.id) < 0) {
+      this.filterParams.FormEduc.push(form.id);
     }else{
-      var index = this.filterParams.forms.indexOf(value);
-      this.filterParams.forms.splice(index, 1);
+      var index = this.filterParams.FormEduc.indexOf(form.id);
+      this.filterParams.FormEduc.splice(index, 1);
     }
     this.LabelsToDisplay = this.ParamLabels[14];
-    return this.reportAction(2);
+    return this.reportAction(this.ARRIVAL);
   };
-  SelectEducTypeAction($event:any): void {
-    if (this.filterParams.educTypes === void 0) {
-      this.filterParams.educTypes = [];
+  SelectEducTypeAction(type:any): void {
+    if (this.filterParams.Type === undefined) {
+      this.filterParams.Type = [];
     }
-    var value = $event.currentTarget.value * 1;
-    if (this.filterParams.educTypes.indexOf(value) == -1) {
-      this.filterParams.educTypes.push(value);
+    if (this.filterParams.Type.indexOf(type.id) < 0) {
+      this.filterParams.Type.push(type.id);
     }else{
-      var index = this.filterParams.educTypes.indexOf(value);
-      this.filterParams.educTypes.splice(index, 1);
+      var index = this.filterParams.Type.indexOf(type.id);
+      this.filterParams.Type.splice(index, 1);
     }
     
     this.LabelsToDisplay = this.ParamLabels[16];
-    return this.reportAction(2);
+    return this.reportAction(this.COURSE);
   };
 }

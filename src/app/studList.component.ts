@@ -16,6 +16,7 @@ declare var $: any;
 		tr.active>td{
 			background-color:#63d8f1 !important;
 			color:#fff;
+			font-weight:bold;
 		}
 		.nested:hover,
 		.nested{
