@@ -84,32 +84,23 @@ export class NavbarComponent implements OnInit{
 		this.navInfo.logout().subscribe(response => this.router.navigate(['/login']))
 	}
 	ToggleMenu(e){
-		if(this.lbd.navbar_menu_visible !== undefined && this.lbd.navbar_menu_visible == 1) {
+        setTimeout(function(){
+            this.toggle = true;
+        }, 430);
+
+        var div = '<div id="bodyClick"></div>';
+        $(div).appendTo("body").click(function() {
+            $('.navbar-collapse').css("transform", "translate3d(260px,0,0)");
             $('html').removeClass('nav-open');
-            this.lbd.navbar_menu_visible = 0;
+            this.navbar_menu_visible = 0;
             $('#bodyClick').remove();
              setTimeout(function(){
-             	this.toggle = false;
+                this.toggle = false;
              }, 400);
+        });
 
-        } else {
-            setTimeout(function(){
-                this.toggle = true;
-            }, 430);
-
-            var div = '<div id="bodyClick"></div>';
-            $(div).appendTo("body").click(function() {
-                $('html').removeClass('nav-open');
-                this.navbar_menu_visible = 0;
-                $('#bodyClick').remove();
-                 setTimeout(function(){
-                    this.toggle = false;
-                 }, 400);
-            });
-
-            $('html').addClass('nav-open');
-            this.lbd.navbar_menu_visible = 1;
-
-        }
-	}
+        $('html').addClass('nav-open');
+        $('.navbar-collapse').css("transform", "translate3d(0,0,0)");
+        this.lbd.navbar_menu_visible = 1;
+    }
 }

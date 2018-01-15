@@ -12,6 +12,7 @@
 	$personId = $data->new->general->id;
 	$new = (array)$data->new;
 	$old = (array)$data->old;
+	print_r($data);
 	foreach ($new as $key => $value) {
 		$new[$key] = (array)$value;
 		$old[$key] = (array)$old[$key];
@@ -21,15 +22,12 @@
 			}
 		}
 		$diff = array();
-		echo "new";
-		print_r($new[$key]);
-		echo "\n";
-		echo "old";
-		print_r($old[$key]);
 		$diff = array_diff($new[$key], $old[$key]);
 		if (!empty($diff)) {
 			foreach ($diff as $keyDiff => $valueDiff) {
-				$oldValue = $old[$key][$keyDiff];
+				$oldKey = "$key";
+				$oldKeyDiff = "_$keyDiff";
+				$oldValue = $old[$oldKey][$oldKeyDiff];
 				if (is_array($valueDiff)) {
 					$newValue = $valueDiff["id"];
 				}else{

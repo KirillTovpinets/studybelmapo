@@ -14,7 +14,7 @@ export class ShowPersonInfoService {
 	PersonalInfoModal: BsModalRef;
 	ShowPersonalInfo(person:any, level?:number, canChange?:boolean): void{
 		var id:string = "";
-		if (person.general !== undefined) {
+		if (person.general !== null && person.general !== undefined) {
 			id = person.general.id;
 		}else{
 			id = person.id;
@@ -42,7 +42,9 @@ export class ShowPersonInfoService {
 	showModal(person:any, level?:number, canChange?:boolean){
 		var copy = new Person();
 		for(var key in person){
-			copy[key] = person[key];
+			for(var ikey in person[key]){
+				copy[key][ikey] = person[key][ikey];
+			}
 		}
 		person.personal.birthdayDate = new Date(person.personal.birthday);
 		person.profesional.diploma_startDate = new Date(person.profesional.diploma_start);

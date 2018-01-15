@@ -19,7 +19,7 @@ export class PersonalInfoComponent{
 	level: number = 1;
 	canChange: boolean = false;
 	change: boolean = false;
-	originalData:Person = new Person();
+	originalData:any = {};
 	constructor(public PIModal: BsModalRef,
 				private saveChanges: SaveChangesService,
 				private notify: NotificationsService ){
@@ -30,12 +30,13 @@ export class PersonalInfoComponent{
 	Cansel(){
 		this.change = false;
 	}
-	SaveChanges(person: Person){
+	SaveChanges(person: any){
 		this.saveChanges.save(person, this.originalData).subscribe(data => {
 			console.log(data._body);
 			this.change = false;
 			this.originalData = Object.assign(new Person(), this.person);
 			this.notify.addInfo("Изменения сохранены");
+			localStorage.removeItem("person-" + person.general.id);
 		});
 	}
 }

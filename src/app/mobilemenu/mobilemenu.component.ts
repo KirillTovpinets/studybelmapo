@@ -13,7 +13,9 @@ export class MobilemenuComponent implements OnInit{
 				private menuManip: ShareService,
 				private element: ElementRef){
 	}
+	currentUser:any;
 	ngOnInit(): void{
+		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 		this.menuManip.currentMessage.subscribe(message =>{
 			this.element.nativeElement.style.display = message ? "block": "none";
 			this.element.nativeElement.style.right = "0";
