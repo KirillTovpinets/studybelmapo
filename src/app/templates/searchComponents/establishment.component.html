@@ -3,7 +3,7 @@
   <p class="category">По ВУЗу</p>
 </div>
 <div class="content" *ngIf="message != undefined">
-  <div class="alert alert-warning" > 
+  <div class="alert" [ngClass]="{'alert-warning': level == 0, 'alert-danger': level == 1}"> 
     <p>{{ message }}</p>
   </div>
 </div>

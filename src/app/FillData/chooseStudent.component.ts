@@ -85,6 +85,8 @@ export class ChooseStudentComponent implements OnInit {
 	isLoading: boolean = false;
 	isClicked: boolean = false;
 	enteredStudents: any[] = [];
+
+	items: any[] = [];
 	ngOnInit() {
 		this.getList.getList(30, this.offset, "all").then(response =>{
 			this.students = response.json().data;
@@ -186,4 +188,15 @@ export class ChooseStudentComponent implements OnInit {
 			this.isLoading = false;
 		})
 	}
+	startDrag(item){
+		console.log(item);
+	}
+	releaseDrop(doc){
+		this.enteredStudents.push(doc);
+	}
+	addDropItem($event){}
+	dropEventMouse($event){}
+	dragEnter($event){}
+	dragLeave(){}
+	dragoverMouse($event){}
 }

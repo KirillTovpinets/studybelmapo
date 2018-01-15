@@ -31,22 +31,28 @@ export class SirnameComponent implements OnInit{
 	message:string;
 	ngOnInit(): void{
 		this.sirnameServ.getList(30, this.offset, "sirname").then(data => {
-			if (data.json().data.length == 0) {
-				this.message = "Список пуст";
+			try{
+				if (data.json().data.length == 0 && this.offset == 0) {
+					this.message = "Список пуст";
+				}
+				this.doctors = this.doctors.concat(data.json().data);
+				this.doctors.sort((a, b) => {
+		          var sirname_first, sirname_second;
+		          sirname_first = new Date(a.sirname);
+		          sirname_second = new Date(b.sirname);
+		          if (sirname_first < sirname_second) {
+		            return -1;
+		          } else if (sirname_first > sirname_second){
+		            return 1;
+		          } else{
+		          	return 0;
+		          }
+		        });
+			}catch(e){
+				this.message = "Произошла ошибка. Обратитесь к администратору";
+				console.log(e);
+				console.log(data._body);
 			}
-			this.doctors = this.doctors.concat(data.json().data);
-			this.doctors.sort((a, b) => {
-	          var sirname_first, sirname_second;
-	          sirname_first = new Date(a.sirname);
-	          sirname_second = new Date(b.sirname);
-	          if (sirname_first < sirname_second) {
-	            return -1;
-	          } else if (sirname_first > sirname_second){
-	            return 1;
-	          } else{
-	          	return 0;
-	          }
-	        });
 		});
 	}
 

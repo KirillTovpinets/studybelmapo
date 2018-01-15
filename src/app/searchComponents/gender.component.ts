@@ -23,18 +23,36 @@ export class GenderComponent implements OnInit{
 	PersonalInfoModal: BsModalRef;
 	maleList: List = new List();
 	femaleList: List = new List();
+	errorMessageF: string = "";
+	errorMessageM: string = "";
+	isLoadedM: boolean = false;
+	isLoadedF: boolean = false;
 	ngOnInit(): void {
 		this.genderService.getList(this.maleList.limit, this.maleList.offset, "gender", { isMale: 1 }).then(data => {
-			if (data.json().data.length == 0) {
-				this.maleList.message = "Список пуст";
+			try{
+				if (data.json().data.length == 0) {
+					this.maleList.message = "Список пуст";
+				}
+				this.maleList.setList(data.json().data);
+			}catch(e){
+				this.errorMessageM = "Произошла ошибка. Обратитесь к администратору";
+				console.log(e);
+				console.log(data._body);
 			}
-			this.maleList.setList(data.json().data);
+			this.isLoadedM = true;
 		});
 		this.genderService.getList(this.femaleList.limit, this.femaleList.offset, "gender", { isMale: 0 }).then(data => {
-			if (data.json().data.length == 0) {
-				this.femaleList.message = "Список пуст";
+			try{
+				if (data.json().data.length == 0) {
+					this.femaleList.message = "Список пуст";
+				}
+				this.femaleList.setList(data.json().data);
+			}catch(e){
+				this.errorMessageF = "Произошла ошибка. Обратитесь к администратору";
+				console.log(e);
+				console.log(data._body);
 			}
-			this.femaleList.setList(data.json().data);
+			this.isLoadedF = true;
 		});
 	}
 	ShowPersonalInfo(doctor): void{

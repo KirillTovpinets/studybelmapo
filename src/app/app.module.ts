@@ -6,6 +6,8 @@ import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
+import { DragDropDirectiveModule} from "angular4-drag-drop";
+
 import { AccordionModule, ModalModule, TabsModule, BsDatepickerModule, TooltipModule } from 'ngx-bootstrap';
 // Components
 import { AppComponent } from './app.component';
@@ -100,7 +102,8 @@ defineLocale('ru', ru);
     BrowserModule,
     FormsModule,
     HttpModule,
-	AppRoutingModule,
+    DragDropDirectiveModule,
+	  AppRoutingModule,
     AccordionModule.forRoot(),
     ModalModule.forRoot(),
     TabsModule.forRoot(),

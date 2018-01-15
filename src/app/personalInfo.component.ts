@@ -32,9 +32,10 @@ export class PersonalInfoComponent{
 	}
 	SaveChanges(person: Person){
 		this.saveChanges.save(person, this.originalData).subscribe(data => {
+			console.log(data._body);
 			this.change = false;
 			this.originalData = Object.assign(new Person(), this.person);
-			this.notify.addInfo(data._body);
+			this.notify.addInfo("Изменения сохранены");
 		});
 	}
 }

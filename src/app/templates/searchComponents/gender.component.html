@@ -16,7 +16,10 @@
               <label for="">Поиск</label>
               <input type="text" class="form-control" (keyup)="SearchMale($event, 1)">
             </form>
-            <table class="table-striped table table-hover" *ngIf="maleList.searchResult.length === 0">
+            <div class="alert alert-danger" *ngIf="errorMessageM.length != 0">
+              <p>{{ errorMessageM }}</p>
+            </div>
+            <table class="table-striped table table-hover" *ngIf="maleList.searchResult.length === 0 && errorMessageM.length == 0" >
               <thead>
                   <th>Фамилия</th>
                   <th>Имя</th>
@@ -25,7 +28,7 @@
                   <th>Дата создания</th>
               </thead>
               <tbody>
-                <tr *ngIf="maleList.doctors.length == 0">
+                <tr *ngIf="!isLoadedM">
                   <td colspan="5">
                     <preloader></preloader>
                   </td>
@@ -72,7 +75,10 @@
               <label for="">Поиск</label>
               <input type="text" class="form-control" (keyup)="SearchFemale($event, 0)">
             </form>
-            <table class="table-striped table table-hover" *ngIf="femaleList.searchResult.length === 0">
+            <div class="alert alert-danger" *ngIf="errorMessageF.length != 0">
+              <p>{{ errorMessageF }}</p>
+            </div>
+            <table class="table-striped table table-hover" *ngIf="femaleList.searchResult.length === 0 && errorMessageF.length == 0">
               <thead>
                   <th>Фамилия</th>
                   <th>Имя</th>
@@ -83,7 +89,7 @@
               <tbody>
                 <tr *ngIf="femaleList.doctors.length == 0">
                   <td colspan="5">
-                    <preloader></preloader>
+                    <preloader *ngIf="!isLoadedF"></preloader>
                   </td>
                 </tr>
                   <tr  *ngFor="let doctor of femaleList.doctors" (click)="showInfo.ShowPersonalInfo(doctor)">
