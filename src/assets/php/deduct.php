@@ -7,21 +7,23 @@
 
 	$data = json_decode(file_get_contents("php://input"));
 
-	$arrivaId = $data->_arrivalId;
+	$arrivalId = $data->_arrivalId;
 	$courseId = $data->_courseId;
 	$date = $data->_DateGet;
 	$docNumber = $data->_docNumber;
 	$mark = $data->_mark;
-	try {
-		$mysqli->query("INSERT INTO `certificates`(`Arrival_id`, `CourseId`, `DateGet`, `DocNumber`, `MarkId`) VALUES (
-			'$arrivaId',
-			'$courseId',
-			'$date',
-			'$docNumber',
-			'$mark')") or die ("Error in query: " . mysqli_error($mysqli));	
-	} catch (Exception $e) {
-		echo "ERROR: " . $e;
-	}
+	$query = "INSERT INTO `arrivals_zip`(`Date`, `CourseId`, `ResidPlace`, `FormEduc`, `Dic_count`, `DocNumber`,`Status`, `PersonId`) SELECT `Date`, `CourseId`, `ResidPlace`, `FormEduc`, `Dic_count`, `DocNumber`, `Status`, `PersonId` FROM `arrivals` WHERE id = $arrivalId";
+	$mysqli->query($query) or die ("Error in query '$query': " . mysqli_error($mysqli));
+
+	$query = "DELETE FROM `arrivals` WHERE id = $arrivalId";
+	$result = $mysqli->query($query) or die ("Error in query '$query': " . mysqli_error($mysqli));
+
+	$mysqli->query("INSERT INTO `certificates`(`Arrival_id`, `CourseId`, `DateGet`, `DocNumber`, `MarkId`) VALUES (
+		'$arrivalId',
+		'$courseId',
+		'$date',
+		'$docNumber',
+		'$mark')") or die ("Error in query: " . mysqli_error($mysqli));	
 	echo "SUCCESS";
 	mysqli_close($mysqli);
 ?>

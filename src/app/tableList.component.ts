@@ -1,11 +1,12 @@
-import { Component, Input, OnInit, Directive, ViewChild, TemplateRef } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit, Directive, ViewChild, TemplateRef } from "@angular/core";
 import { ShowPersonInfoService } from "./personalInfo/showPersonalInfo.service";
 import { PersonalInfoService } from './personalInfo.service';
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { PersonalDataService } from './services/personalData.service';
 import { Certificate } from './model/certificate.class';
 import { Global } from './global.class';
-import {NotificationsService} from 'angular4-notify';
+import { NotificationsService } from 'angular4-notify';
+import { StudListService } from './services/stud-list.service';
 @Component({
 	selector: "table-list",
 	templateUrl: "./templates/tableList.component.html",
@@ -30,23 +31,30 @@ import {NotificationsService} from 'angular4-notify';
 	`]
 })
 
-export class TableListCopmonent{
+export class TableListCopmonent implements OnInit{
 	@Input('course') course: any;
+	@Output() onChanges = new EventEmitter<boolean>();
 	@ViewChild("DeductInfo") deduct: TemplateRef<any>;
 	@ViewChild("sure") modalTpl: TemplateRef<any>;
+
 	data: any;
 	selectedPerson:any = {};
 	constructor(private showInfo: ShowPersonInfoService,
 				private deductData: PersonalDataService,
 				private modal: BsModalService,
-				private notify: NotificationsService){}
+				private notify: NotificationsService,
+				private students: StudListService){}
 
 	private sure: BsModalRef;
 	private deductInfo: BsModalRef;
 	marks: any[] = [];
 	certificate: Certificate;
 	global: Global = new Global();
+	totalNumber: number = 0;
 	currentUser = JSON.parse(localStorage.getItem('currentUser'));
+	ngOnInit(){
+		this.students.currentTotal.subscribe(total => this.totalNumber = total);
+	}
 	Deduct(person:any, $event:any){
 		$event.stopPropagation();
 		this.selectedPerson = person;
@@ -68,7 +76,14 @@ export class TableListCopmonent{
 		this.certificate.courseId = this.course.id;
 		this.certificate.arrivalId = this.selectedPerson.arrivalId;
 		this.certificate.DateGet = this.certificate.DateGetDate.toISOString().slice(0,10);
-		this.deductData.deduct(this.certificate).then(res => this.notify.addInfo("Слушатель отчислен"));
+		this.course.StudList.splice(this.course.StudList.indexOf(this.selectedPerson), 1);
+		this.totalNumber += 1;
+		// this.students.changeTotal(this.totalNumber);
+		this.deductData.deduct(this.certificate).then(res => {
+			console.log(res._body);
+			this.notify.addSuccess("Слушатель отчислен")
+			this.onChanges.emit(this.course);
+		});
 		this.modal.hide(1);
 		this.modal.hide(1);
 	}

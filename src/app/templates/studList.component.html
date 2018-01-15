@@ -10,7 +10,7 @@
           <accordion-group #group *ngFor="let faculty of faculties">
             <div accordion-heading>
               {{ faculty.name }}
-              <span class="pull-right float-xs-right">Всего обучается: {{ faculty.Total }}</span>
+              <span class="pull-right float-xs-right">Всего обучается: {{ faculty.Total - deducts }}</span>
             </div>
             <accordion>
               <accordion-group *ngFor="let cathedra of faculty.CathedraList" #cathedraGroup [panelClass]="cathedra.CourseList.length != 0 ? 'panel-success' : 'panel-default'">
@@ -42,7 +42,7 @@
                             </tr>
                             <tr *ngIf="course.isOpened">
                               <td colspan="6" class="no-padding">
-                                <table-list [course]="course"></table-list>
+                                <table-list [course]="course" (onChanges)="onChanges($event)"></table-list>
                               </td>   
                             </tr>
                           </ng-container>

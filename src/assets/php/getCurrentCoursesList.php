@@ -10,10 +10,12 @@
 	$condition = "";
 	if (isset($_GET["id"])) {
 		$courseId = $_GET["id"];
-		$condition = "AND id = $courseId";
+		$condition = "id = $courseId";
+	}else{
+		$condition = "cathedraId = $depId";
 	}
 
-	$query = "SELECT * FROM cources where cathedraId = $depId $condition";
+	$query = "SELECT * FROM cources where $condition";
 	$result = $mysqli->query($query) or die ("Ошибка запроса '$query':" . mysqli_error($mysqli));
 	$response = array();
 	while ($row = $result->fetch_assoc()) {

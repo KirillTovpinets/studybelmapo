@@ -29,6 +29,7 @@
 	$query .= "WHERE";
 	$ORquery = $query;
 	$SeperateQuery = $query;
+	$total = 0;
 	foreach ($values as $key => $value) {
 		if ($addAnd && ((is_object($value) && isset($value->id)) || (is_array($value) && count($value) > 0) || (!is_array($value) && !is_object($value) && $value != ""))) {
 			$query .= " AND ";
@@ -48,15 +49,17 @@
 				$result = $mysqli->query($particularQuery) or die ("Error in '$particularQuery': " . mysqli_error($mysqli));
 				$arr = $result->fetch_assoc();
 				$obj["value"] = $arr["Total"];
+				$total += $arr["Total"];
 				$obj["label"] = "$key-$val";
 				array_push($response, $obj);
 			}
 			$str = implode(" OR $key = ", $value);
 			$query .= " ($key = $str)";
 			$ORquery .= " ($key = $str)";
-			$varSeparateQuery = $SeperateQuery;
-			$varSeparateQuery .= " ($key = $str)";
+			// $varSeparateQuery = $SeperateQuery;
+			// $varSeparateQuery .= " ($key = $str)";
 			$addAnd = true;
+			continue;
 		}
 		else if($value != "" && !is_object($value) && !is_array($value)){
 			$query .= " $key = '$value'";
@@ -70,23 +73,24 @@
 		$result = $mysqli->query($varSeparateQuery) or die ("Error in '$varSeparateQuery': " . mysqli_error($mysqli));
 		$arr = $result->fetch_assoc();
 		$obj["value"] = $arr["Total"];
+		$total += $arr["Total"];
+
 		$obj["label"] = $key;
 		array_push($response, $obj);
 
 	}
 	$result = $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));
-	$ORresult = $mysqli->query($ORquery) or die ("Error in '$ORquery': " . mysqli_error($mysqli));
 	$array = $result->fetch_assoc();
 	// echo $query;
 	
-	$obj["value"] = $array["Total"];
-	$obj["label"] = "total";
+	$Cross["value"] = $array["Total"];
+	$Cross["label"] = "Интегрированный";
 
-	$ORobj["value"] = $array["Total"];
-	$ORobj["label"] = "total";
+	$Total["value"] = $total;
+	$Total["label"] = "total";
 
-	array_push($response, $obj);
-	array_push($response, $ORobj);
+	array_push($response, $Cross);
+	array_push($response, $Total);
 	echo json_encode($response);
 
 ?>

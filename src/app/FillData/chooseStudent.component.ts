@@ -122,7 +122,7 @@ export class ChooseStudentComponent implements OnInit {
 					break;
 				}
 			}
-			this.notify.addInfo("Слушатель зачислен");
+			this.notify.addSuccess("Слушатель зачислен");
 		})
 	}
 	SaveChanges(person:any):void{

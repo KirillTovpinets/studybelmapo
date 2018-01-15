@@ -52,23 +52,23 @@
             <div class="card">
                 <div class="header"><h4>Внесите данные отчисления</h4></div>
                 <div class="content row">
-                    <form>
+                    <form (ngSubmit)="deductForm.valid && DeductConfirm()" #deductForm="ngForm" novalidate>
                         <div class="form-group col-lg-4 col-md-4">
                             <label>Дата отчисления</label>
                             <input [minDate]="global.minDate" [maxDate]="global.maxDate" #RetrainingDp="bsDatepicker" [bsConfig]="global.bsConfig" bsDatepicker [(ngModel)]="certificate.DateGetDate" required name="sertificate_start" class="date-picker form-control">
                         </div>
                         <div class="form-group col-lg-4 col-md-4">
                             <label>Оценка</label>
-                            <select *ngIf="marks.length !== 0" class="form-control" name="mark" [(ngModel)]="certificate.mark">
+                            <select *ngIf="marks.length !== 0" class="form-control" name="mark" [(ngModel)]="certificate.mark" required>
                                 <option *ngFor="let mark of marks" value="{{ mark.id }}">{{ mark.value }}</option>
                             </select>
                         </div>
                         <div class="form-group col-lg-4 col-md-4">
                             <label>Номер документа</label>
-                            <input type="text" class="form-control" name="docNumber" [(ngModel)]="certificate.docNumber">
+                            <input type="text" class="form-control" required name="docNumber" [(ngModel)]="certificate.docNumber">
                         </div>
                         <div class="form-group col-lg-12 col-md-12 text-center">
-                            <button class="btn btn-success" (click)="DeductConfirm()">Отчислить</button>
+                            <button class="btn btn-success" type="submit">Отчислить</button>
                             <button class="btn btn-danger" (click)="Cansel()">Отмена</button>
                         </div>
                     </form>

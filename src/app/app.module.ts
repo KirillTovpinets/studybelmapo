@@ -56,6 +56,7 @@ import { defineLocale } from 'ngx-bootstrap/bs-moment';
 import { ru } from 'ngx-bootstrap/locale';
 import { ForMenuDirective } from './directives/for-menu.directive';
 import { MobilemenuComponent } from './mobilemenu/mobilemenu.component';
+import { StudListService } from './services/stud-list.service';
 defineLocale('ru', ru); 
 
 @NgModule({
@@ -117,7 +118,8 @@ defineLocale('ru', ru);
                GlobalParamsService,
                CheckAuthService,
                ShowPersonInfoService,
-               ShareService],
+               ShareService,
+               StudListService],
   entryComponents: [PersonalInfoComponent],
   bootstrap: [AppComponent]
 })

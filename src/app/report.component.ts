@@ -148,6 +148,9 @@ export class ReportComponent implements OnInit{
               }else{
                 var str = value.label + '';
                 var index = str.split("-")[1];
+                if (index == undefined) {
+                  continue;
+                }
                 var field = str.split("-")[0];
                 var indexNumber = Number(index);
                 var flag = false;
@@ -183,8 +186,9 @@ export class ReportComponent implements OnInit{
           this.total = this.parameters[0].value;
         }
       }catch(e){
-        console.log(e);
-        console.log(data._body);
+        this.parameters = [];
+        this.total = 0;
+        // console.log(data._body);
       }
       this.getResult = true;
     });

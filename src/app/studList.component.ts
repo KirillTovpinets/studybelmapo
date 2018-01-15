@@ -7,6 +7,7 @@ import { Course } from './model/course.class';
 import { Global } from './global.class';
 import { PersonalDataService } from './services/personalData.service';
 import {NotificationsService} from 'angular4-notify';
+import { StudListService } from './services/stud-list.service';
 declare var $: any;
 @Component({
 	templateUrl: "templates/studList.component.html",
@@ -46,12 +47,15 @@ export class StudListComponent implements OnInit{
 	types: any[] = [];
 	currentUser: any;
 	cathedraClass: string = "panel-default";
+	deducts:number;
 	constructor(private info: InfoService,
 				private getList: CurrentCourcesListService,
 				private dataSrv: PersonalDataService,
-				private notify: NotificationsService){}
+				private notify: NotificationsService,
+				private students: StudListService){}
 
 	ngOnInit(): void{
+		this.students.currentTotal.subscribe(total => this.deducts = total);
 		this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
 		this.isLoading = true;
 		if (this.currentUser.is_cathedra == 0) {
@@ -98,5 +102,18 @@ export class StudListComponent implements OnInit{
 		this.newCourse.finishStr = this.newCourse.finish.toISOString().slice(0,10);
 		this.info.saveCourse(this.newCourse).then(res => this.notify.addInfo("Курс добавлен"))
 		this.newCourse = new Course();
+	}
+
+	onChanges(course:any){
+		for (var i = 0; i < this.faculties.length; i++) {
+			var cathedras = this.faculties[i].CathedraList;
+			for (var j = 0; j < cathedras.length; j++) {
+				if (cathedras[j].CourseList.indexOf(course) > -1) {
+					this.faculties[i].CathedraList[j].Total -=1;
+					this.faculties[i].Total -= 1;
+					return;
+				}
+			}
+		}
 	}
 }
