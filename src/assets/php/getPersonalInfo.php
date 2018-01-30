@@ -72,9 +72,20 @@
 								personal_private_info.tel_number_mobile,
 								personal_private_info.tel_number_home,  
 								personal_private_info.tel_number_work,
+								personal_private_info.pasport_date,
+								personal_private_info.pasport_organ,
+								personal_private_info.pasport_seria,
+								personal_private_info.pasport_number,
+								personal_private_info.city_type,
+								cities.name AS city,
+								personal_private_info.street,
+								personal_private_info.region,
+								personal_private_info.building,
+								personal_private_info.flat,
 								regions.name AS region
 						FROM personal_private_info LEFT JOIN countries  
-								ON personal_private_info.cityzenship=countries.id LEFT JOIN regions  
+								ON personal_private_info.cityzenship=countries.id LEFT JOIN cities  
+								ON personal_private_info.city=cities.id LEFT JOIN regions  
 								ON personal_private_info.region = regions.id WHERE personal_private_info.PersonId = $id";
 	
 	$result = $mysqli->query($infoQuery) or die ("Ошибка запроса в запросе\n$infoQuery\n " . mysqli_error($mysqli));

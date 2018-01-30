@@ -1,0 +1,51 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}} </h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="service.hide(level)">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <tabset>
+    <tab heading="Общая" id="tab1">
+      <div class="content" *ngIf="person.general">
+        <general-info [info]="person.general" [change]=change></general-info>
+      </div>
+    </tab>
+    <tab heading="Проф. информация">
+      <div class="content" *ngIf="person.profesional">
+        <prof-info [info]="person.profesional" [change]=change></prof-info>
+      </div>
+    </tab>
+  <tab heading="Личная">
+    <div class="content" *ngIf="person.personal">
+        <private-info [info]="person.personal" [change]=change></private-info>
+      </div>
+  </tab>
+  <tab heading="Приезды">
+    <div class="content" *ngIf="person.general.id">
+      <arrivals [personId]="person.general.id"></arrivals>
+    </div>
+  </tab>
+  <tab heading="Последипломная подготовка">
+    <div class="content" *ngIf="person.general.id">
+      <post-diploma [personId]="person.general.id"></post-diploma>
+    </div>
+  </tab>
+  <tab heading="Прочие">
+    <div class="content">
+      <other-info></other-info>
+    </div>
+  </tab>
+  <tab heading="История">
+    <div class="content">
+      <history-info></history-info>
+    </div>
+  </tab>
+</tabset>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-warning" *ngIf="canChange && !change" (click)="Change()">Изменить</button>
+  <button class="btn btn-success" *ngIf="change" (click)="SaveChanges(person)">Сохранить</button>
+  <button class="btn btn-danger" *ngIf="change" (click)="Cansel()">Отмена</button>
+  <button type="button" class="btn btn-default" *ngIf="!change" (click)="service.hide(level)">Закрыть</button>
+</div>

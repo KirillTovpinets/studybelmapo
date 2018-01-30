@@ -1,12 +1,12 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { GetListService } from '../searchComponents/services/getPersonList.service';
+import { GetListService } from '../registry/services/getPersonList.service';
 import { ActivatedRoute } from '@angular/router';
 import { BsModalService } from "ngx-bootstrap/modal";
 import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
-import { SearchSirnameService } from '../searchComponents/services/searchSirname.service';
+import { SearchSirnameService } from '../registry/services/searchSirname.service';
 import { CurrentCourcesListService } from './services/getCurrentCourcesList.service';
-import { PersonalInfoService } from '../personalInfo.service';
-import { PersonalDataService } from "../services/personalData.service";
+import { PersonalInfoService } from '../personalInfo/personalInfo.service';
+import { PersonalDataService } from "../personalInfo/personalData.service";
 import { Person } from '../model/person.class';
 import { SaveArrivalService } from './services/saveArrival.service';
 import {NotificationsService} from 'angular4-notify';
@@ -89,8 +89,13 @@ export class ChooseStudentComponent implements OnInit {
 	items: any[] = [];
 	ngOnInit() {
 		this.getList.getList(30, this.offset, "all").then(response =>{
-			this.students = response.json().data;
-			this.offset +=30;
+			try{
+				this.students = response.json().data;
+				this.offset +=30;
+			}catch(e){
+				console.log(e);
+				console.log(response._body);
+			}
 		})
 		this.courseId = this.router.snapshot.params["id"];
 
@@ -118,13 +123,25 @@ export class ChooseStudentComponent implements OnInit {
 			this.modalService.hide(2);
 			this.modalService.hide(1);
 			for (var i = 0; i < this.students.length; i++) {
+				console.log(this.students[i].id == this.selectedPerson.id);
 				if(this.students[i].id == this.selectedPerson.id){
+					console.log(this.students[i].id);
 					this.enteredStudents.push(this.students[i]);
 					this.students.splice(i, 1);
-					break;
+					this.notify.addSuccess("Слушатель зачислен");
+					return;
 				}
 			}
-			this.notify.addSuccess("Слушатель зачислен");
+			for (var i = 0; i < this.searchResult.length; i++) {
+				console.log(this.searchResult[i].id == this.selectedPerson.id);
+				if(this.searchResult[i].id == this.selectedPerson.id){
+					console.log(this.searchResult[i].id);
+					this.enteredStudents.push(this.searchResult[i]);
+					this.searchResult.splice(i, 1);
+					this.notify.addSuccess("Слушатель зачислен");
+					return;
+				}
+			}
 		})
 	}
 	SaveChanges(person:any):void{
@@ -160,14 +177,26 @@ export class ChooseStudentComponent implements OnInit {
 			this.message = "";
 			return;
 		}
-		this.searchValue = event.target.value;
-		this.search.searchPerson(this.searchValue, {personal_card: "1"}).then(data => {
-			if (data.json().length !== 0) {
-				this.message = "";
-				this.searchResult = data.json();
-			}else{
-				this.searchResult = [];
-				this.message = "По вашему запросу ничего не найдено";
+		this.searchValue = event.target.value.charAt(0).toUpperCase() + event.target.value.slice(1);
+		var value = this.searchValue.split(' ');
+		var searchValue = "";
+		for(let str of value){
+			var capital = str.charAt(0).toUpperCase() + str.slice(1);
+			searchValue += capital + " ";
+		}
+		searchValue = searchValue.slice(0, searchValue.length - 1);
+		this.search.searchPerson(searchValue, {personal_card: "1"}).then(data => {
+			try{
+				if (data.json().length !== 0) {
+					this.message = "";
+					this.searchResult = data.json();
+				}else{
+					this.searchResult = [];
+					this.message = "По вашему запросу ничего не найдено";
+				}
+			}catch(e){
+				console.log(e);
+				console.log(data._body);
 			}
 		});
 	}

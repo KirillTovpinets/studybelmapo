@@ -1,0 +1,161 @@
+<div class="row">
+  <div class="col-lg-6 col-md-6">
+    <div class="card">
+      <div class="content">
+        <fieldset>
+          <legend><h5>Основная информация</h5></legend>
+          <div class="col-lg-4 col-md-4">
+            <div class="form-group">
+              <label>Дата рождения<small *ngIf="birthday.invalid">*</small></label>
+              <input [attr.disabled]="change ? null : ''" required type="text" [(ngModel)]="info.birthdayDate" [minDate]="globalPrams.minDate" [maxDate]="globalPrams.maxDate" #dp="bsDatepicker" [bsConfig]="globalPrams.bsConfig" bsDatepicker [(bsValue)]="bsValueBirthday" name="birthday" class="date-picker form-control" #birthday="ngModel">
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4">
+            <label>Пол</label>
+            <div class="col-lg-12 col-md-12 no-padding">
+              <div class="col-lg-6 col-md-6 text-center">
+                <input [attr.disabled]="change ? null : ''" type="radio" [attr.checked]="info.isMale == 1 ? '' : null" name="isMale" id="isMale" class="regular-radio-gender">
+                <label for="isMale" class="fa fa-male" style="font-size:2em;">
+                </label>
+              </div>
+              <div class="col-lg-6 col-md-6 text-center">
+                <input [attr.disabled]="change ? null : ''" type="radio" [attr.checked]="info.isMale == 0 ? '' : null" name="isMale" id="isFemale" class="regular-radio-gender">
+                <label for="isFemale" class="fa fa-female" style="font-size:2em;">
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4">
+            <div class="form-group">
+              <label>Гражданство<small *ngIf="cityzenship.invalid">*</small></label>
+              <input auto-complete [list-formatter]="dataService.DropdownList" [source]="personal_cityzenships" [attr.disabled]="change ? null : ''" required [(ngModel)]="info.cityzenship" #cityzenship="ngModel" name="cityzenship" class="form-control">
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4">
+            <div class="form-group">
+              <label>Домашний телефон</label>
+              <input [attr.disabled]="change ? null : ''" type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="info.tel_number_home" name="tel_number_home" class="form-control">
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4">
+            <div class="form-group">
+              <label>Рабочий телефон</label>
+              <input [attr.disabled]="change ? null : ''" type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="info.tel_number_work" name="tel_number_work" class="form-control">
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4">
+            <div class="form-group">
+              <label>Мобильный телефон</label>
+              <input [attr.disabled]="change ? null : ''" type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="info.tel_number_mobile" name="tel_number_mobile" class="form-control">
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div></div>
+  <div class="col-lg-6 col-md-6">
+    <div class="card">
+      <div class="content">
+        <fieldset>
+         <legend><h5>Паспортные данные</h5></legend>
+         <div class="col-lg-3 col-md-3">
+           <div class="form-group">
+             <label>Серия<small *ngIf="seria.invalid">*</small></label>
+             <input [attr.disabled]="change ? null : ''" required type="text" #seria="ngModel" [(ngModel)]="info.pasport_seria" name="pasport_seria" class="form-control">
+           </div>
+         </div>
+         <div class="col-lg-5 col-md-5">
+           <label>№<small *ngIf="number.invalid">*</small></label>
+           <input [attr.disabled]="change ? null : ''" required type="text" #number="ngModel" [(ngModel)]="info.pasport_number" name="pasport_number" class="form-control">
+         </div>
+         <div class="col-lg-4 col-md-4">
+           <div class="form-group">
+             <label>Дата выдачи<small *ngIf="pasportStart.invalid">*</small></label>
+             <input [attr.disabled]="change ? null : ''" required type="text" #pasportStart="ngModel" [(ngModel)]="info.pasportDate" [minDate]="globalPrams.minDate" [maxDate]="globalPrams.maxDate" #dp="bsDatepicker" [bsConfig]="globalPrams.bsConfig" bsDatepicker [(bsValue)]="bsValuePasport" name="pasportDate" class="date-picker form-control" #pasportDate="ngModel">
+           </div>
+         </div>
+         <div class="col-lg-6 col-md-6">
+           <div class="form-group">
+             <label>Орган, выдавший паспорт<small *ngIf="organ.invalid">*</small></label>
+             <input [attr.disabled]="change ? null : ''" type="text" required #organ="ngModel" [(ngModel)]="info.pasport_organ" name="pasport_organ" class="form-control">
+           </div>
+         </div>
+         <div class="col-lg-6 col-md-6">
+           <div class="form-group">
+             <label>Страховой номер<small *ngIf="insurance.invalid">*</small></label>
+             <input [attr.disabled]="change ? null : ''" type="text" required #insurance="ngModel" [(ngModel)]="info.insurance_number" name="insurance_number" class="form-control">
+           </div>
+         </div>
+        </fieldset>
+      </div>
+    </div></div>
+  <div class="col-lg-12 col-md-12">
+    <div class="card">
+      <div class="content">
+        <fieldset>
+          <legend><h5>Домашний адрес</h5></legend>
+          <div class="col-lg-3 col-md-3">
+            <div class="form-group">
+              <label>Тип населённого пункта</label>
+              <div>
+                
+                <div>
+                  <input [attr.disabled]="change ? null : ''" class="regular-radio" value="1" type="radio" name="cityType" id="city" [attr.checked]="info.city_type == 1 ? '' : null">
+                  <label for="city"></label>
+                  <label>Город</label>
+                </div>
+                <div>
+                  <input [attr.disabled]="change ? null : ''" class="regular-radio" value="2" type="radio" name="cityType" id="town" [attr.checked]="info.city_type == 2 ? '' : null">
+                  <label for="town"></label>
+                  <label>Городской посёлок</label>
+                </div>
+                <div>
+                  <input [attr.disabled]="change ? null : ''" class="regular-radio" value="3" type="radio" name="cityType" id="village" [attr.checked]="info.city_type == 3 ? '' : null">
+                  <label for="village"></label>
+                  <label>Деревня</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3">
+            <div class="form-group">
+              <label>Страна</label>
+              <input auto-complete [list-formatter]="dataService.DropdownList" [source]="personal_cityzenships" [attr.disabled]="change ? null : ''" [(ngModel)]="info.country" name="country" class="form-control">
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3" *ngIf="info.country == 'Беларусь' || (info.country !== undefined && info.country.value == 'Беларусь')">
+            <div class="form-group">
+              <label>Область</label>
+              <input auto-complete [list-formatter]="dataService.DropdownList" [source]="personal_regions" [attr.disabled]="change ? null : ''" type="text" [(ngModel)]="info.region" name="region" class="form-control">
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3">
+            <div class="form-group">
+              <label>Населённый пункт</label>
+              <input auto-complete [list-formatter]="dataService.DropdownList" [source]="personal_cities" [attr.disabled]="change ? null : ''" type="text" [(ngModel)]="info.city" name="cityName" class="form-control">
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3">
+            <div class="form-group">
+              <label>Улица</label>
+              <input [attr.disabled]="change ? null : ''" type="text" [(ngModel)]="info.street" name="street" class="form-control">
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 no-padding">
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Дом/корпус</label>
+                <input [attr.disabled]="change ? null : ''" type="tel" [(ngModel)]="info.building" name="building" class="form-control">
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Квартира</label>
+                <input [attr.disabled]="change ? null : ''" type="tel" [(ngModel)]="info.flat" name="flat" class="form-control">
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</div>

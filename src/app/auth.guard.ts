@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { CookieService } from 'ngx-cookie-service';
-import { CheckAuthService } from './services/checkAuth.service';
+import { CheckAuthService } from './checkAuth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

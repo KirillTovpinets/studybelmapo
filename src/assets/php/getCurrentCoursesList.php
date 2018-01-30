@@ -11,8 +11,10 @@
 	if (isset($_GET["id"])) {
 		$courseId = $_GET["id"];
 		$condition = "id = $courseId";
-	}else{
+	}else if($LogedUser->is_cathedra == 1){
 		$condition = "cathedraId = $depId";
+	}else if($LogedUser->is_cathedra == 0){
+		$condition = "1";
 	}
 
 	$query = "SELECT * FROM cources where $condition";
@@ -20,7 +22,7 @@
 	$response = array();
 	while ($row = $result->fetch_assoc()) {
 		$courseId = $row["id"];
-		$studListObj = $mysqli->query("SELECT arrivals.id AS arrivalId,arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseId") or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
+		$studListObj = $mysqli->query("SELECT arrivals.id AS arrivalId,arrivals.Date, arrivals.Dic_count, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, concat(personal_card.surname, ' ', personal_card.name, ' ', personal_card.patername) AS fullName, arrivals.Status, personal_private_info.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId INNER JOIN personal_private_info ON personal_card.id = personal_private_info.PersonId WHERE arrivals.CourseId = $courseId ORDER BY fullName") or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
 		$studList = array();
 		while ($student = $studListObj->fetch_assoc()) {
 			array_push($studList, $student);

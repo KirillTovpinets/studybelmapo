@@ -3,13 +3,16 @@
 	require_once("config.php");
 
 	function getSqlObj($tableName, $mysqli){
-		$result = $mysqli->query("SELECT id, name AS value FROM $tableName ORDER BY name ASC");
+		$result = $mysqli->query("SELECT *, name AS value FROM $tableName ORDER BY value ASC");
 		return $result;
 	}
 	function getArray($SqlObj){
 		$newArray = array();
 		while ($row = $SqlObj->fetch_assoc()) {
-			if ($row["id"] == 0) {
+			if (isset($row["Id"]) && $row["Id"] == 0) {
+				continue;
+			}
+			if (isset($row["id"]) && $row["id"] == 0) {
 				continue;
 			}
 			array_push($newArray, $row);
@@ -62,6 +65,25 @@
 	$residArr = getArray($residObj);
 	$appArr = getArray($appObj);
 	$orgArr = getArray($orgObj);
+	foreach ($orgArr as $key => $value) {
+		if (isset($value["location_cntr"]) && !empty($value["location_cntr"])) {
+			$countrId = $value["location_cntr"];
+			$result = $mysqli->query("SELECT name FROM countries WHERE id = $countrId") or die ("Error in 'SELECT name FROM countries WHERE id = $countrId': " . mysqli_error($mysqli));
+			$arr = $result->fetch_assoc();
+			$country = $arr["name"];
+
+			if (isset($value["location_city"]) && !empty($value["location_city"])) {
+				$cityId = $value["location_city"];
+				$result = $mysqli->query("SELECT name FROM cities WHERE id = $cityId") or die ("Error in 'SELECT name FROM city WHERE id = $cityId': " . mysqli_error($mysqli));
+				$arr = $result->fetch_assoc();
+				$city = $arr["name"];
+				$value["value"] = $value["value"] . ' (' . $country . ', ' . $city .')';
+			}else{
+				$value["value"] = $value["value"] . ' (' . $country . ')';
+			}
+		}
+		$orgArr[$key] = $value;
+	}
 	$regArr = getArray($regObj);
 	$belmapo_residenceArr = getArray($belmapo_residenceObj);
 	$depArr = getArray($depObj);

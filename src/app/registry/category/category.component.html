@@ -1,0 +1,42 @@
+<div class="header">
+  <h4 class="title">Список слушателей</h4>
+  <p class="category">По категории</p>
+</div>
+<div class="content">
+  <div class="DoctorList">
+      <div class="content table-responsive table-full-width" (scroll)="ajaxLoad($event)">
+        <table class="table-striped table table-hover" *ngIf="searchDoctors.length === 0">
+          <thead>
+              <th>Фамилия</th>
+              <th>Имя</th>
+              <th>Отчество</th>
+              <th>Дата рождения</th>
+          </thead>
+          <tbody>
+              <tr  ng-repeat="doctor in doctors" (click)="showInfo.ShowPersonalInfo(doctor)">
+                  <td>{{ doctor.surname }}</td>
+                  <td>{{ doctor.name }}</td>
+                  <td>{{ doctor.patername }}</td>
+                  <td>{{ doctor.birthday | date: "dd.MM.yyyy"}}</td>
+              </tr>
+          </tbody>
+      </table>
+      <table class="table-striped table table-hover" *ngIf="searchDoctors.length !== 0">
+            <thead>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Дата рождения</th>
+            </thead>
+            <tbody>
+                <tr  *ngFor="let search of searchDoctors" (click)="showInfo.ShowPersonalInfo(search)">
+                    <td>{{ search.surname }}</td>
+                    <td>{{ search.name }}</td>
+                    <td>{{ search.patername }}</td>
+                    <td>{{ search.birthday | date: "dd.MM.yyyy"}}</td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+  </div>
+</div>

@@ -75,28 +75,14 @@
 	}
 	
 	$isDoctor = 0;
-	$mysqli->query("INSERT INTO personal_card (surname, name, patername, birthday, ee, citizenship, diploma_start, appointment, isDoctor, tel_number, organization, region, isMale, isCowoker, experience_general, experiance_special, insurance_number, department, faculty, name_in_to_form, diploma_number) VALUES (
+	$mysqli->query("INSERT INTO personal_card (surname, name, patername, appointment, organization,  department, name_in_to_form) VALUES (
 		'$surname', 
 		'$name', 
 		'$patername', 
-		'$birthday', 
-		'$educational_establishment',
-		'$cityzenship',
-		'$diploma_start',
+		'$organization', 
 		'$appointment',
-		'$isDoctor', 
-		'$tel_number_home', 
-		'$organization',
-		'$region',
-		'$isMale', 
-		'$isCowoker', 
-		'$experiance_general', 
-		'$experiance_special', 
-		'$insurance_number', 
 		'$department',
-		'$faculty',
-		'$nameInDativeForm', 
-		'$diploma_number')") or die ("Ошибка personal_card: " . mysqli_error($mysqli));
+		'$nameInDativeForm')") or die ("Ошибка personal_card: " . mysqli_error($mysqli));
 	
 	$newPerson = $mysqli->query("SELECT MAX(id) AS newId FROM personal_card");
 	$newPersonArr = $newPerson->fetch_assoc();
@@ -152,6 +138,26 @@
 		'$tel_number_work',
 		'$tel_number_mobile'
 	)") or die ("Ошибка personal_private_info: " . mysqli_error($mysqli));
+	echo "INSERT INTO `personal_private_info`(`PersonId`, `birthday`, `isMale`, `cityzenship`, `pasport_seria`, `pasport_number`, `pasport_date`, `pasport_organ`, `insurance_number`, `city_type`, `city`, `street`, `region`, `building`, `country`, `tel_number_home`, `tel_number_work`, `tel_number_mobile`) VALUES (
+		'$newPersonId',
+		'$birthday',
+		'$isMale', 
+		'$cityzenship',
+		'$pasport_seria',
+		'$pasport_number',
+		'$pasport_date',
+		'$pasport_organ',
+		'$insurance_number', 
+		'$cityType',
+		'$city',
+		'$street',
+		'$region',
+		'$building',
+		'$country',
+		'$tel_number_home',
+		'$tel_number_work',
+		'$tel_number_mobile'
+	)";
 	if (isset($data->sience->_isDoctor)) {
 		$isDoctor = $data->sience->_isDoctor;
 		$researchField = $data->sience->_researchField;

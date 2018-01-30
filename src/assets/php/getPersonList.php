@@ -19,10 +19,12 @@
 		while ($row = $SqlObject->fetch_assoc()) {
 			$Id = $row["id"];
 			$condition = "";
-			if ($logeduser->is_cathedra == 1) {
-				$condition = "AND cources.cathedraId = $logeduser->dep_id";
-			}
-			$PersonQuery = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId INNER JOIN cources ON arrivals.CourseId = cources.id WHERE personal_card.$field = $Id $condition LIMIT $limit OFFSET $offset";
+			// if ($logeduser->is_cathedra == 1) {
+			// 	$condition = "AND cources.cathedraId = $logeduser->dep_id";
+			// }
+			$withArrival = "INNER JOIN arrivals ON personal_card.id = arrivals.PersonId";
+			$withArrival = "";
+			$PersonQuery = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card $withArrival WHERE personal_card.$field = $Id $condition LIMIT $limit OFFSET $offset";
 			$PersonResult = $connection->query($PersonQuery) or die ("Ошибка выполнения запроса '$PersonQuery': " . mysqli_error($connection));
 			$resultArray = array();
 			if ($PersonResult->{"num_rows"} == 0) {
@@ -32,13 +34,28 @@
 				array_push($resultArray, $PersonRow);
 			}
 
-			$row["List"] = $resultArray;
+			$currentPersonQuery = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday, arrivals.Status FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE personal_card.$field = $Id $condition LIMIT $limit OFFSET $offset";
+			$currentPersonResult = $connection->query($currentPersonQuery) or die ("Ошибка выполнения запроса '$PersonQuery': " . mysqli_error($connection));
+			$currentresultArray = array();
+			if ($currentPersonResult->{"num_rows"} == 0) {
+				continue;
+			}
+			while ($PersonRow = $currentPersonResult->fetch_assoc()) {
+				array_push($currentresultArray, $PersonRow);
+			}
 
-			$CountQuery = "SELECT COUNT(*) AS total FROM arrivals INNER JOIN personal_card ON arrivals.PersonId = personal_card.id WHERE personal_card.$field = $Id";
+			$row["List"] = $resultArray;
+			$row["CurrentList"] = $currentresultArray;
+
+			$CountQuery = "SELECT COUNT(*) AS total FROM  personal_card WHERE personal_card.$field = $Id";
 			$CountResult = $connection->query($CountQuery) or die ("Ошибка выполнения запроса '$CountQuery': " . mysqli_error($connection));
 			$CountArray = $CountResult->fetch_assoc();
 
-			$row["Total"] = $CountArray["total"];
+			$CurrentCountQuery = "SELECT COUNT(*) AS total FROM  personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE personal_card.$field = $Id";
+			$CurrentCountResult = $connection->query($CurrentCountQuery) or die ("Ошибка выполнения запроса '$CountQuery': " . mysqli_error($connection));
+			$CurrentCountArray = $CurrentCountResult->fetch_assoc();
+
+			$row["CurrentTotal"] = $CurrentCountArray["total"];
 
 			array_push($Arr, $row);
 		}
@@ -84,7 +101,9 @@
 	}
 	switch ($data->info) {
 		case "sirname":{
-			$query = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId $condition LIMIT $limit OFFSET $offset";
+			$withArrival = "INNER JOIN arrivals ON personal_card.id = arrivals.PersonId";
+			$query = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card $condition LIMIT $limit OFFSET $offset";
+			$currentQuery = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday, arrivals.Status FROM personal_card $withArrival $condition AND arrivals.Status != 3 LIMIT $limit OFFSET $offset";
 			break;
 		}
 		case "all":{
@@ -94,15 +113,21 @@
 		case 'age':{
 			$max = $data->params->max;
 			$min = $data->params->min;
-			$condition = "WHERE (YEAR(CURDATE()) - YEAR(personal_card.birthday)) >= $min AND (YEAR(CURDATE()) - YEAR(personal_card.birthday)) <= $max";
-			$query = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId $condition LIMIT $limit OFFSET $offset";
+			$connection = "INNER JOIN personal_private_info ON personal_private_info.PersonId = personal_card.id";
+			$condition = "WHERE (YEAR(CURDATE()) - YEAR(personal_private_info.birthday)) >= $min AND (YEAR(CURDATE()) - YEAR(personal_private_info.birthday)) <= $max";
+			$withArrival = "INNER JOIN arrivals ON personal_card.id = arrivals.PersonId";
+			$withArrival = "";
+			$query = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card $connection $withArrival $condition LIMIT $limit OFFSET $offset";
+			$currentQuery = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday, arrivals.Status FROM personal_card $connection INNER JOIN arrivals ON personal_card.id = arrivals.PersonId $condition AND arrivals.Status != 3 LIMIT $limit OFFSET $offset";
 			break;
 		}
 		case 'gender':{
 			$isMale = $data->params->isMale;
-			$connection = "INNER JOIN personal_private_info ON personal_private_info.id = arrivals.PersonId";
+			$connection = "INNER JOIN personal_private_info ON personal_private_info.PersonId = personal_card.id";
 			$condition = "WHERE personal_private_info.isMale = $isMale";
-			$query = "SELECT arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId INNER JOIN personal_private_info ON personal_private_info.id = arrivals.PersonId $condition LIMIT $limit OFFSET $offset";
+			$withArrival = "INNER JOIN arrivals ON personal_card.id = arrivals.PersonId";
+			$query = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN personal_private_info ON personal_card.id = personal_private_info.PersonId $condition LIMIT $limit OFFSET $offset";
+			$currentQuery = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card $withArrival INNER JOIN personal_private_info ON personal_card.id = personal_private_info.PersonId $condition AND arrivals.Status != 3 LIMIT $limit OFFSET $offset";
 			break;
 		}
 		case "establishment":{
@@ -128,15 +153,29 @@
 
 	}
 	
-	$result = $mysqli->query($query) or die ("Ошибка запроса '$query': " . mysqli_error($mysqli));
-	$personsArr = array();
 	$responseData = array();
+	$result = $mysqli->query($query) or die ("Ошибка запроса '$query': " . mysqli_error($mysqli));
+	if (isset($currentQuery)) {
+		$CurrentResult = $mysqli->query($currentQuery) or die ("Ошибка запроса '$query': " . mysqli_error($mysqli));
+		$CurrentPersonsArr = array();
+		while ($row = $CurrentResult->fetch_assoc()) {
+			array_push($CurrentPersonsArr, $row);
+		}
+		$responseData["current"] = $CurrentPersonsArr;
+
+		$CurrentCountQuery = "SELECT COUNT(*) AS total FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId $connection $condition AND arrivals.Status != 3";
+		$CurrentCountResult = $mysqli->query($CurrentCountQuery) or die ("Ошибка выполнения запроса '$CountQuery': " . mysqli_error($mysqli));
+		$CurrentCountArray = $CurrentCountResult->fetch_assoc();
+		$responseData["CurrentTotal"] = $CurrentCountArray["total"];
+	}
+	$personsArr = array();
+	
 	while ($row = $result->fetch_assoc()) {
 		array_push($personsArr, $row);
 	}
 	$responseData["data"] = $personsArr;
 
-	$CountQuery = "SELECT COUNT(*) AS total FROM arrivals INNER JOIN personal_card ON arrivals.PersonId = personal_card.id $connection $condition";
+	$CountQuery = "SELECT COUNT(*) AS total FROM personal_card  $connection $condition";
 	$CountResult = $mysqli->query($CountQuery) or die ("Ошибка выполнения запроса '$CountQuery': " . mysqli_error($mysqli));
 	$CountArray = $CountResult->fetch_assoc();
 

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { PersonalInfoService } from '../personalInfo.service';
+import { PersonalInfoService } from './personalInfo.service';
 import { BsModalService } from "ngx-bootstrap/modal";
 import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
-import { PersonalInfoComponent } from '../personalInfo.component'; 
+import { PersonalInfoComponent } from './personalInfo.component'; 
 import { Person } from "../model/person.class";
 import {NotificationsService} from 'angular4-notify';
 @Injectable()
@@ -26,6 +26,7 @@ export class ShowPersonInfoService {
 		}else{
 			this.personalInfo.getInfo(id).then(data => {
 				try{
+					console.log(data._body);
 					localStorage.setItem("person-" + id, JSON.stringify(data.json()));
 					var person = Object.assign(new Person(), data.json());
 					this.showModal(person, level, canChange);

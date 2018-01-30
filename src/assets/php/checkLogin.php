@@ -17,10 +17,13 @@
 			$cathedraObj = $mysqli->query("SELECT * from cathedras where id=$depId");
 			$arr = $cathedraObj->fetch_assoc();
 			echo json_encode($arr);
-		}else{
+		}else if($is_cathedra === "0"){
 			$depObj = $mysqli->query("SELECT * from belmapo_departments where id=$depId");
 			$arr = $depObj->fetch_assoc();
 			echo json_encode($arr);
+		}else{
+			$currentUser = $logedUser->fetch_assoc();
+			echo json_encode($currentUser);
 		}
 	}
 	mysqli_close($mysqli);

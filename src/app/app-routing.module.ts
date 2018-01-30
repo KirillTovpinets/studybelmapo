@@ -2,33 +2,43 @@ import { NgModule } 				from '@angular/core';
 import { Routes, RouterModule } 	from '@angular/router';
 
 import { AppComponent } 			from './app.component';
-import { LoginComponent } 			from './loginform.component';
-import { MainComponent } 			from './main.component';
-import { MenuComponent } 			from './menu.component';
-import { FillDataComponent } 		from './fillData.component';
-import { NavbarComponent } 			from './navbar.component';
+import { LoginComponent } 			from './loginform/loginform.component';
+import { MainComponent } 			from './main/main.component';
+import { MenuComponent } 			from './menu/menu.component';
+import { FillDataComponent } 		from './fillData/fillData.component';
+import { NavbarComponent } 			from './navbar/navbar.component';
 import { AccordionComponent } 		from './accordion.component';
-import { StudListComponent } 		from './studList.component';
-import { SearchStudentComponent } 	from './searchStudent.component';
-import { AddStudentComponent } 		from './addStudent.component';
-import { ReportComponent } 			from './report.component';
-import { OrderComponent } 			from './order.component';
+import { StudListComponent } 		from './studList/studList.component';
+import { SearchStudentComponent } 	from './registry/searchStudent.component';
+import { AddStudentComponent } 		from './addStudent/addStudent.component';
+import { ReportComponent } 			from './report/report.component';
+import { OrderComponent } 			from './order/order.component';
 import { AuthGuard } 				from "./auth.guard";
 
-import { SirnameComponent } from './searchComponents/sirname.component';
-import { GenderComponent } from './searchComponents/gender.component';
-import { AgeComponent } from './searchComponents/age.component';
-import { EstablishmentComponent } from './searchComponents/establishment.component';
-import { OrganizationComponent } from './searchComponents/organization.component';
-import { AppointmentComponent } from './searchComponents/appointment.component';
-import { SpecialityComponent } from './searchComponents/speciality.component';
-import { QualificationComponent } from './searchComponents/qualification.component';
-import { CategoryComponent } from './searchComponents/category.component';
+import { SirnameComponent } from './registry/sirname/sirname.component';
+import { GenderComponent } from './registry/gender/gender.component';
+import { AgeComponent } from './registry/age/age.component';
+import { EstablishmentComponent } from './registry/establishment/establishment.component';
+import { OrganizationComponent } from './registry/organization/organization.component';
+import { AppointmentComponent } from './registry/appointment/appointment.component';
+import { SpecialityComponent } from './registry/speciality/speciality.component';
+import { QualificationComponent } from './registry/qualification/qualification.component';
+import { CategoryComponent } from './registry/category/category.component';
 import { ChooseCourseComponent } from './FillData/chooseCourse.component';
 import { ChooseStudentComponent } from './FillData/chooseStudent.component';
-
+import { HelpComponent } from './help/help.component';
+import { AdminComponent } from './admin/admin.component';
+import { TableContentComponent } from './table-content/table-content.component';
 const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
+	{ 
+		path: 'admin', 
+		component: AdminComponent,
+		canActivate: [AuthGuard],
+		children: [
+			{ path: 'table/:table', component: TableContentComponent}
+		]
+	},
 	{ path: '', redirectTo: '/login', pathMatch: 'full' },
 	{ 
 		path: 'main', 
@@ -37,6 +47,7 @@ const routes: Routes = [
 		children: [
 			{ path: '', redirectTo: 'studlist', pathMatch: 'full' },
 			{ path: 'studlist', component: StudListComponent},
+			{ path: 'help', component: HelpComponent},
 			{ 
 				path: 'list', 
 				component: SearchStudentComponent,
@@ -66,7 +77,7 @@ const routes: Routes = [
 				]
 			},
 			{ path: 'reports', component: ReportComponent},
-			{ path: 'orders', component: OrderComponent},
+			{ path: 'orders', component: OrderComponent}
 
 		]
 	},

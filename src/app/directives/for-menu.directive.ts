@@ -1,5 +1,5 @@
 import { Directive, ElementRef, OnInit } from '@angular/core';
-import { ShareService } from '../services/share.service';
+import { ShareService } from '../share/share.service';
 @Directive({
   selector: '[appformenu]'
 })

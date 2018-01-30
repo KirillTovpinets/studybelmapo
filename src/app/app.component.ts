@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoginComponent } from './loginform.component'
+import { LoginComponent } from './loginform/loginform.component'
 
 @Component({
   selector: 'study',

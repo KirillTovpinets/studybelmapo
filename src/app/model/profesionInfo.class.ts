@@ -172,6 +172,8 @@ export class ProfesionalInfo{
 	}
 	constructor(){
 		this._speciality_retraining = [];
+		this._mainCategory = 0;
+		this._addCategory = 0;
 		// this._faculty = {id: 152, value: "Автоматизированная система управления"};
 		// this._educational_establishment = {id: 115, value: "1-й Московский государственный медицинский институт"};
 		// this._speciality_doc = {id: 21, value: "Валеология"};

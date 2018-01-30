@@ -1,0 +1,130 @@
+<div class="header">
+  <h4 class="title">Список слушателей</h4>
+  <p class="category">По возрасту</p>
+</div>
+<div class="content">
+  <preloader *ngIf="isLoaded.indexOf(0) != -1"></preloader>
+  <div class="content table-responsive table-full-width" *ngIf="isLoaded.indexOf(0) === -1">
+    <accordion>
+      <accordion-group heading="От {{ age.parameters.min }} до {{ age.parameters.max }} ({{ age.total }})" *ngFor="let age of ageLists">
+        <div class="DoctorList">
+          <div class="alert alert-warning" *ngIf="age.message != undefined && age.doctors.length == 0"> 
+              <p>{{ age.message }}</p>
+            </div>
+          <div class="content"  *ngIf="age.message == undefined || age.doctors.length != 0">
+            <tabset>
+              <tab heading="Всего">
+                <div class="content" (scroll)="ajaxLoad($event, age)">
+                  <form action="">
+                    <label for="">Поиск</label>
+                    <input type="text" class="form-control" (keyup)="Search($event, age)">
+                  </form>
+                  <table class="table-striped table table-hover" >
+                    <thead>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                        <th>Дата рождения</th>
+                        <th>Статус</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="isLoaded[age.id] == 0">
+                          <td colspan="5">
+                            <preloader></preloader>
+                          </td>
+                        </tr>
+                        <tr  *ngFor="let doctor of age.doctors" (click)="showInfo.ShowPersonalInfo(doctor)">
+                            <td>{{ doctor.surname }}</td>
+                            <td>{{ doctor.name }}</td>
+                            <td>{{ doctor.patername }}</td>
+                            <td>{{ doctor.birthday | date: "dd.MM.yyyy"}}</td>
+                            <td [ngClass]="{'success': doctor.Status == 2, 'danger': doctor.Status == 3}">
+                                <span *ngIf="doctor.Status == 1">Прибыл</span>
+                                <span *ngIf="doctor.Status == 2">Зачислен</span>
+                                <span *ngIf="doctor.Status == 3">Отчислен</span>
+                            </td>
+                        </tr>
+                        <tr class="danger" *ngIf="age.doctors.length == 0">
+                          <td colspan="4"> {{ age.message }}</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                  <table class="table-striped table table-hover" *ngIf="age.searchResult.length !== 0">
+                    <thead>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                        <th>Дата рождения</th>
+                    </thead>
+                    <tbody>
+                        <tr  *ngFor="let search of age.searchResult" (click)="showInfo.ShowPersonalInfo(search)">
+                            <td>{{ search.surname }}</td>
+                            <td>{{ search.name }}</td>
+                            <td>{{ search.patername }}</td>
+                            <td>{{ search.birthday | date: "dd.MM.yyyy"}}</td>
+                        </tr>
+                        <tr class="danger" *ngIf="age.searchResult.length != 0">
+                          <td colspan="4"> {{ age.message }}</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </tab>
+              <tab heading="Обучается">
+                <div class="content">
+                  <form action="">
+                    <label for="">Поиск</label>
+                    <input type="text" class="form-control" (keyup)="Search($event, age)">
+                  </form>
+                  <table class="table-striped table table-hover" (scroll)="ajaxLoad($event, age)" *ngIf="age.searchResult.length === 0">
+                    <thead>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                        <th>Дата рождения</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="isLoaded[age.id] == 0">
+                          <td colspan="5">
+                            <preloader></preloader>
+                          </td>
+                        </tr>
+                        <tr  *ngFor="let doctor of age.currentDoctors" (click)="showInfo.ShowPersonalInfo(doctor)">
+                            <td>{{ doctor.surname }}</td>
+                            <td>{{ doctor.name }}</td>
+                            <td>{{ doctor.patername }}</td>
+                            <td>{{ doctor.birthday | date: "dd.MM.yyyy"}}</td>
+                        </tr>
+                        <tr class="danger" *ngIf="age.message != undefined && age.message.length != 0 && age.currentDoctors.length == 0">
+                          <td colspan="4"> {{ age.message }}</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                  <table class="table-striped table table-hover" *ngIf="age.searchResult.length !== 0">
+                    <thead>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                        <th>Дата рождения</th>
+                    </thead>
+                    <tbody>
+                        <tr  *ngFor="let search of age.searchResult" (click)="showInfo.ShowPersonalInfo(search)">
+                            <td>{{ search.surname }}</td>
+                            <td>{{ search.name }}</td>
+                            <td>{{ search.patername }}</td>
+                            <td>{{ search.birthday | date: "dd.MM.yyyy"}}</td>
+                        </tr>
+                        <tr class="danger" *ngIf="age.searchResult.length == 0">
+                          <td colspan="4"> {{ age.message }}</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </tab>
+            </tabset>
+          </div>
+        </div>
+      </accordion-group>
+    </accordion>
+  </div>
+</div>

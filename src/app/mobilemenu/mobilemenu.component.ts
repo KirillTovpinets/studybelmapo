@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { GlobalParamsService } from '../Globalparams.service';
-import { ShareService } from '../services/share.service';
+import { ShareService } from '../share/share.service';
 @Component({
 	selector: 'app-mobilemenu',
   	templateUrl: './mobilemenu.component.html',

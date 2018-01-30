@@ -6,59 +6,63 @@ import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
+
 import { DragDropDirectiveModule} from "angular4-drag-drop";
 
-import { AccordionModule, ModalModule, TabsModule, BsDatepickerModule, TooltipModule } from 'ngx-bootstrap';
+import { AccordionModule, ModalModule, TabsModule, BsDatepickerModule, TooltipModule, BsDropdownModule } from 'ngx-bootstrap';
 // Components
 import { AppComponent } from './app.component';
-import { LoginComponent } from './loginform.component';
-import { MainComponent } from './main.component';
-import { MenuComponent } from './menu.component';
-import { NavbarComponent } from './navbar.component';
-import { StudListComponent } from './studList.component';
-import { FillDataComponent } from './fillData.component';
-import { TableListCopmonent } from './tableList.component';
-import { PersonalInfoComponent } from './personalInfo.component';
-import { GeneralInfoComponent } from './personalInfo/generalInfo.component';
-import { ProfInfoComponent } from './personalInfo/profInfo.component';
-import { PrivateInfoComponent } from './personalInfo/privateInfo.component';
-import { HistoryInfoComponent } from './personalInfo/historyInfo.component';
-import { OtherInfoComponent } from './personalInfo/otherInfo.component';
-import { PostDiplomaInfoComponent } from './personalInfo/postDiploma.component';
-import { ArrivalsInfoComponent } from './personalInfo/arrivals.component';
-import { SearchStudentComponent } from './searchStudent.component';
-import { AddStudentComponent } from './addStudent.component';
-import { ReportComponent } from './report.component';
-import { OrderComponent } from './order.component';
-import { SirnameComponent } from './searchComponents/sirname.component';
-import { GenderComponent } from './searchComponents/gender.component';
-import { AgeComponent } from './searchComponents/age.component';
-import { EstablishmentComponent } from './searchComponents/establishment.component';
-import { OrganizationComponent } from './searchComponents/organization.component';
-import { AppointmentComponent } from './searchComponents/appointment.component';
-import { SpecialityComponent } from './searchComponents/speciality.component';
-import { QualificationComponent } from './searchComponents/qualification.component';
-import { CategoryComponent } from './searchComponents/category.component';
+import { LoginComponent } from './loginform/loginform.component';
+import { MainComponent } from './main/main.component';
+import { MenuComponent } from './menu/menu.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { StudListComponent } from './studList/studList.component';
+import { FillDataComponent } from './fillData/fillData.component';
+import { TableListCopmonent } from './tableList/tableList.component';
+import { PersonalInfoComponent } from './personalInfo/personalInfo.component';
+import { GeneralInfoComponent } from './personalInfo/generalInfo/generalInfo.component';
+import { ProfInfoComponent } from './personalInfo/prof/profInfo.component';
+import { PrivateInfoComponent } from './personalInfo/private/privateInfo.component';
+import { HistoryInfoComponent } from './personalInfo/historyInfo/historyInfo.component';
+import { OtherInfoComponent } from './personalInfo/otherInfo/otherInfo.component';
+import { PostDiplomaInfoComponent } from './personalInfo/postDiploma/postDiploma.component';
+import { ArrivalsInfoComponent } from './personalInfo/arrivals/arrivals.component';
+import { SearchStudentComponent } from './registry/searchStudent.component';
+import { AddStudentComponent } from './addStudent/addStudent.component';
+import { ReportComponent } from './report/report.component';
+import { OrderComponent } from './order/order.component';
+import { SirnameComponent } from './registry/sirname/sirname.component';
+import { GenderComponent } from './registry/gender/gender.component';
+import { AgeComponent } from './registry/age/age.component';
+import { EstablishmentComponent } from './registry/establishment/establishment.component';
+import { OrganizationComponent } from './registry/organization/organization.component';
+import { AppointmentComponent } from './registry/appointment/appointment.component';
+import { SpecialityComponent } from './registry/speciality/speciality.component';
+import { QualificationComponent } from './registry/qualification/qualification.component';
+import { CategoryComponent } from './registry/category/category.component';
 import { ChooseCourseComponent } from './FillData/chooseCourse.component';
 import { ChooseStudentComponent } from './FillData/chooseStudent.component';
-import { PreloaderComponent } from './preloader.component';
+import { PreloaderComponent } from './preloader/preloader.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NotificationsModule, NotificationsService } from 'angular4-notify';
 import { AuthGuard } from "./auth.guard";
-import { LoginService } from './login.service';
+import { LoginService } from './loginform/login.service';
 import { CurrentCourcesListService } from './FillData/services/getCurrentCourcesList.service';
 import { ShowPersonInfoService } from './personalInfo/showPersonalInfo.service';
-import { ShareService } from './services/share.service';
+import { ShareService } from './share/share.service';
 // Services
 import { CookieService } from 'ngx-cookie-service';
 import { GlobalParamsService } from './Globalparams.service';
-import { CheckAuthService } from './services/checkAuth.service';
+import { CheckAuthService } from './checkAuth.service';
 
 import { defineLocale } from 'ngx-bootstrap/bs-moment';
 import { ru } from 'ngx-bootstrap/locale';
 import { ForMenuDirective } from './directives/for-menu.directive';
 import { MobilemenuComponent } from './mobilemenu/mobilemenu.component';
-import { StudListService } from './services/stud-list.service';
+import { StudListService } from './studList/stud-list.service';
+import { AdminComponent } from './admin/admin.component';
+import { HelpComponent } from './help/help.component';
+import { TableContentComponent } from './table-content/table-content.component';
 defineLocale('ru', ru); 
 
 @NgModule({
@@ -96,7 +100,10 @@ defineLocale('ru', ru);
     ChooseCourseComponent,
     ChooseStudentComponent,
     ForMenuDirective,
-    MobilemenuComponent
+    MobilemenuComponent,
+    AdminComponent,
+    HelpComponent,
+    TableContentComponent
   ],
   imports: [
     BrowserModule,
@@ -111,7 +118,8 @@ defineLocale('ru', ru);
     TooltipModule.forRoot(),
     BrowserAnimationsModule,
     NotificationsModule,
-    Ng2AutoCompleteModule
+    Ng2AutoCompleteModule,
+    BsDropdownModule.forRoot()
   ],
   providers: [ CookieService, 
                NotificationsService, 
