@@ -1,5 +1,48 @@
 <div class="header">
-  <h4 class="title">Содержание таблицы</h4>
+  <h4 class="title">Содержание таблицы "{{ thisTable }}"</h4>
 </div>
 <div class="content">
+	<preloader *ngIf="isLoading"></preloader>
+	<nav aria-label="Pagination">
+		<ul class="pagination justify-content-center d-flex">
+			<ng-container *ngFor="let paginator of pagination; index as i">
+				<li class="page-item" *ngIf="i < 10">
+					<a href="javascript:;" (click)="getData(paginator.limit,paginator.offset)" class="page-link">{{ i + 1}}</a>
+				</li>
+			</ng-container>
+			<li class="page-item">
+				<a href="javascript:;" (click)="getData(paginator.limit,paginator.offset)" class="page-link">...</a>
+			</li>
+			<li class="page-item" *ngIf="pagination[this.numberOfPaginators-1]">
+				<a href="javascript:;" (click)="getData(pagination[numberOfPaginators].limit,pagination[numberOfPaginators].offset)" class="page-link">{{ numberOfPaginators }}</a>
+			</li>
+		</ul>
+	</nav>
+	<table class="table table-hover" *ngIf="!isLoading">
+	    <thead>
+	        <tr>
+	            <th *ngFor="let field of fields" align="center"> {{ field }}</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	    	<tr *ngFor="let row of content">
+	    		<td *ngFor="let field of fields" (mouseenter)="Details(row[field], field)" [tooltip]="details"> {{ row[field] }}</td>
+	    	</tr>
+	    </tbody>
+	</table>
+	<nav aria-label="Pagination">
+		<ul class="pagination justify-content-center d-flex">
+			<ng-container *ngFor="let paginator of pagination; index as i">
+				<li class="page-item" *ngIf="i < 10">
+					<a href="javascript:;" (click)="getData(paginator.limit,paginator.offset)" class="page-link">{{ i + 1}}</a>
+				</li>
+			</ng-container>
+			<li class="page-item">
+				<a href="javascript:;" class="page-link">...</a>
+			</li>
+			<li class="page-item" *ngIf="pagination[this.numberOfPaginators-1]">
+				<a href="javascript:;" (click)="getData(pagination[numberOfPaginators-1].limit,pagination[numberOfPaginators-1].offset)" class="page-link">{{ numberOfPaginators }}</a>
+			</li>
+		</ul>
+	</nav>
 </div>

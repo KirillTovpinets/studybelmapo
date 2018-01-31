@@ -64,7 +64,6 @@ export class StudListComponent implements OnInit{
 			this.getList.get().then(data => {
 				try{
 					this.courseList = data.json();
-					console.log(data.json());
 					var today = new Date();
 					for (var i = 0; i < this.courseList.length; i++) {
 						var start = new Date(this.courseList[i].Start);

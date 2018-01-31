@@ -35,7 +35,7 @@
                   <tr *ngIf="message !== ''">
                     <td colspan="5">{{message}}</td>
                   </tr>
-                  <tr *ngFor="let course of courses" (click)="selectCourse(course)" [ngClass]="{'selected': data.selectedCourses.indexOf(course) !== -1}" class="clickable-row">
+                  <tr *ngFor="let course of courses" (click)="selectCourse(course)" [ngClass]="{'selected': data.selectedCourses.indexOf(course) !== -1, 'danger': course.class === 1, 'success': course.class === 2}" class="clickable-row">
                     <td>{{ course.id }}</td>
                     <td class="uniqueId">{{ course.Number }} </td>
                     <td>{{ course.name }}</td>
@@ -57,21 +57,21 @@
             <h4 class="title">Введите необходимые данные</h4>
           </div>
           <div class="content">
-              <form #personInfo="ngForm">
+              <form #certificateInfo="ngForm">
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label>Проректору по учебной работе</label>
-                      <input type="text" class="form-control" name="prorector" [(ngModel)]="data.prorector">
+                      <label>Проректору по учебной работе <small *ngIf="prorector.touched && prorector.invalid" style="color:#f00;">Это поле обязательное</small></label>
+                      <input type="text" class="form-control" required name="prorector" [(ngModel)]="data.prorector" #prorector="ngModel">
                     </div>
                     <div class="form-group">
-                      <label>Заведующий кафедрой</label>
-                      <input type="text" class="form-control" name="prorector" [(ngModel)]="data.headmaster">
+                      <label>Заведующий кафедрой <small *ngIf="headmaster.touched && headmaster.invalid" style="color:#f00;">Это поле обязательное</small></label>
+                      <input type="text" class="form-control" required name="headmaster" [(ngModel)]="data.headmaster" #headmaster="ngModel">
                     </div>
                   </div>
           </div>
           <div class="text-center">
-            <a (click)="BuildOrder()" class="btn btn-success">Создать</a>
+            <a (click)="certificateInfo.valid && BuildOrder()" class="btn btn-success">Создать</a>
             <a (click)="modal.hide(1)" class="btn btn-danger">Отмена</a>
           </div>
         </form>
@@ -91,29 +91,29 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Ведомость №</label>
-                <input type="text" class="form-control" name="prorector" [(ngModel)]="data.exam_list_numer">
+                <label>Ведомость № <small *ngIf="DocNumber.touched && DocNumber.invalid" style="color:#f00;">Это поле обязательное</small></label>
+                <input type="text" class="form-control" required name="prorector" [(ngModel)]="data.exam_list_numer" #DocNumber="ngModel">
               </div>
               <div class="form-group">
-                <label>Дата проведения</label>
-                <input type="text" #datepicker="bsDatepicker" bsDatepicker [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="data.examDate" [bsConfig]="bsConfig" class="form-control" name="exam_date">
+                <label>Дата проведения <small *ngIf="exam_date.touched && exam_date.invalid" style="color:#f00;">Это поле обязательное</small></label>
+                <input type="text" #datepicker="bsDatepicker" required bsDatepicker #exam_date="ngModel" [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="data.examDate" [bsConfig]="bsConfig" class="form-control" name="exam_date">
               </div>
             </div>
             <div class="col-md-6">
               <fieldset>
                 <legend>Форма контроля знаний</legend>
                 <div>
-                  <input type="radio" [(ngModel)]="data.exam_form" name="exam_form" class="regular-radio" id="exam_form2" value="1">
+                  <input type="radio" [(ngModel)]="data.exam_form" checked="checked" name="exam_form" class="regular-radio" id="exam_form2" value="Дифференцированный зачёт">
                   <label for="exam_form2"></label>
                   <label for="">Диф. зачёт</label>
                 </div>
                 <div>
-                  <input type="radio" [(ngModel)]="data.exam_form" name="exam_form" class="regular-radio" id="exam_form3" value="2">
+                  <input type="radio" [(ngModel)]="data.exam_form" name="exam_form" class="regular-radio" id="exam_form3" value="Экзамен">
                   <label for="exam_form3"></label>
                   <label for="">Экзамен</label>
                 </div>
                 <div>
-                  <input type="radio" [(ngModel)]="data.exam_form" name="exam_form" class="regular-radio" id="exam_form4" value="3">
+                  <input type="radio" [(ngModel)]="data.exam_form" name="exam_form" class="regular-radio" id="exam_form4" value="Собеседование">
                   <label for="exam_form4"></label>
                   <label for="">Собеседование</label>
                 </div>
@@ -121,7 +121,7 @@
             </div>
           </div>
           <div class="text-center">
-            <a (click)="BuildOrder()" class="btn btn-success">Создать</a>
+            <a (click)="personInfo.valid && BuildOrder()" class="btn btn-success" [attr.disabled]="personInfo.valid ? null : ''">Создать</a>
             <a (click)="modal.hide(1)" class="btn btn-danger">Отмена</a>
           </div>
         </form>

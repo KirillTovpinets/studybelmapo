@@ -6,10 +6,15 @@ export class DatabaseService {
 
   constructor(private http: Http) { }
 
-  getDatabaseInfo(param:string, table?:string): Observable<any>{
+  getDatabaseInfo(param:string, table?:string, data?:any): Observable<any>{
   	var url = 'assets/php/getDatabaseInfo.php?param=' + param;
   	if (table !== undefined) {
-  		url += 'table=' + table; 
+  		url += '&table=' + table; 
+  	}
+  	if( data !== undefined){
+  		for (var i in data) {
+  			url += "&" + i + "=" + data[i];
+  		}
   	}
   	return this.http.get(url);
   }

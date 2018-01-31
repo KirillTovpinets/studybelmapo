@@ -8,12 +8,13 @@
             <th>Отчество</th>
             <th>Дата рождения</th>
             <th>Статус</th>
-            <th *ngIf="currentUser.is_cathedra == 0">Действия</th>
+            <th></th>
+            <th>Действия</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngIf="course.StudList.length == 0" class="no-hover">
-            <td colspan="7" align="center">
+            <td colspan="9" align="center">
                 <div class="alert alert-warning">
                     <p>Список пуст</p>
                 </div>
@@ -35,13 +36,14 @@
                 <td>
                     <span class="pe-7s-piggy" *ngIf="person.Dic_count != ''"></span>
                 </td>
-                <td *ngIf="currentUser.is_cathedra == 0">
-                    <button class="btn btn-danger btn-block" (click)="Deduct(person, $event)" tooltip="Создать свидетельство об окончании">Отчислить</button>
+                <td>
+                    <button class="btn btn-danger btn-block" (click)="Deduct(person, $event)" *ngIf="course.class == 1" tooltip="Создать свидетельство об окончании">Отчислить</button>
+                    <button class="btn btn-danger btn-block" (click)="Deduct(person, $event)" *ngIf="course.class == 2" tooltip="Отчислить слушателя с курса">Отчислить досрочно</button>
                 </td>
             </tr>
         </ng-container>   
         <tr class="button">
-            <td colspan="7">
+            <td colspan="9">
                 <button class="btn btn-success btn-block" [routerLink]="['../addDoctor/chooseStudent', course.id]" tooltip="Зачислить нового слушателя на этот курс">Зачислить</button>
             </td>
         </tr>

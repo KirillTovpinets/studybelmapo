@@ -36,7 +36,40 @@ const routes: Routes = [
 		component: AdminComponent,
 		canActivate: [AuthGuard],
 		children: [
-			{ path: 'table/:table', component: TableContentComponent}
+			{ path: 'table/:table', component: TableContentComponent},
+			{ path: '', redirectTo: 'studlist', pathMatch: 'full' },
+			{ path: 'studlist', component: StudListComponent},
+			{ path: 'help', component: HelpComponent},
+			{ 
+				path: 'list', 
+				component: SearchStudentComponent,
+				children: [
+					{ path: '', redirectTo:'sirname', pathMatch: 'full'},
+					{ path: 'sirname', component: SirnameComponent },
+					{ path: 'gender', component: GenderComponent },
+					{ path: 'age', component: AgeComponent },
+					{ path: 'education', component: EstablishmentComponent },
+					{ path: 'organization', component: OrganizationComponent },
+					{ path: 'appointment', component: AppointmentComponent },
+					{ path: 'speciality', component: SpecialityComponent },
+					{ path: 'qualification', component: QualificationComponent },
+					{ path: 'category', component: CategoryComponent }
+					
+				]
+			},
+			// { path: 'addDoctor', component: AddStudentComponent},
+			{ 
+				path: 'addDoctor', 
+				component: FillDataComponent,
+				children: [
+					{ path: '', redirectTo: 'chooseCourse', pathMatch: 'full'},
+					{ path: 'chooseCourse', component: ChooseCourseComponent},
+					{ path: 'chooseStudent/:id', component: ChooseStudentComponent},
+					{ path: 'addNew/:id', component: AddStudentComponent},
+				]
+			},
+			{ path: 'reports', component: ReportComponent},
+			{ path: 'orders', component: OrderComponent}
 		]
 	},
 	{ path: '', redirectTo: '/login', pathMatch: 'full' },

@@ -12,8 +12,9 @@ import { CurrentCourcesListService } from '../FillData/services/getCurrentCource
 	templateUrl: './order.component.html',
 	providers: [MakeOrderService, CurrentCourcesListService, BsModalService],
 	styles:[`
-		.table-striped>tbody>tr.selected{
-			background-color: #9368E9;
+		.table-striped>tbody>tr.selected,
+		.table>tbody>tr.selected>td{
+			background-color: #9368E9 !important;
 			color:#fff;
 		}
 		.btn.selected{
@@ -51,7 +52,20 @@ export class OrderComponent implements OnInit{
 	ngOnInit(){
 		this.courseList.get().then(res => {
 			try{
-				this.courses = res.json()
+				this.courses = res.json();
+				var today = new Date();
+				for (var i = 0; i < this.courses.length; i++) {
+						var start = new Date(this.courses[i].Start);
+						var finish = new Date(this.courses[i].Finish);
+						
+						if (start < today && finish < today) {
+							this.courses[i].class=1;
+						}else if(start < today && finish > today){
+							this.courses[i].class=2;
+						}else if(start > today && finish > today){
+							this.courses[i].class=3;
+						}
+					}
 			}catch(e){
 				console.log(e);
 				console.log(res._body);
@@ -59,6 +73,10 @@ export class OrderComponent implements OnInit{
 		})
 	}
 	EnterAction(flag:number):void{
+		if (this.data.selectedCourses.length === 0) {
+			this.notify.addError("Виберите курс");
+			return;
+		}
 		this.data.type = flag;
 		switch (flag) {
 			case 2:

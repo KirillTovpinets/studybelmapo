@@ -161,7 +161,6 @@
                                 font-size:19px;
                             }
                             p, ol{
-                                text-align:justify;
                                 text-indent: 1.25cm;
                                 margin-top:0pt;
                             }
@@ -193,7 +192,7 @@
             $Finish = $Finish->format("d.m.y") ;
             $doc_body .= "<p style='text-align:right;'>Проректору по учебной работе<br> $prorector</p>
                     <p>
-                        Просим подписать свидетельства слушателям курса № $number Повышение квалификации '$courseName' ($notes) $Start - $Finish
+                        Просим подписать свидетельства слушателям курса № $number Повышение квалификации \"$courseName\" ($notes) $Start - $Finish
                     </p>
                     <ol>";
             while ($row = $studObj->fetch_assoc()) {

@@ -63,6 +63,7 @@ import { StudListService } from './studList/stud-list.service';
 import { AdminComponent } from './admin/admin.component';
 import { HelpComponent } from './help/help.component';
 import { TableContentComponent } from './table-content/table-content.component';
+import { PaginationComponent } from './pagination/pagination.component';
 defineLocale('ru', ru); 
 
 @NgModule({
@@ -103,7 +104,8 @@ defineLocale('ru', ru);
     MobilemenuComponent,
     AdminComponent,
     HelpComponent,
-    TableContentComponent
+    TableContentComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,
