@@ -18,4 +18,9 @@ export class DatabaseService {
   	}
   	return this.http.get(url);
   }
+  saveRowChanges(row:any, action: string){
+    var url = 'assets/php/setDatabaseInfo.php';
+    row.action = action;
+    return this.http.post(url, row);
+  }
 }

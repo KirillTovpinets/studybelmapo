@@ -1,20 +1,21 @@
 <div class="header">
   <h4 class="title">Содержание таблицы "{{ thisTable }}"</h4>
+  <p class="category">Всего {{ totalData }} записей</p>
 </div>
 <div class="content">
 	<preloader *ngIf="isLoading"></preloader>
-	<nav aria-label="Pagination">
+	<nav aria-label="Pagination" *ngIf="!isLoading">
 		<ul class="pagination justify-content-center d-flex">
 			<ng-container *ngFor="let paginator of pagination; index as i">
-				<li class="page-item" *ngIf="i < 10">
-					<a href="javascript:;" (click)="getData(paginator.limit,paginator.offset)" class="page-link">{{ i + 1}}</a>
+				<li class="page-item" *ngIf="i < 10 && i < pagination.length" [ngClass]="{'active': selectedButton == i}">
+					<a href="javascript:;" (click)="getData(paginator.limit,paginator.offset, i)" class="page-link">{{ i + 1}}</a>
 				</li>
 			</ng-container>
-			<li class="page-item">
-				<a href="javascript:;" (click)="getData(paginator.limit,paginator.offset)" class="page-link">...</a>
+			<li class="page-item" *ngIf="pagination.length != 0 && pagination.length > 10">
+				<a href="javascript:;" (click)="getData(paginator.limit,paginator.offset, i)" class="page-link">...</a>
 			</li>
-			<li class="page-item" *ngIf="pagination[this.numberOfPaginators-1]">
-				<a href="javascript:;" (click)="getData(pagination[numberOfPaginators].limit,pagination[numberOfPaginators].offset)" class="page-link">{{ numberOfPaginators }}</a>
+			<li class="page-item" *ngIf="pagination[numberOfPaginators-1] && numberOfPaginators > 10" [ngClass]="{'active': selectedButton == numberOfPaginators-1}">
+				<a href="javascript:;" (click)="getData(pagination[numberOfPaginators-1].limit,pagination[numberOfPaginators-1].offset, numberOfPaginators-1)" class="page-link">{{ numberOfPaginators }}</a>
 			</li>
 		</ul>
 	</nav>
@@ -26,22 +27,46 @@
 	    </thead>
 	    <tbody>
 	    	<tr *ngFor="let row of content">
-	    		<td *ngFor="let field of fields" (mouseenter)="Details(row[field], field)" [tooltip]="details"> {{ row[field] }}</td>
+	    		<td *ngFor="let field of fields" (mouseenter)="Details(row[field], field)" [tooltip]="details"> 
+	    			<input type="text" name="" value="{{ row[field] }}" (change)="setChangedField(field)" class="form-control" [(ngModel)]="row[field]" [attr.disabled]="edit && field != 'id' ? null : ''">
+	    		</td>
+	    		<td class="text-right" *ngIf="!edit">
+	    			<button class="btn btn-warning" (click)="EditAction()">Редактировать</button>
+	    			<button class="btn btn-danger" (click)="DeleteRow(row)">Удалить</button>
+	    		</td>
+	    		<td class="text-right" *ngIf="edit">
+	    			<button class="btn btn-success" (click)="ConfirmChanges(row)">Сохранить</button>
+	    			<button class="btn btn-default" (click)="EditAction()">Отмена</button>
+	    		</td>
+	    	</tr>
+	    	<tr *ngFor="let newRow of newData">
+	    		<td *ngFor="let field of fields"> 
+	    			<input type="text" name="" class="form-control" [(ngModel)]="newRow[field]">
+	    		</td>
+	    		<td class="text-right">
+	    			<button class="btn btn-success" (click)="ConfirmAdd(newRow)">Сохранить</button>
+	    			<button class="btn btn-default" (click)="EditAction()">Удалить</button>
+	    		</td>
+	    	</tr>
+	    	<tr>
+	    		<td colspan="5">
+	    			<button class="btn btn-success btn-block" (click)="AddRow()">Добавить данные</button>
+	    		</td>
 	    	</tr>
 	    </tbody>
 	</table>
-	<nav aria-label="Pagination">
+	<nav aria-label="Pagination" *ngIf="!isLoading">
 		<ul class="pagination justify-content-center d-flex">
 			<ng-container *ngFor="let paginator of pagination; index as i">
-				<li class="page-item" *ngIf="i < 10">
-					<a href="javascript:;" (click)="getData(paginator.limit,paginator.offset)" class="page-link">{{ i + 1}}</a>
+				<li class="page-item" *ngIf="i < 10 && i < pagination.length" [ngClass]="{'active': selectedButton == i}">
+					<a href="javascript:;" (click)="getData(paginator.limit,paginator.offset, i)" class="page-link">{{ i + 1}}</a>
 				</li>
 			</ng-container>
-			<li class="page-item">
-				<a href="javascript:;" class="page-link">...</a>
+			<li class="page-item" *ngIf="pagination.length != 0 && pagination.length > 10">
+				<a href="javascript:;" (click)="getData(paginator.limit,paginator.offset, i)" class="page-link">...</a>
 			</li>
-			<li class="page-item" *ngIf="pagination[this.numberOfPaginators-1]">
-				<a href="javascript:;" (click)="getData(pagination[numberOfPaginators-1].limit,pagination[numberOfPaginators-1].offset)" class="page-link">{{ numberOfPaginators }}</a>
+			<li class="page-item" *ngIf="pagination[numberOfPaginators-1] && numberOfPaginators > 10" [ngClass]="{'active': selectedButton == numberOfPaginators-1}">
+				<a href="javascript:;" (click)="getData(pagination[numberOfPaginators-1].limit,pagination[numberOfPaginators-1].offset, numberOfPaginators-1)" class="page-link">{{ numberOfPaginators }}</a>
 			</li>
 		</ul>
 	</nav>

@@ -1,3 +1,7 @@
 .content{
 	overflow-x: scroll;
 }
+input[disabled]{
+	background: none;
+	border: none;
+}

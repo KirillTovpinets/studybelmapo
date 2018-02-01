@@ -103,6 +103,18 @@
 	$qualificationAddArr = getArray($qualificationAddObj);
 	$qualificationOtherArr = getArray($qualificationOtherObj);
 	$citiesArr = getArray($cities);
+	foreach ($citiesArr as $key => $value) {
+		if (isset($value["district"])) {
+			$disctrictId = $value["district"];
+			$result = $mysqli->query("SELECT name FROM bel_districts WHERE id = $disctrictId") or die ("Error in 'SELECT name FROM bel_districts WHERE id = $disctrictId': " . mysqli_error($mysqli));
+			$arr = $result->fetch_assoc();
+			$district = $arr["name"];
+			if(!empty($district)){
+				$value["value"] = $value["value"] . ' (' . $district . ' район)';
+			}
+		}
+		$citiesArr[$key] = $value;
+	}
 
 	$response['estArr'] = $estArr;
 	$response['residArr'] = $residArr;

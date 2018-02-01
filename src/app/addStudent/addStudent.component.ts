@@ -53,6 +53,12 @@ import { Retraining } from '../model/profesionInfo.class';
 		tabset .input-group{
 			margin-top:10px;
 		}
+		legend,
+		legend h5,
+		.form-group,
+		fieldset{
+			margin:0;
+		}
 	`]
 })
 
@@ -64,8 +70,11 @@ export class AddStudentComponent implements OnInit{
 	private personal_appointments: any[] = [];
 	private personal_organizations: any[] = [];
 	private personal_cityzenships: any[] = [];
+	private all_countries: any[] = [];
 	private personal_regions: any[] = [];
+	private all_regions: any[] = [];
 	private personal_cities:any[] = [];
+	private all_cities: any[] = [];
 	
 	private personal_departments: any[] = [];
 	private personal_establishments: any[] = [];
@@ -189,10 +198,8 @@ export class AddStudentComponent implements OnInit{
 		var renewData = [];
 		for(let key of this.dataKeys){
 			if (localStorage.getItem(key) == null) {
-				console.log("BYE");
 				renewData.push(key);
 			}else{
-				console.log("HELLO");
 				switch (key) {
 					case "facBel":
 						this.faculties = JSON.parse(localStorage.getItem("facBel"));
@@ -220,6 +227,7 @@ export class AddStudentComponent implements OnInit{
 						break;
 					case "regArr":
 						this.personal_regions = JSON.parse(localStorage.getItem("regArr"));
+						this.all_regions = this.personal_regions;
 						break;
 					case "depArr":
 						this.personal_departments = JSON.parse(localStorage.getItem("depArr"));
@@ -229,6 +237,7 @@ export class AddStudentComponent implements OnInit{
 						break;
 					case "residArr":
 						this.personal_cityzenships = JSON.parse(localStorage.getItem("residArr"));
+						this.all_countries = this.personal_cityzenships;
 						break;
 					case "coursesBel":
 						this.belmapo_courses = JSON.parse(localStorage.getItem("coursesBel"));
@@ -253,6 +262,7 @@ export class AddStudentComponent implements OnInit{
 						break;
 					case "citiesArr":
 						this.personal_cities = JSON.parse(localStorage.getItem("citiesArr"));
+						this.all_cities = this.personal_cities;
 						break;
 				}
 			}
@@ -271,19 +281,19 @@ export class AddStudentComponent implements OnInit{
 					this.personal_faculties = data.json().facArr;
 					localStorage.setItem("facArr", JSON.stringify(data.json().facArr))
 					this.personal_cityzenships = data.json().residArr;
+					this.all_countries = this.personal_cityzenships;
 					localStorage.setItem("residArr", JSON.stringify(data.json().residArr))
 					this.personal_appointments = data.json().appArr;
 					localStorage.setItem("appArr", JSON.stringify(data.json().appArr))
 					this.personal_organizations = data.json().orgArr;
 					localStorage.setItem("orgArr", JSON.stringify(data.json().orgArr))
 					this.personal_regions = data.json().regArr;
+					this.all_regions = this.personal_regions;
 					localStorage.setItem("regArr", JSON.stringify(data.json().regArr))
 					this.personal_departments = data.json().depArr;
 					localStorage.setItem("depArr", JSON.stringify(data.json().depArr))
 					this.personal_establishments = data.json().estArr;
 					localStorage.setItem("estArr", JSON.stringify(data.json().estArr))
-					this.personal_cityzenships = data.json().residArr;
-					localStorage.setItem("residArr", JSON.stringify(data.json().residArr))
 					this.belmapo_courses = data.json().coursesBel;
 					localStorage.setItem("coursesBel", JSON.stringify(data.json().coursesBel))
 					this.specialityDocArr = data.json().specialityDocArr;
@@ -299,7 +309,8 @@ export class AddStudentComponent implements OnInit{
 					this.qualificationOtherArr = data.json().qualificationOtherArr;
 					localStorage.setItem("qualificationOtherArr", JSON.stringify(data.json().qualificationOtherArr))
 					this.personal_cities = data.json().citiesArr;
-					localStorage.setItem("citiesArr", JSON.stringify(data.json().citiesArr))
+					this.all_cities = this.personal_cities;
+					// localStorage.setItem("citiesArr", JSON.stringify(data.json().citiesArr))
 					this.isLoaded = true;
 				}catch(e){
 					console.log(e);
@@ -446,7 +457,6 @@ export class AddStudentComponent implements OnInit{
 					this.newPerson.personal.birthdayDate = birthdayDate;
 					var region = id.slice(7,8);
 					var citizenship = id.slice(11,13);
-					console.log(citizenship);
 					if (citizenship == "PB" || citizenship == "РВ") {
 						for(let ctr of this.personal_cityzenships){
 							console.log(ctr);
@@ -483,6 +493,22 @@ export class AddStudentComponent implements OnInit{
   		}else{
   			$event.target.classList.remove("ng-invalid");
   			$event.target.classList.add("ng-valid");
+  		}
+  	}
+  	checkAutoCountry($event){
+  		this.personal_cities = [];
+  		for(let city of this.all_cities){
+  			if (city.country == $event.id) {
+  				this.personal_cities.push(city);
+  			}
+  		}
+  	}
+  	checkAutoRegion($event){
+  		this.personal_cities = [];
+  		for(let city of this.all_cities){
+  			if (city.region == $event.id) {
+  				this.personal_cities.push(city);
+  			}
   		}
   	}
 }

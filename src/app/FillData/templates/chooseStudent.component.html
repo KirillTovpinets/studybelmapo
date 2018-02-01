@@ -75,7 +75,7 @@
 							</thead>
 							<tbody>
 								<tr *ngIf="course.StudList.length == 0 && enteredStudents.length == 0">
-									<td colspan="4" class="danger" align="center">Список пуст</td>
+									<td colspan="5" class="danger" align="center">Список пуст</td>
 								</tr>
 								<ng-container>
 									<tr *ngFor="let student of course.StudList; index as i" class="warning" [ngClass]="{'last-tr': student === course.StudList[course.StudList.length - 1]}">

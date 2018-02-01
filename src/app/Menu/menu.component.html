@@ -16,8 +16,8 @@
           <p>Приказы</p>
         </a>
       </li>
-      <li [ngClass]="{'active': selectedPage.selectedPage == 5}" *ngIf="currentUser.is_cathedra != 0">
-        <a (click)="selectPage(5)" routerLink="orders"> 
+      <li [ngClass]="{'active': selectedPage.selectedPage == 7}" *ngIf="currentUser.is_cathedra != 0">
+        <a (click)="selectPage(7)" routerLink="orders"> 
           <i class="pe-7s-file"></i>
           <p>Ведомости</p>
         </a>
@@ -29,7 +29,7 @@
         </a>
         <ul *dropdownMenu class="dropdown-menu">
           <li *ngFor="let table of tables">
-            <a class="dropdown-item" [routerLink]="['table/', table]">{{tablesLabel.get(table)}}</a>
+            <a class="dropdown-item" [routerLink]="['table/', table]">{{global.tablesLabel.get(table)}}</a>
           </li>
         </ul>
       </li>

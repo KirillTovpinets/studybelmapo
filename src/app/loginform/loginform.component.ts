@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit{
 				this.loginService.setUserLogedIn();
 				this.cookieService.set("Login", "true");
 				console.log(login.log);
-				if (login.log == "admin") {
+				if (this.logedUser.is_cathedra == null) {
 					this.router.navigate(["/admin"]);
 				}else{
 					this.router.navigate(["/main"]);					
