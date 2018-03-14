@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { BsModalRef } from "ngx-bootstrap/modal/modal-options.class"
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { TableListCopmonent } from "../tableList/tableList.component";
 import { Person } from "../model/person.class";
 import { BsModalService } from "ngx-bootstrap/modal";

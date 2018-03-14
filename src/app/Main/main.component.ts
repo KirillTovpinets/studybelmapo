@@ -6,7 +6,7 @@ import { StudListComponent } from '../studList/studList.component';
 //Services
 import { InfoService } from '../studList/studList.service';
 
-import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { PersonalInfoService } from '../personalInfo/personalInfo.service';
 import { PersonalInfoComponent } from '../personalInfo/personalInfo.component';
 import { BsModalService } from "ngx-bootstrap/modal";

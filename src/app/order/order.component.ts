@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
 import { BsDatepickerConfig } from "ngx-bootstrap/datepicker";
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
-import { listLocales } from 'ngx-bootstrap/bs-moment';
 import { MakeOrderService } from "./makeOrder.service";
 import { Http } from "@angular/http";
 import { Global } from '../model/global.class';
@@ -29,7 +28,6 @@ export class OrderComponent implements OnInit{
 	@ViewChild('examlist') examlist: TemplateRef<any>;
 	bsValue: Date = new Date();
 	globalParams: Global = new Global();
-  	locales = listLocales();
   	data:any = {
   		selectedCourses: [],
   		prorector: "Т.В.Калининой",
@@ -41,10 +39,14 @@ export class OrderComponent implements OnInit{
   	};
   	message: string = "";
   	courses: any[] = [];
-  	filename: string = "";
+  	filename: string = "Document";
   	currentUser = JSON.parse(localStorage.getItem("currentUser"));
 	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: this.globalParams.locale, dateInputFormat: 'DD.MM.YYYY' });
 	modalRef: BsModalRef;
+	archive: any[];
+	isLoaded: boolean = false;
+	ArchiveIsLoaded: boolean = false;
+	ArchiveYearIsLoaded: boolean = false;
 	constructor(private makeOrderService: MakeOrderService,
 				private http: Http,
 				private notify: NotificationsService,
@@ -67,6 +69,7 @@ export class OrderComponent implements OnInit{
 							this.courses[i].class=3;
 						}
 					}
+				this.isLoaded = true;
 			}catch(e){
 				console.log(e);
 				console.log(res._body);
@@ -82,11 +85,9 @@ export class OrderComponent implements OnInit{
 		switch (flag) {
 			case 2:
 				this.modalRef = this.modal.show(this.cert, {class: 'modal-md'});
-				this.filename = "Для подписи свидетельств";
 				break;
 			case 3:
 				this.modalRef = this.modal.show(this.examlist, {class: 'modal-md'});
-				this.filename = "Ведомость собеседования";
 				break;
 			default:
 				// code...
@@ -146,6 +147,37 @@ export class OrderComponent implements OnInit{
 			this.data.selectedCourses.splice(index, 1);
 		}else{
 			this.data.selectedCourses.push(course);
+		}
+	}
+	getArchive(){
+		this.courseList.getArchive().then(data => {
+			try{
+				this.ArchiveIsLoaded = true;
+				this.archive = data.json();
+			}catch(e){
+				console.log(e);
+				console.log(data._body);
+			}
+		})
+	}
+	DownloadInfo(year){
+		this.ArchiveYearIsLoaded = false;
+		let data = JSON.parse(localStorage.getItem('archive-' + year));
+		if (data !== null) {
+			this.archive[year] = data;
+			this.ArchiveYearIsLoaded = true;
+		}else{
+			this.courseList.getArchiveByYear(year).then(data => {
+				this.ArchiveYearIsLoaded = false;
+				try{
+					this.archive[year] = data.json();
+					localStorage.setItem("archive-" + year, JSON.stringify(data.json()));
+				}catch(e){
+					console.log(e);
+					console.log(data._body);
+				}
+				this.ArchiveYearIsLoaded = true;
+			})
 		}
 	}
 }

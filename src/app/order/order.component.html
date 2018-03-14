@@ -3,6 +3,70 @@
   <div class="container-fluid">
     <div class="row">
       <form (ngSubmit)="BuildOrder()">
+        <div class="col-md-8">
+          <div class="card with-hscroll">
+            <div class="header">
+              <h4 class="title">Выберите курс</h4>
+            </div>
+            <div class="content">
+              <tabset>
+                <tab heading="Текущие">
+                  <div class="content table-responsive table-full-width">
+                    <preloader *ngIf="!isLoaded"></preloader> 
+                    <table class="table table-hover table-striped">
+                      <thead>
+                        <th>id</th>
+                        <th>Номер</th>
+                        <th>Название</th>
+                        <th>Начало</th>
+                        <th>Окончание</th>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="message !== ''">
+                          <td colspan="5">{{message}}</td>
+                        </tr>
+                        <tr *ngFor="let course of courses" (click)="selectCourse(course)" [ngClass]="{'selected': data.selectedCourses.indexOf(course) !== -1, 'danger': course.class === 1, 'success': course.class === 2}" class="clickable-row">
+                          <td>{{ course.id }}</td>
+                          <td class="uniqueId">{{ course.Number }} </td>
+                          <td>{{ course.name }}</td>
+                          <td>{{ course.Start | date: "dd.MM.yyyy"}}</td>
+                          <td>{{ course.Finish | date: "dd.MM.yyyy"}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </tab>
+                <tab heading="Архив" (select)="getArchive()">
+                  <div class="content table-responsive table-full-width">
+                    <preloader *ngIf="!ArchiveIsLoaded"></preloader> 
+                    <accordion *ngIf="archive">
+                      <accordion-group *ngFor="let year of archive.years" (isOpenChange)="DownloadInfo(year)">
+                        <div accordion-heading>
+                          {{ year }}
+                        </div>
+                        <div>
+                          <preloader *ngIf="!ArchiveYearIsLoaded"></preloader>
+                          <table class="table table-hover table-striped">
+                            <thead>
+                              <th>Номер</th>
+                              <th>Название</th>
+                            </thead>
+                            <tbody>
+                              <tr class="clickable-row" *ngFor="let course of archive[year]" (click)="selectCourse(course)" [ngClass]="{'selected': data.selectedCourses.indexOf(course) !== -1}">
+                                <td class="uniqueId">{{course.Number}}</td>
+                                <td>{{ course.name }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </accordion-group>
+                    </accordion>
+                  </div>
+                </tab>
+              </tabset>
+            </div>
+          </div>
+        </div>
         <div class="col-md-4">
           <div class="card">
             <div class="header">
@@ -14,36 +78,6 @@
 
               <a (click)="EnterAction(2)" [ngClass]="{'selected': this.data.type ===2}" class="btn btn-block btn-default" *ngIf="currentUser != undefined && currentUser.is_cathedra != 0">Для подписи свидетельств</a>
               <a (click)="EnterAction(3)" [ngClass]="{'selected': this.data.type ===3}" class="btn btn-block btn-default" *ngIf="currentUser != undefined && currentUser.is_cathedra != 0">Ведомость собеседования</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <div class="card with-hscroll">
-            <div class="header">
-              <h4 class="title">Выберите курс</h4>
-            </div>
-            <div class="content table-responsive table-full-width">
-              <table class="table table-hover table-striped">
-                <thead>
-                  <th>id</th>
-                  <th>Номер</th>
-                  <th>Название</th>
-                  <th>Начало</th>
-                  <th>Окончание</th>
-                </thead>
-                <tbody>
-                  <tr *ngIf="message !== ''">
-                    <td colspan="5">{{message}}</td>
-                  </tr>
-                  <tr *ngFor="let course of courses" (click)="selectCourse(course)" [ngClass]="{'selected': data.selectedCourses.indexOf(course) !== -1, 'danger': course.class === 1, 'success': course.class === 2}" class="clickable-row">
-                    <td>{{ course.id }}</td>
-                    <td class="uniqueId">{{ course.Number }} </td>
-                    <td>{{ course.name }}</td>
-                    <td>{{ course.Start | date: "dd.MM.yyyy"}}</td>
-                    <td>{{ course.Finish | date: "dd.MM.yyyy"}}</td>
-                  </tr>
-                </tbody>
-              </table>
             </div>
           </div>
         </div>

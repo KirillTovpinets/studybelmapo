@@ -54,9 +54,6 @@ import { ShareService } from './share/share.service';
 import { CookieService } from 'ngx-cookie-service';
 import { GlobalParamsService } from './Globalparams.service';
 import { CheckAuthService } from './checkAuth.service';
-
-import { defineLocale } from 'ngx-bootstrap/bs-moment';
-import { ru } from 'ngx-bootstrap/locale';
 import { ForMenuDirective } from './directives/for-menu.directive';
 import { MobilemenuComponent } from './mobilemenu/mobilemenu.component';
 import { StudListService } from './studList/stud-list.service';
@@ -64,7 +61,6 @@ import { AdminComponent } from './admin/admin.component';
 import { HelpComponent } from './help/help.component';
 import { TableContentComponent } from './table-content/table-content.component';
 import { PaginationComponent } from './pagination/pagination.component';
-defineLocale('ru', ru); 
 
 @NgModule({
   declarations: [

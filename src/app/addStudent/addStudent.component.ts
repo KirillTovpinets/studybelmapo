@@ -1,8 +1,8 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { PersonalDataService } from "../personalInfo/personalData.service";
 import { BsDatepickerConfig } from "ngx-bootstrap/datepicker";
-import { BsModalService, BsModalRef, TabsetComponent } from 'ngx-bootstrap';
-import { listLocales } from 'ngx-bootstrap/bs-moment';
+import { BsModalService, TabsetComponent } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { PersonService } from './savePerson.service';
 import  { Person } from "../model/person.class";

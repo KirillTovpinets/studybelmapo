@@ -13,4 +13,11 @@ export class CurrentCourcesListService {
 	getById(id:number):Promise<any>{
 		return this.http.get(this.url + "?id=" + id).toPromise();
 	}
+
+	getArchive(): Promise<any>{
+		return this.http.get("assets/php/getCourseList.php").toPromise();
+	}
+	getArchiveByYear(year):Promise<any>{
+		return this.http.get("assets/php/getCourseList.php?year=" + year).toPromise();
+	}
 }

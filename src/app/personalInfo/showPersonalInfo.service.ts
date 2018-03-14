@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PersonalInfoService } from './personalInfo.service';
 import { BsModalService } from "ngx-bootstrap/modal";
-import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { PersonalInfoComponent } from './personalInfo.component'; 
 import { Person } from "../model/person.class";
 import {NotificationsService} from 'angular4-notify';

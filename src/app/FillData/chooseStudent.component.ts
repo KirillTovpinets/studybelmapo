@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { GetListService } from '../registry/services/getPersonList.service';
 import { ActivatedRoute } from '@angular/router';
 import { BsModalService } from "ngx-bootstrap/modal";
-import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { SearchSirnameService } from '../registry/services/searchSirname.service';
 import { CurrentCourcesListService } from './services/getCurrentCourcesList.service';
 import { PersonalInfoService } from '../personalInfo/personalInfo.service';

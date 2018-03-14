@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { GetListService } from "../services/getPersonList.service";
 import { SearchSirnameService } from '../services/searchSirname.service';
 import { BsModalService } from "ngx-bootstrap/modal";
-import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { PersonalInfoService } from '../../personalInfo/personalInfo.service';
 import { PersonalInfoComponent } from '../../personalInfo/personalInfo.component';
 import { ShowPersonInfoService } from "../../personalInfo/showPersonalInfo.service";
