@@ -18,7 +18,7 @@ export class TableContentComponent implements OnInit {
   thisTable:string;
   table: string;
   content:any[] = []
-  fields: string[] = []
+  fields: any[] = []
   details:string = "Ошибка"
   isLoading: boolean = false;
   offset:number = 0;
@@ -27,14 +27,16 @@ export class TableContentComponent implements OnInit {
   numberOfPaginators: number = 0;
   totalData:number = 0;
   selectedButton: number = 0;
-  edit: boolean = false;
   modalRef: BsModalRef;
   global: Global = new Global();
   confirmMessageStr:string = "";
-  changedField: string = "";
+  changedField: string[] = [];
   newValue: string = "";
   newData:any[] = [];
+  sources: any[] = [];
   ngOnInit() {
+    var date = new Date();
+    console.log(typeof(date));
     this.router.paramMap.subscribe( params => this.getData(25, 0));
     this.getData();
   }
@@ -60,6 +62,9 @@ export class TableContentComponent implements OnInit {
         this.content = res.json().tablecontent;
         if (button == undefined) {
           this.pagination = [];
+          for(let row of this.content){
+            row.edit = false;
+          }
           this.totalData = res.json().Total;
           this.numberOfPaginators = Math.floor(this.totalData / this.limit);
           var balance = this.totalData % limit;
@@ -80,7 +85,17 @@ export class TableContentComponent implements OnInit {
         var row = this.content[0];
         this.fields = [];
         for (var field in row) {
-          this.fields.push(field);
+          var value = row[field];
+          var label = {
+            name: field,
+            isDate: false
+          };
+          if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+            label.isDate = true;
+          }
+          if (field != "edit") {
+            this.fields.push(label);
+          }
         }
       }catch(e){
         console.log(e);
@@ -89,10 +104,10 @@ export class TableContentComponent implements OnInit {
       this.isLoading = false;
     });
   }
-  Details(row:any, field:string){
+  Details(fieldValue:number, field:string){
     this.details = "";
     var data = {
-      row: row,
+      row: fieldValue,
       field: field
     }
     this.database.getDatabaseInfo("fieldcontent", this.table, data).subscribe(res => {
@@ -100,35 +115,85 @@ export class TableContentComponent implements OnInit {
         this.details = res.json().fieldcontent[0].name
       }catch(e){
         this.details = "Нет информации"
-        console.log(e);
-        console.log(res._body);
+        // console.log(e);
+        // console.log(res._body);
       }
 
     });
   }
-  EditAction(){
-    this.edit = !this.edit;
+  EditAction(row:any){
+    for(let field of this.fields){
+      var data = {
+        field:field.name
+      }
+      this.database.getDatabaseInfo("fieldcontent", this.table, data).subscribe(res => {
+        try{
+          this.sources[field.name] = res.json().fieldcontent;
+        }catch(e){
+          this.sources.push([]);
+          // console.log(e);
+          // console.log(res._body);
+        }
+      })
+    }
+    row.edit = !row.edit;
   }
   ConfirmChanges(row:any){
     row.table = this.router.snapshot.params["table"];
     row.field = this.changedField;
     this.database.saveRowChanges(row, "edit").subscribe(res => {
-      this.getData(25, 0)
-      this.notify.addSuccess("Изменения сохранены");
-      this.edit = false;
+      try{
+        console.log(res);
+        this.getData(25, 0)
+        this.notify.addSuccess("Изменения сохранены");
+        row.edit = false;
+        this.changedField = [];
+      }catch(e){
+        console.log(res);
+      }
     })
   }
   setChangedField(field:string){
-    this.changedField = field;
+    this.changedField.push(field);
+    console.log(this.changedField);
   }
   DeleteRow(row){
+    row.table = this.router.snapshot.params["table"];
     this.database.saveRowChanges(row, "delete").subscribe(res => {
       this.getData(25, 0)
-      this.notify.addSuccess("Изменения сохранены");
-      this.edit = false;
+      this.notify.addSuccess("Cтрока удалена");
+      row.edit = false;
     })
   }
   AddRow(){
     this.newData.push({});
+  }
+  ConfirmAdd(newRow:any){
+    newRow.table = this.router.snapshot.params["table"];
+    newRow.fields = this.fields;
+    this.database.saveRowChanges(newRow, "add").subscribe(data => {
+      console.log(data);
+      this.getData(25.0);
+      this.notify.addSuccess("Новая строка добавлена");
+      this.newData.splice(this.newData.indexOf(newRow), 1);
+    })
+  }
+  CanselAdd(newRow:any){
+    this.newData.splice(this.newData.indexOf(newRow), 1);
+  }
+  DropdownListList(data:any){
+    return data.name;
+  }
+  DropdownListValue(data:any){
+    return data.id;
+  }
+  setCorrectDate(value:any, row:any, field:any){
+    if (typeof(value) != "string") {
+      this.content[this.content.indexOf(row)][field.name] = value.toISOString().slice(0, 10);
+      console.log(this.content[this.content.indexOf(row)][field.name]);
+    }
+  }
+  isDate(value: any){
+    return value instanceof Date;
   }
 }

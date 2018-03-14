@@ -21,19 +21,15 @@
 			$query = "SELECT * FROM $table";
 			break;
 		case 'fieldcontent':
-			$keys = array(
-				"CourseId" => "cources",
-				"ResidPlace" => "residence",
-				"FormEduc" => "formofeducation",
-				"Status" => "status",
-				"PersonId" => "personal_card",
-				"facultId" => "faculties"
-			);
 			$table = $_GET["table"];
 			$field = $_GET["field"];
-			$value = $_GET["row"];
-			$anotherTable = $keys[$field];
-			$query = "SELECT DISTINCT * FROM (SELECT $anotherTable.name FROM $table INNER JOIN $anotherTable ON $table.$field = $anotherTable.id WHERE $anotherTable.id = $value) AS total";
+			$condition = "";
+			$anotherTable = CONNECTIONS[$field];
+			if (isset($_GET["row"])) {
+				$value = $_GET["row"];
+				$condition = "WHERE $anotherTable.id = $value";
+			}
+			$query = "SELECT DISTINCT * FROM (SELECT $anotherTable.id, $anotherTable.name FROM $table INNER JOIN $anotherTable ON $table.$field = $anotherTable.id $condition) AS total";
 			break;
 	}
 

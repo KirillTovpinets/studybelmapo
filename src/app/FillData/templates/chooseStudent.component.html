@@ -122,8 +122,8 @@
 				</tbody>
 			</table>
 		</div>
-		<button type="button" class="btn btn-success" (click)="setLastInfo(setLastInfoTpl)">Да</button>
-		<button type="button" class="btn btn-info" (click)="personInfo()">Инфо</button>
+		<button type="button" class="btn btn-success" *ngIf="infoIsChecked" (click)="setLastInfo(setLastInfoTpl)">Да</button>
+		<button type="button" class="btn btn-info" tooltip="Информация слушателя" (click)="personInfo()">Инфо</button>
 		<button type="button" class="btn btn-danger" (click)="reject()">Нет</button>
 	</div>
 </ng-template>

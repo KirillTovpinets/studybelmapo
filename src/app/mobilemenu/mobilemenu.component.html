@@ -3,15 +3,38 @@
     <div class="sidebar-wrapper">
       <div class="logo"><a [routerLink]="['studlist']" class="simple-text">БелМАПО</a></div>
       <ul class="nav">
-        <li [ngClass]="{'active': selectedPage.selectedPage == 1}"><a (click)="selectPage(1)" routerLink="studlist"> <i class="pe-7s-home"></i>
+      <li [ngClass]="{'active': selectedPage.selectedPage == 1}"><a (click)="selectPage(1)" routerLink="studlist"> <i class="pe-7s-home"></i>
           <p>Главная</p></a></li>
-      <li [ngClass]="{'active': selectedPage.selectedPage == 2}"><a (click)="selectPage(2)" routerLink="list"> <i class="pe-7s-note2"></i>
+      <li [ngClass]="{'active': selectedPage.selectedPage == 2}"><a (click)="selectPage(2)" *ngIf="currentUser.is_cathedra != 1" routerLink="list"> <i class="pe-7s-note2"></i>
           <p>Реестр врачей</p></a></li>
-      <li [ngClass]="{'active': selectedPage.selectedPage == 4}" *ngIf="currentUser.is_cathedra == 0"><a (click)="selectPage(4)" routerLink="reports"> <i class="pe-7s-news-paper"></i>
+      <!-- <li [ngClass]="{'active': selectedPage.selectedPage == 3}"><a (click)="selectPage(3)" routerLink="addDoctor"> <i class="pe-7s-add-user"></i>
+          <p>Зачислить</p></a></li> -->
+      <li [ngClass]="{'active': selectedPage.selectedPage == 4}" *ngIf="currentUser.is_cathedra != 1"><a (click)="selectPage(4)" routerLink="reports"> <i class="pe-7s-news-paper"></i>
           <p>Отчёты</p></a></li>
-      <li [ngClass]="{'active': selectedPage.selectedPage == 5}" *ngIf="currentUser.is_cathedra != 0"><a (click)="selectPage(5)" routerLink="orders"> <i class="pe-7s-like2"></i>
-          <p>Приказы</p></a></li>
-      </ul>
+      <li [ngClass]="{'active': selectedPage.selectedPage == 5}" *ngIf="currentUser.is_cathedra != 1">
+        <a (click)="selectPage(5)" routerLink="orders"> 
+          <i class="pe-7s-like2"></i>
+          <p>Приказы</p>
+        </a>
+      </li>
+      <li [ngClass]="{'active': selectedPage.selectedPage == 7}" *ngIf="currentUser.is_cathedra != 0">
+        <a (click)="selectPage(7)" routerLink="orders"> 
+          <i class="pe-7s-file"></i>
+          <p>Ведомости</p>
+        </a>
+      </li>
+      <li [ngClass]="{'active': selectedPage.selectedPage == 6}" *ngIf="currentUser.is_cathedra == undefined" dropdown>
+        <a href dropdownToggle (click)="false">
+          <i class="pe-7s-server"></i>
+          <p>База данных</p>
+        </a>
+        <ul *dropdownMenu class="dropdown-menu">
+          <li *ngFor="let table of tables">
+            <a class="dropdown-item" [routerLink]="['table/', table]">{{global.tablesLabel.get(table)}}</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
     </div>
     <div style="background-image: url(assets/img/sidebar-4.jpg)" class="sidebar-background"></div>
   </div>

@@ -6,7 +6,7 @@ import { Global } from '../model/global.class';
 @Component({
 	selector: 'menu',
 	templateUrl: './menu.component.html',
-	styleUrls: ["../../css/pe-icon-7-stroke.css"],
+	styleUrls: ["../../css/pe-icon-7-stroke.css", "./menu.component.css"],
 	providers: [GlobalParamsService, DatabaseService]
 })
 

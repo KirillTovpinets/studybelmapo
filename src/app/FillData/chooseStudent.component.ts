@@ -87,6 +87,7 @@ export class ChooseStudentComponent implements OnInit {
 	enteredStudents: any[] = [];
 
 	items: any[] = [];
+	infoIsChecked: boolean = false;
 	ngOnInit() {
 		this.getList.getList(30, this.offset, "all").then(response =>{
 			try{
@@ -123,9 +124,7 @@ export class ChooseStudentComponent implements OnInit {
 			this.modalService.hide(2);
 			this.modalService.hide(1);
 			for (var i = 0; i < this.students.length; i++) {
-				console.log(this.students[i].id == this.selectedPerson.id);
 				if(this.students[i].id == this.selectedPerson.id){
-					console.log(this.students[i].id);
 					this.enteredStudents.push(this.students[i]);
 					this.students.splice(i, 1);
 					this.notify.addSuccess("Слушатель зачислен");
@@ -133,7 +132,6 @@ export class ChooseStudentComponent implements OnInit {
 				}
 			}
 			for (var i = 0; i < this.searchResult.length; i++) {
-				console.log(this.searchResult[i].id == this.selectedPerson.id);
 				if(this.searchResult[i].id == this.selectedPerson.id){
 					console.log(this.searchResult[i].id);
 					this.enteredStudents.push(this.searchResult[i]);
@@ -148,15 +146,18 @@ export class ChooseStudentComponent implements OnInit {
 		this.personalInfo.saveChanges(person).then(data => console.log(data));
 	}
 	personInfo(): void{
+		this.infoIsChecked = true;
 		var id = this.selectedPerson.id;
-		if (localStorage.getItem("person-" + id) !== null) {
+		var person = JSON.parse(localStorage.getItem("person-" + id));
+		if (person != null && person.personal !== null) {
 			this.isClicked = true;
-			var person = JSON.parse(localStorage.getItem("person-" + id));
+			console.log(localStorage);
 			this.showInfo.ShowPersonalInfo(person, 2, true);
 			this.isClicked = false;
 		}else{
 			this.isClicked = true;
 			this.personalInfo.getInfo(id.toString(), true).then(data => {
+				console.log(data._body);
 				var person = Object.assign(new Person(), data.json());
 				localStorage.setItem("person-" + id, JSON.stringify(data.json()));
 				this.showInfo.ShowPersonalInfo(person, 2, true);

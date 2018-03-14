@@ -3,6 +3,9 @@
   <p class="category">Всего {{ totalData }} записей</p>
 </div>
 <div class="content">
+	<div class="alert alert-warning" *ngIf="!isLoading && content.length == 0">
+		<p>Таблица пуста</p>
+	</div>
 	<preloader *ngIf="isLoading"></preloader>
 	<nav aria-label="Pagination" *ngIf="!isLoading">
 		<ul class="pagination justify-content-center d-flex">
@@ -19,37 +22,49 @@
 			</li>
 		</ul>
 	</nav>
-	<table class="table table-hover" *ngIf="!isLoading">
+	<table class="table table-hover" *ngIf="!isLoading && content.length != 0">
 	    <thead>
 	        <tr>
-	            <th *ngFor="let field of fields" align="center"> {{ field }}</th>
+	            <th *ngFor="let field of fields" align="center"> {{ field.name }}</th>
 	        </tr>
 	    </thead>
 	    <tbody>
 	    	<tr *ngFor="let row of content">
-	    		<td *ngFor="let field of fields" (mouseenter)="Details(row[field], field)" [tooltip]="details"> 
-	    			<input type="text" name="" value="{{ row[field] }}" (change)="setChangedField(field)" class="form-control" [(ngModel)]="row[field]" [attr.disabled]="edit && field != 'id' ? null : ''">
+	    		<td *ngFor="let field of fields; index as i" (mouseenter)="Details(row[field.name], field.name)" [tooltip]="details" [ngClass]="{'setWidth' : row.edit }"> 
+	    			<p>{{  !isDate(row[field.name]) ? (row[field.name]) : (row[field.name] | date: "yyyy-MM-dd") }}</p>
+	    			<input #newValue="ngModel" *ngIf="row.edit && field.name != 'id' && field.isDate"  required type="text" [(ngModel)]="row[field.name]" #NewValueDp="bsDatepicker" [bsConfig]="global.bsConfig" (bsValueChange)="setCorrectDate(row[field.name], row, field)" bsDatepicker name="{{field.name}}" class="date-picker form-control">
+	    			<input type="text" 
+	    			*ngIf="row.edit && field.name != 'id' && !field.isDate" 
+	    			name="{{field.name}}" 
+	    			auto-complete 
+	    			[source]="sources[field.name]" 
+	    			value="{{ row[field.name] }}" 
+	    			[list-formatter]="DropdownListList"
+	    			[value-formatter]="DropdownListValue" 
+	    			(change)="setChangedField(field.name)" 
+	    			class="form-control" 
+	    			[(ngModel)]="row[field.name]">
 	    		</td>
-	    		<td class="text-right" *ngIf="!edit">
-	    			<button class="btn btn-warning" (click)="EditAction()">Редактировать</button>
+	    		<td class="text-right" *ngIf="!row.edit">
+	    			<button class="btn btn-warning" (click)="EditAction(row)">Редактировать</button>
 	    			<button class="btn btn-danger" (click)="DeleteRow(row)">Удалить</button>
 	    		</td>
-	    		<td class="text-right" *ngIf="edit">
+	    		<td class="text-right" *ngIf="row.edit">
 	    			<button class="btn btn-success" (click)="ConfirmChanges(row)">Сохранить</button>
-	    			<button class="btn btn-default" (click)="EditAction()">Отмена</button>
+	    			<button class="btn btn-default" (click)="EditAction(row)">Отмена</button>
 	    		</td>
 	    	</tr>
 	    	<tr *ngFor="let newRow of newData">
 	    		<td *ngFor="let field of fields"> 
-	    			<input type="text" name="" class="form-control" [(ngModel)]="newRow[field]">
+	    			<input *ngIf="field.name != 'id'" type="text" name="" class="form-control" [(ngModel)]="newRow[field.name]">
 	    		</td>
 	    		<td class="text-right">
 	    			<button class="btn btn-success" (click)="ConfirmAdd(newRow)">Сохранить</button>
-	    			<button class="btn btn-default" (click)="EditAction()">Удалить</button>
+	    			<button class="btn btn-default" (click)="CanselAdd(newRow)">Отмена</button>
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<td colspan="5">
+	    		<td [attr.colspan]="fields.length + 1">
 	    			<button class="btn btn-success btn-block" (click)="AddRow()">Добавить данные</button>
 	    		</td>
 	    	</tr>

@@ -433,39 +433,39 @@ export class AddStudentComponent implements OnInit{
 				if (response._body == "Exist") {
 					this.alreadyExist = this.modal.show(this.exist, {class: "modal-md"});
 				}else if(response._body == "Not exist"){
-					var id = this.newPerson.personal.insurance_number;
-					var gender = Number(id.slice(0,1));
-					if (gender == 1 || gender == 3 || gender == 5) {
-						this.newPerson.personal.isMale = true;
-					}else{
-						this.newPerson.personal.isMale = false;
-					}
-					var century = 0;
-					if (gender == 1 || gender == 2) {
-						century = 1800;
-					}else if(gender == 3 || gender == 4){
-						century = 1900;
-					}else if(gender == 5 || gender == 6){
-						century = 2000;
-					}
+					// var id = this.newPerson.personal.insurance_number;
+					// var gender = Number(id.slice(0,1));
+					// if (gender == 1 || gender == 3 || gender == 5) {
+					// 	this.newPerson.personal.isMale = true;
+					// }else{
+					// 	this.newPerson.personal.isMale = false;
+					// }
+					// var century = 0;
+					// if (gender == 1 || gender == 2) {
+					// 	century = 1800;
+					// }else if(gender == 3 || gender == 4){
+					// 	century = 1900;
+					// }else if(gender == 5 || gender == 6){
+					// 	century = 2000;
+					// }
 
-					var dayBth = Number(id.slice(1,3));
-					var monthBth = Number(id.slice(3,5));
-					var yearBth = Number(id.slice(5,7));
-					var fullyear = century + yearBth;
-					var birthdayDate = new Date(fullyear, monthBth - 1, dayBth);
-					this.newPerson.personal.birthdayDate = birthdayDate;
-					var region = id.slice(7,8);
-					var citizenship = id.slice(11,13);
-					if (citizenship == "PB" || citizenship == "РВ") {
-						for(let ctr of this.personal_cityzenships){
-							console.log(ctr);
-							if (ctr.id == 5) {
-								this.newPerson.personal.cityzenship = ctr;
-								break;
-							}
-						}
-					}
+					// var dayBth = Number(id.slice(1,3));
+					// var monthBth = Number(id.slice(3,5));
+					// var yearBth = Number(id.slice(5,7));
+					// var fullyear = century + yearBth;
+					// var birthdayDate = new Date(fullyear, monthBth - 1, dayBth);
+					// this.newPerson.personal.birthdayDate = birthdayDate;
+					// var region = id.slice(7,8);
+					// var citizenship = id.slice(11,13);
+					// if (citizenship == "PB" || citizenship == "РВ") {
+					// 	for(let ctr of this.personal_cityzenships){
+					// 		console.log(ctr);
+					// 		if (ctr.id == 5) {
+					// 			this.newPerson.personal.cityzenship = ctr;
+					// 			break;
+					// 		}
+					// 	}
+					// }
 
 					this.activateTab = true;
 					setTimeout(() => {
@@ -510,5 +510,77 @@ export class AddStudentComponent implements OnInit{
   				this.personal_cities.push(city);
   			}
   		}
+  	}
+  	createMaskHome($event){
+  		if ($event.key == "Backspace") {
+  			return;
+  		}
+  		if (this.newPerson.personal.tel_number_home[this.newPerson.personal.tel_number_home.length - 1] == ')' ||
+  			this.newPerson.personal.tel_number_home[this.newPerson.personal.tel_number_home.length - 1] == '-') {
+  			return;
+  		}
+  		if (this.newPerson.personal.tel_number_home.length == 3) {
+  			this.newPerson.personal.tel_number_home += ")";
+  		}
+  		if (this.newPerson.personal.tel_number_home.length == 7 ||
+  			this.newPerson.personal.tel_number_home.length == 10) {
+  			this.newPerson.personal.tel_number_home += "-";
+  		}
+  	}
+  	NumberStartHome(){
+  		if (this.newPerson.personal.tel_number_home != undefined) {
+  			return;
+  		}
+  		this.newPerson.personal.tel_number_home = "(";
+  	}
+
+  	createMaskWork($event){
+  		if ($event.key == "Backspace") {
+  			return;
+  		}
+  		if (this.newPerson.personal.tel_number_work[this.newPerson.personal.tel_number_work.length - 1] == ')' ||
+  			this.newPerson.personal.tel_number_work[this.newPerson.personal.tel_number_work.length - 1] == '-') {
+  			return;
+  		}
+  		if (this.newPerson.personal.tel_number_work.length == 3) {
+  			this.newPerson.personal.tel_number_work += ")";
+  		}
+  		if (this.newPerson.personal.tel_number_work.length == 7 ||
+  			this.newPerson.personal.tel_number_work.length == 10) {
+  			this.newPerson.personal.tel_number_work += "-";
+  		}
+  	}
+  	NumberStartWork(){
+  		if (this.newPerson.personal.tel_number_work != undefined) {
+  			return;
+  		}
+  		this.newPerson.personal.tel_number_work = "(";
+  	}
+
+  	createMaskMobile($event){
+  		if ($event.key == "Backspace") {
+  			return;
+  		}
+  		if (this.newPerson.personal.tel_number_mobile[this.newPerson.personal.tel_number_mobile.length - 1] == ')' ||
+  			this.newPerson.personal.tel_number_mobile[this.newPerson.personal.tel_number_mobile.length - 1] == '-') {
+  			return;
+  		}
+  		if (this.newPerson.personal.tel_number_mobile.length == 3) {
+  			this.newPerson.personal.tel_number_mobile += ")";
+  		}
+  		if (this.newPerson.personal.tel_number_mobile.length == 7 ||
+  			this.newPerson.personal.tel_number_mobile.length == 10) {
+  			this.newPerson.personal.tel_number_mobile += "-";
+  		}
+  	}
+
+  	NumberStartMobile(){
+  		if (this.newPerson.personal.tel_number_mobile != undefined) {
+  			return;
+  		}
+  		this.newPerson.personal.tel_number_mobile = "(";
+  	}
+  	setCorrectDate(){
+  		
   	}
 }

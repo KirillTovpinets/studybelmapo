@@ -5,3 +5,24 @@ input[disabled]{
 	background: none;
 	border: none;
 }
+.input{
+	position: absolute;
+	top: -20px;
+	left: 0;
+}
+.table{
+	width:initial;
+	max-width: initial;
+	margin:0 auto;
+}
+tr{
+	max-height:50px;
+}
+tr td{
+	white-space: nowrap;
+	position: relative;
+}
+
+.setWidth{
+	min-width: 320px;
+}

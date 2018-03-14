@@ -10,7 +10,7 @@ export class Global {
   	private _tablesLabel: Map<string, string>; 
 	constructor(){
 		this.locale = "ru";
-		this.bsConfig = Object.assign({}, { containerClass: "theme-blue", locale: this.locale });
+		this.bsConfig = Object.assign({}, { containerClass: "theme-blue", locale: this.locale, dateInputFormat: 'DD.MM.YYYY' });
 		this._bsValue= new Date();
 		this._minDate= new Date(1900, 1, 1);
 		this._maxDate= new Date();

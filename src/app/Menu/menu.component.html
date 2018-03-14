@@ -29,7 +29,7 @@
         </a>
         <ul *dropdownMenu class="dropdown-menu">
           <li *ngFor="let table of tables">
-            <a class="dropdown-item" [routerLink]="['table/', table]">{{global.tablesLabel.get(table)}}</a>
+            <a class="dropdown-item" [routerLink]="['table/', table]">{{ table }}</a>
           </li>
         </ul>
       </li>

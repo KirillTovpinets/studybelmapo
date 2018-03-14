@@ -113,6 +113,11 @@
 							$value[$keyIn] = $newName;
 							$response[$key] = $value;
 						}
+						continue;
+					}
+					if (!is_numeric($newValue)) {
+						$value[$keyIn] = $newValue;
+						$response[$key] = $value;
 					}
 				}
 			}

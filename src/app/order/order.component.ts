@@ -41,6 +41,7 @@ export class OrderComponent implements OnInit{
   	};
   	message: string = "";
   	courses: any[] = [];
+  	filename: string = "";
   	currentUser = JSON.parse(localStorage.getItem("currentUser"));
 	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: this.globalParams.locale, dateInputFormat: 'DD.MM.YYYY' });
 	modalRef: BsModalRef;
@@ -81,9 +82,11 @@ export class OrderComponent implements OnInit{
 		switch (flag) {
 			case 2:
 				this.modalRef = this.modal.show(this.cert, {class: 'modal-md'});
+				this.filename = "Для подписи свидетельств";
 				break;
 			case 3:
 				this.modalRef = this.modal.show(this.examlist, {class: 'modal-md'});
+				this.filename = "Ведомость собеседования";
 				break;
 			default:
 				// code...
@@ -102,13 +105,12 @@ export class OrderComponent implements OnInit{
 			return;
 		}
 		if (this.data.examDate != undefined) {
-			console.log(this.data.examDate);
 			this.data.exam_date = this.data.examDate.getDate() + "." + this.data.examDate.getMonth() + "." + this.data.examDate.getFullYear();
 		}
 		this.makeOrderService.create(this.data).then(data => {
             var blob = new Blob([data._body], {type: 'application/vnd.msword'});
             var objectUrl = URL.createObjectURL(blob);   
-            var filename = "doc.doc";
+            var filename = this.filename + ".doc";
             var a = document.createElement("a");
             a.href = objectUrl;
             a["download"] = filename;
