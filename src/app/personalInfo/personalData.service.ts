@@ -25,4 +25,7 @@ export class PersonalDataService{
 	deduct(data:any): Promise<any>{
 		return this.http.post("assets/php/deduct.php", data).toPromise();		
 	}
+	deductBefore(data:any): Promise<any>{
+		return this.http.post("assets/php/deductBefore.php", data).toPromise();		
+	}
 }

@@ -118,6 +118,7 @@ export class ChooseStudentComponent implements OnInit {
 	}
 	setLastInfo(template:TemplateRef<any>):void{
 		this.setLastInfoModal = this.modalService.show(template, {class: 'modal-md'});
+		this.infoIsChecked = false;
 	}
 	save():void{
 		this.saveNew.save(this.selectedPerson, this.course).then(data =>{
@@ -146,7 +147,6 @@ export class ChooseStudentComponent implements OnInit {
 		this.personalInfo.saveChanges(person).then(data => console.log(data));
 	}
 	personInfo(): void{
-		this.infoIsChecked = true;
 		var id = this.selectedPerson.id;
 		var person = JSON.parse(localStorage.getItem("person-" + id));
 		if (person != null && person.personal !== null) {
@@ -164,6 +164,7 @@ export class ChooseStudentComponent implements OnInit {
 				this.isClicked = false;
 			})
 		}
+		this.infoIsChecked = true;
 	}
 	reject(): void{
 		this.modalService.hide(1);

@@ -48,6 +48,9 @@ export class StudListComponent implements OnInit{
 	currentUser: any;
 	cathedraClass: string = "panel-default";
 	deducts:number;
+	ArchiveIsLoaded: boolean = false;
+	archive: any[] = [];
+	ArchiveYearIsLoaded: boolean = false;
 	constructor(private info: InfoService,
 				private getList: CurrentCourcesListService,
 				private dataSrv: PersonalDataService,
@@ -62,6 +65,7 @@ export class StudListComponent implements OnInit{
 			this.info.getInfo("getStat").then(data => this.faculties = data.json().data);
 		}else{
 			this.getList.get().then(data => {
+				console.log(data._body);
 				try{
 					this.courseList = data.json();
 					var today = new Date();
@@ -118,6 +122,37 @@ export class StudListComponent implements OnInit{
 					return;
 				}
 			}
+		}
+	}
+	getArchive(){
+		this.getList.getArchive().then(data => {
+			try{
+				this.ArchiveIsLoaded = true;
+				this.archive = data.json();
+			}catch(e){
+				console.log(e);
+				console.log(data._body);
+			}
+		})
+	}
+	DownloadInfo(year){
+		this.ArchiveYearIsLoaded = false;
+		let data = JSON.parse(localStorage.getItem('archive-' + year));
+		if (data !== null) {
+			this.archive[year] = data;
+			this.ArchiveYearIsLoaded = true;
+		}else{
+			this.getList.getArchiveByYear(year).then(data => {
+				this.ArchiveYearIsLoaded = false;
+				try{
+					this.archive[year] = data.json();
+					localStorage.setItem("archive-" + year, JSON.stringify(data.json()));
+				}catch(e){
+					console.log(e);
+					console.log(data._body);
+				}
+				this.ArchiveYearIsLoaded = true;
+			})
 		}
 	}
 }

@@ -9,12 +9,13 @@
             <th>Дата рождения</th>
             <th>Статус</th>
             <th></th>
-            <th>Действия</th>
+            <th>Номер документа</th>
+            <th colspan="2">Действия</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngIf="course.StudList.length == 0" class="no-hover">
-            <td colspan="9" align="center">
+            <td colspan="11" align="center">
                 <div class="alert alert-warning">
                     <p>Список пуст</p>
                 </div>
@@ -28,22 +29,32 @@
                 <td>{{ person.name }}</td>
                 <td>{{ person.patername }}</td>
                 <td>{{ person.birthday | date: "dd.MM.yyyy"}}</td>
-                <td [ngClass]="{'success': person.Status == 2, 'danger': person.Status == 3}">
+                <td [ngClass]="{'success': person.Status == 2, 'danger': person.Status == 3 || person.Status == 4}">
                     <span *ngIf="person.Status == 1">Прибыл</span>
                     <span *ngIf="person.Status == 2">Зачислен</span>
                     <span *ngIf="person.Status == 3">Отчислен</span>
+                    <span *ngIf="person.Status == 4">Отчислен досрочно</span>
                 </td>
                 <td>
                     <span class="pe-7s-piggy" *ngIf="person.Dic_count != ''"></span>
                 </td>
                 <td>
-                    <button class="btn btn-danger btn-block" (click)="Deduct(person, $event)" *ngIf="course.class == 1" tooltip="Создать свидетельство об окончании">Отчислить</button>
-                    <button class="btn btn-danger btn-block" (click)="Deduct(person, $event)" *ngIf="course.class == 2" tooltip="Отчислить слушателя с курса">Отчислить досрочно</button>
+                    <input class="form-control" type="text" (click)="PreventParentEvent($event)" (keyup)="StartTyping($event, person)" name="docNumber" [(ngModel)]="person.DocNumber" [attr.disabled]="person.change ? null : ''"/>
+                </td>
+                <td>
+                    <button class="btn btn-success btn-block" *ngIf="person.hasChanges" (click)="SaveChanges($event, person)">Сохранить</button>
+                    <button class="btn btn-warning btn-block" *ngIf="!person.hasChanges && !person.change" (click)="EditAction($event, person)">Редактировать</button>
+                    <button class="btn btn-info btn-block" *ngIf="!person.hasChanges && person.change" (click)="EditAction($event, person)">Отмена</button>
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-block" *ngIf="person.hasChanges" (click)="CancelEdit($event, person)">Отмена</button>
+                    <button class="btn btn-danger btn-block" (click)="Deduct(person, $event)" *ngIf="!person.hasChanges && (course.class == 1 || person.Status == 3)" tooltip="Создать свидетельство об окончании">Отчислить</button>
+                    <button class="btn btn-danger btn-block" (click)="DeductBeforeEnd(person, $event)" *ngIf="!person.hasChanges && course.class == 2 && person.Status != 3" tooltip="Отчислить слушателя с курса">Отчислить досрочно</button>
                 </td>
             </tr>
         </ng-container>   
-        <tr class="button">
-            <td colspan="9">
+        <tr class="button" *ngIf="!disableEnter">
+            <td colspan="11">
                 <button class="btn btn-success btn-block" [routerLink]="['../addDoctor/chooseStudent', course.id]" tooltip="Зачислить нового слушателя на этот курс">Зачислить</button>
             </td>
         </tr>
@@ -58,6 +69,15 @@
         </div>
     </div>
 </ng-template>
+<ng-template #sureBeforeEnd>
+    <div class="modal-body text-center">
+        <p>Вы уверены, что хотите досрочно отчислить этого слушателя?</p>
+        <div>
+            <button class="btn btn-success" (click)="YesBefore()">Да</button>
+            <button class="btn btn-danger" (click)="No()">Нет</button>
+        </div>
+    </div>
+</ng-template>
 <ng-template #DeductInfo>
     <div class="modal-body row">
         <div class="col-lg-12 col-md-12">
@@ -65,19 +85,45 @@
                 <div class="header"><h4>Внесите данные отчисления</h4></div>
                 <div class="content row">
                     <form (ngSubmit)="deductForm.valid && DeductConfirm()" #deductForm="ngForm" novalidate>
-                        <div class="form-group col-lg-4 col-md-4">
+                        <div class="form-group col-lg-6 col-md-6">
                             <label>Дата отчисления</label>
                             <input [minDate]="global.minDate" [maxDate]="global.maxDate" #RetrainingDp="bsDatepicker" [bsConfig]="global.bsConfig" bsDatepicker [(ngModel)]="certificate.DateGetDate" required name="sertificate_start" class="date-picker form-control">
                         </div>
-                        <div class="form-group col-lg-4 col-md-4">
+                        <div class="form-group col-lg-6 col-md-6">
                             <label>Оценка</label>
                             <select *ngIf="marks.length !== 0" class="form-control" name="mark" [(ngModel)]="certificate.mark" required>
                                 <option *ngFor="let mark of marks" value="{{ mark.id }}">{{ mark.value }}</option>
                             </select>
                         </div>
+                        <div class="form-group col-lg-12 col-md-12 text-center">
+                            <button class="btn btn-success" type="submit">Отчислить</button>
+                            <button class="btn btn-danger" (click)="Cansel()">Отмена</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #DeductBeforeInfo>
+    <div class="modal-body row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="header"><h4>Внесите данные отчисления</h4></div>
+                <div class="content row">
+                    <form (ngSubmit)="deductBeforeForm.valid && DeductBeforeConfirm(deductinfo)" #deductBeforeForm="ngForm" novalidate>
                         <div class="form-group col-lg-4 col-md-4">
-                            <label>Номер документа</label>
-                            <input type="text" class="form-control" required name="docNumber" [(ngModel)]="certificate.docNumber">
+                            <label>Дата отчисления (в приказе)</label>
+                            <input [minDate]="global.minDate" [maxDate]="global.maxDate" #RetrainingDp="bsDatepicker" [bsConfig]="global.bsConfig" bsDatepicker [(ngModel)]="deductinfo.DateGetDate" required name="sertificate_start" class="date-picker form-control">
+                        </div>
+                        <div class="form-group col-lg-4 col-md-4">
+                            <label>Номер приказа</label>
+                            <input type="text" name="orderNumber" [(ngModel)]="deductinfo.orderNumber" class="form-control">
+                        </div>
+                        <div class="form-group col-lg-4 col-md-4">
+                            <label>Причина</label>
+                            <input type="text" name="reason" [(ngModel)]="deductinfo.reason" class="form-control">
                         </div>
                         <div class="form-group col-lg-12 col-md-12 text-center">
                             <button class="btn btn-success" type="submit">Отчислить</button>

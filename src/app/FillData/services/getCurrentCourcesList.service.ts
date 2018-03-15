@@ -20,4 +20,7 @@ export class CurrentCourcesListService {
 	getArchiveByYear(year):Promise<any>{
 		return this.http.get("assets/php/getCourseList.php?year=" + year).toPromise();
 	}
+	getArchiveByYearForCathedra(year, cathedra){
+		return this.http.get(`assets/php/getCourseList.php?year=${year}&cathedra=${cathedra}`).toPromise();
+	}
 }

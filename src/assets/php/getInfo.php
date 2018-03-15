@@ -55,9 +55,9 @@
                     $totalCourse = 0;
     				$query = "SELECT arrivals.id AS arrivalId, arrivals.Dic_count, arrivals.Date, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseId";
     				$allStudents = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
-    				if ($allStudents->{"num_rows"} === 0) {
-		    			continue;
-		    		}
+    				// if ($allStudents->{"num_rows"} === 0) {
+		    		// 	continue;
+		    		// }
     				$studentList = array();
     				while ($student = $allStudents->fetch_assoc()) {
     					array_push($studentList, $student);

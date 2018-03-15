@@ -20,6 +20,20 @@ import { CurrentCourcesListService } from '../FillData/services/getCurrentCource
 			background:#888888;
 			color:#fff;
 		}
+		table.legend span{
+			display:block;
+			width:20px;
+			height:20px;
+		}
+		table.legend td{
+			padding:5px;
+		}
+		span.danger{
+			background-color: #f2dede;
+		}
+		span.success{
+			background-color: #dff0d8;	
+		}
 	`]
 })
 

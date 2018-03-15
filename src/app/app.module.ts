@@ -61,6 +61,10 @@ import { AdminComponent } from './admin/admin.component';
 import { HelpComponent } from './help/help.component';
 import { TableContentComponent } from './table-content/table-content.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { ruLocale } from 'ngx-bootstrap/locale';
+
+defineLocale('ru', ruLocale);
 
 @NgModule({
   declarations: [

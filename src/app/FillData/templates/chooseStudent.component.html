@@ -87,6 +87,7 @@
 									</tr>
 								</ng-container>
 								<tr *ngFor="let student of enteredStudents" class="success">
+									<td>{{ enteredStudents.indexOf(student) + 1 }}</td>
 									<td>{{ student.surname }}</td>
 									<td>{{ student.name }}</td>
 									<td>{{ student.patername }}</td>
