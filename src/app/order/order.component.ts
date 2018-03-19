@@ -57,10 +57,8 @@ export class OrderComponent implements OnInit{
   	currentUser = JSON.parse(localStorage.getItem("currentUser"));
 	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: this.globalParams.locale, dateInputFormat: 'DD.MM.YYYY' });
 	modalRef: BsModalRef;
-	archive: any[];
 	isLoaded: boolean = false;
-	ArchiveIsLoaded: boolean = false;
-	ArchiveYearIsLoaded: boolean = false;
+	
 	constructor(private makeOrderService: MakeOrderService,
 				private http: Http,
 				private notify: NotificationsService,
@@ -163,35 +161,7 @@ export class OrderComponent implements OnInit{
 			this.data.selectedCourses.push(course);
 		}
 	}
-	getArchive(){
-		this.courseList.getArchive().then(data => {
-			try{
-				this.ArchiveIsLoaded = true;
-				this.archive = data.json();
-			}catch(e){
-				console.log(e);
-				console.log(data._body);
-			}
-		})
-	}
-	DownloadInfo(year){
-		this.ArchiveYearIsLoaded = false;
-		let data = JSON.parse(localStorage.getItem('archive-' + year));
-		if (data !== null) {
-			this.archive[year] = data;
-			this.ArchiveYearIsLoaded = true;
-		}else{
-			this.courseList.getArchiveByYear(year).then(data => {
-				this.ArchiveYearIsLoaded = false;
-				try{
-					this.archive[year] = data.json();
-					localStorage.setItem("archive-" + year, JSON.stringify(data.json()));
-				}catch(e){
-					console.log(e);
-					console.log(data._body);
-				}
-				this.ArchiveYearIsLoaded = true;
-			})
-		}
+	catchSelected(archSelected: any[]){
+		this.data.selectedCourses = this.data.selectedCourses.concat(archSelected);
 	}
 }

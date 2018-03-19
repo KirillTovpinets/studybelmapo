@@ -16,4 +16,7 @@ export class StudListService {
   saveChanges(person:any): Observable<any>{
   	return this.http.post("assets/php/savePersonArrivalInfo.php", person)
   }
+  deleteRow(person): Observable<any>{
+  	return this.http.post("assets/php/deletePersonArriavlInfo.php", person);
+  }
 }

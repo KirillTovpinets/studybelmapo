@@ -9,20 +9,13 @@
 	$mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die ("Ошибка подключения к базе: " . mysqli_connect_error());
 	$mysqli->query("SET NAMES utf8");
     $response = array();
-	if (isset($_GET["year"])) {
-        $year = $_GET["year"];
-        $query = "SELECT cources_zip.id, cources_zip.Number, cources_zip.name FROM cources_zip WHERE cources_zip.year = $year ORDER BY cources_zip.Number ASC";
+	if (isset($_GET["course"])) {
+        $course = $_GET["course"];
+        $query = "SELECT certificates.DateGet, marks.name AS Mark, personal_card.surname, personal_card.name, personal_card.patername, arrivals_zip.DocNumber FROM certificates INNER JOIN arrivals_zip ON certificates.Arrival_id = arrivals_zip.id INNER JOIN personal_card ON arrivals_zip.PersonId = personal_card.id INNER JOIN marks ON certificates.MarkId = marks.id WHERE arrivals_zip.CourseId = $course";
         $result = $mysqli->query($query) or die ("Ошибка запроса '$query':" . mysqli_error($mysqli));    
         $response = array();
         while ($row = $result->fetch_assoc()) {
             array_push($response, $row);
-        }
-    }else{
-        $query = "SELECT DISTINCT year FROM cources_zip ORDER BY year DESC";
-        $result = $mysqli->query($query) or die ("Ошибка запроса '$query':" . mysqli_error($mysqli));    
-        $response["years"] = array();
-        while ($row = $result->fetch_assoc()) {
-            array_push($response["years"], $row["year"]);
         }
     }
     echo json_encode($response);    

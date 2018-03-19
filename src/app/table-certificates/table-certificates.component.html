@@ -2,63 +2,35 @@
     <thead>
         <tr>
             <th>№</th>
-            <th>Дата приезда</th>
+            <th>Дата выдачи</th>
             <th>Фамилия</th>
             <th>Имя</th>
             <th>Отчество</th>
-            <th>Дата рождения</th>
-            <th>Статус</th>
-            <th></th>
+            <th>Оценка</th>
             <th>Номер документа</th>
             <th colspan="2">Действия</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngIf="course.StudList && course.StudList.length == 0" class="no-hover">
-            <td colspan="11" align="center">
+        <tr *ngIf="inputList && inputList.length == 0" class="no-hover">
+            <td colspan="9" align="center">
                 <div class="alert alert-warning">
                     <p>Список пуст</p>
                 </div>
             </td>
         </tr>
-        <ng-container *ngIf="course.StudList && course.StudList.length != 0">
-            <tr *ngFor="let person of course.StudList; index as i" (click)="showInfo.ShowPersonalInfo(person)">
+        <ng-container *ngIf="inputList && inputList.length != 0">
+            <tr *ngFor="let person of inputList; index as i">
                 <td>{{ i + 1 }}</td>
-                <td>{{ person.Date | date: "dd.MM.yyyy" }}</td>
+                <td>{{ person.DateGet | date: "dd.MM.yyyy" }}</td>
                 <td>{{ person.surname }}</td>
                 <td>{{ person.name }}</td>
                 <td>{{ person.patername }}</td>
-                <td>{{ person.birthday | date: "dd.MM.yyyy"}}</td>
-                <td [ngClass]="{'success': person.Status == 2, 'danger': person.Status == 3 || person.Status == 4}">
-                    <span *ngIf="person.Status == 1">Прибыл</span>
-                    <span *ngIf="person.Status == 2">Зачислен</span>
-                    <span *ngIf="person.Status == 3">Отчислен</span>
-                    <span *ngIf="person.Status == 4">Отчислен досрочно</span>
-                </td>
-                <td>
-                    <span class="pe-7s-piggy" *ngIf="person.Dic_count != ''"></span>
-                </td>
-                <td>
-                    <input class="form-control" type="text" (click)="PreventParentEvent($event)" (keyup)="StartTyping($event, person)" name="docNumber" [(ngModel)]="person.DocNumber" [attr.disabled]="person.change ? null : ''"/>
-                </td>
-                <td>
-                    <button class="btn btn-success btn-block" *ngIf="person.hasChanges" (click)="SaveChanges($event, person)">Сохранить</button>
-                    <button class="btn btn-warning btn-block" *ngIf="!person.hasChanges && !person.change" (click)="EditAction($event, person)">Редактировать</button>
-                    <button class="btn btn-info btn-block" *ngIf="!person.hasChanges && person.change" (click)="EditAction($event, person)">Отмена</button>
-                </td>
-                <td>
-                    <button class="btn btn-danger btn-block" *ngIf="person.hasChanges" (click)="CancelEdit($event, person)">Отмена</button>
-                    <button class="btn btn-danger btn-block" (click)="Deduct(person, $event)" *ngIf="!person.hasChanges && (course.class == 1 || person.Status == 3)" tooltip="Создать свидетельство об окончании">Отчислить</button>
-                    <button class="btn btn-default btn-block" *ngIf="person.Status == 1" (click)="DeleteRow(person, $event)">Удалить</button>
-                    <button class="btn btn-danger btn-block" (click)="DeductBeforeEnd(person, $event)" *ngIf="!person.hasChanges && course.class == 2 && person.Status != 3 && person.Status != 1" tooltip="Отчислить слушателя с курса">Отчислить досрочно</button>
-                </td>
+                <td>{{ person.Mark }}</td>
+                <td>{{ person.DocNumber }}</td>
+                <td colsnap="2"></td>
             </tr>
         </ng-container>   
-        <tr class="button" *ngIf="!disableEnter">
-            <td colspan="11">
-                <button class="btn btn-success btn-block" [routerLink]="['../addDoctor/chooseStudent', course.id]" tooltip="Зачислить нового слушателя на этот курс">Зачислить</button>
-            </td>
-        </tr>
     </tbody>
 </table>
 <ng-template #sure>

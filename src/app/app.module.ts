@@ -63,6 +63,8 @@ import { TableContentComponent } from './table-content/table-content.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ruLocale } from 'ngx-bootstrap/locale';
+import { ArchiveComponent } from './archive/archive.component';
+import { TableCertificatesComponent } from './table-certificates/table-certificates.component';
 
 defineLocale('ru', ruLocale);
 
@@ -105,7 +107,9 @@ defineLocale('ru', ruLocale);
     AdminComponent,
     HelpComponent,
     TableContentComponent,
-    PaginationComponent
+    PaginationComponent,
+    ArchiveComponent,
+    TableCertificatesComponent
   ],
   imports: [
     BrowserModule,

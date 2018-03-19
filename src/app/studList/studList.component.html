@@ -59,31 +59,7 @@
           </div>
         </tab>
         <tab heading="Архив" (select)="getArchive()">
-          <div class="content table-responsive table-full-width">
-            <preloader *ngIf="!ArchiveIsLoaded"></preloader> 
-            <accordion *ngIf="archive">
-              <accordion-group *ngFor="let year of archive.years" (isOpenChange)="DownloadInfo(year)">
-                <div accordion-heading>
-                  {{ year }}
-                </div>
-                <div>
-                  <preloader *ngIf="!ArchiveYearIsLoaded"></preloader>
-                  <table class="table table-hover table-striped">
-                    <thead>
-                      <th>Номер</th>
-                      <th>Название</th>
-                    </thead>
-                    <tbody>
-                      <tr class="clickable-row" *ngFor="let course of archive[year]">
-                        <td class="uniqueId">{{course.Number}}</td>
-                        <td>{{ course.name }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </accordion-group>
-            </accordion>
-          </div>
+          <archive></archive>
         </tab>
       </tabset>
         <!-- <tab heading="Добавить курс">
@@ -138,9 +114,9 @@
       </ng-container>
     <ng-container *ngIf="currentUser.is_cathedra == 1" #courseLists>
       <tabset>
-        <tab heading="Список курсов">
+        <tab heading="Действующие">
           <preloader  *ngIf="isLoading"></preloader>
-          <div class="content table-responsive table-full-width" *ngIf="courseList.length !== 0 && !isLoading">
+          <div class="content table-responsive table-full-width" *ngIf="currentCourses.length !== 0">
             <table class="table table-striped table-hover">
               <tr>
                 <th>Номер</th>
@@ -148,19 +124,21 @@
                 <th>Начало</th>
                 <th>Конец</th>
                 <th>Набор</th>
+                <th>Зачислено</th>
                 <th>Инфо</th>
               </tr>
-              <ng-container *ngFor="let course of courseList">
-                <tr (click)="showListOfListners(course)" [ngClass]="{'active': course.isOpened, 'danger': course.class === 1, 'success': course.class === 2}">
+              <ng-container *ngFor="let course of currentCourses">
+                <tr (click)="showListOfListners(course)" [ngClass]="{'active': course.isOpened}">
                     <td>{{course.Number}}</td>
                     <td>{{course.name}}</td>
                     <td>{{course.Start | date: "dd.MM.yy"}}</td>
                     <td>{{course.Finish | date: "dd.MM.yy"}}</td>
                     <td>{{ course.Size }}</td>
+                    <td>{{ course.StudList.length }}</td>
                     <td>{{ course.Notes }}</td>
                 </tr>
                 <tr *ngIf="course.isOpened">
-                  <td colspan="6" class="no-padding">
+                  <td colspan="7" class="no-padding">
                     <table-list [course]="course"></table-list>
                   </td>   
                 </tr>
@@ -171,7 +149,7 @@
             </table>
           </div>
           <div class="content">
-            <div class="alert alert-warning" *ngIf="courseList.length === 0 && !isLoading">
+            <div class="alert alert-warning" *ngIf="currentCourses.length === 0 && !isLoading">
                 <p>Список пуст</p>
             </div>
           </div>
@@ -214,9 +192,9 @@
             </div>
           </div>
         </tab>
-        <tab heading="Действующие">
+        <tab heading="Список курсов-{{ nowYear }}">
           <preloader  *ngIf="isLoading"></preloader>
-          <div class="content table-responsive table-full-width" *ngIf="currentCourses.length !== 0">
+          <div class="content table-responsive table-full-width" *ngIf="courseList.length !== 0 && !isLoading">
             <table class="table table-striped table-hover">
               <tr>
                 <th>Номер</th>
@@ -226,8 +204,8 @@
                 <th>Набор</th>
                 <th>Инфо</th>
               </tr>
-              <ng-container *ngFor="let course of currentCourses">
-                <tr (click)="showListOfListners(course)" [ngClass]="{'active': course.isOpened}">
+              <ng-container *ngFor="let course of courseList">
+                <tr (click)="showListOfListners(course)" [ngClass]="{'active': course.isOpened, 'danger': course.class === 1, 'success': course.class === 2}">
                     <td>{{course.Number}}</td>
                     <td>{{course.name}}</td>
                     <td>{{course.Start | date: "dd.MM.yy"}}</td>
@@ -247,12 +225,12 @@
             </table>
           </div>
           <div class="content">
-            <div class="alert alert-warning" *ngIf="currentCourses.length === 0 && !isLoading">
+            <div class="alert alert-warning" *ngIf="courseList.length === 0 && !isLoading">
                 <p>Список пуст</p>
             </div>
           </div>
         </tab>
-        <tab heading="Предстоящие">
+        <!-- <tab heading="Предстоящие">
           <preloader  *ngIf="isLoading"></preloader>
           <div class="content table-responsive table-full-width" *ngIf="futureCourses.length !== 0">
             <table class="table table-striped table-hover">
@@ -289,6 +267,9 @@
                 <p>Список пуст</p>
             </div>
           </div>
+        </tab> -->
+        <tab heading="Архивчик" (select)="getArchive()">
+          <archive></archive>
         </tab>
       </tabset>
     </ng-container>

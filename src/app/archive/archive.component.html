@@ -1,0 +1,35 @@
+<div class="content table-responsive table-full-width">
+	<accordion *ngIf="archive">
+	<preloader *ngIf="!ArchiveIsLoaded"></preloader> 
+	  <accordion-group *ngFor="let year of archive.years" (isOpenChange)="DownloadInfo(year)">
+	    <div accordion-heading>
+	      {{ year }}
+	    </div>
+	    <div>
+	      <preloader *ngIf="!ArchiveYearIsLoaded"></preloader>
+	      <table class="table table-hover table-striped" *ngIf="selectable">
+	        <thead>
+	          <th>Номер</th>
+	          <th>Название</th>
+	        </thead>
+	        <tbody>
+	          <tr class="clickable-row" *ngFor="let course of archive[year]" (click)="selectCourse(course)" [ngClass]="{'selected': selectedCourses.indexOf(course) !== -1}">
+	            <td class="uniqueId">{{course.Number}}</td>
+	            <td>{{ course.name }}</td>
+	          </tr>
+	        </tbody>
+	      </table>
+	      <accordion *ngIf="!selectable">
+	      	<accordion-group *ngFor="let course of archive[year]" (isOpenChange)="DownloadCourseInfo(course)">
+	      		<div accordion-heading >
+	      			{{ course.Number}} - {{ course.name }}
+	      		</div>
+	      		<div>
+					<table-certificates [certificates]="archive[course]"></table-certificates>
+	      		</div>
+	      	</accordion-group>
+	      </accordion>
+	    </div>
+	  </accordion-group>
+	</accordion>
+</div>

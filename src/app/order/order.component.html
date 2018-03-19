@@ -36,32 +36,8 @@
                     </table>
                   </div>
                 </tab>
-                <tab heading="Архив" (select)="getArchive()">
-                  <div class="content table-responsive table-full-width">
-                    <preloader *ngIf="!ArchiveIsLoaded"></preloader> 
-                    <accordion *ngIf="archive">
-                      <accordion-group *ngFor="let year of archive.years" (isOpenChange)="DownloadInfo(year)">
-                        <div accordion-heading>
-                          {{ year }}
-                        </div>
-                        <div>
-                          <preloader *ngIf="!ArchiveYearIsLoaded"></preloader>
-                          <table class="table table-hover table-striped">
-                            <thead>
-                              <th>Номер</th>
-                              <th>Название</th>
-                            </thead>
-                            <tbody>
-                              <tr class="clickable-row" *ngFor="let course of archive[year]" (click)="selectCourse(course)" [ngClass]="{'selected': data.selectedCourses.indexOf(course) !== -1}">
-                                <td class="uniqueId">{{course.Number}}</td>
-                                <td>{{ course.name }}</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </accordion-group>
-                    </accordion>
-                  </div>
+                <tab heading="Архив">
+                  <archive [selectableRow]="true" (selectedCourses)="catchSelected($event)"></archive>
                 </tab>
               </tabset>
             </div>

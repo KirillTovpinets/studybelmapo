@@ -1,0 +1,5 @@
+.table-striped>tbody>tr.selected,
+.table>tbody>tr.selected>td{
+	background-color: #9368E9 !important;
+	color:#fff;
+}	

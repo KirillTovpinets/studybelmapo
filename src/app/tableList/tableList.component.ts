@@ -121,7 +121,6 @@ export class TableListCopmonent implements OnInit{
 	}
 
 	DeductBeforeConfirm(){
-		console.log(this.deductinfo);
 		this.deductinfo.arrivalId = this.selectedPerson.arrivalId;
 		this.deductinfo.DateGet = this.deductinfo.DateGetDate.toISOString().slice(0,10);
 		this.course.StudList.splice(this.course.StudList.indexOf(this.selectedPerson), 1);
@@ -134,7 +133,8 @@ export class TableListCopmonent implements OnInit{
 		this.modal.hide(1);
 		this.modal.hide(1);
 	}
-	Cansel(){
+	Cansel($event){
+		$event.preventPropaganion();
 		this.modal.hide(1);
 		this.modal.hide(1);
 	}
@@ -169,6 +169,14 @@ export class TableListCopmonent implements OnInit{
 		person.DocNumber = person.temp;
 		person.change = false;
 		person.hasChanges = false;
+	}
+
+	DeleteRow(person, $event){
+		$event.stopPropagation();
+		this.students.deleteRow(person).subscribe(res => {
+			this.course.StudList.splice(this.course.StudList.indexOf(person), 1);
+			this.notify.addSuccess(res._body);
+		})
 	}
 }
 

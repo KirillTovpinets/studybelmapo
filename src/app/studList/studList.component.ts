@@ -51,6 +51,7 @@ export class StudListComponent implements OnInit{
 	ArchiveIsLoaded: boolean = false;
 	archive: any[] = [];
 	ArchiveYearIsLoaded: boolean = false;
+	nowYear: number = new Date().getFullYear();
 	constructor(private info: InfoService,
 				private getList: CurrentCourcesListService,
 				private dataSrv: PersonalDataService,
@@ -65,7 +66,6 @@ export class StudListComponent implements OnInit{
 			this.info.getInfo("getStat").then(data => this.faculties = data.json().data);
 		}else{
 			this.getList.get().then(data => {
-				console.log(data._body);
 				try{
 					this.courseList = data.json();
 					var today = new Date();
