@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CurrentCourcesListService } from '../FillData/services/getCurrentCourcesList.service';
-
+import { NotificationsService } from 'angular4-notify';
 @Component({
   selector: 'archive',
   templateUrl: './archive.component.html',
@@ -15,7 +15,8 @@ export class ArchiveComponent implements OnInit {
 	ArchiveCourseIsLoaded: boolean = false;
 	archive: any[];
 	selectedCourses: any[] = [];
-  constructor(private courseList: CurrentCourcesListService) { }
+  constructor(private courseList: CurrentCourcesListService,
+  				private notify: NotificationsService) { }
 
   ngOnInit() {
   	this.getArchive();
@@ -40,7 +41,6 @@ export class ArchiveComponent implements OnInit {
 			this.ArchiveYearIsLoaded = true;
 		}else{
 			this.courseList.getArchiveByYear(year).then(data => {
-				console.log(data._body);
 				this.ArchiveYearIsLoaded = false;
 				try{
 					this.archive[year] = data.json();
@@ -53,26 +53,29 @@ export class ArchiveComponent implements OnInit {
 			})
 		}
 	}
-	DownloadCourseInfo(course){
-		console.log(course);
-		this.ArchiveCourseIsLoaded = false;
-		let data = JSON.parse(localStorage.getItem('archive-course-' + course.id));
-		if (data !== null) {
-			this.archive[course] = data;
-			this.ArchiveCourseIsLoaded = true;
-		}else{
-			this.courseList.getArchiveByCourse(course.id).then(data => {
-				console.log(data);
-				this.ArchiveCourseIsLoaded = false;
-				try{
-					this.archive[course] = data.json();
-					localStorage.setItem("archive-course-" + course.id, JSON.stringify(data.json()));
-				}catch(e){
-					console.log(e);
-					console.log(data);
-				}
-				this.ArchiveCourseIsLoaded = true;
-			})
+	DownloadCourseInfo(course, $event){
+		course.ArchiveCourseIsLoaded = false;
+		if($event){
+			if (course.id === undefined) {
+				this.notify.addError("Ошибка базы данных. Обратитесь к администратору");
+			}
+			let data = JSON.parse(localStorage.getItem('archive-course-' + course.id));
+
+			if (data !== null && this.archive["course-" + course.id] === undefined) {
+				this.archive["course-" + course.id] = data;
+				course.ArchiveCourseIsLoaded = true;
+			}else{
+				this.courseList.getArchiveByCourse(course.id).then(data => {
+					try{
+						this.archive["course-" + course.id] = data.json();
+						localStorage.setItem("archive-course-" + course.id, JSON.stringify(data.json()));
+						course.ArchiveCourseIsLoaded = true;
+					}catch(e){
+						console.log(e);
+						console.log(data);
+					}
+				})
+			}
 		}
 	}
 	selectCourse(course:any): void{

@@ -95,7 +95,6 @@
 	$response["general"] = $result->fetch_assoc();
 	$response["personal"] = $resultPrivate->fetch_assoc();
 	$response["profesional"] = $resultProf->fetch_assoc();
-
 	$updateData = "SELECT * FROM history_of_changes WHERE personId = $id ORDER BY id ASC";
 	$updateObj = $mysqli->query($updateData) or die ("Error in '$updateData': " . mysqli_error($mysqli));
 	while ($row = $updateObj->fetch_assoc()) {

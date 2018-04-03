@@ -15,6 +15,8 @@
         $result = $mysqli->query($query) or die ("Ошибка запроса '$query':" . mysqli_error($mysqli));    
         $response = array();
         while ($row = $result->fetch_assoc()) {
+            $row["limit"] = 30;
+            $row["offset"] = 0;
             array_push($response, $row);
         }
     }else{

@@ -15,7 +15,6 @@
                     <preloader *ngIf="!isLoaded"></preloader> 
                     <table class="table table-hover table-striped">
                       <thead>
-                        <th>id</th>
                         <th>Номер</th>
                         <th>Название</th>
                         <th>Начало</th>
@@ -23,10 +22,9 @@
                       </thead>
                       <tbody>
                         <tr *ngIf="message !== ''">
-                          <td colspan="5">{{message}}</td>
+                          <td colspan="4">{{message}}</td>
                         </tr>
                         <tr *ngFor="let course of courses" (click)="selectCourse(course)" [ngClass]="{'selected': data.selectedCourses.indexOf(course) !== -1, 'danger': course.class === 1, 'success': course.class === 2}" class="clickable-row" tooltip="Прибыло {{ course.countArr }}  Зачислено {{ course.countEntered }}  Отпучилось {{ course.countGraduated }} Отчислено {{ course.countDeducted }}">
-                          <td>{{ course.id }}</td>
                           <td class="uniqueId">{{ course.Number }} </td>
                           <td>{{ course.name }}</td>
                           <td>{{ course.Start | date: "dd.MM.yyyy"}}</td>

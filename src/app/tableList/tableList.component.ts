@@ -127,7 +127,7 @@ export class TableListCopmonent implements OnInit{
 		this.totalNumber += 1;
 		// this.students.changeTotal(this.totalNumber);
 		this.deductData.deductBefore(this.deductinfo).then(res => {
-			this.notify.addSuccess("Слушатель отчислен досрочно")
+			this.notify.addSuccess("Слушат ель отчислен досрочно")
 			this.onChanges.emit(this.course);
 		});
 		this.modal.hide(1);

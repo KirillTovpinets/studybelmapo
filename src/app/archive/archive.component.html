@@ -20,12 +20,13 @@
 	        </tbody>
 	      </table>
 	      <accordion *ngIf="!selectable">
-	      	<accordion-group *ngFor="let course of archive[year]" (isOpenChange)="DownloadCourseInfo(course)">
+	      	<accordion-group *ngFor="let course of archive[year]" (isOpenChange)="DownloadCourseInfo(course, $event)">
 	      		<div accordion-heading >
 	      			{{ course.Number}} - {{ course.name }}
 	      		</div>
 	      		<div>
-					<table-certificates [certificates]="archive[course]"></table-certificates>
+	      			<preloader *ngIf="!course.ArchiveCourseIsLoaded"></preloader>
+					<table-certificates *ngIf="course.ArchiveCourseIsLoaded === true" [certificates]="archive['course-' + course.id]"></table-certificates>
 	      		</div>
 	      	</accordion-group>
 	      </accordion>

@@ -36,7 +36,6 @@
 			array_push($response, $row);
 		}
 	}
-
 	mysqli_close($mysqli);
 	echo json_encode($response);
 ?>

@@ -151,12 +151,14 @@ export class ChooseStudentComponent implements OnInit {
 		var person = JSON.parse(localStorage.getItem("person-" + id));
 		if (person != null && person.personal !== null) {
 			this.isClicked = true;
+			console.log("localStorage = ");
 			console.log(localStorage);
 			this.showInfo.ShowPersonalInfo(person, 2, true);
 			this.isClicked = false;
 		}else{
 			this.isClicked = true;
 			this.personalInfo.getInfo(id.toString(), true).then(data => {
+				console.log("query");
 				console.log(data._body);
 				var person = Object.assign(new Person(), data.json());
 				localStorage.setItem("person-" + id, JSON.stringify(data.json()));
@@ -189,6 +191,7 @@ export class ChooseStudentComponent implements OnInit {
 		searchValue = searchValue.slice(0, searchValue.length - 1);
 		this.search.searchPerson(searchValue, {personal_card: "1"}).then(data => {
 			try{
+				console.log(data.json());
 				if (data.json().length !== 0) {
 					this.message = "";
 					this.searchResult = data.json();

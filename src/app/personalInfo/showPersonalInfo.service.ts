@@ -48,16 +48,17 @@ export class ShowPersonInfoService {
 			}
 		}
 		person.personal.birthdayDate = new Date(person.personal.birthday);
-		person.profesional.diploma_startDate = new Date(person.profesional.diploma_start);
-
 		copy.personal.birthdayDate = new Date(person.personal.birthday);
-		copy.profesional.diploma_startDate = new Date(person.profesional.diploma_start);
+		if (person.profesional !== null && person.profesional !== undefined) {
+			person.profesional.diploma_startDate = new Date(person.profesional.diploma_start);
+			copy.profesional.diploma_startDate = new Date(person.profesional.diploma_start);
+		}
 
-		if (person.profesional.addCategory_date !== undefined) {
+		if (person.profesional != undefined && person.profesional.addCategory_date !== undefined ) {
 			person.profesional.addCategoryDate = new Date(person.profesional.addCategory_date);
 			copy.profesional.addCategoryDate = new Date(person.profesional.addCategory_date);
 		}
-		if (person.profesional.mainCategory_date !== undefined) {
+		if (person.profesional != undefined && person.profesional.mainCategory_date !== undefined ) {
 			person.profesional.mainCategoryDate = new Date(person.profesional.mainCategory_date);
 			copy.profesional.mainCategoryDate = new Date(person.profesional.mainCategory_date);
 		}
