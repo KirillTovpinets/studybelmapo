@@ -10,14 +10,14 @@ export class LogComponent implements OnInit {
   constructor(private log: LogService) { }
 
   ngOnInit() {
-  	var intervar = setInterval(this.getContent(), 1000);
-  }
-
-  getContent(){
-    console.log("HELLO");
-    this.log.getLog().subscribe(res => {
-      var element = document.querySelector("#content");
-      element.innerHTML = res._body;
-    });
+    let that = this;
+  	setInterval(function(){
+        that.log.getLog().subscribe(res => {
+          var element = document.querySelector("#content");
+          if(element !== null){
+            element.innerHTML = res._body;
+          }
+        });
+    }, 1000)
   }
 }

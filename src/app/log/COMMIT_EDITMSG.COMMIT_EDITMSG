@@ -1,0 +1,702 @@
+add stud number to archive
+
+# --------------
+# Please enter the commit message for your changes. Everything below
+# this paragraph is ignored, and an empty message aborts the commit.
+# Just close the window to accept your message.
+diff --git a/.htaccess b/.htaccess
+index ad70788..69c3546 100644
+--- a/.htaccess
++++ b/.htaccess
+@@ -2,6 +2,6 @@ RewriteEngine On
+ 	RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
+ 	RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d
+ 	RewriteRule ^ - [L]
+-RewriteRule ^ /study/dist/index.html
++RewriteRule ^ /studybelmapo/dist/index.html
+ php_value log_errors "On"
+ php_value error_log /var/log/php_errors.log
+\ No newline at end of file
+diff --git a/index.php b/index.php
+index 5e25299..cd26046 100644
+--- a/index.php
++++ b/index.php
+@@ -1,3 +1,3 @@
+ <?php 
+-	header("Location: /study/dist");
++	header("Location: /studybelmapo/dist");
+ ?>
+\ No newline at end of file
+diff --git a/package-lock.json b/package-lock.json
+index e3b7eb2..5dad17a 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -395,7 +395,7 @@
+       "integrity": "sha1-tXON606He7GxmDX1sHY3+9OYOic="
+     },
+     "angular-material-source": {
+-      "version": "github:angular/material#43474a150f8eefaf561aaff46d735f7062d213b6"
++      "version": "github:angular/material#5320d225ee5ec72153aab9b670cd358c07313d5a"
+     },
+     "angular2-notifications": {
+       "version": "0.7.8",
+diff --git a/package.json b/package.json
+index bba9b87..e7e3bb5 100644
+--- a/package.json
++++ b/package.json
+@@ -5,7 +5,7 @@
+   "scripts": {
+     "ng": "ng",
+     "start": "ng serve",
+-    "build": "ng build -bh /study/dist/ -w",
++    "build": "ng build -bh /studybelmapo/dist/ -w",
+     "test": "ng test",
+     "lint": "ng lint",
+     "e2e": "ng e2e"
+diff --git a/src/app/FillData/chooseStudent.component.ts b/src/app/FillData/chooseStudent.component.ts
+index a43a6d9..da112e3 100644
+--- a/src/app/FillData/chooseStudent.component.ts
++++ b/src/app/FillData/chooseStudent.component.ts
+@@ -170,6 +170,7 @@ export class ChooseStudentComponent implements OnInit {
+ 	}
+ 	reject(): void{
+ 		this.modalService.hide(1);
++		this.infoIsChecked = false;
+ 	}
+ 
+ 	ValueFormatter(data:any): string{
+diff --git a/src/app/FillData/services/getCurrentCourcesList.service.ts b/src/app/FillData/services/getCurrentCourcesList.service.ts
+index c035a1a..f999cc6 100644
+--- a/src/app/FillData/services/getCurrentCourcesList.service.ts
++++ b/src/app/FillData/services/getCurrentCourcesList.service.ts
+@@ -17,13 +17,13 @@ export class CurrentCourcesListService {
+ 	getArchive(): Promise<any>{
+ 		return this.http.get("assets/php/getCourseList.php").toPromise();
+ 	}
+-	getArchiveByYear(year):Promise<any>{
+-		return this.http.get("assets/php/getCourseList.php?year=" + year).toPromise();
++	getArchiveByYear(year, params):Promise<any>{
++		return this.http.get(`assets/php/getCourseList.php?year=${year}&limit=${params.limit}&offset=${params.offset}`).toPromise();
+ 	}
+ 	getArchiveByYearForCathedra(year, cathedra){
+ 		return this.http.get(`assets/php/getCourseList.php?year=${year}&cathedra=${cathedra}`).toPromise();
+ 	}
+-	getArchiveByCourse(course){
+-		return this.http.get(`assets/php/getArchiveInfo.php?course=${course}`).toPromise();
++	getArchiveByCourse(course, params){
++		return this.http.get(`assets/php/getArchiveInfo.php?course=${course}&limit=${params.limit}&offset=${params.offset}`).toPromise();
+ 	}
+ }
+\ No newline at end of file
+diff --git a/src/app/Menu/menu.component.html b/src/app/Menu/menu.component.html
+index 0aba089..b5294d9 100644
+--- a/src/app/Menu/menu.component.html
++++ b/src/app/Menu/menu.component.html
+@@ -33,6 +33,12 @@
+           </li>
+         </ul>
+       </li>
++      <li [ngClass]="{'active': selectedPage.selectedPage == 6}" *ngIf="currentUser.is_cathedra == undefined">
++        <a [routerLink]="['logfile']">
++          <i class="pe-7s-paperclip"></i>
++          <p>Журнал ошибок</p>
++        </a>
++      </li>
+     </ul>
+   </div>
+   <div style="background-image: url(assets/img/sidebar-4.jpg)" class="sidebar-background"></div>
+diff --git a/src/app/app-routing.module.ts b/src/app/app-routing.module.ts
+index fc309f9..c48ead0 100644
+--- a/src/app/app-routing.module.ts
++++ b/src/app/app-routing.module.ts
+@@ -29,6 +29,7 @@ import { ChooseStudentComponent } from './FillData/chooseStudent.component';
+ import { HelpComponent } from './help/help.component';
+ import { AdminComponent } from './admin/admin.component';
+ import { TableContentComponent } from './table-content/table-content.component';
++import { LogComponent } from './log/log.component';
+ const routes: Routes = [
+ 	{ path: 'login', component: LoginComponent },
+ 	{ 
+@@ -37,6 +38,7 @@ const routes: Routes = [
+ 		canActivate: [AuthGuard],
+ 		children: [
+ 			{ path: 'table/:table', component: TableContentComponent},
++			{ path: 'logfile', component: LogComponent},
+ 			{ path: '', redirectTo: 'studlist', pathMatch: 'full' },
+ 			{ path: 'studlist', component: StudListComponent},
+ 			{ path: 'help', component: HelpComponent},
+diff --git a/src/app/app.module.ts b/src/app/app.module.ts
+index e644f8e..83419fe 100644
+--- a/src/app/app.module.ts
++++ b/src/app/app.module.ts
+@@ -9,7 +9,7 @@ import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
+ 
+ import { DragDropDirectiveModule} from "angular4-drag-drop";
+ 
+-import { AccordionModule, ModalModule, TabsModule, BsDatepickerModule, TooltipModule, BsDropdownModule } from 'ngx-bootstrap';
++import { AccordionModule, ModalModule, TabsModule, BsDatepickerModule, TooltipModule, BsDropdownModule, ProgressbarModule  } from 'ngx-bootstrap';
+ // Components
+ import { AppComponent } from './app.component';
+ import { LoginComponent } from './loginform/loginform.component';
+@@ -50,6 +50,7 @@ import { LoginService } from './loginform/login.service';
+ import { CurrentCourcesListService } from './FillData/services/getCurrentCourcesList.service';
+ import { ShowPersonInfoService } from './personalInfo/showPersonalInfo.service';
+ import { ShareService } from './share/share.service';
++import { LogService } from './share/log.service';
+ // Services
+ import { CookieService } from 'ngx-cookie-service';
+ import { GlobalParamsService } from './Globalparams.service';
+@@ -65,6 +66,7 @@ import { defineLocale } from 'ngx-bootstrap/chronos';
+ import { ruLocale } from 'ngx-bootstrap/locale';
+ import { ArchiveComponent } from './archive/archive.component';
+ import { TableCertificatesComponent } from './table-certificates/table-certificates.component';
++import { LogComponent } from './log/log.component';
+ 
+ defineLocale('ru', ruLocale);
+ 
+@@ -109,7 +111,8 @@ defineLocale('ru', ruLocale);
+     TableContentComponent,
+     PaginationComponent,
+     ArchiveComponent,
+-    TableCertificatesComponent
++    TableCertificatesComponent,
++    LogComponent
+   ],
+   imports: [
+     BrowserModule,
+@@ -125,6 +128,7 @@ defineLocale('ru', ruLocale);
+     BrowserAnimationsModule,
+     NotificationsModule,
+     Ng2AutoCompleteModule,
++    ProgressbarModule.forRoot(),
+     BsDropdownModule.forRoot()
+   ],
+   providers: [ CookieService, 
+@@ -136,7 +140,8 @@ defineLocale('ru', ruLocale);
+                CheckAuthService,
+                ShowPersonInfoService,
+                ShareService,
+-               StudListService],
++               StudListService,
++               LogService],
+   entryComponents: [PersonalInfoComponent],
+   bootstrap: [AppComponent]
+ })
+diff --git a/src/app/archive/archive.component.html b/src/app/archive/archive.component.html
+index df2b47a..e791226 100644
+--- a/src/app/archive/archive.component.html
++++ b/src/app/archive/archive.component.html
+@@ -1,11 +1,13 @@
+ <div class="content table-responsive table-full-width">
+ 	<accordion *ngIf="archive">
+ 	<preloader *ngIf="!ArchiveIsLoaded"></preloader> 
+-	  <accordion-group *ngFor="let year of archive.years" (isOpenChange)="DownloadInfo(year)">
++	  <accordion-group *ngFor="let year of archive.years" (isOpenChange)="DownloadInfo(year.year)">
+ 	    <div accordion-heading>
+-	      {{ year }}
++	      {{ year.year }}
++	      <span class="pull-right float-xs-right">{{ year.total }} человек</span>
+ 	    </div>
+ 	    <div>
++	    	<!-- <progressbar [value]="year.totalCourses"></progressbar> -->
+ 	      <preloader *ngIf="!ArchiveYearIsLoaded"></preloader>
+ 	      <table class="table table-hover table-striped" *ngIf="selectable">
+ 	        <thead>
+@@ -20,15 +22,20 @@
+ 	        </tbody>
+ 	      </table>
+ 	      <accordion *ngIf="!selectable">
+-	      	<accordion-group *ngFor="let course of archive[year]" (isOpenChange)="DownloadCourseInfo(course, $event)">
++	      	<accordion-group *ngFor="let course of archive[year.year]" (isOpenChange)="DownloadCourseInfo(course, $event)">
+ 	      		<div accordion-heading >
+ 	      			{{ course.Number}} - {{ course.name }}
++	      			<span class="pull-right float-xs-right">{{ course.total }} человек</span>		
+ 	      		</div>
+ 	      		<div>
+ 	      			<preloader *ngIf="!course.ArchiveCourseIsLoaded"></preloader>
+ 					<table-certificates *ngIf="course.ArchiveCourseIsLoaded === true" [certificates]="archive['course-' + course.id]"></table-certificates>
++					<preloader path="assets/img/Elipsis.gif" *ngIf="course.isLoading"></preloader>
++					<button class="btn btn-block btn-success" (click)="DownloadMore(course)" *ngIf="!course.endOflist && !course.isLoading">Ещё слушатели</button>
+ 	      		</div>
+ 	      	</accordion-group>
++	      	<preloader path="assets/img/Elipsis.gif" *ngIf="year.isLoading"></preloader>
++	      	<button class="btn btn-block btn-success" *ngIf="!year.isLoading" style="margin-top:20px" (click)="DownloadMoreCourses(year)">Ещё курсы</button>
+ 	      </accordion>
+ 	    </div>
+ 	  </accordion-group>
+diff --git a/src/app/archive/archive.component.ts b/src/app/archive/archive.component.ts
+index d74fed8..42ef9b9 100644
+--- a/src/app/archive/archive.component.ts
++++ b/src/app/archive/archive.component.ts
+@@ -1,6 +1,7 @@
+ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+ import { CurrentCourcesListService } from '../FillData/services/getCurrentCourcesList.service';
+ import { NotificationsService } from 'angular4-notify';
++import { LogService } from '../share/log.service';
+ @Component({
+   selector: 'archive',
+   templateUrl: './archive.component.html',
+@@ -16,7 +17,8 @@ export class ArchiveComponent implements OnInit {
+ 	archive: any[];
+ 	selectedCourses: any[] = [];
+   constructor(private courseList: CurrentCourcesListService,
+-  				private notify: NotificationsService) { }
++  				private notify: NotificationsService,
++  				private log: LogService) { }
+ 
+   ngOnInit() {
+   	this.getArchive();
+@@ -28,8 +30,8 @@ export class ArchiveComponent implements OnInit {
+ 				this.ArchiveIsLoaded = true;
+ 				this.archive = data.json();
+ 			}catch(e){
+-				console.log(e);
+-				console.log(data._body);
++				this.log.SendError({page: 'archive', error: e, response: data}).subscribe(res => console.log(res));
++				this.notify.addError("Произошла ошибка. Обратитесь к администратору");
+ 			}
+ 		})
+ 	}
+@@ -37,22 +39,47 @@ export class ArchiveComponent implements OnInit {
+ 		this.ArchiveYearIsLoaded = false;
+ 		let data = JSON.parse(localStorage.getItem('archive-' + year));
+ 		if (data !== null) {
+-			this.archive[year] = data;
++			this.archive[year] = data.splice(0, 30);
+ 			this.ArchiveYearIsLoaded = true;
+ 		}else{
+-			this.courseList.getArchiveByYear(year).then(data => {
++			this.courseList.getArchiveByYear(year, {limit: 30, offset: 0}).then(data => {
+ 				this.ArchiveYearIsLoaded = false;
+ 				try{
+ 					this.archive[year] = data.json();
+ 					localStorage.setItem("archive-" + year, JSON.stringify(data.json()));
+ 				}catch(e){
+-					console.log(e);
+-					console.log(data._body);
++					this.log.SendError({page: 'archive', error: e, response: data}).subscribe(res => console.log(res));
++					this.notify.addError("Произошла ошибка. Обратитесь к администратору");
+ 				}
+ 				this.ArchiveYearIsLoaded = true;
+ 			})
+ 		}
+ 	}
++	DownloadMoreCourses(year){
++		year.isLoading = true;
++		if(year.limit == undefined && year.offset === undefined){
++			year.limit = 30;
++			year.offset = 30;
++		}
++		let data = JSON.parse(localStorage.getItem('archive-' + year.year));
++		if (data.splice(year.offset, year.limit).length !== 0) {
++			this.archive[year.year] = this.archive[year.year].concat(data.splice(year.offset, year.limit));
++			year.offset += 30;
++			year.isLoading = false;
++		}else{
++			this.courseList.getArchiveByYear(year.year, {limit: year.limit, offset: year.offset}).then(data => {
++				year.offset += 30;
++				try{
++					this.archive[year.year] = this.archive[year.year].concat(data.json());
++					localStorage.setItem("archive-" + year.year, JSON.stringify(this.archive[year.year]));
++				}catch(e){
++					this.log.SendError({page: 'archive', error: e, response: data}).subscribe(res => console.log(res));
++					this.notify.addError("Произошла ошибка. Обратитесь к администратору");
++				}
++				year.isLoading = false;
++			})
++		}
++	}
+ 	DownloadCourseInfo(course, $event){
+ 		course.ArchiveCourseIsLoaded = false;
+ 		if($event){
+@@ -62,22 +89,48 @@ export class ArchiveComponent implements OnInit {
+ 			let data = JSON.parse(localStorage.getItem('archive-course-' + course.id));
+ 
+ 			if (data !== null && this.archive["course-" + course.id] === undefined) {
+-				this.archive["course-" + course.id] = data;
++				this.archive["course-" + course.id] = data.slice(0, course.limit);
++				course.offset += 30;
+ 				course.ArchiveCourseIsLoaded = true;
+ 			}else{
+-				this.courseList.getArchiveByCourse(course.id).then(data => {
++				this.courseList.getArchiveByCourse(course.id, {limit: course.limit, offset: course.offset}).then(data => {
+ 					try{
++						course.offset += 30;
+ 						this.archive["course-" + course.id] = data.json();
+ 						localStorage.setItem("archive-course-" + course.id, JSON.stringify(data.json()));
+ 						course.ArchiveCourseIsLoaded = true;
+ 					}catch(e){
+-						console.log(e);
+-						console.log(data);
++						course.endOflist = true;
++						this.log.SendError({page: 'archive', error: e, response: data});
++						this.notify.addError("Произошла ошибка. Обратитесь к администратору");
+ 					}
+ 				})
+ 			}
+ 		}
+ 	}
++	DownloadMore(course){
++		course.isLoading = true;
++		var alreadyHave = JSON.parse(localStorage.getItem('archive-course-' + course.id));
++		var toShow = alreadyHave.splice(course.offset, course.limit);
++		if(toShow.length === 0){
++			this.courseList.getArchiveByCourse(course.id, {limit: course.limit, offset: course.offset}).then(data => {
++				console.log(data);
++				try{
++					course.offset += 30;
++					this.archive["course-" + course.id] = this.archive["course-" + course.id].concat(data.json());
++					localStorage.setItem('archive-course-' + course.id, JSON.stringify(this.archive["course-" + course.id]));
++					course.isLoading = false;
++				}catch(e){
++					console.log(e);
++					console.log(data);
++				}
++			})
++		}else{
++			course.offset += 30;
++			this.archive["course-" + course.id] = this.archive["course-" + course.id].concat(toShow);
++			course.isLoading = false;
++		}
++	}
+ 	selectCourse(course:any): void{
+ 		if (this.selectedCourses.indexOf(course) !== -1) {
+ 			var index = this.selectedCourses.indexOf(course);
+diff --git a/src/app/log/log.component.css b/src/app/log/log.component.css
+new file mode 100644
+index 0000000..e663b9e
+--- /dev/null
++++ b/src/app/log/log.component.css
+@@ -0,0 +1,5 @@
++.error{
++	padding:20px 50px;
++	background-color: #87cb16;
++	margin-bottom: 20px;
++}
+\ No newline at end of file
+diff --git a/src/app/log/log.component.html b/src/app/log/log.component.html
+new file mode 100644
+index 0000000..dd0dc7b
+--- /dev/null
++++ b/src/app/log/log.component.html
+@@ -0,0 +1,5 @@
++<div class="content">
++	<div id="content">
++		<article></article>
++	</div>
++</div>
+diff --git a/src/app/log/log.component.spec.ts b/src/app/log/log.component.spec.ts
+new file mode 100644
+index 0000000..250affe
+--- /dev/null
++++ b/src/app/log/log.component.spec.ts
+@@ -0,0 +1,25 @@
++import { async, ComponentFixture, TestBed } from '@angular/core/testing';
++
++import { LogComponent } from './log.component';
++
++describe('LogComponent', () => {
++  let component: LogComponent;
++  let fixture: ComponentFixture<LogComponent>;
++
++  beforeEach(async(() => {
++    TestBed.configureTestingModule({
++      declarations: [ LogComponent ]
++    })
++    .compileComponents();
++  }));
++
++  beforeEach(() => {
++    fixture = TestBed.createComponent(LogComponent);
++    component = fixture.componentInstance;
++    fixture.detectChanges();
++  });
++
++  it('should create', () => {
++    expect(component).toBeTruthy();
++  });
++});
+diff --git a/src/app/log/log.component.ts b/src/app/log/log.component.ts
+new file mode 100644
+index 0000000..e3ad647
+--- /dev/null
++++ b/src/app/log/log.component.ts
+@@ -0,0 +1,23 @@
++import { Component, OnInit } from '@angular/core';
++import { LogService } from '../share/log.service';
++@Component({
++  selector: 'app-log',
++  templateUrl: './log.component.html',
++  styleUrls: ['./log.component.css']
++})
++export class LogComponent implements OnInit {
++
++  constructor(private log: LogService) { }
++
++  ngOnInit() {
++  	var intervar = setInterval(this.getContent(), 1000);
++  }
++
++  getContent(){
++    console.log("HELLO");
++    this.log.getLog().subscribe(res => {
++      var element = document.querySelector("#content");
++      element.innerHTML = res._body;
++    });
++  }
++}
+diff --git a/src/app/loginform/login.component.css b/src/app/loginform/login.component.css
+index da0374a..bbe4809 100644
+--- a/src/app/loginform/login.component.css
++++ b/src/app/loginform/login.component.css
+@@ -17,7 +17,8 @@
+ .form {
+     z-index: 1;
+     background: #fff;
+-    max-width: 360px;
++    width: 360px;
++    min-height:420px;
+     position: absolute;
+     top:50%;
+     left:50%;
+diff --git a/src/app/loginform/loginform.component.html b/src/app/loginform/loginform.component.html
+index 90dd7a4..b42a3d0 100644
+--- a/src/app/loginform/loginform.component.html
++++ b/src/app/loginform/loginform.component.html
+@@ -1,7 +1,7 @@
+ <angular4-notify-notifications-container></angular4-notify-notifications-container>
+ <div class="full-height">
+     <div class="form">
+-        <preloader *ngIf="isLoged"></preloader>
++        <preloader *ngIf="isLoged" class="preloader"></preloader>
+       <form class="register-form" (ngSubmit)="AddUser(user)" *ngIf="isLoged === false">
+         <h1>БелМАПО</h1>
+         <select [(ngModel)]="user.department" size="10" name="department">
+diff --git a/src/app/loginform/loginform.component.ts b/src/app/loginform/loginform.component.ts
+index 9dac7be..860d71c 100644
+--- a/src/app/loginform/loginform.component.ts
++++ b/src/app/loginform/loginform.component.ts
+@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit{
+ 				localStorage.setItem("currentUser", JSON.stringify(this.logedUser));
+ 				this.loginService.setUserLogedIn();
+ 				this.cookieService.set("Login", "true");
+-				console.log(login.log);
+ 				if (this.logedUser.is_cathedra == null) {
+ 					this.router.navigate(["/admin"]);
+ 				}else{
+@@ -58,8 +57,11 @@ export class LoginComponent implements OnInit{
+ 		.catch(this.handleError);
+ 	}
+ 	ngOnInit(): void {
++		console.log("PRIVET")
+ 		this.loginService.getDepList("cathedras").then(data => {
++			console.log(data);
+ 			try{
++				console.log(data);
+ 				this.cathedras = data.json();
+ 			}catch(e){
+ 				console.log(data._body);
+@@ -68,6 +70,7 @@ export class LoginComponent implements OnInit{
+ 
+ 		this.loginService.getDepList("belmapo_departments").then(data => {
+ 			try{
++				console.log(data);
+ 				this.departments = data.json();
+ 			}catch(e){
+ 				console.log(data._body);
+diff --git a/src/app/preloader/preloader.component.ts b/src/app/preloader/preloader.component.ts
+index 2fa6cb8..5efb0b8 100644
+--- a/src/app/preloader/preloader.component.ts
++++ b/src/app/preloader/preloader.component.ts
+@@ -9,7 +9,21 @@ import { Component, Input } from "@angular/core";
+ 		      <span *ngIf="path === undefined">Идёт загрузка...</span>
+ 		    </div>
+ 		  </div>
+-	`
++	`,
++	styles: [`
++		:host.preloader .preloader-overlay{
++	    height: 100%;
++	    display: table;
++	    width: 100%;
++	}
++
++	:host.preloader .loader{
++	    text-align: center;
++	    width:10%;
++	    margin:0 auto;
++	    display: table-cell;
++	    vertical-align: middle;
++	}`]
+ })
+ 
+ export class PreloaderComponent{
+diff --git a/src/app/share/log.service.ts b/src/app/share/log.service.ts
+new file mode 100644
+index 0000000..251eceb
+--- /dev/null
++++ b/src/app/share/log.service.ts
+@@ -0,0 +1,16 @@
++import { Injectable } from '@angular/core';
++import { Http } from '@angular/http';
++import { Observable } from 'rxjs';
++
++@Injectable()
++export class LogService {
++	
++	constructor(private http: Http) {}
++
++	SendError(data): Observable<any>{
++		return this.http.post("assets/php/log.php", data);
++	}
++	getLog(): Observable<any>{
++		return this.http.get("assets/php/log.php");
++	}
++}
+\ No newline at end of file
+diff --git a/src/app/studList/studList.component.html b/src/app/studList/studList.component.html
+index f3ff16e..337bba8 100644
+--- a/src/app/studList/studList.component.html
++++ b/src/app/studList/studList.component.html
+@@ -164,6 +164,7 @@
+                 <th>Начало</th>
+                 <th>Конец</th>
+                 <th>Набор</th>
++                <th>Отучилось</th>
+                 <th>Инфо</th>
+               </tr>
+               <ng-container *ngFor="let course of oldCourses">
+@@ -173,6 +174,7 @@
+                     <td>{{course.Start | date: "dd.MM.yy"}}</td>
+                     <td>{{course.Finish | date: "dd.MM.yy"}}</td>
+                     <td>{{ course.Size }}</td>
++                    <td>{{ course.StudList.length }}</td>
+                     <td>{{ course.Notes }}</td>
+                 </tr>
+                 <tr *ngIf="course.isOpened">
+diff --git a/src/app/studList/studList.component.ts b/src/app/studList/studList.component.ts
+index e20075a..d7bb3d3 100644
+--- a/src/app/studList/studList.component.ts
++++ b/src/app/studList/studList.component.ts
+@@ -142,7 +142,7 @@ export class StudListComponent implements OnInit{
+ 			this.archive[year] = data;
+ 			this.ArchiveYearIsLoaded = true;
+ 		}else{
+-			this.getList.getArchiveByYear(year).then(data => {
++			this.getList.getArchiveByYear(year, {limit: 0, offset: 0}).then(data => {
+ 				this.ArchiveYearIsLoaded = false;
+ 				try{
+ 					this.archive[year] = data.json();
+diff --git a/src/assets/php/config.php b/src/assets/php/config.php
+index 980cb50..d695e08 100644
+--- a/src/assets/php/config.php
++++ b/src/assets/php/config.php
+@@ -1,13 +1,8 @@
+ <?php
+-	// $host= "localhost";
+-	// $user = "root";
+-	// $passwd = "root";
+-	// $dbname = "study_local";
+-
+ 	$host= "localhost";
+ 	$user = "studybelmapo";
+ 	$passwd = "C7v4E0d1";
+-	$dbname = "study_local";
++	$dbname = "study";
+ 
+ 	const CONNECTIONS = array(
+ 		"CourseId" => "cources",
+diff --git a/src/assets/php/getArchiveInfo.php b/src/assets/php/getArchiveInfo.php
+index 8d6135c..b332281 100644
+--- a/src/assets/php/getArchiveInfo.php
++++ b/src/assets/php/getArchiveInfo.php
+@@ -11,7 +11,16 @@
+     $response = array();
+ 	if (isset($_GET["course"])) {
+         $course = $_GET["course"];
+-        $query = "SELECT certificates.DateGet, marks.name AS Mark, personal_card.surname, personal_card.name, personal_card.patername, arrivals_zip.DocNumber FROM certificates INNER JOIN arrivals_zip ON certificates.Arrival_id = arrivals_zip.id INNER JOIN personal_card ON arrivals_zip.PersonId = personal_card.id INNER JOIN marks ON certificates.MarkId = marks.id WHERE arrivals_zip.CourseId = $course LIMIT 30";
++        $limit = $_GET["limit"];
++        $offset = $_GET["offset"];
++        $forCathedras = "";
++        $forCathedrasConnection = "";
++        if ($logeduser->is_cathedra === 1) {
++            $cathedraId = $logeduser->dep_id;
++            $forCathedras = " AND cathedras.id = $cathedraId";
++            $forCathedrasConnection = "INNER JOIN cathedras ON course";
++        }
++        $query = "SELECT certificates.DateGet, marks.name AS Mark, personal_card.surname, personal_card.name, personal_card.patername, arrivals_zip.DocNumber FROM certificates INNER JOIN arrivals_zip ON certificates.Arrival_id = arrivals_zip.id INNER JOIN personal_card ON arrivals_zip.PersonId = personal_card.id INNER JOIN marks ON certificates.MarkId = marks.id WHERE arrivals_zip.CourseId = $course LIMIT $limit OFFSET $offset ";
+         $result = $mysqli->query($query) or die ("Ошибка запроса '$query':" . mysqli_error($mysqli));    
+         $response = array();
+         while ($row = $result->fetch_assoc()) {
+diff --git a/src/assets/php/getCourseList.php b/src/assets/php/getCourseList.php
+index 56b3df6..3f50c98 100644
+--- a/src/assets/php/getCourseList.php
++++ b/src/assets/php/getCourseList.php
+@@ -10,21 +10,42 @@
+ 	$mysqli->query("SET NAMES utf8");
+     $response = array();
+ 	if (isset($_GET["year"])) {
++        $totalInYear = 0;
+         $year = $_GET["year"];
+-        $query = "SELECT cources_zip.id, cources_zip.Number, cources_zip.name FROM cources_zip WHERE cources_zip.year = $year ORDER BY cources_zip.Number ASC";
++        $limit = $_GET["limit"];
++        $offset = $_GET["offset"];
++        $query = "SELECT cources_zip.id, cources_zip.Number, cources_zip.name FROM cources_zip WHERE cources_zip.year = $year ORDER BY cources_zip.Number ASC LIMIT $limit OFFSET $offset";
+         $result = $mysqli->query($query) or die ("Ошибка запроса '$query':" . mysqli_error($mysqli));    
+         $response = array();
+         while ($row = $result->fetch_assoc()) {
++            $id = $row["id"];
++            $numberQuery = "SELECT COUNT(*) AS total FROM certificates INNER JOIN arrivals_zip ON certificates.Arrival_id = arrivals_zip.id INNER JOIN personal_card ON arrivals_zip.PersonId = personal_card.id INNER JOIN marks ON certificates.MarkId = marks.id WHERE arrivals_zip.CourseId = $id";
++            $numberObj = $mysqli->query($numberQuery);
++            $numberArr = $numberObj->fetch_assoc();
+             $row["limit"] = 30;
+             $row["offset"] = 0;
++            $row["total"] = $numberArr["total"];
+             array_push($response, $row);
+         }
+     }else{
+         $query = "SELECT DISTINCT year FROM cources_zip ORDER BY year DESC";
+         $result = $mysqli->query($query) or die ("Ошибка запроса '$query':" . mysqli_error($mysqli));    
+         $response["years"] = array();
++
++        
++
++
+         while ($row = $result->fetch_assoc()) {
+-            array_push($response["years"], $row["year"]);
++            $year = $row["year"];
++
++            $numberQuery = "SELECT COUNT(*) as total FROM certificates INNER JOIN arrivals_zip ON certificates.Arrival_id = arrivals_zip.id INNER JOIN cources_zip ON arrivals_zip.CourseId = cources_zip.id WHERE cources_zip.year = $year";
++            $numberObj = $mysqli->query($numberQuery);
++            $numberArr = $numberObj->fetch_assoc();
++            $rowPush = array(
++                'year' => $year,
++                'total' => $numberArr["total"]
++            );
++            array_push($response["years"], $rowPush);
+         }
+     }
+     echo json_encode($response);    
+diff --git a/src/assets/php/log.php b/src/assets/php/log.php
+new file mode 100644
+index 0000000..15f26d5
+--- /dev/null
++++ b/src/assets/php/log.php
+@@ -0,0 +1,16 @@
++<?php
++	ini_set("display_errors", 1);
++	$data = json_decode(file_get_contents("php://input"));
++
++	if (empty($data)) {
++		echo file_get_contents("./log.txt");
++		return;
++	}
++	$date= date(DATE_RFC822);
++	$page = $data->page;
++	$error = array($data->error);
++	$response = $data->response->_body;
++	print_r($data);
++	$log = "<article style='background:#1976d2; color:#fff;'>date: $date <br /> page: $page <br /> error: $error <br /> response: $response </article>";
++	file_put_contents('./log.txt', $log, FILE_APPEND);
++?>
+\ No newline at end of file

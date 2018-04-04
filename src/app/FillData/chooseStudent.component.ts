@@ -11,6 +11,7 @@ import { Person } from '../model/person.class';
 import { SaveArrivalService } from './services/saveArrival.service';
 import {NotificationsService} from 'angular4-notify';
 import { ShowPersonInfoService } from "../personalInfo/showPersonalInfo.service";
+import { LogService } from '../share/log.service';
 @Component({
 	templateUrl: './templates/chooseStudent.component.html',
 	styles: [`
@@ -67,6 +68,7 @@ export class ChooseStudentComponent implements OnInit {
 				private dataService: PersonalDataService,
 				private saveNew: SaveArrivalService,
 				private notify: NotificationsService,
+				private log: LogService,
 				private showInfo: ShowPersonInfoService) {}
 
 	students: any[] = [];
@@ -106,8 +108,8 @@ export class ChooseStudentComponent implements OnInit {
 					this.course = obj;
 				}
 			}catch(e){
-				console.log(e);
-				console.log(data._body);
+				this.log.SendError({page: 'chooseStudent', error: e, response: data});
+				this.notify.addError("Произошла ошибка. Обратитесь к администратору");
 			}
 		});
 	}
@@ -134,7 +136,6 @@ export class ChooseStudentComponent implements OnInit {
 			}
 			for (var i = 0; i < this.searchResult.length; i++) {
 				if(this.searchResult[i].id == this.selectedPerson.id){
-					console.log(this.searchResult[i].id);
 					this.enteredStudents.push(this.searchResult[i]);
 					this.searchResult.splice(i, 1);
 					this.notify.addSuccess("Слушатель зачислен");
@@ -151,15 +152,11 @@ export class ChooseStudentComponent implements OnInit {
 		var person = JSON.parse(localStorage.getItem("person-" + id));
 		if (person != null && person.personal !== null) {
 			this.isClicked = true;
-			console.log("localStorage = ");
-			console.log(localStorage);
 			this.showInfo.ShowPersonalInfo(person, 2, true);
 			this.isClicked = false;
 		}else{
 			this.isClicked = true;
 			this.personalInfo.getInfo(id.toString(), true).then(data => {
-				console.log("query");
-				console.log(data._body);
 				var person = Object.assign(new Person(), data.json());
 				localStorage.setItem("person-" + id, JSON.stringify(data.json()));
 				this.showInfo.ShowPersonalInfo(person, 2, true);
@@ -201,8 +198,8 @@ export class ChooseStudentComponent implements OnInit {
 					this.message = "По вашему запросу ничего не найдено";
 				}
 			}catch(e){
-				console.log(e);
-				console.log(data._body);
+				this.log.SendError({page: 'chooseStudent', error: e, response: data});
+				this.notify.addError("Произошла ошибка. Обратитесь к администратору");
 			}
 		});
 	}
@@ -217,8 +214,8 @@ export class ChooseStudentComponent implements OnInit {
 				console.log(this.students);
 				this.offset += 30;
 			}catch(e){
-				console.log(e);
-				console.log(console.log(response._body));
+				this.log.SendError({page: 'chooseStudent', error: e, response: response});
+				this.notify.addError("Произошла ошибка. Обратитесь к администратору");
 			}
 			this.isLoading = false;
 		})

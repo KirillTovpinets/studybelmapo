@@ -15,7 +15,7 @@
 	          <th>Название</th>
 	        </thead>
 	        <tbody>
-	          <tr class="clickable-row" *ngFor="let course of archive[year]" (click)="selectCourse(course)" [ngClass]="{'selected': selectedCourses.indexOf(course) !== -1}">
+	          <tr class="clickable-row" *ngFor="let course of archive[year.year]" (click)="selectCourse(course)" [ngClass]="{'selected': selectedCourses.indexOf(course) !== -1}">
 	            <td class="uniqueId">{{course.Number}}</td>
 	            <td>{{ course.name }}</td>
 	          </tr>

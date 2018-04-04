@@ -6,6 +6,7 @@ import { Login } from '../Model/login';
 import { User } from '../Model/user';
 import { AddUserService } from "./addUser.service";
 import { NotificationsService } from 'angular4-notify';
+import { LogService } from '../share/log.service';
 
 declare var jquery: any;
 declare var $: any;
@@ -27,9 +28,9 @@ export class LoginComponent implements OnInit{
 				private cookieService: CookieService,
 				private addUser: AddUserService,
 				private notify: NotificationsService,
+				private log: LogService,
 				private router: Router){}
 	onSubmit(login): void{
-		// this.router.navigate(['/main']);
 		this.loginService.tryLogin(login)
 		.then(response => {
 			try{
@@ -50,36 +51,33 @@ export class LoginComponent implements OnInit{
 				}else if(response._body == "login"){
 					this.notify.addError("Неправильный логин");
 				}
-				console.log(e);
-				console.log(response._body);
+				this.log.SendError({page: 'loginform', error: e, response: response._body});
+				this.notify.addError("Произошла ошибка. Обратитесь к администратору");
 			}
 		})
 		.catch(this.handleError);
 	}
 	ngOnInit(): void {
-		console.log("PRIVET")
 		this.loginService.getDepList("cathedras").then(data => {
-			console.log(data);
 			try{
-				console.log(data);
 				this.cathedras = data.json();
 			}catch(e){
-				console.log(data._body);
+				this.log.SendError({page: 'loginform', error: e, response: data});
+				this.notify.addError("Произошла ошибка. Обратитесь к администратору");
 			}
 		});
 
 		this.loginService.getDepList("belmapo_departments").then(data => {
 			try{
-				console.log(data);
 				this.departments = data.json();
 			}catch(e){
-				console.log(data._body);
+				this.log.SendError({page: 'loginform', error: e, response: data});
+				this.notify.addError("Произошла ошибка. Обратитесь к администратору");
 			}
 		});
 	}
 	AddUser(user:User):void{
 		this.addUser.add(user).then(data => {
-			console.log(data._body);
 			this.notify.addInfo(data.json().message)
 		});
 	}

@@ -43,6 +43,7 @@ export class ArchiveComponent implements OnInit {
 			this.ArchiveYearIsLoaded = true;
 		}else{
 			this.courseList.getArchiveByYear(year, {limit: 30, offset: 0}).then(data => {
+				console.log(data)
 				this.ArchiveYearIsLoaded = false;
 				try{
 					this.archive[year] = data.json();
@@ -50,6 +51,8 @@ export class ArchiveComponent implements OnInit {
 				}catch(e){
 					this.log.SendError({page: 'archive', error: e, response: data}).subscribe(res => console.log(res));
 					this.notify.addError("Произошла ошибка. Обратитесь к администратору");
+					console.log(e);
+					console.log(data._body);
 				}
 				this.ArchiveYearIsLoaded = true;
 			})
@@ -75,12 +78,18 @@ export class ArchiveComponent implements OnInit {
 				}catch(e){
 					this.log.SendError({page: 'archive', error: e, response: data}).subscribe(res => console.log(res));
 					this.notify.addError("Произошла ошибка. Обратитесь к администратору");
+					console.log(e);
+					console.log(data._body);
 				}
 				year.isLoading = false;
 			})
 		}
 	}
 	DownloadCourseInfo(course, $event){
+		if(course.limit == undefined && course.offset === undefined){
+			course.limit = 0;
+			course.offset = 30;
+		}
 		course.ArchiveCourseIsLoaded = false;
 		if($event){
 			if (course.id === undefined) {
@@ -93,7 +102,7 @@ export class ArchiveComponent implements OnInit {
 				course.offset += 30;
 				course.ArchiveCourseIsLoaded = true;
 			}else{
-				this.courseList.getArchiveByCourse(course.id, {limit: course.limit, offset: course.offset}).then(data => {
+				this.courseList.getArchiveByCourse(course.id, {limit: 30, offset: 0}).then(data => {
 					try{
 						course.offset += 30;
 						this.archive["course-" + course.id] = data.json();
@@ -103,12 +112,18 @@ export class ArchiveComponent implements OnInit {
 						course.endOflist = true;
 						this.log.SendError({page: 'archive', error: e, response: data});
 						this.notify.addError("Произошла ошибка. Обратитесь к администратору");
+						console.log(e);
+						console.log(data);
 					}
 				})
 			}
 		}
 	}
 	DownloadMore(course){
+		if(course.limit == undefined && course.offset === undefined){
+			course.limit = 30;
+			course.offset = 30;
+		}
 		course.isLoading = true;
 		var alreadyHave = JSON.parse(localStorage.getItem('archive-course-' + course.id));
 		var toShow = alreadyHave.splice(course.offset, course.limit);
@@ -121,6 +136,8 @@ export class ArchiveComponent implements OnInit {
 					localStorage.setItem('archive-course-' + course.id, JSON.stringify(this.archive["course-" + course.id]));
 					course.isLoading = false;
 				}catch(e){
+					this.log.SendError({page: 'archive', error: e, response: data});
+					this.notify.addError("Произошла ошибка. Обратитесь к администратору");
 					console.log(e);
 					console.log(data);
 				}

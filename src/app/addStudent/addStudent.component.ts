@@ -10,6 +10,7 @@ import { PreloaderComponent } from "../preloader/preloader.component";
 import { NotificationsService } from 'angular4-notify';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Retraining } from '../model/profesionInfo.class';
+import { LogService } from '../share/log.service';
 @Component({
 	templateUrl: "./addStudent.component.html",
 	providers: [PersonalDataService, PersonService, BsModalService],
@@ -137,7 +138,8 @@ export class AddStudentComponent implements OnInit{
 				private notify: NotificationsService,
 				private router: ActivatedRoute,
 				private routerNav: Router,
-				private modal: BsModalService){}
+				private modal: BsModalService,
+				private log: LogService){}
 	selectCourse(courseId:number){
 		for (var course of this.belmapo_courses) {
 			if(course.id === courseId){
@@ -176,7 +178,6 @@ export class AddStudentComponent implements OnInit{
  		}
  		inputData.belmapo_course = this.courseId;
  		this.saveService.save(inputData).then(data => {
- 			console.log(data._body);
  			this.notify.addInfo("Cлушатель зачислен");
  			this.isChecked = false;
  			this.newPerson = new Person();
@@ -313,8 +314,8 @@ export class AddStudentComponent implements OnInit{
 					// localStorage.setItem("citiesArr", JSON.stringify(data.json().citiesArr))
 					this.isLoaded = true;
 				}catch(e){
-					console.log(e);
-					console.log(data._body);
+					this.log.SendError({page: 'addStudent', error: e, response: data});
+					this.notify.addError("Произошла ошибка. Обратитесь к администратору");
 				}
 				
 			});

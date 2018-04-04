@@ -3,6 +3,8 @@ import { GlobalParamsService } from '../Globalparams.service';
 import { ShareService } from '../share/share.service';
 import { DatabaseService } from '../admin/database.service';
 import { Global } from '../model/global.class';
+import { NotificationsService } from 'angular4-notify';
+import { LogService } from '../share/log.service';
 @Component({
 	selector: 'menu',
 	templateUrl: './menu.component.html',
@@ -14,6 +16,8 @@ export class MenuComponent implements OnInit{
 	constructor(private selectedPage: GlobalParamsService,
 				private menuManip: ShareService,
 				private element: ElementRef,
+				private log: LogService,
+				private notify:NotificationsService,
 				private database: DatabaseService){
 	}
 	currentUser: any;
@@ -33,8 +37,8 @@ export class MenuComponent implements OnInit{
 				try{
 					this.tables = res.json().schema;
 				}catch(e){
-					console.log(e);
-					console.log(res._body);
+					this.log.SendError({page: 'menu', error: e, response: res._body});
+					this.notify.addError("Произошла ошибка. Обратитесь к администратору");
 				}
 			})
 		}
