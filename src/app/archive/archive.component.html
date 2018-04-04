@@ -1,11 +1,13 @@
 <div class="content table-responsive table-full-width">
 	<accordion *ngIf="archive">
 	<preloader *ngIf="!ArchiveIsLoaded"></preloader> 
-	  <accordion-group *ngFor="let year of archive.years" (isOpenChange)="DownloadInfo(year)">
+	  <accordion-group *ngFor="let year of archive.years" (isOpenChange)="DownloadInfo(year.year)">
 	    <div accordion-heading>
-	      {{ year }}
+	      {{ year.year }}
+	      <span class="pull-right float-xs-right">{{ year.total }} человек</span>
 	    </div>
 	    <div>
+	    	<!-- <progressbar [value]="year.totalCourses"></progressbar> -->
 	      <preloader *ngIf="!ArchiveYearIsLoaded"></preloader>
 	      <table class="table table-hover table-striped" *ngIf="selectable">
 	        <thead>
@@ -20,15 +22,20 @@
 	        </tbody>
 	      </table>
 	      <accordion *ngIf="!selectable">
-	      	<accordion-group *ngFor="let course of archive[year]" (isOpenChange)="DownloadCourseInfo(course, $event)">
+	      	<accordion-group *ngFor="let course of archive[year.year]" (isOpenChange)="DownloadCourseInfo(course, $event)">
 	      		<div accordion-heading >
 	      			{{ course.Number}} - {{ course.name }}
+	      			<span class="pull-right float-xs-right">{{ course.total }} человек</span>		
 	      		</div>
 	      		<div>
 	      			<preloader *ngIf="!course.ArchiveCourseIsLoaded"></preloader>
 					<table-certificates *ngIf="course.ArchiveCourseIsLoaded === true" [certificates]="archive['course-' + course.id]"></table-certificates>
+					<preloader path="assets/img/Elipsis.gif" *ngIf="course.isLoading"></preloader>
+					<button class="btn btn-block btn-success" (click)="DownloadMore(course)" *ngIf="!course.endOflist && !course.isLoading">Ещё слушатели</button>
 	      		</div>
 	      	</accordion-group>
+	      	<preloader path="assets/img/Elipsis.gif" *ngIf="year.isLoading"></preloader>
+	      	<button class="btn btn-block btn-success" *ngIf="!year.isLoading" style="margin-top:20px" (click)="DownloadMoreCourses(year)">Ещё курсы</button>
 	      </accordion>
 	    </div>
 	  </accordion-group>

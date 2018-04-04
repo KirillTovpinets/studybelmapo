@@ -1,7 +1,7 @@
 <angular4-notify-notifications-container></angular4-notify-notifications-container>
 <div class="full-height">
     <div class="form">
-        <preloader *ngIf="isLoged"></preloader>
+        <preloader *ngIf="isLoged" class="preloader"></preloader>
       <form class="register-form" (ngSubmit)="AddUser(user)" *ngIf="isLoged === false">
         <h1>БелМАПО</h1>
         <select [(ngModel)]="user.department" size="10" name="department">

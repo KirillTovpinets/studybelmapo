@@ -9,7 +9,7 @@ import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
 
 import { DragDropDirectiveModule} from "angular4-drag-drop";
 
-import { AccordionModule, ModalModule, TabsModule, BsDatepickerModule, TooltipModule, BsDropdownModule } from 'ngx-bootstrap';
+import { AccordionModule, ModalModule, TabsModule, BsDatepickerModule, TooltipModule, BsDropdownModule, ProgressbarModule  } from 'ngx-bootstrap';
 // Components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './loginform/loginform.component';
@@ -50,6 +50,7 @@ import { LoginService } from './loginform/login.service';
 import { CurrentCourcesListService } from './FillData/services/getCurrentCourcesList.service';
 import { ShowPersonInfoService } from './personalInfo/showPersonalInfo.service';
 import { ShareService } from './share/share.service';
+import { LogService } from './share/log.service';
 // Services
 import { CookieService } from 'ngx-cookie-service';
 import { GlobalParamsService } from './Globalparams.service';
@@ -65,6 +66,7 @@ import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ruLocale } from 'ngx-bootstrap/locale';
 import { ArchiveComponent } from './archive/archive.component';
 import { TableCertificatesComponent } from './table-certificates/table-certificates.component';
+import { LogComponent } from './log/log.component';
 
 defineLocale('ru', ruLocale);
 
@@ -109,7 +111,8 @@ defineLocale('ru', ruLocale);
     TableContentComponent,
     PaginationComponent,
     ArchiveComponent,
-    TableCertificatesComponent
+    TableCertificatesComponent,
+    LogComponent
   ],
   imports: [
     BrowserModule,
@@ -125,6 +128,7 @@ defineLocale('ru', ruLocale);
     BrowserAnimationsModule,
     NotificationsModule,
     Ng2AutoCompleteModule,
+    ProgressbarModule.forRoot(),
     BsDropdownModule.forRoot()
   ],
   providers: [ CookieService, 
@@ -136,7 +140,8 @@ defineLocale('ru', ruLocale);
                CheckAuthService,
                ShowPersonInfoService,
                ShareService,
-               StudListService],
+               StudListService,
+               LogService],
   entryComponents: [PersonalInfoComponent],
   bootstrap: [AppComponent]
 })

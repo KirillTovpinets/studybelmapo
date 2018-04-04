@@ -170,6 +170,7 @@ export class ChooseStudentComponent implements OnInit {
 	}
 	reject(): void{
 		this.modalService.hide(1);
+		this.infoIsChecked = false;
 	}
 
 	ValueFormatter(data:any): string{

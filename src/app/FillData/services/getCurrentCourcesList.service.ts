@@ -17,13 +17,13 @@ export class CurrentCourcesListService {
 	getArchive(): Promise<any>{
 		return this.http.get("assets/php/getCourseList.php").toPromise();
 	}
-	getArchiveByYear(year):Promise<any>{
-		return this.http.get("assets/php/getCourseList.php?year=" + year).toPromise();
+	getArchiveByYear(year, params):Promise<any>{
+		return this.http.get(`assets/php/getCourseList.php?year=${year}&limit=${params.limit}&offset=${params.offset}`).toPromise();
 	}
 	getArchiveByYearForCathedra(year, cathedra){
 		return this.http.get(`assets/php/getCourseList.php?year=${year}&cathedra=${cathedra}`).toPromise();
 	}
-	getArchiveByCourse(course){
-		return this.http.get(`assets/php/getArchiveInfo.php?course=${course}`).toPromise();
+	getArchiveByCourse(course, params){
+		return this.http.get(`assets/php/getArchiveInfo.php?course=${course}&limit=${params.limit}&offset=${params.offset}`).toPromise();
 	}
 }

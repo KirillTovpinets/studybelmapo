@@ -1,3 +1,3 @@
 <?php 
-	header("Location: /study/dist");
+	header("Location: /studybelmapo/dist");
 ?>

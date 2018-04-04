@@ -142,7 +142,7 @@ export class StudListComponent implements OnInit{
 			this.archive[year] = data;
 			this.ArchiveYearIsLoaded = true;
 		}else{
-			this.getList.getArchiveByYear(year).then(data => {
+			this.getList.getArchiveByYear(year, {limit: 0, offset: 0}).then(data => {
 				this.ArchiveYearIsLoaded = false;
 				try{
 					this.archive[year] = data.json();

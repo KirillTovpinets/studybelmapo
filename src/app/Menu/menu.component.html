@@ -33,6 +33,12 @@
           </li>
         </ul>
       </li>
+      <li [ngClass]="{'active': selectedPage.selectedPage == 6}" *ngIf="currentUser.is_cathedra == undefined">
+        <a [routerLink]="['logfile']">
+          <i class="pe-7s-paperclip"></i>
+          <p>Журнал ошибок</p>
+        </a>
+      </li>
     </ul>
   </div>
   <div style="background-image: url(assets/img/sidebar-4.jpg)" class="sidebar-background"></div>

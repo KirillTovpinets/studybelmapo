@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit{
 				localStorage.setItem("currentUser", JSON.stringify(this.logedUser));
 				this.loginService.setUserLogedIn();
 				this.cookieService.set("Login", "true");
-				console.log(login.log);
 				if (this.logedUser.is_cathedra == null) {
 					this.router.navigate(["/admin"]);
 				}else{
@@ -58,8 +57,11 @@ export class LoginComponent implements OnInit{
 		.catch(this.handleError);
 	}
 	ngOnInit(): void {
+		console.log("PRIVET")
 		this.loginService.getDepList("cathedras").then(data => {
+			console.log(data);
 			try{
+				console.log(data);
 				this.cathedras = data.json();
 			}catch(e){
 				console.log(data._body);
@@ -68,6 +70,7 @@ export class LoginComponent implements OnInit{
 
 		this.loginService.getDepList("belmapo_departments").then(data => {
 			try{
+				console.log(data);
 				this.departments = data.json();
 			}catch(e){
 				console.log(data._body);

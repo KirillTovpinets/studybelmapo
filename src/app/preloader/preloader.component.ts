@@ -9,7 +9,21 @@ import { Component, Input } from "@angular/core";
 		      <span *ngIf="path === undefined">Идёт загрузка...</span>
 		    </div>
 		  </div>
-	`
+	`,
+	styles: [`
+		:host.preloader .preloader-overlay{
+	    height: 100%;
+	    display: table;
+	    width: 100%;
+	}
+
+	:host.preloader .loader{
+	    text-align: center;
+	    width:10%;
+	    margin:0 auto;
+	    display: table-cell;
+	    vertical-align: middle;
+	}`]
 })
 
 export class PreloaderComponent{

@@ -29,6 +29,7 @@ import { ChooseStudentComponent } from './FillData/chooseStudent.component';
 import { HelpComponent } from './help/help.component';
 import { AdminComponent } from './admin/admin.component';
 import { TableContentComponent } from './table-content/table-content.component';
+import { LogComponent } from './log/log.component';
 const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
 	{ 
@@ -37,6 +38,7 @@ const routes: Routes = [
 		canActivate: [AuthGuard],
 		children: [
 			{ path: 'table/:table', component: TableContentComponent},
+			{ path: 'logfile', component: LogComponent},
 			{ path: '', redirectTo: 'studlist', pathMatch: 'full' },
 			{ path: 'studlist', component: StudListComponent},
 			{ path: 'help', component: HelpComponent},

@@ -2,6 +2,6 @@ RewriteEngine On
 	RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
 	RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d
 	RewriteRule ^ - [L]
-RewriteRule ^ /study/dist/index.html
+RewriteRule ^ /studybelmapo/dist/index.html
 php_value log_errors "On"
 php_value error_log /var/log/php_errors.log
