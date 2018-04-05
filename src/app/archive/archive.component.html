@@ -1,4 +1,5 @@
 <div class="content table-responsive table-full-width">
+	<preloader *ngIf="!archive"></preloader>
 	<accordion *ngIf="archive">
 	<preloader *ngIf="!ArchiveIsLoaded"></preloader> 
 	  <accordion-group *ngFor="let year of archive.years" (isOpenChange)="DownloadInfo(year.year)">
@@ -23,19 +24,19 @@
 	      </table>
 	      <accordion *ngIf="!selectable">
 	      	<accordion-group *ngFor="let course of archive[year.year]" (isOpenChange)="DownloadCourseInfo(course, $event)">
-	      		<div accordion-heading >
-	      			{{ course.Number}} - {{ course.name }}
+	      		<div accordion-heading class="clearfix" >
+	      			<span class="course-name">{{ course.Number}} - {{ course.name }}</span>
 	      			<span class="pull-right float-xs-right">{{ course.total }} человек</span>		
 	      		</div>
 	      		<div>
 	      			<preloader *ngIf="!course.ArchiveCourseIsLoaded"></preloader>
 					<table-certificates *ngIf="course.ArchiveCourseIsLoaded === true" [certificates]="archive['course-' + course.id]"></table-certificates>
 					<preloader path="assets/img/Elipsis.gif" *ngIf="course.isLoading"></preloader>
-					<button class="btn btn-block btn-success" (click)="DownloadMore(course)" *ngIf="!course.endOflist && !course.isLoading">Ещё слушатели</button>
+					<button class="btn btn-block btn-success" (click)="DownloadMore(course)" *ngIf="!course.endOflist && archive['course-' + course.id] !== undefined && archive['course-' + course.id].length !== 0">Ещё слушатели</button>
 	      		</div>
 	      	</accordion-group>
 	      	<preloader path="assets/img/Elipsis.gif" *ngIf="year.isLoading"></preloader>
-	      	<button class="btn btn-block btn-success" *ngIf="!year.isLoading" style="margin-top:20px" (click)="DownloadMoreCourses(year)">Ещё курсы</button>
+	      	<button class="btn btn-block btn-success" *ngIf="archive[year.year] !== undefined && archive[year.year].length === 0" style="margin-top:20px" (click)="DownloadMoreCourses(year)">Ещё курсы</button>
 	      </accordion>
 	    </div>
 	  </accordion-group>

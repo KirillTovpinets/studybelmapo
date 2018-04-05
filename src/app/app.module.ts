@@ -6,10 +6,15 @@ import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
-
 import { DragDropDirectiveModule} from "angular4-drag-drop";
 
-import { AccordionModule, ModalModule, TabsModule, BsDatepickerModule, TooltipModule, BsDropdownModule, ProgressbarModule  } from 'ngx-bootstrap';
+import { AccordionModule, 
+        ModalModule, 
+        TabsModule, 
+        BsDatepickerModule, 
+        TooltipModule, 
+        BsDropdownModule, 
+        ProgressbarModule  } from 'ngx-bootstrap';
 // Components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './loginform/loginform.component';

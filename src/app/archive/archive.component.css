@@ -3,3 +3,12 @@
 	background-color: #9368E9 !important;
 	color:#fff;
 }	
+
+.course-name{
+	width: 400px;
+	display:block;
+	float:left;
+	white-space:nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

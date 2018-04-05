@@ -115,7 +115,7 @@
     <ng-container *ngIf="currentUser.is_cathedra == 1" #courseLists>
       <tabset>
         <tab heading="Действующие">
-          <preloader  *ngIf="isLoading"></preloader>
+          <preloader  *ngIf="isLoading[0]"></preloader>
           <div class="content table-responsive table-full-width" *ngIf="currentCourses.length !== 0">
             <table class="table table-striped table-hover">
               <tr>
@@ -149,14 +149,14 @@
             </table>
           </div>
           <div class="content">
-            <div class="alert alert-warning" *ngIf="currentCourses.length === 0 && !isLoading">
-                <p>Список пуст</p>
+            <div class="alert alert-warning" *ngIf="currentCourses.length === 0 && !isLoading[0]">
+                <p>Список пуст {{ currentCourses.length === 0 }} {{ !isLoading[0] }} </p>
             </div>
           </div>
         </tab>
         <tab heading="Прошедшие">
-          <preloader  *ngIf="isLoading"></preloader>
-          <div class="content table-responsive table-full-width" *ngIf="oldCourses.length !== 0">
+          <preloader  *ngIf="isLoading[1]"></preloader>
+          <div class="content table-responsive table-full-width" *ngIf="oldCourses.length !== 0 && !isLoading[1]">
             <table class="table table-striped table-hover">
               <tr>
                 <th>Номер</th>
@@ -189,14 +189,14 @@
             </table>
           </div>
           <div class="content">
-            <div class="alert alert-warning" *ngIf="oldCourses.length === 0 && !isLoading">
+            <div class="alert alert-warning" *ngIf="oldCourses.length === 0 && !isLoading[1]">
                 <p>Список пуст</p>
             </div>
           </div>
         </tab>
         <tab heading="Список курсов-{{ nowYear }}">
-          <preloader  *ngIf="isLoading"></preloader>
-          <div class="content table-responsive table-full-width" *ngIf="courseList.length !== 0 && !isLoading">
+          <preloader  *ngIf="isLoading[2]"></preloader>
+          <div class="content table-responsive table-full-width" *ngIf="courseList.length !== 0 && !isLoading[2]">
             <table class="table table-striped table-hover">
               <tr>
                 <th>Номер</th>
@@ -227,7 +227,7 @@
             </table>
           </div>
           <div class="content">
-            <div class="alert alert-warning" *ngIf="courseList.length === 0 && !isLoading">
+            <div class="alert alert-warning" *ngIf="courseList.length === 0 && !isLoading[2]">
                 <p>Список пуст</p>
             </div>
           </div>
@@ -270,7 +270,7 @@
             </div>
           </div>
         </tab> -->
-        <tab heading="Архивчик" (select)="getArchive()">
+        <tab heading="Архив" (select)="getArchive()">
           <archive></archive>
         </tab>
       </tabset>

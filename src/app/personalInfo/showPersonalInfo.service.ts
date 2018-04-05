@@ -21,14 +21,13 @@ export class ShowPersonInfoService {
 		}
 		if (localStorage.getItem("person-" + id) !== null) {
 			var personStorage = JSON.parse(localStorage.getItem("person-" + id));
-			var person = Object.assign(new Person(), personStorage);
+			var person = {...personStorage};
 			this.showModal(person, level, canChange);
 		}else{
 			this.personalInfo.getInfo(id).then(data => {
 				try{
-					console.log(data._body);
 					localStorage.setItem("person-" + id, JSON.stringify(data.json()));
-					var person = Object.assign(new Person(), data.json());
+					var person = {...data.json()};
 					this.showModal(person, level, canChange);
 					
 				}catch(e){

@@ -1,4 +1,11 @@
-import { Component, Input, Output, EventEmitter, OnInit, Directive, ViewChild, TemplateRef } from "@angular/core";
+import { Component, 
+		Input, 
+		Output, 
+		EventEmitter, 
+		OnInit, 
+		Directive, 
+		ViewChild, 
+		TemplateRef } from "@angular/core";
 import { ShowPersonInfoService } from "../personalInfo/showPersonalInfo.service";
 import { PersonalInfoService } from '../personalInfo/personalInfo.service';
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
@@ -10,7 +17,10 @@ import { StudListService } from '../studList/stud-list.service';
 @Component({
 	selector: "table-list",
 	templateUrl: "./tableList.component.html",
-	providers:[ShowPersonInfoService,PersonalInfoService,BsModalService, PersonalDataService],
+	providers:[ShowPersonInfoService,
+				PersonalInfoService,
+				BsModalService,
+				PersonalDataService],
 	styles:[`
 		.table{
 			background-color:transparent !important;
@@ -112,7 +122,6 @@ export class TableListCopmonent implements OnInit{
 		this.totalNumber += 1;
 		// this.students.changeTotal(this.totalNumber);
 		this.deductData.deduct(this.certificate).then(res => {
-			console.log(res._body);
 			this.notify.addSuccess("Слушатель отчислен")
 			this.onChanges.emit(this.course);
 		});

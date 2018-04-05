@@ -115,7 +115,7 @@ export class ChooseStudentComponent implements OnInit {
 	}
 	confirmation(person:any, template: TemplateRef<any>): void{
 		this.hideNotify = false;
-		this.selectedPerson = Object.assign(new Person(), person);
+		this.selectedPerson = {...person};
 		this.modalRef = this.modalService.show(template, {class: 'modal-md'});
 	}
 	setLastInfo(template:TemplateRef<any>):void{
@@ -157,10 +157,14 @@ export class ChooseStudentComponent implements OnInit {
 		}else{
 			this.isClicked = true;
 			this.personalInfo.getInfo(id.toString(), true).then(data => {
-				var person = Object.assign(new Person(), data.json());
-				localStorage.setItem("person-" + id, JSON.stringify(data.json()));
-				this.showInfo.ShowPersonalInfo(person, 2, true);
-				this.isClicked = false;
+				try{
+					var person = {...data.json()};
+					localStorage.setItem("person-" + id, JSON.stringify(data.json()));
+					this.showInfo.ShowPersonalInfo(person, 2, true);
+					this.isClicked = false;
+				}catch(e){
+					this.ErrorAction(e, data);
+				}
 			})
 		}
 		this.infoIsChecked = true;
@@ -198,8 +202,7 @@ export class ChooseStudentComponent implements OnInit {
 					this.message = "По вашему запросу ничего не найдено";
 				}
 			}catch(e){
-				this.log.SendError({page: 'chooseStudent', error: e, response: data});
-				this.notify.addError("Произошла ошибка. Обратитесь к администратору");
+				this.ErrorAction(e, data);
 			}
 		});
 	}
@@ -214,11 +217,17 @@ export class ChooseStudentComponent implements OnInit {
 				console.log(this.students);
 				this.offset += 30;
 			}catch(e){
-				this.log.SendError({page: 'chooseStudent', error: e, response: response});
-				this.notify.addError("Произошла ошибка. Обратитесь к администратору");
+				this.ErrorAction(e, response);
 			}
 			this.isLoading = false;
 		})
+	}
+
+	ErrorAction(e, data){
+		this.log.SendError({page: 'chooseStudent', error: e, response: data});
+		this.notify.addError("Произошла ошибка. Обратитесь к администратору");
+		console.log(e);
+		console.log(data);
 	}
 	startDrag(item){
 		console.log(item);
