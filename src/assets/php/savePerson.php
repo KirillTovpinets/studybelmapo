@@ -11,11 +11,13 @@
 	if (isset($data->sience->_isDoctor)) {
 		$isDoctor = $data->sience->_isDoctor == true ? 1 : 0;
 	}
+	print_r($data);
 	$isCowoker = $data->general->_organization->id == 4530 ? 1 : 0;
 	$isMale = $data->personal->_isMale == true ? 1 : 0;
 	$educational_establishment = $data->profesional->_educational_establishment->id;
 	$cityzenship = $data->personal->_cityzenship->id;
 	$appointment = $data->general->_appointment->id;
+	echo $appointment;
 	$organization = $data->general->_organization->id;
 	if (isset($data->personal->_region)) {
 		$region = $data->personal->_region->id;
@@ -75,7 +77,7 @@
 	}
 	
 	$isDoctor = 0;
-	$mysqli->query("INSERT INTO personal_card (surname, name, patername, appointment, organization,  department, name_in_to_form) VALUES (
+	$mysqli->query("INSERT INTO personal_card (surname, name, patername, organization, appointment,  department, name_in_to_form) VALUES (
 		'$surname', 
 		'$name', 
 		'$patername', 

@@ -23,6 +23,7 @@
 		}
 		$diff = array();
 		$diff = array_diff($new[$key], $old[$key]);
+		print_r($diff);
 		if (!empty($diff)) {
 			foreach ($diff as $keyDiff => $valueDiff) {
 				$oldKey = "$key";
@@ -32,6 +33,9 @@
 					$newValue = $valueDiff["id"];
 				}else{
 					$newValue = $valueDiff;
+				}
+				if($newValue == ""){
+					$newValue = 0;
 				}
 				$today = date("Y-m-d");
 				$oldQuery = "SELECT $keyDiff AS oldId FROM personal_card WHERE id = $personId";

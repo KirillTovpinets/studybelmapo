@@ -44,19 +44,19 @@
           <div class="col-lg-4 col-md-4">
             <div class="form-group">
               <label>Должность</label>
-              <input [attr.disabled]="change ? null : ''" auto-complete [list-formatter]="dataService.DropdownList" [source]="personal_appointments" required [(ngModel)]="info.appointment" name="appointment" class="form-control">
+              <input [attr.disabled]="change ? null : ''" auto-complete [list-formatter]="dataService.DropdownList" [no-match-found-text]="'Не найдено'" [source]="personal_appointments" required [(ngModel)]="info.appointment" name="appointment" class="form-control">
             </div>
           </div>
           <div class="col-lg-8 col-md-8">
             <div class="form-group">
               <label>Учреждение</label>
-              <input [attr.disabled]="change ? null : ''" auto-complete [list-formatter]="dataService.DropdownList" [source]="personal_organizations" required [(ngModel)]="info.organization" name="organization" class="form-control">
+              <input [attr.disabled]="change ? null : ''" auto-complete [list-formatter]="dataService.DropdownList" [no-match-found-text]="'Не найдено'" [source]="personal_organizations" required [(ngModel)]="info.organization" name="organization" class="form-control">
             </div>
           </div>
           <div class="col-lg-12 col-md-12">
             <div class="form-group">
               <label>Структурное подразделение</label>
-              <input [attr.disabled]="change ? null : ''" auto-complete [list-formatter]="dataService.DropdownList" [source]="personal_departments" [(ngModel)]="info.department" name="department" class="form-control">
+              <input [attr.disabled]="change ? null : ''" auto-complete [list-formatter]="dataService.DropdownList" [no-match-found-text]="'Не найдено'" [source]="personal_departments" [(ngModel)]="info.department" name="department" class="form-control">
             </div>
           </div>
         </fieldset>

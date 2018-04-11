@@ -7,7 +7,7 @@
 	$id = $_GET["id"];
 
 	$correspondings = array(
-		"appointment" => "personal_appointment.",
+		"appointment" => "personal_appointment",
 		"organization" => "personal_organizations",
 		"department" => "personal_department",
 		"establishmentId" => "personal_establishment",

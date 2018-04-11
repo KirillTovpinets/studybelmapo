@@ -368,42 +368,6 @@
                           </fieldset>
                         </div>
                         <div class="col-md-6 no-padding">
-                            <fieldset>
-                             <legend><h5>Паспортные данные</h5></legend>
-                             <div class="col-md-3">
-                               <div class="form-group">
-                                 <label>Серия</label>
-                                 <input required type="text" #seria="ngModel" [pattern]="'^[A-Z А-Я]{2}$'" [(ngModel)]="newPerson.personal.pasport_seria" name="pasport_seria" class="form-control">
-                               </div>
-                             </div>
-                             <div class="col-md-5">
-                               <label>Номер</label>
-                               <input required type="text" #number="ngModel" [pattern]="'^[0-9]{7}$'" [(ngModel)]="newPerson.personal.pasport_number" name="pasport_number" class="form-control">
-                             </div>
-                             <div class="col-md-4">
-                               <div class="form-group">
-                                 <label>Дата выдачи</label>
-                                 <input required type="text" [(ngModel)]="newPerson.personal.pasportDate" [minDate]="minDate" [maxDate]="maxDate" #PasportDp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValuePasport" name="pasportDate" class="date-picker form-control" #pasportDate="ngModel">
-                               </div>
-                             </div>
-                             <div class="col-md-6">
-                               <div class="form-group">
-                                 <label>Орган, выдавший паспорт</label>
-                                 <input type="text" required #organ="ngModel" [(ngModel)]="newPerson.personal.pasport_organ" name="pasport_organ" class="form-control">
-                               </div>
-                             </div>
-                             <div class="col-md-6">
-                               <div class="form-group">
-                                 <label>Идентификационный номер (в паспорте)</label>
-                                 <!-- [pattern]="'^[0-9]{7}[A-Z А-Я]{1}[0-9]{3}[A-Z А-Я]{2}[0-9]{1}$'" -->
-                                 <input type="text" required #insurance="ngModel" [(ngModel)]="newPerson.personal.insurance_number" name="insurance_number" class="form-control">
-                               </div>
-                             </div>
-                            </fieldset>
-                          </div>
-                        </div>
-                      <div class="row">
-                        <div class="col-md-12 no-padding">
                           <fieldset>
                             <legend><h5>Домашний адрес</h5></legend>
                             <div class="col-md-4">

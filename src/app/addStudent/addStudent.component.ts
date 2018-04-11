@@ -178,6 +178,7 @@ export class AddStudentComponent implements OnInit{
  		}
  		inputData.belmapo_course = this.courseId;
  		this.saveService.save(inputData).then(data => {
+			console.log(data._body);
  			this.notify.addInfo("Cлушатель зачислен");
  			this.isChecked = false;
  			this.newPerson = new Person();
