@@ -5,8 +5,8 @@
 <div class="one" #one></div>
 <div class="content">
     <ng-container *ngIf="currentUser.is_cathedra == null || currentUser.is_cathedra != 1">
-      <preloader  *ngIf="isLoading"></preloader>
-      <tabset>
+      <preloader  *ngIf="!statIsLoaded"></preloader>
+      <tabset *ngIf="statIsLoaded" >
         <tab heading="Текущие">
           <div class="content">
             <accordion>
@@ -16,7 +16,7 @@
                   <span class="pull-right float-xs-right">Всего обучается: {{ faculty.Total - deducts }}</span>
                 </div>
                 <accordion>
-                  <accordion-group *ngFor="let cathedra of faculty.CathedraList" #cathedraGroup [panelClass]="cathedra.CourseList.length != 0 ? 'panel-success' : 'panel-default'">
+                  <accordion-group *ngFor="let cathedra of faculty.CathedraList" #cathedraGroup>
                     <div accordion-heading>
                       {{ cathedra.name }}
                       <span class="pull-right float-xs-right">Всего обучается: {{ cathedra.Total }}</span>
@@ -150,7 +150,7 @@
           </div>
           <div class="content">
             <div class="alert alert-warning" *ngIf="currentCourses.length === 0 && !isLoading[0]">
-                <p>Список пуст {{ currentCourses.length === 0 }} {{ !isLoading[0] }} </p>
+                <p>Список пуст</p>
             </div>
           </div>
         </tab>
@@ -178,7 +178,7 @@
                     <td>{{ course.Notes }}</td>
                 </tr>
                 <tr *ngIf="course.isOpened">
-                  <td colspan="6" class="no-padding">
+                  <td colspan="7" class="no-padding">
                     <table-list [course]="course" [disableEnter]="true"></table-list>
                   </td>   
                 </tr>

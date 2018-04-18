@@ -14,7 +14,7 @@
 	$courseDate = $courseArr["Start"];
 
 	$ResidPlace = $person->_belmapo_residense;
-	$FormEduc = $person->_belmapo_educForm;
+	$FormEduc = $person->belmapo_educForm;
 	if (isset($person->_belmapo_paymentData)) {
 		$Dic_count = $person->_belmapo_paymentData;
 	}else{
@@ -23,7 +23,7 @@
 	$DocNumber = "";
 	$isDeleted = 0;
 	$Status = 1;
-	$PersonId = $person->_id;
+	$PersonId = $person->id;
 	$query = "INSERT INTO `arrivals`(`Date`, `CourseId`, `ResidPlace`, `FormEduc`, `Dic_count`, `DocNumber`, `Status`, `PersonId`) VALUES ('$courseDate', '$CourseId', '$ResidPlace', '$FormEduc', '$Dic_count', '$DocNumber', '$Status', '$PersonId')";
 	$mysqli->query($query) or die ("Ошибка выполнения запроса $query: " . mysqli_error($mysqli));
 	mysqli_close($mysqli);

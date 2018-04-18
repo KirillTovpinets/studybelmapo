@@ -44,6 +44,7 @@ export class StudListComponent implements OnInit{
 	prevRow: any;
 	message:string = "";
 	isLoading: boolean[] = new Array(4).fill(true);
+	statIsLoaded: boolean = false;
 	newCourse: Course = new Course();
 	global: Global = new Global();
 	types: any[] = [];
@@ -65,7 +66,10 @@ export class StudListComponent implements OnInit{
 		this.students.currentTotal.subscribe(total => this.deducts = total);
 		this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
 		if (this.currentUser.is_cathedra == 0) {
-			this.info.getInfo("getStat").then(data => this.faculties = data.json().data);
+			this.info.getInfo("getStat").then(data => {
+				this.faculties = data.json().data;
+				this.statIsLoaded = true;
+			});
 		}else{
 			this.getList.get().then(data => {
 				try{
@@ -113,6 +117,7 @@ export class StudListComponent implements OnInit{
 			this.coursesTabs.tabs[0].active = false;
 			this.coursesTabs.tabs[2].active = true;
 		}
+		this.isLoading.fill(false);
 	}
 
 	//For departments view

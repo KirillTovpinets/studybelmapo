@@ -123,7 +123,10 @@ export class ChooseStudentComponent implements OnInit {
 		this.infoIsChecked = false;
 	}
 	save():void{
-		this.saveNew.save(this.selectedPerson, this.course).then(data =>{
+		let selected = this.selectedPerson;
+		let course = this.course;
+		this.saveNew.save(selected, course).then(data =>{
+			console.log(data);
 			this.modalService.hide(2);
 			this.modalService.hide(1);
 			for (var i = 0; i < this.students.length; i++) {

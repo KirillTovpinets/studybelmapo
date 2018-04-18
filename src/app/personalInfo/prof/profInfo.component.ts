@@ -40,10 +40,8 @@ export class ProfInfoComponent{
 		var renewData = [];
 		for(let key of this.dataKeys){
 			if (localStorage.getItem(key) == null) {
-				console.log("BYE");
 				renewData.push(key);
 			}else{
-				console.log("HELLO");
 				switch (key) {
 					case "facBel":
 						this.personal_faculties = JSON.parse(localStorage.getItem("facArr"));
