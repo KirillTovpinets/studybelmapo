@@ -43,7 +43,6 @@ export class ArchiveComponent implements OnInit {
 			this.ArchiveYearIsLoaded = true;
 		}else{
 			this.courseList.getArchiveByYear(year, {limit: 30, offset: 0}).then(data => {
-				console.log(data)
 				this.ArchiveYearIsLoaded = false;
 				try{
 					this.archive[year] = data.json();

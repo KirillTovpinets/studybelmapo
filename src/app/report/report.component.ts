@@ -77,45 +77,22 @@ export class ReportComponent implements OnInit{
   }
 	ngOnInit():void{
 		this.dataService.getData().then(data => {
-			for (let faculty of data.json().facBel) {
-				this.faculties.push(faculty);
-			}
-			for (let type of data.json().educTypeBel) {
-				this.educTypes.push(type);
-			}
-			for (let form of data.json().formBel) {
-				this.educForms.push(form);
-			}
-			for (let resid of data.json().belmapo_residence) {
-				this.residance.push(resid);
-			}
-			for (var faculty of data.json().facArr) {
-				this.personal_faculties.push(faculty);
-			}
-			for (var citizenship of data.json().residArr) {
-				this.personal_cityzenships.push(citizenship);
-			}
-			for (var appointment of data.json().appArr) {
-				this.personal_appointments.push(appointment);
-			}
-			for (var organization of data.json().orgArr) {
-				this.personal_organizations.push(organization);
-			}
-			for (var region of data.json().regArr) {
-				this.personal_regions.push(region);
-			}
-			for (var department of data.json().depArr) {
-				this.personal_departments.push(department);
-			}
-			for (var establishment of data.json().estArr) {
-				this.personal_establishments.push(establishment);
-			}
-			for (var citizenship of data.json().residArr) {
-				this.personal_cityzenships.push(citizenship);
-			}
-			for (var course of data.json().coursesBel) {
-				this.belmapo_courses.push(course);
-			}
+      let response = data.json();
+      
+      response.facBel.forEach((element, index, arr) => this.faculties.push(element));
+      response.educTypeBel.forEach((element, index, arr) => this.educTypes.push(element));
+      response.formBel.forEach((element, index, arr) => this.educForms.push(element));
+      response.belmapo_residence.forEach((element, index, arr) => this.residance.push(element));
+      response.facArr.forEach((element, index, arr) => this.personal_faculties.push(element));
+      response.residArr.forEach((element, index, arr) => this.personal_cityzenships.push(element));
+      response.appArr.forEach((element, index, arr) => this.personal_appointments.push(element));
+      response.orgArr.forEach((element, index, arr) => this.personal_organizations.push(element));
+      response.regArr.forEach((element, index, arr) => this.personal_regions.push(element));
+      response.depArr.forEach((element, index, arr) => this.personal_departments.push(element));
+      response.estArr.forEach((element, index, arr) => this.personal_establishments.push(element));
+      response.residArr.forEach((element, index, arr) => this.personal_cityzenships.push(element));
+      response.coursesBel.forEach((element, index, arr) => this.belmapo_courses.push(element));
+
 			this.isLoaded = true;
 		});
 	}

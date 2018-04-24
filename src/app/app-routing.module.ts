@@ -30,6 +30,7 @@ import { HelpComponent } from './help/help.component';
 import { AdminComponent } from './admin/admin.component';
 import { TableContentComponent } from './table-content/table-content.component';
 import { LogComponent } from './log/log.component';
+import { StatementsComponent } from './statements/statements.component';
 const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
 	{ 
@@ -71,6 +72,7 @@ const routes: Routes = [
 				]
 			},
 			{ path: 'reports', component: ReportComponent},
+			{ path: 'statement', component: StatementsComponent},
 			{ path: 'orders', component: OrderComponent}
 		]
 	},
@@ -112,6 +114,7 @@ const routes: Routes = [
 				]
 			},
 			{ path: 'reports', component: ReportComponent},
+			{ path: 'statement', component: StatementsComponent},
 			{ path: 'orders', component: OrderComponent}
 
 		]

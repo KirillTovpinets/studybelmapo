@@ -9,10 +9,12 @@
    $courses = $data->selectedCourses;
    $isEnter = $data->type;
    $status = 0;
-   $currentStatus = 1;
+   $currentStatus = 0;
+   $currentYear = date("Y");
     if($isEnter){
         $about = "О зачислении слушателей на переподготовку";
         $status = 2;
+        $currentStatus = 1;
     }else{
         $about = "Об окончании слушателями курсов повышения квалификации";
         $status = 3;
@@ -58,7 +60,7 @@
             $doc_body .= "<p>В соответствии со сводным планом повышения 
                 квалификации и переподготовки руководителей и 
                 специалистов здравоохранения Республики Беларусь 
-                на 2017 год, утвержденным Министром 
+                на $currentYear год, утвержденным Министром 
                 здравоохранения Республики Беларусь,<br/>";
         }else{
             $doc_body .= "<p>В связи с выполнением учебных планов и программ курсов повышения квалификации <br/>";
@@ -178,14 +180,16 @@
         for($i = 0; $i < count($courses); $i++){
             $number = $courses[$i]->Number;
             $id = $courses[$i]->id;
-            $CourseObj = $mysqli->query("SELECT cources.id, cources.Number, cources.name, cources.Start, cources.Finish, cources.Notes, cathedras.name AS cathedra FROM cources INNER JOIN cathedras ON cources.cathedraId = cathedras.id WHERE cources.id = '$id'");
+            $query = "SELECT cources.id, cources.Number, cources.name, cources.Start, cources.Finish, cources.Notes, cathedras.name AS cathedra FROM cources INNER JOIN cathedras ON cources.cathedraId = cathedras.id WHERE cources.id = '$id'";
+            $CourseObj = $mysqli->query($query) or die ("Error in '$query':" . mysqli_error($mysqli));
             $courseNameArr = $CourseObj->fetch_assoc();
             $courseName = $courseNameArr["name"];
             $number = $courseNameArr["Number"];
             $notes = $courseNameArr["Notes"];
             $courseid = $courseNameArr["id"];
             $cathedraName = $courseNameArr["cathedra"];
-            $studObj = $mysqli->query("SELECT personal_card.name_in_to_form FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseid ORDER BY personal_card.name_in_to_form ASC") or die("Error: ". mysqli_error($mysqli));
+            $query = "SELECT personal_card.name_in_to_form FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseid ORDER BY personal_card.name_in_to_form ASC";
+            $studObj = $mysqli->query($query) or die("Error in '$query': ". mysqli_error($mysqli));
             $Start = date_create_from_format('Y-m-d', $courseNameArr["Start"]);
             $Start = $Start->format("d.m.y");
             $Finish = date_create_from_format('Y-m-d', $courseNameArr["Finish"]);

@@ -19,7 +19,7 @@
         $response = array();
         while ($row = $result->fetch_assoc()) {
             $id = $row["id"];
-            $numberQuery = "SELECT COUNT(*) AS total FROM certificates INNER JOIN arrivals_zip ON certificates.Arrival_id = arrivals_zip.id INNER JOIN personal_card ON arrivals_zip.PersonId = personal_card.id INNER JOIN marks ON certificates.MarkId = marks.id WHERE arrivals_zip.CourseId = $id";
+            $numberQuery = "SELECT COUNT(*) AS total FROM certificates INNER JOIN arrivals_zip ON certificates.Arrival_id = arrivals_zip.id WHERE arrivals_zip.CourseId = $id";
             $numberObj = $mysqli->query($numberQuery);
             $numberArr = $numberObj->fetch_assoc();
             $row["limit"] = 30;

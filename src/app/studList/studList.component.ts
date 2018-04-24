@@ -66,10 +66,17 @@ export class StudListComponent implements OnInit{
 		this.students.currentTotal.subscribe(total => this.deducts = total);
 		this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
 		if (this.currentUser.is_cathedra == 0) {
-			this.info.getInfo("getStat").then(data => {
-				this.faculties = data.json().data;
+			let faculties = localStorage.getItem("faculties");
+			if(faculties == null){
+				this.info.getInfo("getStat").then(data => {
+					this.faculties = data.json().data;
+					localStorage.setItem("faculties", JSON.stringify(this.faculties));
+					this.statIsLoaded = true;
+				});
+			}else{
+				this.faculties = JSON.parse(faculties);
 				this.statIsLoaded = true;
-			});
+			}
 		}else{
 			this.getList.get().then(data => {
 				try{
@@ -117,7 +124,6 @@ export class StudListComponent implements OnInit{
 			this.coursesTabs.tabs[0].active = false;
 			this.coursesTabs.tabs[2].active = true;
 		}
-		this.isLoading.fill(false);
 	}
 
 	//For departments view

@@ -36,7 +36,7 @@
 	      		</div>
 	      	</accordion-group>
 	      	<preloader path="assets/img/Elipsis.gif" *ngIf="year.isLoading"></preloader>
-	      	<button class="btn btn-block btn-success" *ngIf="archive[year.year] !== undefined && archive[year.year].length === 0" style="margin-top:20px" (click)="DownloadMoreCourses(year)">Ещё курсы</button>
+	      	<button class="btn btn-block btn-success" *ngIf="archive[year.year] !== undefined && archive[year.year].length !== 0" style="margin-top:20px" (click)="DownloadMoreCourses(year)">Ещё курсы</button>
 	      </accordion>
 	    </div>
 	  </accordion-group>

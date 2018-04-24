@@ -7,9 +7,11 @@ import { Global } from '../model/global.class';
 import "rxjs/add/operator/toPromise";
 import {NotificationsService} from 'angular4-notify';
 import { CurrentCourcesListService } from '../FillData/services/getCurrentCourcesList.service';
+import { InfoService } from "../studList/studList.service";
+import { PersonalDataService } from "../personalInfo/personalData.service";
 @Component({
 	templateUrl: './order.component.html',
-	providers: [MakeOrderService, CurrentCourcesListService, BsModalService],
+	providers: [MakeOrderService, CurrentCourcesListService, BsModalService, InfoService, PersonalDataService],
 	styles:[`
 		.table-striped>tbody>tr.selected,
 		.table>tbody>tr.selected>td{
@@ -58,35 +60,36 @@ export class OrderComponent implements OnInit{
 	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: this.globalParams.locale, dateInputFormat: 'DD.MM.YYYY' });
 	modalRef: BsModalRef;
 	isLoaded: boolean = false;
-	
+	faculties: any[];
+	statIsLoaded: boolean = false;
+	educTypes: any[] = [];
+	educForms: any[] = [];
 	constructor(private makeOrderService: MakeOrderService,
 				private http: Http,
+				private info: InfoService,
 				private notify: NotificationsService,
+				private params: PersonalDataService,
 				private modal: BsModalService,
 				private courseList: CurrentCourcesListService){}
 	ngOnInit(){
-		this.courseList.get().then(res => {
-			try{
-				this.courses = res.json();
-				var today = new Date();
-				for (var i = 0; i < this.courses.length; i++) {
-						var start = new Date(this.courses[i].Start);
-						var finish = new Date(this.courses[i].Finish);
-						
-						if (start < today && finish < today) {
-							this.courses[i].class=1;
-						}else if(start < today && finish > today){
-							this.courses[i].class=2;
-						}else if(start > today && finish > today){
-							this.courses[i].class=3;
-						}
-					}
-				this.isLoaded = true;
-			}catch(e){
-				console.log(e);
-				console.log(res._body);
-			}
-		})
+		let faculties = localStorage.getItem("faculties");
+		if(faculties == null){
+			this.info.getInfo("getStat").then(data => {
+				this.faculties = data.json().data;
+				localStorage.setItem("faculties", JSON.stringify(this.faculties));
+				this.statIsLoaded = true;
+			});
+		}else{
+			this.faculties = JSON.parse(faculties);
+			this.statIsLoaded = true;
+		}
+		this.params.getData().then(data => {
+			let response = data.json();
+
+			response.educTypeBel.forEach((element, index, arr) => this.educTypes.push(element));
+			response.formBel.forEach((element, index, arr) => this.educForms.push(element));		
+			this.isLoaded = true;
+		});
 	}
 	EnterAction(flag:number):void{
 		if (this.data.selectedCourses.length === 0) {
@@ -94,16 +97,32 @@ export class OrderComponent implements OnInit{
 			return;
 		}
 		this.data.type = flag;
+		let hasEmptyCourse = false;
 		switch (flag) {
-			case 2:
-				this.modalRef = this.modal.show(this.cert, {class: 'modal-md'});
+			case 2:{
+				this.data.selectedCourses.forEach((element, index, arr) => {
+					if(element.countEntered == 0){
+						hasEmptyCourse = true;
+						this.notify.addError(`Курс "${element.name}" не имеет зачисленных слушателей`);
+					}
+				})
+				if(!hasEmptyCourse){
+					this.modalRef = this.modal.show(this.cert, {class: 'modal-md'});
+				}
 				break;
-			case 3:
-				this.modalRef = this.modal.show(this.examlist, {class: 'modal-md'});
+			}
+			case 3:{
+				this.data.selectedCourses.forEach((element, index, arr) => {
+					if(element.countEntered == 0){
+						hasEmptyCourse = true;
+						this.notify.addError(`Курс ${element.name} не имеет зачисленных слушателей`);
+					}
+				})
+				if(!hasEmptyCourse){
+					this.modalRef = this.modal.show(this.examlist, {class: 'modal-md'});
+				}
 				break;
-			default:
-				// code...
-				break;
+			}
 		}
 	}
 	BuildOrder(flag?:number): void{

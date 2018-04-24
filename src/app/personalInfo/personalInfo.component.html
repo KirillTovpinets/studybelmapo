@@ -32,13 +32,13 @@
     </div>
   </tab>
   <tab heading="Прочие">
-    <div class="content">
-      <other-info></other-info>
+    <div class="content" *ngIf="person.general.id" >
+      <other-info [personId]="person.general.id"></other-info>
     </div>
   </tab>
   <tab heading="История">
-    <div class="content">
-      <history-info></history-info>
+    <div class="content" *ngIf="person.general.id">
+      <history-info [personId]="person.general.id"></history-info>
     </div>
   </tab>
 </tabset>
@@ -47,5 +47,5 @@
   <button class="btn btn-warning" *ngIf="canChange && !change" (click)="Change()">Изменить</button>
   <button class="btn btn-success" *ngIf="change" (click)="SaveChanges(person)">Сохранить</button>
   <button class="btn btn-danger" *ngIf="change" (click)="Cansel()">Отмена</button>
-  <button type="button" class="btn btn-default" *ngIf="!change" (click)="service.hide(level)">Закрыть</button>
+  <button type="button" class="btn btn-default" *ngIf="!change" (click)="HidePersonalInfo()">Закрыть</button>
 </div>

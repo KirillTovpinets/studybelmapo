@@ -7,5 +7,5 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 
 export class OtherInfoComponent{
-	@Input('info') info: any = {};
+	@Input('personId') info: any = {};
 }

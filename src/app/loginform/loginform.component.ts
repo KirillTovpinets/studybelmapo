@@ -78,7 +78,8 @@ export class LoginComponent implements OnInit{
 	}
 	AddUser(user:User):void{
 		this.addUser.add(user).then(data => {
-			this.notify.addInfo(data.json().message)
+			this.notify.addInfo(data.json().message);
+			this.slideUp();
 		});
 	}
 	private handleError(error: any): Promise<any>{

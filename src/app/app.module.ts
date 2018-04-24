@@ -72,6 +72,8 @@ import { ruLocale } from 'ngx-bootstrap/locale';
 import { ArchiveComponent } from './archive/archive.component';
 import { TableCertificatesComponent } from './table-certificates/table-certificates.component';
 import { LogComponent } from './log/log.component';
+import { TranslatePipe } from './translate.pipe';
+import { StatementsComponent } from './statements/statements.component';
 
 defineLocale('ru', ruLocale);
 
@@ -117,7 +119,9 @@ defineLocale('ru', ruLocale);
     PaginationComponent,
     ArchiveComponent,
     TableCertificatesComponent,
-    LogComponent
+    LogComponent,
+    TranslatePipe,
+    StatementsComponent
   ],
   imports: [
     BrowserModule,
