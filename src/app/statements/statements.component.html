@@ -13,7 +13,7 @@
                 <tab heading="Текущие">
                   <div class="content table-responsive table-full-width">
                     <preloader *ngIf="!isLoaded"></preloader> 
-                    <table class="table table-hover table-striped">
+                    <table class="table table-hover table-striped" *ngIf="isLoaded" >
                       <thead>
                         <th>Номер</th>
                         <th>Название</th>

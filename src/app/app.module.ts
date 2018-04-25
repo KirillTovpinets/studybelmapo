@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
-import { RouterModule } from '@angular/router';
 import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
 import { DragDropDirectiveModule} from "angular4-drag-drop";
 
@@ -19,35 +18,17 @@ import { AccordionModule,
 import { AppComponent } from './app.component';
 import { LoginComponent } from './loginform/loginform.component';
 import { MainComponent } from './main/main.component';
-import { MenuComponent } from './menu/menu.component';
-import { NavbarComponent } from './navbar/navbar.component';
 import { StudListComponent } from './studList/studList.component';
 import { FillDataComponent } from './fillData/fillData.component';
 import { TableListCopmonent } from './tableList/tableList.component';
-import { PersonalInfoComponent } from './personalInfo/personalInfo.component';
-import { GeneralInfoComponent } from './personalInfo/generalInfo/generalInfo.component';
-import { ProfInfoComponent } from './personalInfo/prof/profInfo.component';
-import { PrivateInfoComponent } from './personalInfo/private/privateInfo.component';
-import { HistoryInfoComponent } from './personalInfo/historyInfo/historyInfo.component';
-import { OtherInfoComponent } from './personalInfo/otherInfo/otherInfo.component';
-import { PostDiplomaInfoComponent } from './personalInfo/postDiploma/postDiploma.component';
-import { ArrivalsInfoComponent } from './personalInfo/arrivals/arrivals.component';
+
 import { SearchStudentComponent } from './registry/searchStudent.component';
 import { AddStudentComponent } from './addStudent/addStudent.component';
 import { ReportComponent } from './report/report.component';
 import { OrderComponent } from './order/order.component';
-import { SirnameComponent } from './registry/sirname/sirname.component';
-import { GenderComponent } from './registry/gender/gender.component';
-import { AgeComponent } from './registry/age/age.component';
-import { EstablishmentComponent } from './registry/establishment/establishment.component';
-import { OrganizationComponent } from './registry/organization/organization.component';
-import { AppointmentComponent } from './registry/appointment/appointment.component';
-import { SpecialityComponent } from './registry/speciality/speciality.component';
-import { QualificationComponent } from './registry/qualification/qualification.component';
-import { CategoryComponent } from './registry/category/category.component';
+
 import { ChooseCourseComponent } from './FillData/chooseCourse.component';
 import { ChooseStudentComponent } from './FillData/chooseStudent.component';
-import { PreloaderComponent } from './preloader/preloader.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NotificationsModule, NotificationsService } from 'angular4-notify';
 import { AuthGuard } from "./auth.guard";
@@ -61,7 +42,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { GlobalParamsService } from './Globalparams.service';
 import { CheckAuthService } from './checkAuth.service';
 import { ForMenuDirective } from './directives/for-menu.directive';
-import { MobilemenuComponent } from './mobilemenu/mobilemenu.component';
 import { StudListService } from './studList/stud-list.service';
 import { AdminComponent } from './admin/admin.component';
 import { HelpComponent } from './help/help.component';
@@ -72,8 +52,12 @@ import { ruLocale } from 'ngx-bootstrap/locale';
 import { ArchiveComponent } from './archive/archive.component';
 import { TableCertificatesComponent } from './table-certificates/table-certificates.component';
 import { LogComponent } from './log/log.component';
-import { TranslatePipe } from './translate.pipe';
 import { StatementsComponent } from './statements/statements.component';
+import { TotalListComponent } from './total-list/total-list.component';
+import { DepartmentComponent } from './department/department.component';
+import { PersonInfoModule } from './person-info/person-info.module';
+import { RegistryModule } from './registry/registry.module';
+import { MenuModule } from './Menu/menu.module';
 
 defineLocale('ru', ruLocale);
 
@@ -82,37 +66,16 @@ defineLocale('ru', ruLocale);
     AppComponent,
     LoginComponent,
     MainComponent,
-    MenuComponent,
-    NavbarComponent,
     StudListComponent,
     TableListCopmonent,
-    PersonalInfoComponent,
-    GeneralInfoComponent,
-    ProfInfoComponent,
-    PrivateInfoComponent,
-    HistoryInfoComponent,
-    OtherInfoComponent,
-    PostDiplomaInfoComponent,
-    ArrivalsInfoComponent,
     SearchStudentComponent,
     AddStudentComponent,
     ReportComponent,
-    SirnameComponent,
-    GenderComponent,
-    AgeComponent,
-    EstablishmentComponent,
-    OrganizationComponent,
-    AppointmentComponent,
-    SpecialityComponent,
-    QualificationComponent,
-    CategoryComponent,
-    PreloaderComponent,
     OrderComponent,
     FillDataComponent,
     ChooseCourseComponent,
     ChooseStudentComponent,
     ForMenuDirective,
-    MobilemenuComponent,
     AdminComponent,
     HelpComponent,
     TableContentComponent,
@@ -120,8 +83,9 @@ defineLocale('ru', ruLocale);
     ArchiveComponent,
     TableCertificatesComponent,
     LogComponent,
-    TranslatePipe,
-    StatementsComponent
+    StatementsComponent,
+    TotalListComponent,
+    DepartmentComponent,
   ],
   imports: [
     BrowserModule,
@@ -138,7 +102,10 @@ defineLocale('ru', ruLocale);
     NotificationsModule,
     Ng2AutoCompleteModule,
     ProgressbarModule.forRoot(),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    PersonInfoModule,
+    RegistryModule,
+    MenuModule
   ],
   providers: [ CookieService, 
                NotificationsService, 
@@ -151,7 +118,6 @@ defineLocale('ru', ruLocale);
                ShareService,
                StudListService,
                LogService],
-  entryComponents: [PersonalInfoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

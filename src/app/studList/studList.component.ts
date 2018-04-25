@@ -39,13 +39,11 @@ export class StudListComponent implements OnInit{
 	oldCourses: any[] = [];
 	currentCourses: any[] = [];
 	futureCourses: any[] = [];
-	cathedras: string[] = [];
-	faculties: any[] = [];
 	prevRow: any;
 	message:string = "";
 	isLoading: boolean[] = new Array(4).fill(true);
-	statIsLoaded: boolean = false;
-	newCourse: Course = new Course();
+	
+	
 	global: Global = new Global();
 	types: any[] = [];
 	currentUser: any;
@@ -65,67 +63,48 @@ export class StudListComponent implements OnInit{
 	ngOnInit(): void{
 		this.students.currentTotal.subscribe(total => this.deducts = total);
 		this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
-		if (this.currentUser.is_cathedra == 0) {
-			let faculties = localStorage.getItem("faculties");
-			if(faculties == null){
-				this.info.getInfo("getStat").then(data => {
-					this.faculties = data.json().data;
-					localStorage.setItem("faculties", JSON.stringify(this.faculties));
-					this.statIsLoaded = true;
+		this.getList.get().then(data => {
+			try{
+				this.courseList = data.json();
+				this.isLoading[0] = false;
+				var today = new Date();
+
+				this.oldCourses = this.courseList.filter((course) => {
+					var start = new Date(course.Start);
+					var finish = new Date(course.Finish);
+
+					if(start < today && finish < today){
+						course.class = 1;
+						return course;
+					}
 				});
-			}else{
-				this.faculties = JSON.parse(faculties);
-				this.statIsLoaded = true;
+				this.isLoading[1] = false;
+				this.currentCourses = this.courseList.filter((course) => {
+					var start = new Date(course.Start);
+					var finish = new Date(course.Finish);
+
+					if(start < today && finish > today){
+						course.class = 2;
+						return course;
+					}
+				});
+				this.isLoading[2] = false;
+				this.futureCourses = this.courseList.filter((course) => {
+					var start = new Date(course.Start);
+
+					if(start > today){
+						course.class = 3;
+						return course;
+					}
+				});
+				this.isLoading[3] = false;
+
+			}catch(e){
+				this.ErrorAction(e, data);
 			}
-		}else{
-			this.getList.get().then(data => {
-				try{
-					this.courseList = data.json();
-					this.isLoading[0] = false;
-					var today = new Date();
-
-					this.oldCourses = this.courseList.filter((course) => {
-						var start = new Date(course.Start);
-						var finish = new Date(course.Finish);
-
-						if(start < today && finish < today){
-							course.class = 1;
-							return course;
-						}
-					});
-					this.isLoading[1] = false;
-					this.currentCourses = this.courseList.filter((course) => {
-						var start = new Date(course.Start);
-						var finish = new Date(course.Finish);
-
-						if(start < today && finish > today){
-							course.class = 2;
-							return course;
-						}
-					});
-					this.isLoading[2] = false;
-					this.futureCourses = this.courseList.filter((course) => {
-						var start = new Date(course.Start);
-
-						if(start > today){
-							course.class = 3;
-							return course;
-						}
-					});
-					this.isLoading[3] = false;
-
-				}catch(e){
-					this.ErrorAction(e, data);
-				}
-			});
-			this.dataSrv.getTypeList().then(res => this.types = res.json());
-		}
-		if (this.coursesTabs !== undefined) {
-			this.coursesTabs.tabs[0].active = false;
-			this.coursesTabs.tabs[2].active = true;
-		}
+		});
+		this.dataSrv.getTypeList().then(res => this.types = res.json());
 	}
-
 	//For departments view
 	showListOfListners(course:any): void {
 		if (this.prevRow != undefined && this.prevRow !== course) {
@@ -134,26 +113,8 @@ export class StudListComponent implements OnInit{
 		course.isOpened = !course.isOpened;
 		this.prevRow = course;
 	}
-	SaveCourse(){
-		this.newCourse.startStr = this.newCourse.start.toISOString().slice(0,10);
-		this.newCourse.finishStr = this.newCourse.finish.toISOString().slice(0,10);
-		this.info.saveCourse(this.newCourse).then(res => this.notify.addInfo("Курс добавлен"))
-		this.newCourse = new Course();
-	}
 
-	//Catch changes from (table-list)
-	onChanges(course:any){
-		for (var i = 0; i < this.faculties.length; i++) {
-			var cathedras = this.faculties[i].CathedraList;
-			for (var j = 0; j < cathedras.length; j++) {
-				if (cathedras[j].CourseList.indexOf(course) > -1) {
-					this.faculties[i].CathedraList[j].Total -=1;
-					this.faculties[i].Total -= 1;
-					return;
-				}
-			}
-		}
-	}
+	
 	getArchive(){
 		this.getList.getArchive().then(data => {
 			try{

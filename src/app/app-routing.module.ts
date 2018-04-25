@@ -31,6 +31,10 @@ import { AdminComponent } from './admin/admin.component';
 import { TableContentComponent } from './table-content/table-content.component';
 import { LogComponent } from './log/log.component';
 import { StatementsComponent } from './statements/statements.component';
+import { TotalListComponent } from './total-list/total-list.component';
+import { DepartmentComponent } from './department/department.component';
+
+
 const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
 	{ 
@@ -84,6 +88,28 @@ const routes: Routes = [
 		children: [
 			{ path: '', redirectTo: 'studlist', pathMatch: 'full' },
 			{ path: 'studlist', component: StudListComponent},
+			{ path: 'help', component: HelpComponent},
+			{ 
+				path: 'addDoctor', 
+				component: FillDataComponent,
+				children: [
+					{ path: '', redirectTo: 'chooseCourse', pathMatch: 'full'},
+					{ path: 'chooseCourse', component: ChooseCourseComponent},
+					{ path: 'chooseStudent/:id', component: ChooseStudentComponent},
+					{ path: 'addNew/:id', component: AddStudentComponent},
+				]
+			},
+			{ path: 'statement', component: StatementsComponent},
+
+		]
+	},
+	{ 
+		path: 'department', 
+		component: DepartmentComponent,
+		canActivate: [AuthGuard],
+		children: [
+			{ path: '', redirectTo: 'statistics', pathMatch: 'full' },
+			{ path: 'statistics', component: TotalListComponent},
 			{ path: 'help', component: HelpComponent},
 			{ 
 				path: 'list', 

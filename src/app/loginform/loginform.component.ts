@@ -41,8 +41,10 @@ export class LoginComponent implements OnInit{
 				this.cookieService.set("Login", "true");
 				if (this.logedUser.is_cathedra == null) {
 					this.router.navigate(["/admin"]);
-				}else{
+				}else if(this.logedUser.is_cathedra == 1){
 					this.router.navigate(["/main"]);					
+				}else{
+					this.router.navigate(["/department"]);
 				}
 				
 			}catch(e){
