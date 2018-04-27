@@ -15,10 +15,25 @@
 		$condition = "id = $courseId";
 	}else if($LogedUser->is_cathedra == 1){
 		$condition = "cathedraId = $depId";
+		if(isset($_GET["time"]) && !empty($_GET["time"])){
+			$time = $_GET["time"];
+			$today = date("Y-m-d");
+
+			switch($time){
+				case "current": {
+					$condition .= " AND (cources.Start < '$today' AND cources.Finish > '$today')";
+					break;
+				}
+				case 'old':{
+					$condition .= " AND (cources.Start < '$today' AND cources.Finish < '$today')";
+					break;
+				}
+			}
+		}
 	}else if($LogedUser->is_cathedra == 0){
 		$condition = "1";
 		$select = "DISTINCT cources.`id`, cources.`Number`, cources.`Type`, cources.`name`,cources.`year`, cources.`Start`, cources.`Finish`, cources.`Duration`, cources.`Size`, cources.`Notes`, cources.`cathedraId`";
-		$connection = "INNER JOIN arrivals ON arrivals.CourseId = cources.id";
+		// $connection = "INNER JOIN arrivals ON arrivals.CourseId = cources.id";
 	}
 
 	$query = "SELECT $select FROM cources $connection WHERE $condition";

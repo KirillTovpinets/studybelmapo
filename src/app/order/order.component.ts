@@ -36,6 +36,33 @@ import { PersonalDataService } from "../personalInfo/personalData.service";
 		span.success{
 			background-color: #dff0d8;	
 		}
+		.course-list, .selected-courses{
+			height:250px;
+			overflow-y: scroll;
+		}
+		.course-list .course{
+			width:65px;
+			text-align:center;
+		}
+		.course{
+			padding:5px 20px;
+			border: 1px solid #ccc;
+			margin-bottom: 5px;
+			margin-right:5px;
+			float:left;
+			border-radius: 5px;
+		}
+		.selected-courses .course{
+			width:100px;
+		}
+		.course-list .course:hover{
+			background:#ffbc67;
+			border-color: #ffbc15;
+			cursor:pointer;
+		}
+		.alert-info{
+			color: #fff;
+		}
 	`]
 })
 
@@ -64,6 +91,7 @@ export class OrderComponent implements OnInit{
 	statIsLoaded: boolean = false;
 	educTypes: any[] = [];
 	educForms: any[] = [];
+	searchCourses:any[] = [];
 	constructor(private makeOrderService: MakeOrderService,
 				private http: Http,
 				private info: InfoService,
@@ -72,24 +100,7 @@ export class OrderComponent implements OnInit{
 				private modal: BsModalService,
 				private courseList: CurrentCourcesListService){}
 	ngOnInit(){
-		let faculties = localStorage.getItem("faculties");
-		if(faculties == null){
-			this.info.getInfo("getStat").then(data => {
-				this.faculties = data.json().data;
-				localStorage.setItem("faculties", JSON.stringify(this.faculties));
-				this.statIsLoaded = true;
-			});
-		}else{
-			this.faculties = JSON.parse(faculties);
-			this.statIsLoaded = true;
-		}
-		this.params.getData().then(data => {
-			let response = data.json();
-
-			response.educTypeBel.forEach((element, index, arr) => this.educTypes.push(element));
-			response.formBel.forEach((element, index, arr) => this.educForms.push(element));		
-			this.isLoaded = true;
-		});
+		this.courseList.get().then(data => { this.courses = data.json()})
 	}
 	EnterAction(flag:number):void{
 		if (this.data.selectedCourses.length === 0) {
@@ -173,14 +184,26 @@ export class OrderComponent implements OnInit{
 		});
 	}
 	selectCourse(course:any): void{
-		if (this.data.selectedCourses.indexOf(course) !== -1) {
-			var index = this.data.selectedCourses.indexOf(course);
-			this.data.selectedCourses.splice(index, 1);
-		}else{
-			this.data.selectedCourses.push(course);
-		}
+		this.data.selectedCourses.push(course);
+		var index = this.courses.indexOf(course);
+		this.courses.splice(index, 1);
+	}
+	unselectCourse(course:any){
+		var index = this.data.selectedCourses.indexOf(course);
+		this.data.selectedCourses.splice(index, 1);
 	}
 	catchSelected(archSelected: any[]){
 		this.data.selectedCourses = this.data.selectedCourses.concat(archSelected);
+	}
+	search($event){
+		if($event.target.value == ""){
+			this.searchCourses = [];
+			return;
+		}
+		this.searchCourses = this.courses.filter((value, index, array) => {
+			if(value.Number.indexOf($event.target.value) === 0 ){
+				return value;
+			}
+		})
 	}
 }

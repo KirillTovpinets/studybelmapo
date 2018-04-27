@@ -63,46 +63,19 @@ export class StudListComponent implements OnInit{
 	ngOnInit(): void{
 		this.students.currentTotal.subscribe(total => this.deducts = total);
 		this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
-		this.getList.get().then(data => {
-			try{
-				this.courseList = data.json();
-				this.isLoading[0] = false;
-				var today = new Date();
-
-				this.oldCourses = this.courseList.filter((course) => {
-					var start = new Date(course.Start);
-					var finish = new Date(course.Finish);
-
-					if(start < today && finish < today){
-						course.class = 1;
-						return course;
-					}
-				});
-				this.isLoading[1] = false;
-				this.currentCourses = this.courseList.filter((course) => {
-					var start = new Date(course.Start);
-					var finish = new Date(course.Finish);
-
-					if(start < today && finish > today){
-						course.class = 2;
-						return course;
-					}
-				});
-				this.isLoading[2] = false;
-				this.futureCourses = this.courseList.filter((course) => {
-					var start = new Date(course.Start);
-
-					if(start > today){
-						course.class = 3;
-						return course;
-					}
-				});
-				this.isLoading[3] = false;
-
-			}catch(e){
-				this.ErrorAction(e, data);
-			}
+		this.getList.get("current").then(data => { 
+			this.currentCourses = data.json();
+			this.isLoading[0] = false;
 		});
+		this.getList.get("old").then(data => { 
+			this.oldCourses = data.json() 
+			this.isLoading[1] = false;
+		});
+		this.getList.get().then(data => { 
+			this.courseList = data.json();
+			this.isLoading[2] = false;
+		});
+
 		this.dataSrv.getTypeList().then(res => this.types = res.json());
 	}
 	//For departments view

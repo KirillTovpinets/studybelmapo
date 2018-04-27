@@ -7,8 +7,8 @@ export class CurrentCourcesListService {
 	url = "assets/php/getCurrentCoursesList.php"
 	constructor(private http: Http) {}
 
-	get(): Promise<any>{
-		return this.http.get(this.url).toPromise();
+	get(param?): Promise<any>{
+		return this.http.get(this.url + "?time=" + param).toPromise();
 	}
 	getById(id:number):Promise<any>{
 		return this.http.get(this.url + "?id=" + id).toPromise();

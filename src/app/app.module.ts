@@ -1,6 +1,6 @@
 // Modules
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, enableProdMode } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -59,6 +59,7 @@ import { PersonInfoModule } from './person-info/person-info.module';
 import { RegistryModule } from './registry/registry.module';
 import { MenuModule } from './Menu/menu.module';
 
+enableProdMode();
 defineLocale('ru', ruLocale);
 
 @NgModule({

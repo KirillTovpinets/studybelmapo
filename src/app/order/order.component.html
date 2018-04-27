@@ -11,77 +11,33 @@
             <div class="content">
               <tabset>
                 <tab heading="Текущие">
-                  <!-- <div class="content table-responsive table-full-width">
-                    <preloader *ngIf="!isLoaded"></preloader> 
-                    <table class="table table-hover table-striped">
-                      <thead>
-                        <th>Номер</th>
-                        <th>Название</th>
-                        <th>Начало</th>
-                        <th>Окончание</th>
-                      </thead>
-                      <tbody>
-                        <tr *ngIf="message !== ''">
-                          <td colspan="4">{{message}}</td>
-                        </tr>
-                        <tr *ngFor="let course of courses" (click)="selectCourse(course)" [ngClass]="{'selected': data.selectedCourses.indexOf(course) !== -1, 'danger': course.class === 1, 'success': course.class === 2}" class="clickable-row" tooltip="Прибыло {{ course.countArr }}  Зачислено {{ course.countEntered }}  Отпучилось {{ course.countGraduated }} Отчислено {{ course.countDeducted }}">
-                          <td class="uniqueId">{{ course.Number }} </td>
-                          <td>{{ course.name }}</td>
-                          <td>{{ course.Start | date: "dd.MM.yyyy"}}</td>
-                          <td>{{ course.Finish | date: "dd.MM.yyyy"}}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div> -->
                   <ng-container>
                       <div class="content">
-                        <accordion>
-                          <accordion-group #group *ngFor="let faculty of faculties">
-                            <div accordion-heading>
-                              {{ faculty.name }}
-                              <span class="pull-right float-xs-right">Всего обучается: {{ faculty.Total }}</span>
-                            </div>
-                            <accordion>
-                              <accordion-group *ngFor="let cathedra of faculty.CathedraList" #cathedraGroup>
-                                <div accordion-heading>
-                                  {{ cathedra.name }}
-                                  <span class="pull-right float-xs-right">Всего обучается: {{ cathedra.Total }}</span>
-                                </div>
-                                <div>
-                                    <table class="table table-striped table-hover table-responsive" *ngIf="cathedra.CourseList.length !== 0">
-                                        <thead>
-                                            <tr>
-                                                <th>Номер</th>
-                                                <th>Название курса</th>
-                                                <th>Начало</th>
-                                                <th>Конец</th>
-                                                <th>Зачислено</th>
-                                                <th>Свободно</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                          <ng-container *ngFor="let course of cathedra.CourseList">
-                                            <tr (click)="selectCourse(course)" [ngClass]="{'selected': data.selectedCourses.indexOf(course) !== -1, 'danger': course.class === 1, 'success': course.class === 2}" class="clickable-row">
-                                                <td>{{course.Number}}</td>
-                                                <td>{{course.name}}</td>
-                                                <td>{{course.Start | date: "dd.MM.yy"}}</td>
-                                                <td>{{course.Finish | date: "dd.MM.yy"}}</td>
-                                                <td class="success" align="center">{{course.StudList.length}}</td>
-                                                <td class="warning" align="center">{{course.Size - course.StudList.length}}</td>
-                                            </tr>
-                                            <tr *ngIf="course.isOpened">
-                                              <td colspan="6" class="no-padding">
-                                                <table-list [course]="course" (onChanges)="onChanges($event)"></table-list>
-                                              </td>   
-                                            </tr>
-                                          </ng-container>
-                                        </tbody>
-                                    </table>
-                                </div>
-                              </accordion-group>
-                            </accordion>   
-                          </accordion-group>
-                        </accordion>
+                        <div class="col-lg-6 col-mg-6 col-sm-6">
+                          <div class="form-group">
+                            <input type="text" name="course-number" id="" placeholder="Поиск по номеру" (keyup)="search($event)" class="form-control">
+                          </div>
+                          <preloader *ngIf="courses.length === 0" ></preloader>
+                          <div class="course-list content" *ngIf="courses.length !== 0 && searchCourses.length === 0">
+                              <article class="course course-item" *ngFor="let item of courses" (click)="selectCourse(item)">
+                                <span>{{ item.Number }}</span>
+                              </article>
+                          </div>
+                          <div class="course-list content" *ngIf="courses.length !== 0 && searchCourses.length !== 0">
+                              <article class="course course-item" *ngFor="let item of searchCourses" (click)="selectCourse(item)">
+                                <span>{{ item.Number }}</span>
+                              </article>
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-mg-6 col-sm-6">
+                          <h4>Выбрано:</h4>
+                          <div class="selected-courses content">
+                              <article class="course alert-info" *ngFor="let item of data.selectedCourses">
+                                <button type="button" class="close" (click)="unselectCourse(item)"><span class="fa fa-times"></span></button>
+                                <span>{{ item.Number }}</span>
+                              </article>
+                          </div>
+                        </div>
                       </div>
                   </ng-container>
                 </tab>
@@ -105,50 +61,6 @@
               <a (click)="EnterAction(3)" [ngClass]="{'selected': this.data.type ===3}" class="btn btn-block btn-default" *ngIf="currentUser != undefined && currentUser.is_cathedra != 0">Ведомость собеседования</a>
             </div>
           </div>
-          <div class="card">
-              <div class="content">
-                <div id="educationalData" class="tab-pane">
-                  <div class="places-buttons">
-                    <form>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="form-group no-margin">
-                            <label>Форма обучения</label>
-                            <table>
-                              <tr *ngFor="let form of educForms">
-                                <td>
-                                  <input type="checkbox" id="form-{{form.id}}" (click)="SelectFormAction(form)" name="belmapo_educForm" class="regular-checkbox">
-                                  <label for="form-{{ form.id }}"> </label>
-                                </td>
-                                <td>
-                                  <label>{{ form.value }}</label>
-                                </td>
-                              </tr>
-                            </table>
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group no-margin">
-                            <label>Тип обучения</label>
-                            <table>
-                              <tr *ngFor="let educType of educTypes">
-                                <td>
-                                  <input type="checkbox" id="educType-{{ educType.id }}" (click)="SelectEducTypeAction(educType)" name="belmapo_educType" class="regular-checkbox">
-                                  <label for="educType-{{ educType.id }}"> </label>
-                                </td>
-                                <td>
-                                  <label>{{ educType.value }}</label>
-                                </td>
-                              </tr>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
         </div>
       </form>
   </div>
