@@ -104,7 +104,7 @@ export class OrderComponent implements OnInit{
 	}
 	EnterAction(flag:number):void{
 		if (this.data.selectedCourses.length === 0) {
-			this.notify.addError("Виберите курс");
+			this.notify.addError("Выберите курс");
 			return;
 		}
 		this.data.type = flag;
@@ -191,6 +191,13 @@ export class OrderComponent implements OnInit{
 	unselectCourse(course:any){
 		var index = this.data.selectedCourses.indexOf(course);
 		this.data.selectedCourses.splice(index, 1);
+		this.courses.push(course);
+		this.courses.sort((a, b) => {
+			let first = Number(a.Number);
+			let second = Number(b.Number);
+
+			return first < second ? 0 : 1;
+		});
 	}
 	catchSelected(archSelected: any[]){
 		this.data.selectedCourses = this.data.selectedCourses.concat(archSelected);

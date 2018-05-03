@@ -64,15 +64,30 @@ export class StudListComponent implements OnInit{
 		this.students.currentTotal.subscribe(total => this.deducts = total);
 		this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
 		this.getList.get("current").then(data => { 
-			this.currentCourses = data.json();
+			try{
+				this.currentCourses = data.json();
+			}catch(e){
+				console.log(data._body);
+				console.log(e);
+			}
 			this.isLoading[0] = false;
 		});
 		this.getList.get("old").then(data => { 
-			this.oldCourses = data.json() 
+			try{
+				this.oldCourses = data.json() 
+			}catch(e){
+				console.log(data._body);
+				console.log(e);
+			}
 			this.isLoading[1] = false;
 		});
 		this.getList.get().then(data => { 
-			this.courseList = data.json();
+			try{
+				this.courseList = data.json();
+			}catch(e){
+				console.log(data._body);
+				console.log(e);
+			}
 			this.isLoading[2] = false;
 		});
 

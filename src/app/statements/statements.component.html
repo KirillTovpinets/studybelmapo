@@ -9,11 +9,14 @@
               <h4 class="title">Выберите курс</h4>
             </div>
             <div class="content">
+              <div class="form-group">
+                <input type="text" (keyup)="Search($event)" class="form-control" placeholder="Введите номер курса">
+              </div>
               <tabset>
                 <tab heading="Текущие">
                   <div class="content table-responsive table-full-width">
                     <preloader *ngIf="!isLoaded"></preloader> 
-                    <table class="table table-hover table-striped" *ngIf="isLoaded" >
+                    <table class="table table-hover table-striped" *ngIf="isLoaded && searchResult.length === 0" >
                       <thead>
                         <th>Номер</th>
                         <th>Название</th>
@@ -32,6 +35,25 @@
                         </tr>
                       </tbody>
                     </table>
+                    <table class="table table-hover table-striped" *ngIf="isLoaded && searchResult.length !== 0" >
+                      <thead>
+                          <th>Номер</th>
+                          <th>Название</th>
+                          <th>Начало</th>
+                          <th>Окончание</th>
+                        </thead>
+                        <tbody>
+                          <tr *ngIf="message !== ''">
+                            <td colspan="4">{{message}}</td>
+                          </tr>
+                          <tr *ngFor="let course of searchResult" (click)="selectCourse(course)" [ngClass]="{'selected': data.selectedCourses.indexOf(course) !== -1, 'danger': course.class === 1, 'success': course.class === 2}" class="clickable-row" tooltip="Прибыло {{ course.countArr }}  Зачислено {{ course.countEntered }}  Отпучилось {{ course.countGraduated }} Отчислено {{ course.countDeducted }}">
+                            <td class="uniqueId">{{ course.Number }} </td>
+                            <td>{{ course.name }}</td>
+                            <td>{{ course.Start | date: "dd.MM.yyyy"}}</td>
+                            <td>{{ course.Finish | date: "dd.MM.yyyy"}}</td>
+                          </tr>
+                        </tbody>
+                    </table>
                   </div>
                 </tab>
                 <tab heading="Архив">
@@ -44,11 +66,16 @@
         <div class="col-md-4">
           <div class="card">
             <div class="header">
-              <h4 class="title">Выберите приказ</h4>
+              <h4 class="title">Выберите ведомость</h4>
             </div>
             <div class="content">
-              <a (click)="EnterAction(2)" [ngClass]="{'selected': this.data.type ===2}" class="btn btn-block btn-default">Для подписи свидетельств</a>
-              <a (click)="EnterAction(3)" [ngClass]="{'selected': this.data.type ===3}" class="btn btn-block btn-default">Ведомость собеседования</a>
+              <a (click)="EnterAction(2)" [ngClass]="{'selected': this.data.type === 2}" class="btn btn-block btn-default">Для подписи свидетельств</a>
+              <a (click)="EnterAction(3)" [ngClass]="{'selected': this.data.type === 3}" class="btn btn-block btn-default">Ведомость собеседования ПК</a>
+              <a (click)="EnterAction(4)" [ngClass]="{'selected': this.data.type === 4}" class="btn btn-block btn-default">Ведомость ГЭК</a>
+              <a (click)="EnterAction(5)" [ngClass]="{'selected': this.data.type === 5}" class="btn btn-block btn-default">Ведомость защита реферата ПК</a>
+              <a (click)="EnterAction(6)" [ngClass]="{'selected': this.data.type === 6}" class="btn btn-block btn-default">Ведомость экзамен ПК</a>
+              <a (click)="EnterAction(7)" [ngClass]="{'selected': this.data.type === 7}" class="btn btn-block btn-default">Ведомость собеседования</a>
+              <a (click)="EnterAction(8)" [ngClass]="{'selected': this.data.type === 8}" class="btn btn-block btn-default">Список группы</a>
             </div>
           </div>
         </div>
@@ -127,6 +154,60 @@
           </div>
           <div class="text-center">
             <a (click)="personInfo.valid && BuildOrder()" class="btn btn-success" [attr.disabled]="personInfo.valid ? null : ''">Создать</a>
+            <a (click)="modal.hide(1)" class="btn btn-danger">Отмена</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #studList>
+  <div class="modal-body">
+    <div class="card">
+      <div class="header"> 
+        <h4 class="title">Выберите дополнительные данные</h4>
+      </div>
+      <div class="content">
+        <form #personInfo="ngForm">
+          <div class="row">
+            <div class="col-md-12">
+              <fieldset>
+                <div>
+                  <input type="checkbox" name="establishmentId" class="regular-checkbox" id="establishmentId" value="establishmentId" (change)="statementInfo('establishmentId')">
+                  <label for="establishmentId"></label>
+                  <label for="">Учебное заведение</label>
+                </div>
+                <div>
+                  <input type="checkbox" name="citizenship" class="regular-checkbox" id="citizenship" value="citizenship" (change)="statementInfo('cityzenship')">
+                  <label for="citizenship"></label>
+                  <label for="">Гражданство</label>
+                </div>
+                <div>
+                  <input type="checkbox" name="appointment" class="regular-checkbox" id="appointment" value="appointment" (change)="statementInfo('appointment')">
+                  <label for="appointment"></label>
+                  <label for="">Должность</label>
+                </div>
+                <div>
+                  <input type="checkbox" name="tel-number" class="regular-checkbox" id="tel-number" value="tel-number" (change)="statementInfo('tel_number_mobile')">
+                  <label for="tel-number"></label>
+                  <label for="">Номер телефона</label>
+                </div>
+                <div>
+                  <input type="checkbox" name="organization" class="regular-checkbox" id="organization" value="organization" (change)="statementInfo('organization')">
+                  <label for="organization"></label>
+                  <label for="">Место работы</label>
+                </div>
+                <div>
+                  <input type="checkbox" name="department" class="regular-checkbox" id="department" value="department" (change)="statementInfo('department')">
+                  <label for="department"></label>
+                  <label for="">Отдел</label>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+          <div class="text-center">
+            <a (click)="personInfo.valid && BuildOrder(8)" class="btn btn-success" [attr.disabled]="personInfo.valid ? null : ''">Создать</a>
             <a (click)="modal.hide(1)" class="btn btn-danger">Отмена</a>
           </div>
         </form>

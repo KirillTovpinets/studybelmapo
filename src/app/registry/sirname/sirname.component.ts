@@ -46,11 +46,8 @@ export class SirnameComponent implements OnInit{
 	}
 
 	ajaxLoad($event): void{
-		if($event.target.scrollTop < this.scrollCounter){
-			this.offset += 30;
-			this.scrollCounter += 200;
-			this.ngOnInit();
-		}
+		this.offset += 30;
+		this.ngOnInit();
 	}
 
 	Search(event:any): void{

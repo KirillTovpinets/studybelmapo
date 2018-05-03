@@ -5,6 +5,7 @@ import { BsDatepickerConfig } from "ngx-bootstrap/datepicker";
 import { NotificationsService } from 'angular4-notify';
 import { Global } from '../model/global.class';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { build$ } from 'protractor/built/element';
 @Component({
   selector: 'app-statements',
   templateUrl: './statements.component.html',
@@ -43,8 +44,10 @@ export class StatementsComponent implements OnInit {
               private makeOrderService: MakeOrderService,
               private notify: NotificationsService,
               private modal: BsModalService,) { }
-  @ViewChild('certificates') cert: TemplateRef<any>;
+  	@ViewChild('certificates') cert: TemplateRef<any>;
 	@ViewChild('examlist') examlist: TemplateRef<any>;
+	@ViewChild('studList') studList: TemplateRef<any>;
+
 	bsValue: Date = new Date();
 	globalParams: Global = new Global();
   data:any = {
@@ -54,7 +57,8 @@ export class StatementsComponent implements OnInit {
     exam_list_numer: "",
     examDate: undefined,
     exam_date: "",
-    exam_form: 0
+	exam_form: 0,
+	statementInfo: []
   };
   message: string = "";
   courses: any[] = [];
@@ -67,29 +71,30 @@ export class StatementsComponent implements OnInit {
 	statIsLoaded: boolean = false;
 	educTypes: any[] = [];
 	educForms: any[] = [];
+	searchResult: any[] = [];
   ngOnInit() {
     this.courseList.get().then(res => {
-			try{
-				this.courses = res.json();
-				var today = new Date();
-				for (var i = 0; i < this.courses.length; i++) {
-						var start = new Date(this.courses[i].Start);
-						var finish = new Date(this.courses[i].Finish);
-						
-						if (start < today && finish < today) {
-							this.courses[i].class=1;
-						}else if(start < today && finish > today){
-							this.courses[i].class=2;
-						}else if(start > today && finish > today){
-							this.courses[i].class=3;
-						}
+		try{
+			this.courses = res.json();
+			var today = new Date();
+			for (var i = 0; i < this.courses.length; i++) {
+					var start = new Date(this.courses[i].Start);
+					var finish = new Date(this.courses[i].Finish);
+					
+					if (start < today && finish < today) {
+						this.courses[i].class=1;
+					}else if(start < today && finish > today){
+						this.courses[i].class=2;
+					}else if(start > today && finish > today){
+						this.courses[i].class=3;
 					}
-				this.isLoaded = true;
-			}catch(e){
-				console.log(e);
-				console.log(res._body);
-			}
-		})
+				}
+			this.isLoaded = true;
+		}catch(e){
+			console.log(e);
+			console.log(res._body);
+		}
+	})
   }
   GetCoursesList(value:Date, flag:number){
 		if (flag === 0) {
@@ -111,18 +116,26 @@ export class StatementsComponent implements OnInit {
   }
   EnterAction(flag:number):void{
 		if (this.data.selectedCourses.length === 0) {
-			this.notify.addError("Виберите курс");
+			this.notify.addError("Выберите курс");
 			return;
 		}
 		this.data.type = flag;
 		let hasEmptyCourse = false;
 		switch (flag) {
 			case 2:{
-        this.modalRef = this.modal.show(this.cert, {class: 'modal-md'});
+        		this.modalRef = this.modal.show(this.cert, {class: 'modal-md'});
 				break;
 			}
 			case 3:{
-        this.modalRef = this.modal.show(this.examlist, {class: 'modal-md'});
+        		this.modalRef = this.modal.show(this.examlist, {class: 'modal-md'});
+				break;
+			}
+			case 4:{
+				this.BuildOrder(4);
+				break;
+			}
+			case 8:{
+				this.modalRef = this.modal.show(this.studList, {class: 'modal-md'});
 				break;
 			}
 		}
@@ -138,15 +151,28 @@ export class StatementsComponent implements OnInit {
 	catchSelected(archSelected: any[]){
 		this.data.selectedCourses = this.data.selectedCourses.concat(archSelected);
   }
+  Search($event){
+	  if($event.target.value == ""){
+		this.searchResult = [];
+		return;
+	  }
+
+	  this.searchResult = this.courses.filter((el, index, arr) => {
+		  if(el.Number.indexOf($event.target.value) == 0){
+			  return el;
+		  }
+	  })
+  }
   BuildOrder(flag?:number): void{
+	  	
 		if (flag !== undefined) {
 			this.data.type = flag;
 		}
 		if (this.data.selectedCourses.length === 0) {
-			this.notify.addError("Виберите курс");
+			this.notify.addError("Выберите курс");
 			return;
 		}else if(this.data.type == undefined){
-			this.notify.addError("Виберите приказ");
+			this.notify.addError("Выберите приказ");
 			return;
 		}
 		if (this.data.examDate != undefined) {
@@ -166,5 +192,13 @@ export class StatementsComponent implements OnInit {
 			    false, false, false, false, 0, null);
 			a.dispatchEvent(e);
         });
+	}
+	statementInfo(field:string){
+		if(this.data.statementInfo.indexOf(field) !== -1){
+			let index = this.data.statementInfo.indexOf(field);
+			this.data.statementInfo.splice(index, 1);
+		}else{
+			this.data.statementInfo.push(field);
+		}
 	}
 }
