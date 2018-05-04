@@ -74,7 +74,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Должность</label>
-                              <input required auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Не найдено'" [list-formatter]="DropdownList" [(ngModel)]="newPerson.general.appointment" [source]="personal_appointments" name="appointment" class="form-control">
+                              <input required auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" [(ngModel)]="newPerson.general.appointment" [source]="personal_appointments" name="appointment" class="form-control">
                               <div class="input-group newValue" *ngIf="newPerson.general.appointment == 0">
                                 <input type="text" class="form-control" required placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_appointmen">
                                 <span class="input-group-btn">
@@ -88,7 +88,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Учреждение</label>
-                              <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Не найдено'" [list-formatter]="DropdownList" required [(ngModel)]="newPerson.general.organization" [source]="personal_organizations" name="organization" class="form-control">
+                              <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" required [(ngModel)]="newPerson.general.organization" [source]="personal_organizations" name="organization" class="form-control">
                               <div class="input-group newValue" *ngIf="newPerson.general.organization == 0">
                                 <input type="text" class="form-control" required placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_organizati">
                                 <span class="input-group-btn">
@@ -102,7 +102,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Структурное подразделение</label>
-                              <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Не найдено'" [list-formatter]="DropdownList" [(ngModel)]="newPerson.general.department" [source]="personal_departments" name="department" class="form-control">
+                              <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" [(ngModel)]="newPerson.general.department" [source]="personal_departments" name="department" class="form-control">
                               <div class="input-group newValue" *ngIf="newPerson.general.department == 0">
                                 <input type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_department">
                                 <span class="input-group-btn">
@@ -133,7 +133,7 @@
                           <div class="col-md-6">
                             <div class="form-group">
                               <label>Название</label>
-                              <input #establishment="ngModel" auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Не найдено'" [list-formatter]="DropdownList" required [(ngModel)]="newPerson.profesional.educational_establishment" [source]="personal_establishments" name="establishment" class="form-control">
+                              <input #establishment="ngModel" auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" required [(ngModel)]="newPerson.profesional.educational_establishment" [source]="personal_establishments" name="establishment" class="form-control">
                               <div class="input-group newValue" *ngIf="newPerson.profesional.educational_establishment == 0">
                                 <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_establishm">
                                 <span class="input-group-btn">
@@ -147,7 +147,7 @@
                           <div class="col-md-6">
                             <div class="form-group">
                               <label>Факультет</label>
-                              <input #faculty="ngModel" required auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Не найдено'" [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.faculty" [source]="personal_faculties" name="faculty" class="form-control">
+                              <input #faculty="ngModel" required auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.faculty" [source]="personal_faculties" name="faculty" class="form-control">
                               <div class="input-group newValue" *ngIf="newPerson.profesional.faculty == 0">
                                 <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_faculty">
                                 <span class="input-group-btn">
@@ -182,13 +182,29 @@
                             <div class="col-md-6">
                               <div class="form-group">
                                 <label>Врачебная</label>
-                                <input #speciality="ngModel" auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Не найдено'" [list-formatter]="DropdownList" required [(ngModel)]="newPerson.profesional.speciality_doc" [source]="specialityDocArr" name="specialityDoc" class="form-control">
+                                <input #speciality="ngModel" auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" required [(ngModel)]="newPerson.profesional.speciality_doc" [source]="specialityDocArr" name="specialityDoc" class="form-control">
+                                <div class="input-group newValue" *ngIf="newPerson.profesional.speciality_doc == 0">
+                                  <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="speciality_doc">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'speciality_doc', specialityDocArr)">
+                                      <span class="glyphicon glyphicon-floppy-disk"></span>
+                                    </button>
+                                  </span>
+                                </div>
                               </div>
                             </div>
                             <div class="col-md-6">
                               <div class="form-group">
                                 <label>Прочие</label>
-                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Не найдено'" [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.speciality_other" [source]="specialityOtherArr" name="specialityOther" class="form-control">
+                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.speciality_other" [source]="specialityOtherArr" name="specialityOther" class="form-control">
+                                <div class="input-group newValue" *ngIf="newPerson.profesional.speciality_other == 0">
+                                  <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="speciality_other">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'speciality_other', specialityOtherArr)">
+                                      <span class="glyphicon glyphicon-floppy-disk"></span>
+                                    </button>
+                                  </span>
+                                </div>
                               </div>
                             </div>
                           </fieldset>
@@ -199,7 +215,7 @@
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label>Переподготовка</label>
-                                  <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Не найдено'" [list-formatter]="DropdownList" [(ngModel)]="rep.name" [source]="specialityRetrArr" name="specialityRetr-{{i}}" class="form-control">
+                                  <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" [(ngModel)]="rep.name" [source]="specialityRetrArr" name="specialityRetr-{{i}}" class="form-control">
                                 </div>
                               </div>
                               <div class="col-md-3" *ngIf="rep.name != ''">
@@ -250,7 +266,7 @@
                             <div class="col-md-12 no-padding">
                               <div class="form-group col-md-6">
                                 <label>Врачебная (осн.)</label>
-                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Не найдено'" [list-formatter]="DropdownList" required #qualification="ngModel" [(ngModel)]="newPerson.profesional.qualification_main" [source]="qualificationMainArr" name="qualificationMain" class="form-control">
+                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" required #qualification="ngModel" [(ngModel)]="newPerson.profesional.qualification_main" [source]="qualificationMainArr" name="qualificationMain" class="form-control">
                               </div>
                               <div class="form-group col-lg-6 col-md-6 col-sm-12">
                                 <label>Категория</label>
@@ -269,7 +285,7 @@
                             <div class="col-md-12 no-padding">
                               <div class="form-group col-md-6">
                                 <label>Врачебная (доп.)</label>
-                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Не найдено'" [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.qualification_add" [source]="qualificationAddArr" name="qualificationAdd" class="form-control">
+                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.qualification_add" [source]="qualificationAddArr" name="qualificationAdd" class="form-control">
                               </div>
                               <div class="form-group col-lg-6 col-md-6 col-sm-12">
                                 <label>Категория</label>
@@ -288,7 +304,7 @@
                             <div class="col-md-12">
                               <div class="form-group">
                                 <label>Прочие</label>
-                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Не найдено'" [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.qualification_other" [source]="qualificationOtherArr" name="qualificationOther" class="form-control">
+                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.qualification_other" [source]="qualificationOtherArr" name="qualificationOther" class="form-control">
                               </div>
                             </div>
                           </fieldset>
@@ -333,7 +349,7 @@
                             <div class="col-md-4 col-sm-6">
                               <div class="form-group">
                                 <label>Гражданство</label>
-                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Не найдено'" [list-formatter]="DropdownList" required [(ngModel)]="newPerson.personal.cityzenship" [source]="personal_cityzenships" #cityzenship="ngModel" name="cityzenship" class="form-control">
+                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" required [(ngModel)]="newPerson.personal.cityzenship" [source]="personal_cityzenships" #cityzenship="ngModel" name="cityzenship" class="form-control">
                                 <div class="input-group newValue" *ngIf="newPerson.personal.cityzenship == 0">
                                   <input required type="text" class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="countries')">
                                   <span class="input-group-btn">
@@ -373,19 +389,19 @@
                             <div class="col-md-4 col-sm-6">
                               <div class="form-group">
                                 <label>Страна</label>
-                                <input auto-complete auto-select-first-item="true" (valueChanged)="checkAutoCountry($event)" [max-num-list]="10" [no-match-found-text]="'Не найдено'" [list-formatter]="DropdownList" [source]="personal_cityzenships" [(ngModel)]="newPerson.personal.country" name="country" class="form-control">
+                                <input auto-complete auto-select-first-item="true" (valueChanged)="checkAutoCountry($event)" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" [source]="personal_cityzenships" [(ngModel)]="newPerson.personal.country" name="country" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-4 col-sm-6" *ngIf="newPerson.personal.country == 'Беларусь'">
                               <div class="form-group">
                                 <label>Область</label>
-                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Не найдено'" (valueChanged)="checkAutoRegion($event)" [list-formatter]="DropdownList" [source]="personal_regions" type="text" [(ngModel)]="newPerson.personal.region" name="region" class="form-control">
+                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" (valueChanged)="checkAutoRegion($event)" [list-formatter]="DropdownList" [source]="personal_regions" type="text" [(ngModel)]="newPerson.personal.region" name="region" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-4 col-sm-6">
                               <div class="form-group">
                                 <label>Населённый пункт</label>
-                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Не найдено'" [list-formatter]="DropdownList" [source]="personal_cities" type="text" [(ngModel)]="newPerson.personal.city" name="cityName" class="form-control">
+                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" [source]="personal_cities" type="text" [(ngModel)]="newPerson.personal.city" name="cityName" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-4 col-sm-6">

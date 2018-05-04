@@ -5,12 +5,13 @@ import { Global } from '../model/global.class';
 import { NotificationsService } from 'angular4-notify';
 import { CurrentCourcesListService } from '../FillData/services/getCurrentCourcesList.service';
 import { LogService } from '../share/log.service';
+import { PersonalDataService } from '../personalInfo/personalData.service';
 
 @Component({
   selector: 'app-total-list',
   templateUrl: './total-list.component.html',
   styleUrls: ['./total-list.component.css'],
-  providers: [InfoService, NotificationsService]
+  providers: [InfoService, NotificationsService, PersonalDataService]
 })
 export class TotalListComponent implements OnInit {
   statIsLoaded: boolean = false;
@@ -20,11 +21,13 @@ export class TotalListComponent implements OnInit {
   global: Global = new Global();
   prevRow: any;
   ArchiveIsLoaded:boolean = false;
-  archive:any[];
+	archive:any[];
+	types: any[];
   constructor(private info: InfoService,
               private notify: NotificationsService,
               private getList: CurrentCourcesListService,
-              private log: LogService) { }
+							private log: LogService,
+							private data: PersonalDataService) { }
 
   ngOnInit() {
     let faculties = localStorage.getItem("faculties");
@@ -37,7 +40,23 @@ export class TotalListComponent implements OnInit {
     }else{
       this.faculties = JSON.parse(faculties);
       this.statIsLoaded = true;
-    }
+		}
+		
+		let types = localStorage.getItem("educTypeBel");
+		if(types == null){
+			this.data.getData("type").then((data) => {
+				try{
+					this.types = data.json();
+					localStorage.setItem("educTypeBel", JSON.stringify(this.types));
+				}catch(e){
+					console.log(e);
+					console.log(data._body);
+				}
+				
+			})
+		}else{
+			this.types = JSON.parse(types);
+		}
   }
   
   //Catch changes from (table-list)
@@ -74,8 +93,7 @@ export class TotalListComponent implements OnInit {
 	SaveCourse(){
 		this.newCourse.startStr = this.newCourse.start.toISOString().slice(0,10);
 		this.newCourse.finishStr = this.newCourse.finish.toISOString().slice(0,10);
-		this.info.saveCourse(this.newCourse).then(res => this.notify.addInfo("Курс добавлен"))
-		this.newCourse = new Course();
+		this.info.saveCourse(this.newCourse).then(res => this.notify.addSuccess("Курс добавлен"))
   }
   ErrorAction(e, data){
 		console.log(e);

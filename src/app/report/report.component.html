@@ -39,7 +39,7 @@
                                     <input type="text" auto-complete [source]="personal_organizations" [(ngModel)]="filterParams.organization" (ngModelChange)="reportAction(GENERAL)" class="form-control" name="organization">
                                   </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                   <div class="form-group no-margin">
                                     <label>Область</label>
                                     <table>
@@ -51,6 +51,22 @@
                                         </td>
                                         <td>
                                           <label>{{region.value}}</label>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                  <div class="form-group no-margin">
+                                    <label>Год</label>
+                                    <table>
+                                      <tr *ngFor="let year of years">
+                                        <td>
+                                          <input type="checkbox" id="region-{{year.id}}" (click)="SelectYear(year)" class="regular-checkbox years">
+                                          <label for="region-{{ year.id }}" class="years"> </label>
+                                        </td>
+                                        <td>
+                                          <label>{{year.id}}</label>
                                         </td>
                                       </tr>
                                     </table>

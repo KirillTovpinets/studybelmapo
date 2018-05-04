@@ -36,7 +36,7 @@
                     <span *ngIf="person.Status == 4">Отчислен досрочно</span>
                 </td>
                 <td>
-                    <span class="pe-7s-piggy" *ngIf="person.Dic_count != ''"></span>
+                    <span *ngIf="person.Dic_count != ''">$</span>
                 </td>
                 <td>
                     <input class="form-control" type="text" (click)="PreventParentEvent($event)" (keyup)="StartTyping($event, person)" name="docNumber" [(ngModel)]="person.DocNumber" [attr.disabled]="person.change ? null : ''"/>

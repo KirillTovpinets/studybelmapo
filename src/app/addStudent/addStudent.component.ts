@@ -11,6 +11,7 @@ import { NotificationsService } from 'angular4-notify';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Retraining } from '../model/profesionInfo.class';
 import { LogService } from '../share/log.service';
+import { NgForm } from '@angular/forms';
 @Component({
 	templateUrl: "./addStudent.component.html",
 	providers: [PersonalDataService, PersonService, BsModalService],
@@ -66,6 +67,7 @@ import { LogService } from '../share/log.service';
 export class AddStudentComponent implements OnInit{
 	@ViewChild("tabSet") tabSet: TabsetComponent
 	@ViewChild("existTpl") exist: TemplateRef<any>;
+	@ViewChild("addForm") form: NgForm;
 	private personal_faculties: any[] = [];
 	
 	private personal_appointments: any[] = [];
@@ -178,10 +180,8 @@ export class AddStudentComponent implements OnInit{
  		}
  		inputData.belmapo_course = this.courseId;
  		this.saveService.save(inputData).then(data => {
-			console.log(data._body);
  			this.notify.addInfo("Cлушатель зачислен");
  			this.isChecked = false;
- 			this.newPerson = new Person();
  			this.modal.hide(1);
  		});
  	}
@@ -328,95 +328,40 @@ export class AddStudentComponent implements OnInit{
 		this.outputData.value = value;
 		this.outputData.table = table;
 
-		switch (table){
-			case "personal_establishment":{
-				for (var i = this.personal_establishments.length - 1; i >= 0; i--) {
-					if (this.personal_establishments[i].value == value) {
-						this.notify.addWarning("Этот вариант уже существует");
-						return;
-					}
-					
-				}
-				break;
+		array.forEach(element => {
+			if(value == element.value){
+				this.notify.addWarning("Этот вариант уже существует");
+				return;
 			}
-			case "countries":{
-				for (var i = this.personal_cityzenships.length - 1; i >= 0; i--) {
-					if (this.personal_cityzenships[i].value == value) {
-						this.notify.addWarning("Этот вариант уже существует");
-						return;
-					}
-					
-				}
-				break;
-			}
-			case "personal_appointment":{
-				for (var i = this.personal_appointments.length - 1; i >= 0; i--) {
-					if (this.personal_appointments[i].value == value) {
-						this.notify.addWarning("Этот вариант уже существует");
-						return;
-					}
-					
-				}
-				break;
-			}
-			case "personal_organizations":{
-				for (var i = this.personal_organizations.length - 1; i >= 0; i--) {
-					if (this.personal_organizations[i].value == value) {
-						this.notify.addWarning("Этот вариант уже существует");
-						return;
-					}
-					
-				}
-				break;
-			}
-			case "personal_department":{
-				for (var i = this.personal_departments.length - 1; i >= 0; i--) {
-					if (this.personal_departments[i].value == value) {
-						this.notify.addWarning("Этот вариант уже существует");
-						return;
-					}
-					
-				}
-				break;
-			}
-			case "personal_faculty":{
-				for (var i = this.personal_faculties.length - 1; i >= 0; i--) {
-					if (this.personal_faculties[i].value == value) {
-						this.notify.addWarning("Этот вариант уже существует");
-						return;
-					}
-					
-				}
-				break;
-			}
-		}
+		});
 
 		this.saveService.saveParameter(this.outputData).then(data => {
 			array.push(data.json());
+			console.log(data.json());
 
 			switch (table){
 				case "personal_establishment":{
-					this.newPerson.profesional.educational_establishment = data.id;
+					this.newPerson.profesional.educational_establishment = data.json();
 					break;
 				}
 				case "countries":{
-					this.newPerson.personal.cityzenship = data.json().id;
+					this.newPerson.personal.cityzenship = data.json();
 					break;
 				}
 				case "personal_appointment":{
-					this.newPerson.general.appointment = data.json().id;
+					this.newPerson.general.appointment = data.json();
 					break;
 				}
 				case "personal_organizations":{
-					this.newPerson.general.organization = data.json().id;
+					this.newPerson.general.organization = data.json();
 					break;
 				}
 				case "personal_department":{
-					this.newPerson.general.department = data.json().id;
+					this.newPerson.general.department = data.json();
 					break;
 				}
 				case "personal_faculty":{
-					this.newPerson.profesional.faculty = data.json().id;
+					this.newPerson.profesional.faculty = data.json();
 					break;
 				}
 			}

@@ -2,20 +2,7 @@
 	ini_set("display_errors", 1);
 
 	require_once("config.php");
-	require_once('rb.php');
-	session_start();
-	$login = $_SESSION["loged_user"];
-	$cathId = $login->dep_id;
-// _number ;
-// _type ;
-// _name ;
-// _start ;
-// _startStr ;
-// _finish ;
-// _finishStr ;
-// _ducation ;
-// _size ;
-// _notes ;
+
 	$mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die ("Ошибка подключения: " . mysqli_connect_error());
 	$mysqli->query("SET NAMES utf8");
 
@@ -29,6 +16,13 @@
 	$size = $data->_size;
 	$notes = $data->_notes;
 	$year = date("Y");
+	$splitString = explode('-', $number);
+	$initialNumber = $splitString[0];
+
+	$query = "SELECT * FROM cources WHERE Number = $initialNumber";
+	$relatedCourse = $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));
+	$arr = $relatedCourse->fetch_assoc();
+	$cathId = $arr["cathedraId"];
 	$mysqli->query("INSERT INTO `cources`(`Number`, `Type`, `name`, `year`, `Start`, `Finish`, `Size`, `Notes`, `cathedraId`) VALUES (
 		'$number',
 		'$type',

@@ -8,6 +8,7 @@ import { PersonalDataService } from '../personalInfo/personalData.service';
 import {NotificationsService} from 'angular4-notify';
 import { StudListService } from './stud-list.service';
 import { LogService } from '../share/log.service';
+import { IfObservable } from 'rxjs/observable/IfObservable';
 
 declare var $: any;
 @Component({
@@ -16,9 +17,8 @@ declare var $: any;
 	styles:[`
 		tr.active,
 		tr.active>td{
-			background-color:#63d8f1 !important;
+			background-color:#15A3C1 !important;
 			color:#fff;
-			font-weight:bold;
 		}
 		.nested:hover,
 		.nested{
@@ -84,6 +84,16 @@ export class StudListComponent implements OnInit{
 		this.getList.get().then(data => { 
 			try{
 				this.courseList = data.json();
+
+				this.courseList.forEach((el, index, arr) => {
+					if(this.currentCourses.indexOf(el) !== -1){
+						el.class = 2;
+					}else if (this.oldCourses.indexOf(el) !== -1){
+						el.class = 1;
+					}else{
+						el.class = 3;
+					}
+				})
 			}catch(e){
 				console.log(data._body);
 				console.log(e);

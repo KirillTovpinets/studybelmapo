@@ -9,7 +9,7 @@
 	$data = json_decode(file_get_contents("php://input"));
 	$mysqli->query("INSERT INTO $data->table (name) VALUES ('$data->value');") or die ("Ошибка: " . mysqli_error($mysqli));
 
-	$result = $mysqli->query("SELECT * FROM $data->table WHERE name LIKE '$data->value'");
+	$result = $mysqli->query("SELECT id, name AS value FROM $data->table WHERE name LIKE '$data->value'");
 	$response = $result->fetch_assoc();
 
 	mysqli_close($mysqli);

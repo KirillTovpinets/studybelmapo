@@ -11,12 +11,18 @@
    $status = 0;
    $currentStatus = 0;
    $currentYear = date("Y");
+   $typeId = $courses[0]->Type;
+    $typeObj = $mysqli->query("SELECT * FROM eductype WHERE id = $typeId") or die ("Error: " . mysqli_error($mysqli));
+    $typeArr = $typeObj->fetch_assoc();
+    $type = mb_strtolower($typeArr["name"]);
+    $typeRelForm = mb_strtolower($typeArr["Relative_form"]);
+
     if($isEnter){
-        $about = "О зачислении слушателей на переподготовку";
+        $about = "О зачислении слушателей на $type";
         $status = 2;
         $currentStatus = 1;
     }else{
-        $about = "Об окончании слушателями курсов повышения квалификации";
+        $about = "Об окончании слушателями $type";
         $status = 3;
         $currentStatus = 2;
     }
@@ -25,7 +31,7 @@
             <html>
                 <style>
                     body, p, ol, ul{
-                        font-size:19px;
+                        font-size:14pt;
                     }
                     p, ol{
                         text-align:justify;
@@ -71,6 +77,7 @@
         for($i = 0; $i < count($courses); $i++){
             $number = $courses[$i]->Number;
             $id = $courses[$i]->id;
+            $notes = $courses[$i]->Notes;
             $CourseObj = $mysqli->query("SELECT name, Start, Finish FROM cources WHERE id = '$id'");
             $courseNameArr = $CourseObj->fetch_assoc();
             $courseName = $courseNameArr["name"];
@@ -85,9 +92,9 @@
             array_push($sendTo, $cathedraName);
             if ($isEnter) {
                 $doc_body .= "<li>
-                            Зачислить в число слушателей группы №$number переподготовки
+                            Зачислить в число слушателей группы №$number $typeRelForm
                             по специальности \"$courseName\" 
-                            (переподготовка в очной форме получения образования) на
+                            ($notes) на
                             кафедре $cathedraName согласно списку:
                             <ol class='StudList'>";
             }else{
@@ -217,27 +224,7 @@
         $headmaster = $data->headmaster;
         $exam_form = $data->exam_form;
         $exam_date = $data->exam_date;
-        $doc_body = "<html>
-                        <style>
-                            body, p, ol, ul{
-                                font-size:19px;
-                            }
-                            p, ol{
-                                text-align:left;
-                                margin-top:0pt;
-                            }
-                            ol{
-                                text-indent: 1.25cm;
-                                padding:0px;
-                            }
-                            .StudList li{
-                                margin-left:0pt;
-                            }
-                            td{
-                                text-indent:0.25pt;
-                                margin-right:0.25pt;
-                            }
-                        </style>";
+        $doc_body = "";
         for($i = 0; $i < count($courses); $i++){
             $number = $courses[$i]->Number;
             $id = $courses[$i]->id;
@@ -329,12 +316,8 @@
               normal;mso-element:frame;mso-element-frame-hspace:9.0pt;mso-element-wrap:
               around;mso-element-anchor-vertical:paragraph;mso-element-anchor-horizontal:
               margin;mso-element-top:5.65pt;mso-height-rule:exactly'><span
-              style='font-size:14.0pt;font-family:\"Times New Roman\",serif;mso-fareast-font-family:
-              \"Times New Roman\"'></span><span class=SpellE><span lang=EN-US
-              style='font-size:14.0pt;font-family:\"Times New Roman\",serif;mso-fareast-font-family:
-              \"Times New Roman\";mso-ansi-language:EN-US'></span></span><span
-              lang=EN-US style='font-size:10.0pt;font-family:\"Times New Roman\",serif;
-              mso-fareast-font-family:\"Times New Roman\";mso-ansi-language:EN-US'>$exam_form<o:p></o:p></span></p>
+              style='font-size:14pt;font-family:\"Times New Roman\",serif;mso-fareast-font-family:
+              \"Times New Roman\"'>$exam_form<o:p></o:p></span></p>
               </td>
              </tr>
              <tr style='mso-yfti-irow:4'>
@@ -910,249 +893,99 @@
              </tr>
              <![endif]>
             </table>";
+        }
+    }else if($isEnter == 4){
+        require_once("statements/gek.php");
+        $doc_body = makeGEK($data, $courses, $mysqli);
+    }else if($isEnter == 8){ 
+        $additionalField = $data->statementInfo;
+        $doc_body = "<html>
+                        <style>
+                            body, p, ol, ul{
+                                font-size:14pt;
+                            }
+                            p, ol{
+                                text-align:left;
+                                text-indent: 1.25cm;
+                                margin-top:0pt;
+                            }
+                            table{
+                                border-collapse: collapse;
+                            }
+                            table tr td, th{
+                                border: 1px solid black;
+                            }
+                        </style>";
+        for($i = 0; $i < count($courses); $i++){
+            $number = $courses[$i]->Number;
+            $id = $courses[$i]->id;
+            $name = $courses[$i]->name;
+            $selectAddField = "";
+            $fromConnections = "";
+            for($j = 0; $j < count($additionalField); $j++){
+                switch($additionalField[$j]){
+                    case 'appointment';
+                    case 'organization';
+                    case 'department': {
+                        $table = CONNECTIONS[$additionalField[$j]];
+                        $selectAddField .= ", $table.name AS " . $additionalField[$j];
+                        $fromConnections .= " INNER JOIN $table ON personal_card." . $additionalField[$j] . " = $table.id" ;
+                        break;
+                    }
+                    case 'establishmentId':{
+                        $table = CONNECTIONS[$additionalField[$j]];
+                        $selectAddField .= ", $table.name AS " . $additionalField[$j];
+                        $fromConnections .= " INNER JOIN personal_prof_info ON personal_card.id = personal_prof_info.PersonId INNER JOIN $table ON $table.id = personal_prof_info." . $additionalField[$j];
+                        break;
+                    }
+                    case 'cityzenship';
+                    case 'tel_number_mobile';
+                    case 'tel_number_work': {
+                        if(strpos($fromConnections, "INNER JOIN personal_private_info") === false ){
+                            $fromConnections .= " INNER JOIN personal_private_info ON personal_card.id = personal_private_info.PersonId";
+                        }
+                        $table = CONNECTIONS[$additionalField[$j]];
+                        if(!empty($table)){
+                            $selectAddField .= ", $table.name AS " . $additionalField[$j];
+                            $fromConnections .= " INNER JOIN $table ON $table.id = personal_private_info." . $additionalField[$j];
+                        }else{
+                            $selectAddField .= ", personal_private_info.`" . $additionalField[$j] . "`";
+                        }
+                        break;
+                    }
+                }
+            }
+            $query = "SELECT personal_card.name, personal_card.surname, personal_card.patername $selectAddField FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId $fromConnections WHERE arrivals.CourseId = $id ORDER BY personal_card.name_in_to_form ASC";
+
+            echo $query;
+            $studObj = $mysqli->query($query) or die("Error: ". mysqli_error($mysqli));
+            $doc_body .= "<p style='text-align:center;'> Курс №$number '$name'</p>";
             
-    //         $doc_body .= "<p>Группа № $number \"$courseName\" ($notes)</p>";
-    //         $doc_body .= "<p>Форма итоговой аттестации: $exam_form</p>";
-    //         $doc_body .= "<p>Учебная дисциплина: \"$courseName\" ($notes)</p>";
-    //         $doc_body .= "<table style='width:100%'><tr style='mso-yfti-irow:18'><td rowspan='5' >Члены комиссии</td></tr><tr><td style='border-bottom:1px solid black;'>123</td><tr><td style='border-bottom:1px solid black;'>123</td></tr><tr><td style='border-bottom:1px solid black;'>123</td></tr><tr><td style='border-bottom:1px solid black;'>123</td></tr></table>";
-    //         $doc_body .= "<p>Дата проведения аттестации: $exam_date</p>";
-    //         $doc_body .= "<table style='border: 1px solid black; border-collapse: collapse;'>
-    //         <tr style='mso-yfti-irow:14'>
-    //         <td width=422 colspan=10 valign=top style='width:316.35pt;border:solid windowtext 1.0pt;
-    //         border-top:none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
-    //         padding:0cm 5.4pt 0cm 5.4pt'>
-    //         <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
-    //         text-align:center;line-height:normal'><span style='font-size:14.0pt;
-    //         font-family:\"Times New Roman\",serif;mso-fareast-font-family:\"Times New Roman\"'>Фамилия, собственное имя, отчество (если таковое имеется) слушателя<o:p></o:p></span></p>
-    //         </td>
-    //         <td width=228 colspan=5 valign=top style='width:171.15pt;border-top:none;
-    //         border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
-    //         mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
-    //         mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-    //         <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
-    //         text-align:center;line-height:normal'><span style='font-size:14.0pt;
-    //         font-family:\"Times New Roman\",serif;mso-fareast-font-family:\"Times New Roman\"'>Отметка<o:p></o:p></span></p>
-    //         </td>
-    //        </tr>";
-    //         $index = 1;
-    //         while ($row = $studObj->fetch_assoc()) {
-    //                $person = $row["surname"] . " " . $row["name"] . " " . $row["patername"];
-    //                $doc_body .= "<tr style='mso-yfti-irow:18'>
-    //                <td width=422 colspan=10 valign=top style='width:316.35pt;border:solid windowtext 1.0pt;
-    //                border-top:none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
-    //                padding:0cm 5.4pt 0cm 5.4pt'>
-    //                <p class=MsoListParagraph style='margin-top:0cm;margin-right:0cm;margin-bottom:
-    //                0cm;margin-left:7.1pt;margin-bottom:.0001pt;mso-add-space:auto;text-indent:
-    //                0cm;line-height:normal;mso-list:l5 level1 lfo4;tab-stops:21.75pt'><![if !supportLists]><span
-    //                style='font-size:14.0pt;font-family:\"Times New Roman\",serif;mso-fareast-font-family:
-    //                \"Times New Roman\"'><span style='mso-list:Ignore'>$index.<span
-    //                style='font:7.0pt \"Times New Roman\"'>&nbsp;&nbsp; </span></span></span><![endif]><span
-    //                lang=EN-US style='font-size:14.0pt;font-family:\"Times New Roman\",serif;
-    //                mso-fareast-font-family:\"Times New Roman\";mso-ansi-language:EN-US'>$person</span><span
-    //                style='font-size:14.0pt;font-family:\"Times New Roman\",serif;mso-fareast-font-family:
-    //                \"Times New Roman\"'><o:p></o:p></span></p>
-    //                </td>
-    //                <td width=228 colspan=5 valign=top style='width:171.15pt;border-top:none;
-    //                border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
-    //                mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
-    //                mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-    //                <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-    //                normal'><span style='font-size:14.0pt;font-family:\"Times New Roman\",serif;
-    //                mso-fareast-font-family:\"Times New Roman\"'><o:p>&nbsp;</o:p></span></p>
-    //                </td>
-    //               </tr>";
-    //                 $index++;
-    //            }   
+            $doc_body .= "<table><tr>";
+            $doc_body .= "<th>№ п/п</th>";
+            $doc_body .= "<th>Фамилия, имя, отчество</th>";
 
-    //         $doc_body .= "</table>";
-    //         $doc_body .= "<p>Количество слушателей, присутствовавших на аттестации _____чел.</p>";
-    //         $doc_body .= "<p>Количество слушателей, получивших отметки:</p>";
-    //         $doc_body .= "<table><tr><td>«зачтено»</td><td>_____ чел.</td></tr>";
-    //         $doc_body .= "<tr><td>«не зачтено»</td><td>_____ чел.</td></tr></table>";
-
-    //         $doc_body .= "<p>Количество слушателей, не явившихся на аттестацию _____ чел.</p>";
-    //         $doc_body .= "<table><tr><td>Члены комиссии</td><td>__________________________<br/>__________________________<br/>__________________________<br/>__________________________<br/></td></tr></table>";
-    //         $doc_body .= "<table><tr><td>Декан факультета</td><td>___________________</td></tr></table>";
-    //         $doc_body .= '<span style="font-size:12.0pt;font-family:\"Times New Roman\","serif";mso-fareast-font-family:
-    //                         \"Times New Roman\";mso-fareast-theme-font:minor-fareast;mso-ansi-language:RU;
-    //                         mso-fareast-language:RU;mso-bidi-language:AR-SA"><br clear=all
-    //                         style="mso-special-character:line-break;page-break-before:always">
-    //                         </span>';
-    //     }
-    // }else if($isEnter == 4){
-    //     $prorector = $data->prorector;
-    //     $headmaster = $data->headmaster;
-    //     $exam_form = $data->exam_form;
-    //     $exam_date = $data->exam_date;
-    //     $doc_body = "<html>
-    //                     <style>
-    //                         body, p, ol, ul{
-    //                             font-size:14pt;
-    //                         }
-    //                         p, ol{
-    //                             text-align:left;
-    //                             text-indent: 1.25cm;
-    //                             margin-top:0pt;
-    //                         }
-    //                         ol{
-    //                             text-indent: 1.25cm;
-    //                             padding:0px;
-    //                         }
-    //                         .StudList li{
-    //                             margin-left:0pt;
-    //                         }
-    //                     </style>";
-    //     for($i = 0; $i < count($courses); $i++){
-    //         $number = $courses[$i]->Number;
-    //         $id = $courses[$i]->id;
-    //         $query = "SELECT cources.id, cources.Number, cources.name, cources.Start, cources.Finish, cources.Notes, cathedras.name AS cathedra FROM cources INNER JOIN cathedras ON cources.cathedraId = cathedras.id WHERE cources.id = '$id'";
-    //         $CourseObj = $mysqli->query($query) or die ("Error in '$query' " . mysqli_error($mysqli));
-    //         $courseNameArr = $CourseObj->fetch_assoc();
-    //         $courseName = $courseNameArr["name"];
-    //         $number = $courseNameArr["Number"];
-    //         $notes = $courseNameArr["Notes"];
-    //         $courseid = $courseNameArr["id"];
-    //         $cathedraName = $courseNameArr["cathedra"];
-    //         $studObj = $mysqli->query("SELECT personal_card.name, personal_card.surname, personal_card.patername FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseid ORDER BY personal_card.name_in_to_form ASC") or die("Error: ". mysqli_error($mysqli));
-    //         $Start = date_create_from_format('Y-m-d', $courseNameArr["Start"]);
-    //         $Start = $Start->format("d.m.y");
-    //         $Finish = date_create_from_format('Y-m-d', $courseNameArr["Finish"]);
-    //         $Finish = $Finish->format("d.m.y") ;
-    //         $doc_body .= "<p style='text-align:center;'>Государственное учреждение образования <br />
-    //                         «Белорусская медицинская академия последипломного образования»
-    //                         </p>
-    //                 <p style='text-align:center'>ЗАЧЁТНО-ЭКЗАМЕНАЦИОННАЯ ВЕДОМОСТЬ</p>";
+            for($j = 0; $j < count($additionalField); $j++){
+                $label = LABELS[$additionalField[$j]];
+                $doc_body .= "<th>$label</th>";
+            }
             
-    //         $doc_body .= "<table><tr>";
-    //         $doc_body .= "<td style='width:10px;'>Группа</td>";
-    //         $doc_body .= "<td style='border-bottom:1px solid black'></td></tr>";
-    //         $doc_body .= "<tr><td>Форма аттестации:</td><td>комплексный государственный экзамен</td></tr>";
-    //         $doc_body .= "<tr><td>Учебные(ая) дисциплины(а):</td><td> \"$courseName\" ($notes)</td></tr>";
-    //         $doc_body .= "<tr><td>Председатель государственной комиссии:</td><td></td></tr>";
-    //         $doc_body .= "<tr><td>Члены государственной экзаменационной комиссии:</td><td></td></tr></table>";
-            
-    //         $doc_body .= "<p>Дата проведения аттестации: $exam_date</p>";
-    //         $doc_body .= "<table style='border: 1px solid black; border-collapse: collapse;'>
-    //                         <tr>
-    //                             <th style='border:1px solid black;'>№</th>
-    //                             <th style='border:1px solid black;'>Фамилия, собственное имя, отчество (если таковое имеется) слушателя</th>
-    //                             <th style='border:1px solid black;'>Отметка</th>
-    //                         </tr>";
-    //         $index = 1;
-    //         while ($row = $studObj->fetch_assoc()) {
-    //                $person = $row["surname"] . " " . $row["name"] . " " . $row["patername"];
-    //                $doc_body .= "<tr style='border:1px solid black;'>
-    //                                 <td style='border:1px solid black;'>$index</td>
-    //                                 <td style='border:1px solid black;'>$person</td>
-    //                                 <td style='border:1px solid black;'></td>
-    //                             </tr>";
-    //                 $index++;
-    //            }   
-
-    //         $doc_body .= "</table>";
-    //         $doc_body .= "<p>Количество слушателей, присутствовавших на аттестации _____чел.</p>";
-    //         $doc_body .= "<p>Количество слушателей, получивших отметки:</p>";
-    //         $doc_body .= "<table><tr><td>«зачтено»</td><td>_____ чел.</td></tr>";
-    //         $doc_body .= "<tr><td>«не зачтено»</td><td>_____ чел.</td></tr></table>";
-
-    //         $doc_body .= "<p>Количество слушателей, не явившихся на аттестацию _____ чел.</p>";
-    //         $doc_body .= "<table><tr><td>Члены комиссии</td><td>__________________________<br/>__________________________<br/>__________________________<br/>__________________________<br/></td></tr></table>";
-    //         $doc_body .= "<table><tr><td>Декан факультета</td><td>___________________</td></tr></table>";
-    //         $doc_body .= '<span style="font-size:12.0pt;font-family:\"Times New Roman\","serif";mso-fareast-font-family:
-    //                         \"Times New Roman\";mso-fareast-theme-font:minor-fareast;mso-ansi-language:RU;
-    //                         mso-fareast-language:RU;mso-bidi-language:AR-SA"><br clear=all
-    //                         style="mso-special-character:line-break;page-break-before:always">
-    //                         </span>';
-    //     }
-    // }else if($isEnter == 8){ 
-    //     $additionalField = $data->statementInfo;
-    //     $doc_body = "<html>
-    //                     <style>
-    //                         body, p, ol, ul{
-    //                             font-size:14pt;
-    //                         }
-    //                         p, ol{
-    //                             text-align:left;
-    //                             text-indent: 1.25cm;
-    //                             margin-top:0pt;
-    //                         }
-    //                         table{
-    //                             border-collapse: collapse;
-    //                         }
-    //                         table tr td, th{
-    //                             border: 1px solid black;
-    //                         }
-    //                     </style>";
-    //     for($i = 0; $i < count($courses); $i++){
-    //         $number = $courses[$i]->Number;
-    //         $id = $courses[$i]->id;
-    //         $name = $courses[$i]->name;
-    //         $selectAddField = "";
-    //         $fromConnections = "";
-    //         for($j = 0; $j < count($additionalField); $j++){
-    //             switch($additionalField[$j]){
-    //                 case 'appointment';
-    //                 case 'organization';
-    //                 case 'department': {
-    //                     $table = CONNECTIONS[$additionalField[$j]];
-    //                     $selectAddField .= ", $table.name AS " . $additionalField[$j];
-    //                     $fromConnections .= " INNER JOIN $table ON personal_card." . $additionalField[$j] . " = $table.id" ;
-    //                     break;
-    //                 }
-    //                 case 'establishmentId':{
-    //                     $table = CONNECTIONS[$additionalField[$j]];
-    //                     $selectAddField .= ", $table.name AS " . $additionalField[$j];
-    //                     $fromConnections .= " INNER JOIN personal_prof_info ON personal_card.id = personal_prof_info.PersonId INNER JOIN $table ON $table.id = personal_prof_info." . $additionalField[$j];
-    //                     break;
-    //                 }
-    //                 case 'cityzenship';
-    //                 case 'tel_number_mobile';
-    //                 case 'tel_number_work': {
-    //                     if(strpos($fromConnections, "INNER JOIN personal_private_info") === false ){
-    //                         $fromConnections .= " INNER JOIN personal_private_info ON personal_card.id = personal_private_info.PersonId";
-    //                     }
-    //                     $table = CONNECTIONS[$additionalField[$j]];
-    //                     if(!empty($table)){
-    //                         $selectAddField .= ", $table.name AS " . $additionalField[$j];
-    //                         $fromConnections .= " INNER JOIN $table ON $table.id = personal_private_info." . $additionalField[$j];
-    //                     }else{
-    //                         $selectAddField .= ", personal_private_info.`" . $additionalField[$j] . "`";
-    //                     }
-    //                     break;
-    //                 }
-    //             }
-    //         }
-    //         $query = "SELECT personal_card.name, personal_card.surname, personal_card.patername $selectAddField FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId $fromConnections WHERE arrivals.CourseId = $id ORDER BY personal_card.name_in_to_form ASC";
-
-    //         echo $query;
-    //         $studObj = $mysqli->query($query) or die("Error: ". mysqli_error($mysqli));
-    //         $doc_body .= "<p style='text-align:center;'> Курс №$number '$name'</p>";
-            
-    //         $doc_body .= "<table><tr>";
-    //         $doc_body .= "<th>№ п/п</th>";
-    //         $doc_body .= "<th>Фамилия, имя, отчество</th>";
-
-    //         for($j = 0; $j < count($additionalField); $j++){
-    //             $label = LABELS[$additionalField[$j]];
-    //             $doc_body .= "<th>$label</th>";
-    //         }
-            
-    //         $doc_body .= "</tr>";
-    //         $index = 1;
-    //         while ($row = $studObj->fetch_assoc()) {
-    //                $person = $row["surname"] . " " . $row["name"] . " " . $row["patername"];
-    //                $doc_body .= "<tr style='border:1px solid black;'>
-    //                                 <td style='border:1px solid black;'>$index</td>
-    //                                 <td style='border:1px solid black;'>$person</td>";
-    //                 for($j = 0; $j < count($additionalField); $j++){
-    //                     $doc_body .= "<td>" . $row[$additionalField[$j]] . "</td>";
-    //                 }
+            $doc_body .= "</tr>";
+            $index = 1;
+            while ($row = $studObj->fetch_assoc()) {
+                   $person = $row["surname"] . " " . $row["name"] . " " . $row["patername"];
+                   $doc_body .= "<tr style='border:1px solid black;'>
+                                    <td style='border:1px solid black;'>$index</td>
+                                    <td style='border:1px solid black;'>$person</td>";
+                    for($j = 0; $j < count($additionalField); $j++){
+                        $doc_body .= "<td>" . $row[$additionalField[$j]] . "</td>";
+                    }
                             
-    //                 $doc_body .= "</tr>";
-    //                 $index++;
-    //            }   
+                    $doc_body .= "</tr>";
+                    $index++;
+               }   
 
-    //         $doc_body .= "</table>";
+            $doc_body .= "</table>";
         }
 
     }

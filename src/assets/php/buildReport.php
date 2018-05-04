@@ -17,9 +17,14 @@
 		}
 		if($value == "cources"){
 			$query .= "INNER JOIN $value ON arrivals.CourseId = $value.$connectField ";
-		}else if ($value != "arrivals") {
+		}else if ($value != "arrivals" && $value != "arrivals_zip") {
 			$query .= "INNER JOIN $value ON arrivals.PersonId = $value.$connectField ";
+		}else if($value == 'arrivals_zip'){
+
 		}
+	}
+	if(in_array("arrivals_zip", $data["tableIds"])){
+		$query = str_replace("arrivals", "arrivals_zip", $query);
 	}
 
 	$response = array();
@@ -45,7 +50,11 @@
 		else if(is_array($value) && count($value) > 0){
 			for ($i=0; $i < count($value); $i++) { 
 				$val = $value[$i];
-				$particularQuery = $SeperateQuery . " $key = $val";
+				if($key == "years"){
+					$particularQuery = $SeperateQuery . " YEAR(Date) = $val";
+				}else{
+					$particularQuery = $SeperateQuery . " $key = $val";
+				}
 				$result = $mysqli->query($particularQuery) or die ("Error in '$particularQuery': " . mysqli_error($mysqli));
 				$arr = $result->fetch_assoc();
 				$obj["value"] = $arr["Total"];
@@ -53,11 +62,15 @@
 				$obj["label"] = "$key-$val";
 				array_push($response, $obj);
 			}
-			$str = implode(" OR $key = ", $value);
-			$query .= " ($key = $str)";
-			$ORquery .= " ($key = $str)";
-			// $varSeparateQuery = $SeperateQuery;
-			// $varSeparateQuery .= " ($key = $str)";
+			if($key == "years"){
+				$str = implode(" OR YEAR(Date) = ", $value);
+				$query .= " (YEAR(Date) = $str)";
+				$ORquery .= " (YEAR(Date) = $str)";	
+			}else{
+				$str = implode(" OR $key = ", $value);
+				$query .= " ($key = $str)";
+				$ORquery .= " ($key = $str)";
+			}
 			$addAnd = true;
 			continue;
 		}
@@ -81,7 +94,6 @@
 	}
 	$result = $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));
 	$array = $result->fetch_assoc();
-	// echo $query;
 	
 	$Cross["value"] = $array["Total"];
 	$Cross["label"] = "Интегрированный";

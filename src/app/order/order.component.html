@@ -55,7 +55,7 @@
             </div>
             <div class="content">
               <a (click)="BuildOrder(1)" class="btn btn-block btn-default" *ngIf="currentUser != undefined && currentUser.is_cathedra != 1">Зачисление</a>
-              <a (click)="BuildOrder(0)" class="btn btn-block btn-default" *ngIf="currentUser != undefined && currentUser.is_cathedra != 1">Отчисление</a>
+              <a (click)="BuildOrder(0)" class="btn btn-block btn-default" *ngIf="currentUser != undefined && currentUser.is_cathedra != 1">Окончание</a>
 
               <a (click)="EnterAction(2)" [ngClass]="{'selected': this.data.type ===2}" class="btn btn-block btn-default" *ngIf="currentUser != undefined && currentUser.is_cathedra != 0">Для подписи свидетельств</a>
               <a (click)="EnterAction(3)" [ngClass]="{'selected': this.data.type ===3}" class="btn btn-block btn-default" *ngIf="currentUser != undefined && currentUser.is_cathedra != 0">Ведомость собеседования</a>

@@ -18,7 +18,7 @@ export class ReportComponent implements OnInit{
 	private personal_departments: any[] = [];
 	private personal_establishments: any[] = [];
 	private belmapo_courses:any[] = [];
-
+  private years:any[] = [];
 	private selectedCourse:any;
 	private faculties: any[] = [];
 	private cathedras: any[] = [];
@@ -35,6 +35,7 @@ export class ReportComponent implements OnInit{
   private GENERAL: string = "personal_card";
   private SCIENCE: string = "personal_sience";
   private ARRIVAL: string = "arrivals";
+  private ARRIVAL_ZIP: string = "arrivals_zip";
   private COURSE: string = "cources";
 
 
@@ -63,7 +64,8 @@ export class ReportComponent implements OnInit{
     private fieldAndArray:any = {
       region: this.personal_regions,
       FormEduc: this.educForms,
-      Type: this.educTypes
+      Type: this.educTypes,
+      years: this.years
     };
     private ParamLabels:any = ["Учреждение образования", "Гражданство", "Дата получения диплома", "Должность", "Звание кандидата медицинских нук", "Организация", "Область", "Пол", "Сотрудник", "Опыт работы", "Отдел", "Факультет", "Факультет БелМАПО", "Кафедра БелМАПО", "Курс", "Форма обучения", "Номер группы", "Тип обучения"];
     private LabelsToDisplay:any = {};
@@ -74,8 +76,17 @@ export class ReportComponent implements OnInit{
     this.filterParams.FormEduc = [];
     this.filterParams.Type = [];
     this.filterParams.tableIds = [];
+    this.filterParams.years = [];
   }
 	ngOnInit():void{
+    let today = new Date();
+    let year = today.getFullYear();
+    for(let i = 2007; i <= year; i ++){
+      this.years.push({
+        id: i,
+        value: i
+      });
+    }
 		this.dataService.getData().then(data => {
       let response = data.json();
       
@@ -103,16 +114,25 @@ export class ReportComponent implements OnInit{
     }else{
       this.filterParams.region.splice(this.filterParams.region.indexOf(region.id), 1);
     }
-    this.LabelsToDisplay = this.ParamLabels[5];
     return this.reportAction(this.PERSONAL);
   };
+  SelectYear(year){
+    if (this.filterParams.years.indexOf(year.id) < 0) {
+      this.filterParams.years.push(year.id);
+    }else{
+      this.filterParams.years.splice(this.filterParams.years.indexOf(year.id), 1);
+    }
+    return this.reportAction(this.ARRIVAL_ZIP);
+  }
   reportAction(table:string): void {
     if (this.filterParams.tableIds.indexOf(table) < 0) {
       this.filterParams.tableIds.push(table);
     }
     this.buildReport.build(this.filterParams).then(data => {
+      console.log(data);
       var i, len, ref, value;
       try{
+        console.log(data.json());
         ref = data.json();
         this.parameters = [];
         for (i = 0, len = ref.length; i < len; i++) {
@@ -148,6 +168,9 @@ export class ReportComponent implements OnInit{
                       break;
                     case "Type":
                       value.label = "Всего по типам обучения"
+                      break;
+                    case "years":
+                      value.label = "Всего по годам"
                       break;
                   }
                 }

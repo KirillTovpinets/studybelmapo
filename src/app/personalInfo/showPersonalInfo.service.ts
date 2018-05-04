@@ -26,8 +26,9 @@ export class ShowPersonInfoService {
 		}else{
 			this.personalInfo.getInfo(id).then(data => {
 				try{
-					localStorage.setItem("person-" + id, JSON.stringify(data.json()));
-					var person = {...data.json()};
+					let personInfo = data.json();
+					localStorage.setItem("person-" + id, JSON.stringify(personInfo));
+					var person = {...personInfo};
 					this.showModal(person, level, canChange);
 					
 				}catch(e){
@@ -48,6 +49,7 @@ export class ShowPersonInfoService {
 		}
 		person.personal.birthdayDate = new Date(person.personal.birthday);
 		copy.personal.birthdayDate = new Date(person.personal.birthday);
+
 		if (person.profesional !== null && person.profesional !== undefined) {
 			person.profesional.diploma_startDate = new Date(person.profesional.diploma_start);
 			copy.profesional.diploma_startDate = new Date(person.profesional.diploma_start);
@@ -56,6 +58,10 @@ export class ShowPersonInfoService {
 		if (person.profesional != undefined && person.profesional.addCategory_date !== undefined ) {
 			person.profesional.addCategoryDate = new Date(person.profesional.addCategory_date);
 			copy.profesional.addCategoryDate = new Date(person.profesional.addCategory_date);
+
+			person.profesional.retrainings.forEach(el => {
+				el.diploma_start = new Date(el.diploma_start);
+			})
 		}
 		if (person.profesional != undefined && person.profesional.mainCategory_date !== undefined ) {
 			person.profesional.mainCategoryDate = new Date(person.profesional.mainCategory_date);

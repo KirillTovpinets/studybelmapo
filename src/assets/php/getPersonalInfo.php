@@ -64,6 +64,7 @@
 							ON personal_prof_info.speciality_doc = speciality_doct.id LEFT JOIN speciality_other  
 							ON personal_prof_info.speciality_other = speciality_other.id LEFT JOIN speciality_retraining  
 							ON personal_prof_info.speciality_retraining = speciality_retraining.id WHERE personal_prof_info.PersonId = $id";
+	$retrainingsQuery = "SELECT speciality_retraining.name, diploma_number, diploma_start FROM personal_retrainings INNER JOIN speciality_retraining ON personal_retrainings.specialityId = speciality_retraining.id WHERE personal_retrainings.personId = $id";
 	//Личная информация
 	$privateInfoQuery = "SELECT personal_private_info.birthday AS birthday,  
 								countries.name AS cityzenship,
@@ -92,9 +93,16 @@
 	
 	$resultProf = $mysqli->query($profInfoQuery) or die ("Ошибка запроса в запросе\n$profInfoQuery\n " . mysqli_error($mysqli));
 	$resultPrivate = $mysqli->query($privateInfoQuery) or die ("Ошибка запроса в запросе\n$privateInfoQuery\n " . mysqli_error($mysqli));
+	$resultRetraining = $mysqli->query($retrainingsQuery) or die ("Ошибка запроса в запросе\n$retrainingsQuery\n " . mysqli_error($mysqli));
 	$response["general"] = $result->fetch_assoc();
 	$response["personal"] = $resultPrivate->fetch_assoc();
 	$response["profesional"] = $resultProf->fetch_assoc();
+	$response["profesional"]["retrainings"] = array();
+	
+	while($row = $resultRetraining->fetch_assoc()){
+		array_push($response["profesional"]["retrainings"], $row);
+	}
+	
 	$updateData = "SELECT * FROM history_of_changes WHERE personId = $id ORDER BY id ASC";
 	$updateObj = $mysqli->query($updateData) or die ("Error in '$updateData': " . mysqli_error($mysqli));
 	while ($row = $updateObj->fetch_assoc()) {
