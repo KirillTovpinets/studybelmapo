@@ -16,7 +16,12 @@ export class HistoryInfoComponent{
 		//Called after the constructor, initializing input properties, and the first call to ngOnChanges.
 		//Add 'implements OnInit' to the class.
 		this.history.getHistory(this.personId).subscribe(res => {
-			this.historyInfo = res.json();
+			try{
+				this.historyInfo = res.json();
+			}catch(e){
+				console.log(e);
+				console.log(res._body);
+			}
 		});
 	}
 }

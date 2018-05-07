@@ -166,6 +166,8 @@ export class ChooseStudentComponent implements OnInit {
 					this.showInfo.ShowPersonalInfo(person, 2, true);
 					this.isClicked = false;
 				}catch(e){
+					console.log(e);
+					console.log(data._body);
 					this.ErrorAction(e, data);
 				}
 			})

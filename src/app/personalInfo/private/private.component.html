@@ -34,19 +34,19 @@
           <div class="col-lg-4 col-md-4">
             <div class="form-group">
               <label>Домашний телефон</label>
-              <input [attr.disabled]="change ? null : ''" type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="info.tel_number_home" name="tel_number_home" class="form-control">
+              <input [attr.disabled]="change ? null : ''" type="tel" placeholder="(00)000-00-00" (focus)="NumberStartHome()" (keyup)="createMaskHome($event)" [(ngModel)]="info.tel_number_home" name="tel_number_home" class="form-control">
             </div>
           </div>
           <div class="col-lg-4 col-md-4">
             <div class="form-group">
               <label>Рабочий телефон</label>
-              <input [attr.disabled]="change ? null : ''" type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="info.tel_number_work" name="tel_number_work" class="form-control">
+              <input [attr.disabled]="change ? null : ''" type="tel" placeholder="(00)000-00-00" (focus)="NumberStartWork()" (keyup)="createMaskWork($event)" [(ngModel)]="info.tel_number_work" name="tel_number_work" class="form-control">
             </div>
           </div>
           <div class="col-lg-4 col-md-4">
             <div class="form-group">
               <label>Мобильный телефон</label>
-              <input [attr.disabled]="change ? null : ''" type="tel" placeholder="+375(__)___-__-__" [(ngModel)]="info.tel_number_mobile" name="tel_number_mobile" class="form-control">
+              <input [attr.disabled]="change ? null : ''" type="tel" placeholder="(00)000-00-00" (focus)="NumberStartMobile()" (keyup)="createMaskMobile($event)" [(ngModel)]="info.tel_number_mobile" name="tel_number_mobile" class="form-control">
             </div>
           </div>
         </fieldset>

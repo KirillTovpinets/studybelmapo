@@ -21,11 +21,11 @@
 
 			switch($time){
 				case "current": {
-					$condition .= " AND (cources.Start < '$today' AND cources.Finish > '$today')";
+					$condition .= " AND (cources.Start <= '$today' AND cources.Finish >= '$today')";
 					break;
 				}
 				case 'old':{
-					$condition .= " AND (cources.Start < '$today' AND cources.Finish < '$today')";
+					$condition .= " AND (cources.Start <= '$today' AND cources.Finish <= '$today')";
 					break;
 				}
 			}
@@ -92,6 +92,7 @@
 	}
     
     if(count($response) == 0){
+		echo $query;
         echo "Нет курсов, удовлетворяющих условиям поиска";
     }else{
         echo json_encode($response);    

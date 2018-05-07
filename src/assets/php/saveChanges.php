@@ -12,7 +12,10 @@
 	$personId = $data->new->general->id;
 	$new = (array)$data->new;
 	$old = (array)$data->old;
-	print_r($data);
+	$personal = array("appointment", "organization", "department");
+	$private = array("birthday", "isMale", "cityzenship", "	pasport_seria", "pasport_number", "pasport_date", "pasport_organ", "insurance_number", "city_type", "city", "street", "region", "building", "flat", "country", "tel_number_home", "tel_number_work", "tel_number_mobile");
+	$prof = array("establishmentId", "facultyId","diploma_number","speciality_doc","speciality_retraining","speciality_other","experiance_general","experiance_special","experiance_last","qualification_main","qualification_add","qualification_other","main_category","main_category_date","add_category","add_category_date","diploma_start");
+	// print_r($data);
 	foreach ($new as $key => $value) {
 		$new[$key] = (array)$value;
 		$old[$key] = (array)$old[$key];
@@ -27,8 +30,16 @@
 		if (!empty($diff)) {
 			foreach ($diff as $keyDiff => $valueDiff) {
 				$oldKey = "$key";
-				$oldKeyDiff = "_$keyDiff";
-				$oldValue = $old[$oldKey][$oldKeyDiff];
+				$oldKeyDiff = "$keyDiff";
+				$fromArray = "";
+				if(in_array($keyDiff, $personal)){
+					$fromArray = "personal_card";
+				}else if(in_array($keyDiff, $private)){
+					$fromArray = "personal_private_info";
+				}else if(in_array($keyDiff, $prof)){
+					$fromArray = "personal_prof_info";
+				}
+				$oldValue = $old[$oldKey]["_".$oldKeyDiff];
 				if (is_array($valueDiff)) {
 					$newValue = $valueDiff["id"];
 				}else{
@@ -38,7 +49,7 @@
 					$newValue = 0;
 				}
 				$today = date("Y-m-d");
-				$oldQuery = "SELECT $keyDiff AS oldId FROM personal_card WHERE id = $personId";
+				$oldQuery = "SELECT $keyDiff AS oldId FROM $fromArray WHERE id = $personId";
 				$oldValueIdObj = $mysqli->query($oldQuery) or die ("Ошибка в '$oldQuery': " . mysqli_error($mysqli));
 				$oldValueIdArr = $oldValueIdObj->fetch_assoc();
 				$oldId = $oldValueIdArr["oldId"];

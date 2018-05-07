@@ -25,6 +25,7 @@ export class ShowPersonInfoService {
 			this.showModal(person, level, canChange);
 		}else{
 			this.personalInfo.getInfo(id).then(data => {
+				console.log(data._body);
 				try{
 					let personInfo = data.json();
 					localStorage.setItem("person-" + id, JSON.stringify(personInfo));

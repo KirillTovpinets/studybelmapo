@@ -32,6 +32,7 @@ export class PersonalInfoComponent{
 	}
 	SaveChanges(person: any){
 		this.saveChanges.save(person, this.originalData).subscribe(data => {
+			console.log(data._body);
 			this.change = false;
 			this.originalData = {...this.person}
 			this.notify.addInfo("Изменения сохранены");

@@ -44,4 +44,73 @@ export class PrivateInfoComponent{
 			});
 		}
 	}
+	createMaskHome($event){
+		if ($event.key == "Backspace") {
+			return;
+		}
+		if (this.info.tel_number_home[this.info.tel_number_home.length - 1] == ')' ||
+			this.info.tel_number_home[this.info.tel_number_home.length - 1] == '-') {
+			return;
+		}
+		if (this.info.tel_number_home.length == 3) {
+			this.info.tel_number_home += ")";
+		}
+		if (this.info.tel_number_home.length == 7 ||
+			this.info.tel_number_home.length == 10) {
+			this.info.tel_number_home += "-";
+		}
+	}
+	NumberStartHome(){
+		if (this.info.tel_number_home != undefined && this.info.tel_number_home != "") {
+			return;
+		}
+		this.info.tel_number_home = "(";
+	}
+
+	createMaskWork($event){
+		if ($event.key == "Backspace") {
+			return;
+		}
+		if (this.info.tel_number_work[this.info.tel_number_work.length - 1] == ')' ||
+			this.info.tel_number_work[this.info.tel_number_work.length - 1] == '-') {
+			return;
+		}
+		if (this.info.tel_number_work.length == 3) {
+			this.info.tel_number_work += ")";
+		}
+		if (this.info.tel_number_work.length == 7 ||
+			this.info.tel_number_work.length == 10) {
+			this.info.tel_number_work += "-";
+		}
+	}
+	NumberStartWork(){
+		if (this.info.tel_number_work != undefined && this.info.tel_number_work != "") {
+			return;
+		}
+		this.info.tel_number_work = "(";
+	}
+
+	createMaskMobile($event){
+		if ($event.key == "Backspace") {
+			return;
+		}
+		if (this.info.tel_number_mobile[this.info.tel_number_mobile.length - 1] == ')' ||
+			this.info.tel_number_mobile[this.info.tel_number_mobile.length - 1] == '-') {
+			return;
+		}
+		if (this.info.tel_number_mobile.length == 3) {
+			this.info.tel_number_mobile += ")";
+		}
+		if (this.info.tel_number_mobile.length == 7 ||
+			this.info.tel_number_mobile.length == 10) {
+			this.info.tel_number_mobile += "-";
+		}
+	}
+
+	NumberStartMobile(){
+		if (this.info.tel_number_mobile != undefined && this.info.tel_number_mobile != "") {
+			return;
+		}
+		this.info.tel_number_mobile = "(";
+	}
 }
