@@ -17,7 +17,7 @@ export class PersonalInfoComponent{
 	person: Person = new Person();
 	service: BsModalService;
 	level: number = 1;
-	canChange: boolean = false;
+	canChange: boolean = true;
 	change: boolean = false;
 	originalData:any = {};
 	constructor(public PIModal: BsModalRef,

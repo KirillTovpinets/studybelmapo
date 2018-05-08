@@ -83,7 +83,7 @@
           <div class="col-lg-3 col-md-3">
             <div class="form-group">
               <label>Страна</label>
-              <input auto-complete [no-match-found-text]="'Не найдено'" [list-formatter]="dataService.DropdownList" [source]="personal_cityzenships" [attr.disabled]="change ? null : ''" [(ngModel)]="info.country" name="country" class="form-control">
+              <input auto-complete [no-match-found-text]="'Не найдено'" [list-formatter]="dataService.DropdownList" [source]="personal_cityzenships" [attr.disabled]="change ? null : ''" [(ngModel)]="info.cityzenship" name="country" class="form-control">
             </div>
           </div>
           <div class="col-lg-3 col-md-3" *ngIf="info.country == 'Беларусь' || (info.country !== undefined && info.country.value == 'Беларусь')">
@@ -104,7 +104,7 @@
               <input [attr.disabled]="change ? null : ''" type="text" [(ngModel)]="info.street" name="street" class="form-control">
             </div>
           </div>
-          <div class="col-lg-3 col-md-3 no-padding">
+          <div class="col-lg-6 col-md-6 no-padding">
             <div class="col-lg-6 col-md-6">
               <div class="form-group">
                 <label>Дом/корпус</label>

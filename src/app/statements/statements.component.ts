@@ -179,6 +179,7 @@ export class StatementsComponent implements OnInit {
 			this.data.exam_date = this.data.examDate.getDate() + "." + this.data.examDate.getMonth() + "." + this.data.examDate.getFullYear();
 		}
 		this.makeOrderService.create(this.data).then(data => {
+			console.log(data._body);
             var blob = new Blob([data._body], {type: 'application/vnd.msword'});
             var objectUrl = URL.createObjectURL(blob);   
             var filename = this.filename + ".doc";

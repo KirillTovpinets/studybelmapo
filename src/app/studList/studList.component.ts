@@ -63,43 +63,63 @@ export class StudListComponent implements OnInit{
 	ngOnInit(): void{
 		this.students.currentTotal.subscribe(total => this.deducts = total);
 		this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
-		this.getList.get("current").then(data => { 
-			try{
-				this.currentCourses = data.json();
-			}catch(e){
-				console.log(data._body);
-				console.log(e);
-			}
+		let current = localStorage.getItem("current-courses");
+		if(current != null){
+			this.currentCourses = JSON.parse(current);
 			this.isLoading[0] = false;
-		});
-		this.getList.get("old").then(data => { 
-			try{
-				this.oldCourses = data.json() 
-			}catch(e){
-				console.log(data._body);
-				console.log(e);
-			}
+		}else{
+			this.getList.get("current").then(data => { 
+				try{
+					this.currentCourses = data.json();
+					localStorage.setItem("current-courses", JSON.stringify(this.currentCourses));
+				}catch(e){
+					console.log(data._body);
+					console.log(e);
+				}
+				this.isLoading[0] = false;
+			});
+		}
+		let old = localStorage.getItem("old-courses");
+		if(old != null){
+			this.oldCourses = JSON.parse(old);
 			this.isLoading[1] = false;
-		});
-		this.getList.get().then(data => { 
-			try{
-				this.courseList = data.json();
-
-				this.courseList.forEach((el, index, arr) => {
-					if(this.currentCourses.indexOf(el) !== -1){
-						el.class = 2;
-					}else if (this.oldCourses.indexOf(el) !== -1){
-						el.class = 1;
-					}else{
-						el.class = 3;
-					}
-				})
-			}catch(e){
-				console.log(data._body);
-				console.log(e);
-			}
+		}else{
+			this.getList.get("old").then(data => { 
+				try{
+					this.oldCourses = data.json();
+					localStorage.setItem("old-courses", JSON.stringify(this.oldCourses)); 
+				}catch(e){
+					console.log(data._body);
+					console.log(e);
+				}
+				this.isLoading[1] = false;
+			});
+		}
+		let all = localStorage.getItem("all-courses");
+		if(all != null){
+			this.courseList = JSON.parse(all);
 			this.isLoading[2] = false;
-		});
+		}else{
+			this.getList.get().then(data => { 
+				try{
+					this.courseList = data.json();
+					localStorage.setItem("all-courses", JSON.stringify(this.courseList));
+					this.courseList.forEach((el, index, arr) => {
+						if(this.currentCourses.indexOf(el) !== -1){
+							el.class = 2;
+						}else if (this.oldCourses.indexOf(el) !== -1){
+							el.class = 1;
+						}else{
+							el.class = 3;
+						}
+					})
+				}catch(e){
+					console.log(data._body);
+					console.log(e);
+				}
+				this.isLoading[2] = false;
+			});
+		}
 
 		this.dataSrv.getTypeList().then(res => this.types = res.json());
 	}
@@ -112,7 +132,45 @@ export class StudListComponent implements OnInit{
 		this.prevRow = course;
 	}
 
-	
+	updateList(time?:string){
+		localStorage.removeItem(time + "-courses");
+		let data = time || "";
+		switch(time){
+			case "current":
+				this.isLoading[0] = true;
+				break;
+			case "old":
+				this.isLoading[1] = true;
+				break;
+			case "":
+				this.isLoading[2] = true;
+				break;
+		}
+		this.getList.get(data).then(data => { 
+			try{
+				switch(time){
+					case "current":
+						this.currentCourses = data.json();
+						this.isLoading[0] = false;
+						break;
+					case "old":
+						this.oldCourses = data.json();
+						this.isLoading[1] = false;
+						break;
+					case "":
+						this.courseList = data.json();
+						this.isLoading[2] = false;
+						break;
+				}
+				this.oldCourses = data.json();
+				localStorage.setItem("old-courses", JSON.stringify(this.oldCourses)); 
+			}catch(e){
+				console.log(data._body);
+				console.log(e);
+			}
+			this.isLoading[1] = false;
+		});
+	}
 	getArchive(){
 		this.getList.getArchive().then(data => {
 			try{

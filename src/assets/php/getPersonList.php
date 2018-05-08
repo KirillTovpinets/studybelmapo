@@ -24,7 +24,7 @@
 			// }
 			$withArrival = "INNER JOIN arrivals ON personal_card.id = arrivals.PersonId";
 			$withArrival = "";
-			$PersonQuery = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card $withArrival WHERE personal_card.$field = $Id $condition LIMIT $limit OFFSET $offset";
+			$PersonQuery = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card $withArrival WHERE personal_card.$field = $Id $condition LIMIT $limit OFFSET $offset ORDER BY personal_card.name_in_to_form ASC";
 			$PersonResult = $connection->query($PersonQuery) or die ("Ошибка выполнения запроса '$PersonQuery': " . mysqli_error($connection));
 			$resultArray = array();
 			if ($PersonResult->{"num_rows"} == 0) {
@@ -34,7 +34,7 @@
 				array_push($resultArray, $PersonRow);
 			}
 
-			$currentPersonQuery = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday, arrivals.Status FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE personal_card.$field = $Id $condition LIMIT $limit OFFSET $offset";
+			$currentPersonQuery = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday, arrivals.Status FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE personal_card.$field = $Id $condition LIMIT $limit OFFSET $offset ORDER BY personal_card.name_in_to_form ASC";
 			$currentPersonResult = $connection->query($currentPersonQuery) or die ("Ошибка выполнения запроса '$PersonQuery': " . mysqli_error($connection));
 			$currentresultArray = array();
 			if ($currentPersonResult->{"num_rows"} == 0) {

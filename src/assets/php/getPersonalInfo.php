@@ -52,9 +52,9 @@
 							personal_faculty.name AS faculty,  
 							personal_prof_info.diploma_number,
 							personal_prof_info.main_category AS mainCategory,
-							personal_prof_info.main_category_date AS mainCategory_date,
+							personal_prof_info.main_category_date AS mainCategoryDate,
 							personal_prof_info.add_category AS addCategory,
-							personal_prof_info.add_category_date AS addCategory_date  
+							personal_prof_info.add_category_date AS addCategoryDate  
 					FROM personal_prof_info LEFT JOIN personal_establishment
 							ON personal_prof_info.establishmentId = personal_establishment.id  LEFT JOIN personal_faculty  
 							ON personal_prof_info.facultyId = personal_faculty.id LEFT JOIN qualification_add  
@@ -106,6 +106,9 @@
 	$updateData = "SELECT * FROM history_of_changes WHERE personId = $id ORDER BY id ASC";
 	$updateObj = $mysqli->query($updateData) or die ("Error in '$updateData': " . mysqli_error($mysqli));
 	while ($row = $updateObj->fetch_assoc()) {
+		if($row["field"] == "name_in_to_form"){
+			$row["field"] = "nameInDativeForm";
+		}
 		foreach ($response as $key => $value) {
 			foreach ($value as $keyIn => $valueIn) {
 				if ($keyIn == $row["field"]) {
@@ -122,7 +125,7 @@
 						}
 						continue;
 					}
-					if (!is_numeric($newValue)) {
+					if (!is_numeric($newValue) || ($row["field"] == "mainCategory" || $row["field"] == "addCategory" || $row["field"] == "flat" || strpos($row["field"], "experiance") !== false)) {
 						$value[$keyIn] = $newValue;
 						$response[$key] = $value;
 					}

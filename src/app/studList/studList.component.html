@@ -6,7 +6,11 @@
 <div class="content">
     <ng-container >
       <tabset #courseLists>
-        <tab heading="Действующие">
+        <tab>
+            <ng-template tabHeading>
+                <span>Действующие</span>
+                <a (click)="updateList('current')"><span class="fa fa-refresh"></span></a>
+              </ng-template>
           <preloader  *ngIf="isLoading[0]"></preloader>
           <div class="content table-responsive table-full-width" *ngIf="currentCourses.length !== 0">
             <table class="table table-striped table-hover">
@@ -46,7 +50,11 @@
             </div>
           </div>
         </tab>
-        <tab heading="Прошедшие">
+        <tab>
+          <ng-template tabHeading>
+            <span>Прошедшие</span>
+            <a href="#"><span class="fa fa-refresh"></span></a>
+          </ng-template>
           <preloader  *ngIf="isLoading[1]"></preloader>
           <div class="content table-responsive table-full-width" *ngIf="oldCourses.length !== 0 && !isLoading[1]">
             <table class="table table-striped table-hover">
@@ -86,7 +94,11 @@
             </div>
           </div>
         </tab>
-        <tab heading="Список курсов-{{ nowYear }}">
+        <tab>
+            <ng-template tabHeading>
+                <span>Список курсов-{{ nowYear }}</span>
+                <a href="#"><span class="fa fa-refresh"></span></a>
+              </ng-template>
           <preloader  *ngIf="isLoading[2]"></preloader>
           <div class="content table-responsive table-full-width" *ngIf="courseList.length !== 0 && !isLoading[2]">
             <table class="table table-striped table-hover">

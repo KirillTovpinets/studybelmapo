@@ -12,10 +12,26 @@
    $currentStatus = 0;
    $currentYear = date("Y");
    $typeId = $courses[0]->Type;
-    $typeObj = $mysqli->query("SELECT * FROM eductype WHERE id = $typeId") or die ("Error: " . mysqli_error($mysqli));
+   $query = "SELECT * FROM educType WHERE id = $typeId";
+    $typeObj = $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));
     $typeArr = $typeObj->fetch_assoc();
     $type = mb_strtolower($typeArr["name"]);
     $typeRelForm = mb_strtolower($typeArr["Relative_form"]);
+    $correspondings = array(
+		"appointment" => "personal_appointment",
+		"organization" => "personal_organizations",
+		"department" => "personal_department",
+		"establishmentId" => "personal_establishment",
+		"facultyId" => "personal_faculty",
+		"qualification_add" => "qualification_add",
+		"qualification_main" => "qualification_main",
+		"qualification_other" => "qualification_other",
+		"speciality_doc" => "speciality_doct",
+		"speciality_other" => "speciality_other",
+		"speciality_retraining" => "speciality_retraining",
+		"cityzenship" => "countries",
+		"region" => "regions"
+	);
 
     if($isEnter){
         $about = "О зачислении слушателей на $type";
@@ -105,9 +121,37 @@
             $result = $mysqli->query("SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername 
             FROM personal_card 
             INNER JOIN arrivals ON personal_card.id = arrivals.PersonId 
-            WHERE arrivals.CourseId = '$id' AND arrivals.Status = $currentStatus") or die ("Ошибка выполнения запроса: " . mysqli_error($mysqli));
+            WHERE arrivals.CourseId = '$id' AND arrivals.Status = $currentStatus ORDER BY personal_card.name_in_to_form") or die ("Ошибка выполнения запроса: " . mysqli_error($mysqli));
             $countRows = 0;
             while($row = $result->fetch_assoc()){
+                $id = $row["id"];
+                $updateData = "SELECT * FROM history_of_changes WHERE personId = $id ORDER BY id ASC";
+                $updateObj = $mysqli->query($updateData) or die ("Error in '$updateData': " . mysqli_error($mysqli));
+                while ($updateRow = $updateObj->fetch_assoc()) {
+                    if($updateRow["field"] == "name_in_to_form"){
+                        $updateRow["field"] = "nameInDativeForm";
+                    }
+                    foreach ($row as $key => $value) {
+                        if ($key == $updateRow["field"]) {
+                            $newValue = $updateRow["new_value"];
+                            if (!is_numeric($newValue)) {
+                                $row[$key] = $newValue;
+                            }else{
+                                foreach ($correspondings as $keyOut => $valueOut) {
+                                    if ($keyOut == $key) {
+                                        $table = $valueOut;
+                                        $query = "SELECT name FROM $table WHERE id = $newValue";
+                                        $result = $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));
+                                        $newNameArr = $result->fetch_assoc();
+                                        $newName = $newNameArr["name"];
+                                        $row[$key] = $newName;
+                                    }
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                }
                 $name = $row["name"];
                 $surname = $row["surname"];
                 $patername = $row["patername"];
@@ -235,7 +279,8 @@
             $notes = $courseNameArr["Notes"];
             $courseid = $courseNameArr["id"];
             $cathedraName = $courseNameArr["cathedra"];
-            $studObj = $mysqli->query("SELECT personal_card.name, personal_card.surname, personal_card.patername FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseid ORDER BY personal_card.name_in_to_form ASC") or die("Error: ". mysqli_error($mysqli));
+            $query = "SELECT personal_card.name, personal_card.surname, personal_card.patername FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseid ORDER BY personal_card.name_in_to_form ASC";
+            $studObj = $mysqli->query($query) or die("Error in '$query': ". mysqli_error($mysqli));
             $Start = date_create_from_format('Y-m-d', $courseNameArr["Start"]);
             $Start = $Start->format("d.m.y");
             $Finish = date_create_from_format('Y-m-d', $courseNameArr["Finish"]);
@@ -955,12 +1000,10 @@
                     }
                 }
             }
-            $query = "SELECT personal_card.name, personal_card.surname, personal_card.patername $selectAddField FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId $fromConnections WHERE arrivals.CourseId = $id ORDER BY personal_card.name_in_to_form ASC";
+            $query = "SELECT personal_card.id, personal_card.name, personal_card.surname, personal_card.patername $selectAddField FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId $fromConnections WHERE arrivals.CourseId = $id ORDER BY personal_card.name_in_to_form ASC";
 
-            echo $query;
-            $studObj = $mysqli->query($query) or die("Error: ". mysqli_error($mysqli));
+            $studObj = $mysqli->query($query) or die("Error in '$query': ". mysqli_error($mysqli));
             $doc_body .= "<p style='text-align:center;'> Курс №$number '$name'</p>";
-            
             $doc_body .= "<table><tr>";
             $doc_body .= "<th>№ п/п</th>";
             $doc_body .= "<th>Фамилия, имя, отчество</th>";
@@ -972,18 +1015,46 @@
             
             $doc_body .= "</tr>";
             $index = 1;
-            while ($row = $studObj->fetch_assoc()) {
-                   $person = $row["surname"] . " " . $row["name"] . " " . $row["patername"];
-                   $doc_body .= "<tr style='border:1px solid black;'>
-                                    <td style='border:1px solid black;'>$index</td>
-                                    <td style='border:1px solid black;'>$person</td>";
-                    for($j = 0; $j < count($additionalField); $j++){
-                        $doc_body .= "<td>" . $row[$additionalField[$j]] . "</td>";
+            while ($student = $studObj->fetch_assoc()) {
+                $id = $student["id"];
+                $updateData = "SELECT * FROM history_of_changes WHERE personId = $id ORDER BY id ASC";
+                $updateObj = $mysqli->query($updateData) or die ("Error in '$updateData': " . mysqli_error($mysqli));
+                while ($updateRow = $updateObj->fetch_assoc()) {
+                    if($updateRow["field"] == "name_in_to_form"){
+                        $updateRow["field"] = "nameInDativeForm";
                     }
-                            
-                    $doc_body .= "</tr>";
-                    $index++;
-               }   
+                    foreach ($student as $key => $value) {
+                        if ($key == $updateRow["field"]) {
+                            $newValue = $updateRow["new_value"];
+                            if (!is_numeric($newValue)) {
+                                $student[$key] = $newValue;
+                            }else{
+                                foreach ($correspondings as $keyOut => $valueOut) {
+                                    if ($keyOut == $key) {
+                                        $table = $valueOut;
+                                        $query = "SELECT name FROM $table WHERE id = $newValue";
+                                        $result = $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));
+                                        $newNameArr = $result->fetch_assoc();
+                                        $newName = $newNameArr["name"];
+                                        $student[$key] = $newName;
+                                    }
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                }
+                $person = $student["surname"] . " " . $student["name"] . " " . $student["patername"];
+                $doc_body .= "<tr style='border:1px solid black;'>
+                                <td style='border:1px solid black;'>$index</td>
+                                <td style='border:1px solid black;'>$person</td>";
+                for($j = 0; $j < count($additionalField); $j++){
+                    $doc_body .= "<td>" . $student[$additionalField[$j]] . "</td>";
+                }
+                        
+                $doc_body .= "</tr>";
+                $index++;
+            }   
 
             $doc_body .= "</table>";
         }

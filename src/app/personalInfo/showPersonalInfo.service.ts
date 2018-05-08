@@ -22,6 +22,7 @@ export class ShowPersonInfoService {
 		if (localStorage.getItem("person-" + id) !== null) {
 			var personStorage = JSON.parse(localStorage.getItem("person-" + id));
 			var person = {...personStorage};
+			console.log(personStorage);
 			this.showModal(person, level, canChange);
 		}else{
 			this.personalInfo.getInfo(id).then(data => {
@@ -57,16 +58,18 @@ export class ShowPersonInfoService {
 		}
 
 		if (person.profesional != undefined && person.profesional.addCategory_date !== undefined ) {
-			person.profesional.addCategoryDate = new Date(person.profesional.addCategory_date);
-			copy.profesional.addCategoryDate = new Date(person.profesional.addCategory_date);
-
-			person.profesional.retrainings.forEach(el => {
-				el.diploma_start = new Date(el.diploma_start);
-			})
+			person.profesional.addCategoryDate = new Date(person.profesional.addCategoryDate);
+			copy.profesional.addCategoryDate = new Date(person.profesional.addCategoryDate);
+			
+			if(person.profesional.retrainings !== undefined){
+				person.profesional.retrainings.forEach(el => {
+					el.diploma_start = new Date(el.diploma_start);
+				})
+			}
 		}
 		if (person.profesional != undefined && person.profesional.mainCategory_date !== undefined ) {
-			person.profesional.mainCategoryDate = new Date(person.profesional.mainCategory_date);
-			copy.profesional.mainCategoryDate = new Date(person.profesional.mainCategory_date);
+			person.profesional.mainCategoryDate = new Date(person.profesional.mainCategoryDate);
+			copy.profesional.mainCategoryDate = new Date(person.profesional.mainCategoryDate);
 		}
 		if (person.personal.pasport_date !== undefined) {
 			person.personal.pasportDate = new Date(person.personal.pasport_date);

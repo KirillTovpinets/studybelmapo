@@ -12,9 +12,9 @@
 	$personId = $data->new->general->id;
 	$new = (array)$data->new;
 	$old = (array)$data->old;
-	$personal = array("appointment", "organization", "department");
+	$personal = array("appointment", "organization", "department", "surname", "name", "patername", "nameInDativeForm");
 	$private = array("birthday", "isMale", "cityzenship", "	pasport_seria", "pasport_number", "pasport_date", "pasport_organ", "insurance_number", "city_type", "city", "street", "region", "building", "flat", "country", "tel_number_home", "tel_number_work", "tel_number_mobile");
-	$prof = array("establishmentId", "facultyId","diploma_number","speciality_doc","speciality_retraining","speciality_other","experiance_general","experiance_special","experiance_last","qualification_main","qualification_add","qualification_other","main_category","main_category_date","add_category","add_category_date","diploma_start");
+	$prof = array("establishmentId", "facultyId","diploma_number","speciality_doc","speciality_retraining","speciality_other","experiance_general","experiance_special","experiance_last","qualification_main","qualification_add","qualification_other","mainCategory","mainCategoryDate","addCategory","addCategoryDate","diploma_start");
 	// print_r($data);
 	foreach ($new as $key => $value) {
 		$new[$key] = (array)$value;
@@ -24,9 +24,17 @@
 				$new[$key][$keyValue] = (array)$valueValue;
 			}
 		}
+		foreach ($old[$key] as $keyValue => $valueValue) {
+			if(is_object($valueValue)){
+				// print_r($valueValue);
+				$old[$key][$keyValue] = (array)$valueValue;
+			}
+		}
 		$diff = array();
+		// print_r($new[$key]);
+		// echo "=====================";
+		// print_r($old[$key]);
 		$diff = array_diff($new[$key], $old[$key]);
-		print_r($diff);
 		if (!empty($diff)) {
 			foreach ($diff as $keyDiff => $valueDiff) {
 				$oldKey = "$key";
@@ -39,7 +47,9 @@
 				}else if(in_array($keyDiff, $prof)){
 					$fromArray = "personal_prof_info";
 				}
+				print_r($old);
 				$oldValue = $old[$oldKey]["_".$oldKeyDiff];
+				
 				if (is_array($valueDiff)) {
 					$newValue = $valueDiff["id"];
 				}else{
@@ -49,7 +59,31 @@
 					$newValue = 0;
 				}
 				$today = date("Y-m-d");
-				$oldQuery = "SELECT $keyDiff AS oldId FROM $fromArray WHERE id = $personId";
+				if($keyDiff == "nameInDativeForm"){
+					$keyDiff = "name_in_to_form";
+				}
+				$field = "";
+				switch ($keyDiff) {
+					case 'nameInDativeForm':
+						$field = "name_in_to_form";
+						break;
+					case 'mainCategory':
+						$field = "main_category";
+						break;
+					case 'mainCategoryDate':
+						$field = "main_category_date";
+						break;
+					case 'addCategory':
+						$field = "add_category";
+						break;
+					case 'addCategoryDate':
+						$field = "add_category_date";
+						break;
+					default:
+						$field = $keyDiff;
+						break;
+				}
+				$oldQuery = "SELECT $field AS oldId FROM $fromArray WHERE id = $personId";
 				$oldValueIdObj = $mysqli->query($oldQuery) or die ("Ошибка в '$oldQuery': " . mysqli_error($mysqli));
 				$oldValueIdArr = $oldValueIdObj->fetch_assoc();
 				$oldId = $oldValueIdArr["oldId"];
