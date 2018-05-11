@@ -108,9 +108,9 @@
 			$disctrictId = $value["district"];
 			$result = $mysqli->query("SELECT name FROM bel_districts WHERE id = $disctrictId") or die ("Error in 'SELECT name FROM bel_districts WHERE id = $disctrictId': " . mysqli_error($mysqli));
 			$arr = $result->fetch_assoc();
-			$district = $arr["name"];
-			if(!empty($district)){
-				$value["value"] = $value["value"] . ' (' . $district . ' район)';
+			if(!empty($arr["name"])){
+				$district = mb_substr($arr["name"], 0, 3) . '-' .mb_substr($arr["name"], -1, 1);
+				$value["value"] = $value["value"] . ' (' . $district . ' р-н)';
 			}
 		}
 		$citiesArr[$key] = $value;

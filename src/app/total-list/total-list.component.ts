@@ -93,7 +93,10 @@ export class TotalListComponent implements OnInit {
 	SaveCourse(){
 		this.newCourse.startStr = this.newCourse.start.toISOString().slice(0,10);
 		this.newCourse.finishStr = this.newCourse.finish.toISOString().slice(0,10);
-		this.info.saveCourse(this.newCourse).then(res => this.notify.addSuccess("Курс добавлен"))
+		this.info.saveCourse(this.newCourse).then(res => {
+			this.notify.addSuccess("Курс добавлен");
+			this.newCourse = new Course();
+		})
   }
   ErrorAction(e, data){
 		console.log(e);

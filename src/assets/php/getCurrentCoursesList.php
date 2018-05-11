@@ -18,14 +18,13 @@
 		if(isset($_GET["time"]) && !empty($_GET["time"])){
 			$time = $_GET["time"];
 			$today = date("Y-m-d");
-
 			switch($time){
 				case "current": {
-					$condition .= " AND (cources.Start <= '$today' AND cources.Finish >= '$today')";
+					$condition .= " AND (Date(cources.Start) <= '$today' AND Date(cources.Finish) >= '$today')";
 					break;
 				}
 				case 'old':{
-					$condition .= " AND (cources.Start <= '$today' AND cources.Finish <= '$today')";
+					$condition .= " AND (Date(cources.Start) <= '$today' AND Date(cources.Finish) <= '$today')";
 					break;
 				}
 			}

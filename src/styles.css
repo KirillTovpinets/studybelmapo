@@ -29,11 +29,17 @@ section {
     vertical-align: top
 }
 
-.navbar-nav>li>a {
+.navbar-nav>li>a,
+.navbar-nav>li>button {
     padding: 30px;
     text-transform: uppercase
 }
-
+.nav>li>a,
+.nav>li>button {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+}
 .main-panel>.content
 .navbar-inverse .navbar-nav>.active>a,
 .navbar-inverse .navbar-nav>.active>a:focus,
@@ -605,21 +611,29 @@ menu.collapse .sidebar{
     margin-top: 20px;
     float: none; }
     .sidebar .nav li > a,
-    body > .navbar-collapse .nav li > a {
+    .sidebar .nav li > button,
+    body > .navbar-collapse .nav li > a,
+    body > .navbar-collapse .nav li > button {
       color: #FFFFFF;
       margin: 5px 15px;
       opacity: .86;
+      background: none;
+      border:none;
       border-radius: 4px;
       display: block; }
     .sidebar .nav .dropdown-menu li > a{
       color:#fff;
     }
     .sidebar .nav li:hover > a,
-    body > .navbar-collapse .nav li:hover > a {
+    .sidebar .nav li:hover > button,
+    body > .navbar-collapse .nav li:hover > a,
+    body > .navbar-collapse .nav li:hover > button {
       background: rgba(255, 255, 255, 0.13);
       opacity: 1; }
     .sidebar .nav li.active > a,
-    body > .navbar-collapse .nav li.active > a {
+    .sidebar .nav li.active > button,
+    body > .navbar-collapse .nav li.active > a,
+    body > .navbar-collapse .nav li.active > button {
       color: #FFFFFF;
       opacity: 1;
       background: rgba(255, 255, 255, 0.23); }
@@ -1232,7 +1246,7 @@ menu.collapse .sidebar{
     padding-left: 65px; }
 
 .alert-info {
-  background-color: #63d8f1; }
+  background-color: #008cba; }
 
 .alert-success {
   background-color: #62950E; }
@@ -2814,7 +2828,8 @@ menu.collapse .sidebar{
     body > .navbar-collapse .logo {
       position: relative;
       z-index: 4; }
-    body > .navbar-collapse .nav li > a {
+    body > .navbar-collapse .nav li > a,
+    body > .navbar-collapse .nav li > button {
       padding: 10px 15px; }
 
   .nav-open .navbar-collapse {

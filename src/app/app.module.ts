@@ -58,6 +58,7 @@ import { DepartmentComponent } from './department/department.component';
 import { PersonInfoModule } from './person-info/person-info.module';
 import { RegistryModule } from './registry/registry.module';
 import { MenuModule } from './Menu/menu.module';
+import { DropdownModule } from 'ngx-dropdown';
 
 enableProdMode();
 defineLocale('ru', ruLocale);
@@ -104,6 +105,7 @@ defineLocale('ru', ruLocale);
     Ng2AutoCompleteModule,
     ProgressbarModule.forRoot(),
     BsDropdownModule.forRoot(),
+    DropdownModule,
     PersonInfoModule,
     RegistryModule,
     MenuModule

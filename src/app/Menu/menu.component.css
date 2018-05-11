@@ -5,3 +5,7 @@
 .dropdown-menu a{
 	color:#fff;
 }
+
+li ul li a{
+	padding: 3px 15px;
+}

@@ -293,11 +293,11 @@ export class AddStudentComponent implements OnInit{
 					this.all_regions = this.personal_regions;
 					localStorage.setItem("regArr", JSON.stringify(data.json().regArr))
 					this.personal_departments = data.json().depArr;
-					localStorage.setItem("depArr", JSON.stringify(data.json().depArr))
+					localStorage.setItem("depArr", JSON.stringify(this.personal_departments))
 					this.personal_establishments = data.json().estArr;
-					localStorage.setItem("estArr", JSON.stringify(data.json().estArr))
+					localStorage.setItem("estArr", JSON.stringify(this.personal_establishments))
 					this.belmapo_courses = data.json().coursesBel;
-					localStorage.setItem("coursesBel", JSON.stringify(data.json().coursesBel))
+					localStorage.setItem("coursesBel", JSON.stringify(this.belmapo_courses))
 					this.specialityDocArr = data.json().specialityDocArr;
 					localStorage.setItem("specialityDocArr", JSON.stringify(data.json().specialityDocArr))
 					this.specialityRetrArr = data.json().specialityRetrArr;
@@ -315,7 +315,8 @@ export class AddStudentComponent implements OnInit{
 					// localStorage.setItem("citiesArr", JSON.stringify(data.json().citiesArr))
 					this.isLoaded = true;
 				}catch(e){
-					this.log.SendError({page: 'addStudent', error: e, response: data});
+					console.log(e);
+					console.log(data._body);
 					this.notify.addError("Произошла ошибка. Обратитесь к администратору");
 				}
 				

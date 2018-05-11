@@ -9,7 +9,7 @@
         <tab>
             <ng-template tabHeading>
                 <span>Действующие</span>
-                <a (click)="updateList('current')"><span class="fa fa-refresh"></span></a>
+                <a (click)="updateList('current')" class="refresh"><span class="fa fa-refresh"></span></a>
               </ng-template>
           <preloader  *ngIf="isLoading[0]"></preloader>
           <div class="content table-responsive table-full-width" *ngIf="currentCourses.length !== 0">
@@ -53,7 +53,7 @@
         <tab>
           <ng-template tabHeading>
             <span>Прошедшие</span>
-            <a href="#"><span class="fa fa-refresh"></span></a>
+            <a (click)="updateList('old')" class="refresh"><span class="fa fa-refresh"></span></a>
           </ng-template>
           <preloader  *ngIf="isLoading[1]"></preloader>
           <div class="content table-responsive table-full-width" *ngIf="oldCourses.length !== 0 && !isLoading[1]">
@@ -97,7 +97,7 @@
         <tab>
             <ng-template tabHeading>
                 <span>Список курсов-{{ nowYear }}</span>
-                <a href="#"><span class="fa fa-refresh"></span></a>
+                <a (click)="updateList('')" class="refresh"><span class="fa fa-refresh"></span></a>
               </ng-template>
           <preloader  *ngIf="isLoading[2]"></preloader>
           <div class="content table-responsive table-full-width" *ngIf="courseList.length !== 0 && !isLoading[2]">

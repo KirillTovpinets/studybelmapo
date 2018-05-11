@@ -45,18 +45,42 @@
             <div class="form-group">
               <label>Должность</label>
               <input [attr.disabled]="change ? null : ''" auto-complete [list-formatter]="dataService.DropdownList" [no-match-found-text]="'Не найдено'" [source]="personal_appointments" required [(ngModel)]="info.appointment" name="appointment" class="form-control">
+              <div class="input-group newValue" *ngIf="info.appointment == 0">
+                <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_appointment">
+                <span class="input-group-btn">
+                  <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_appointment', personal_appointments)">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                  </button>
+                </span>
+              </div>
             </div>
           </div>
           <div class="col-lg-8 col-md-8">
             <div class="form-group">
               <label>Учреждение</label>
               <input [attr.disabled]="change ? null : ''" auto-complete [list-formatter]="dataService.DropdownList" [no-match-found-text]="'Не найдено'" [source]="personal_organizations" required [(ngModel)]="info.organization" name="organization" class="form-control">
+              <div class="input-group newValue" *ngIf="info.organization == 0">
+                <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="organization">
+                <span class="input-group-btn">
+                  <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_organizations', personal_organizations)">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                  </button>
+                </span>
+              </div>
             </div>
           </div>
           <div class="col-lg-12 col-md-12">
             <div class="form-group">
               <label>Структурное подразделение</label>
               <input [attr.disabled]="change ? null : ''" auto-complete [list-formatter]="dataService.DropdownList" [no-match-found-text]="'Не найдено'" [source]="personal_departments" [(ngModel)]="info.department" name="department" class="form-control">
+              <div class="input-group newValue" *ngIf="info.department == 0">
+                <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_departments">
+                <span class="input-group-btn">
+                  <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_department', personal_departments)">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                  </button>
+                </span>
+              </div>
             </div>
           </div>
         </fieldset>

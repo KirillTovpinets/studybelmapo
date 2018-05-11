@@ -1,49 +1,29 @@
-<div class="content row">
-	<div class="col-md-4">
-		<div class="header">
-			<h4>Зачисление слушателя на курс</h4>
-		</div>
-		<div class="col-lg-12">
-			<video src="assets/help/addUser.mov" preload controls poster="https://monosnap.com/file/pru0yZ7kuF9Ho9vah2eeYfbsXKPjEO.png">
-				<img src="https://monosnap.com/file/pru0yZ7kuF9Ho9vah2eeYfbsXKPjEO.png">
-				<img src="https://monosnap.com/file/E98bp8nW8TXx6K4jxfnQ1Z2fUWILKk.png">
-				<img src="https://monosnap.com/file/GFDYBNI8rDmjls4VFOANFHwRlr7iAd.png">
-			</video>	
-		</div>
-	</div>
-	
-	<div class="col-md-4">
-		<div class="header">
-			<h4>Добавление нового слушателя в систему</h4>
-		</div>
-		<div class="col-lg-12">
-			<video src="assets/help/Add new User.mov" preload controls poster="https://monosnap.com/file/yeHCAeMe7fOz2jA84COwjApxYXQVdg.png">
-				<img src="https://monosnap.com/file/yeHCAeMe7fOz2jA84COwjApxYXQVdg.png">
-				<img src="https://monosnap.com/file/5m1Znsf9XABJrKWQ1I4cqCxKd0msjp.png">
-				<img src="https://monosnap.com/file/JLvrA031f49RVfmQVmcmk0VWrn0agi.png">
-			</video>	
-		</div>
-	</div>
-	
-	<div class="col-md-4">
-		<div class="header">
-			<h4>Формирование приказов</h4>
-		</div>
-		<div class="col-lg-12">
-			<video src="assets/help/orders.mov" preload controls poster="https://monosnap.com/file/KOyrSaG1VozyA8UplewLM6O0g5Ujeq.png">
-				<img src="https://monosnap.com/file/KOyrSaG1VozyA8UplewLM6O0g5Ujeq.png">
-				<img src="https://monosnap.com/file/UD2YfXYYMcmgq87yiq482EGBfUUyXW.png">
-			</video>	
-		</div>
-	</div>
-	<div class="col-md-4">
-		<div class="header">
-			<h4>Добавление нового курса</h4>
-		</div>
-		<div class="col-lg-12">
-			<video src="assets/help/add course.mov" preload controls poster="https://monosnap.com/file/Qt6ihRE3qbaMYC34gBbeUmdHDVF8K2.png">
-				<img src="https://monosnap.com/file/Qt6ihRE3qbaMYC34gBbeUmdHDVF8K2.png">
-			</video>	
-		</div>
+<div class="header">
+	<h4 class="title">Карта изменений</h4>
+	<p class="category">Список выполенных требований и отчёт об исправленных ошибках</p>
+</div>
+<div class="content">
+	<div class="alert alert-info"><p>Если на Вашем компьютере Вы не видите изменений, нажмите на клавиатуре сочетание клавиш <em>CTRL + F5</em></p></div>
+	<div class="content table-responsive table-full-width">
+		<table class="table table-striped table-hover" *ngIf="tasks.length != 0" >
+			<tr>
+				<th>№</th>
+				<th>Дата поступления заявки</th>
+				<th>Дата публикации исправления</th>
+				<th>Описание требования</th>
+				<th>Описание выполненной задачи</th>
+				<th>Статус задачи</th>
+			</tr>
+			<tr *ngFor="let task of tasks; index as i">
+				<td>{{ i + 1 }}</td>
+				<td>{{ task.inputDate  | date: "dd.MM.yyyy" }}</td>
+				<td>{{ task.outputDate  | date: "dd.MM.yyyy" }}</td>
+				<td>{{ task.task }}</td>
+				<td>{{ task.solution }}</td>
+				<td>
+					<span class="fa" [ngClass]="{'fa-check': task.status == '1', 'fa-question': task.status == '2'}" ></span>
+				</td>
+			</tr>
+		</table>
 	</div>
 </div>

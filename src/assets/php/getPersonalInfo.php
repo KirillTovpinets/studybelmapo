@@ -109,6 +109,18 @@
 		if($row["field"] == "name_in_to_form"){
 			$row["field"] = "nameInDativeForm";
 		}
+		if($row["field"] == "main_category"){
+			$row["field"] = "mainCategory";
+		}
+		if($row["field"] == "main_category_date"){
+			$row["field"] = "mainCategoryDate";
+		}
+		if($row["field"] == "add_category_date"){
+			$row["field"] = "addCategoryDate";
+		}
+		if($row["field"] == "add_category"){
+			$row["field"] = "addCategory";
+		}
 		foreach ($response as $key => $value) {
 			foreach ($value as $keyIn => $valueIn) {
 				if ($keyIn == $row["field"]) {
@@ -125,7 +137,7 @@
 						}
 						continue;
 					}
-					if (!is_numeric($newValue) || ($row["field"] == "mainCategory" || $row["field"] == "addCategory" || $row["field"] == "flat" || strpos($row["field"], "experiance") !== false)) {
+					if (!is_numeric($newValue) || ($row["field"] == "mainCategory" || $row["field"] == "addCategory" || $row["field"] == "flat" || $row["field"] == "building" || strpos($row["field"], "experiance") !== false)) {
 						$value[$keyIn] = $newValue;
 						$response[$key] = $value;
 					}

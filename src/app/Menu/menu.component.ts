@@ -23,6 +23,7 @@ export class MenuComponent implements OnInit{
 	currentUser: any;
 	tables: string[];
 	global: Global = new Global();
+	showDrop: boolean = false;
 	ngOnInit(): void{
 		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 		this.menuManip.currentMessage.subscribe(message =>{
@@ -43,6 +44,9 @@ export class MenuComponent implements OnInit{
 			})
 		}
 		return;
+	}
+	showDropdown(){
+		this.showDrop = !this.showDrop;
 	}
 	selectPage(v:number): void{
 		this.selectedPage._selectedPage = v;

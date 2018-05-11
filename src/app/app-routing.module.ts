@@ -100,6 +100,23 @@ const routes: Routes = [
 				]
 			},
 			{ path: 'statement', component: StatementsComponent},
+			{ 
+				path: 'list', 
+				component: SearchStudentComponent,
+				children: [
+					{ path: '', redirectTo:'sirname', pathMatch: 'full'},
+					{ path: 'sirname', component: SirnameComponent },
+					{ path: 'gender', component: GenderComponent },
+					{ path: 'age', component: AgeComponent },
+					{ path: 'education', component: EstablishmentComponent },
+					{ path: 'organization', component: OrganizationComponent },
+					{ path: 'appointment', component: AppointmentComponent },
+					{ path: 'speciality', component: SpecialityComponent },
+					{ path: 'qualification', component: QualificationComponent },
+					{ path: 'category', component: CategoryComponent }
+					
+				]
+			},
 
 		]
 	},

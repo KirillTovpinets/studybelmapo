@@ -57,7 +57,7 @@ export class ShowPersonInfoService {
 			copy.profesional.diploma_startDate = new Date(person.profesional.diploma_start);
 		}
 
-		if (person.profesional != undefined && person.profesional.addCategory_date !== undefined ) {
+		if (person.profesional != undefined && person.profesional.addCategoryDate !== undefined ) {
 			person.profesional.addCategoryDate = new Date(person.profesional.addCategoryDate);
 			copy.profesional.addCategoryDate = new Date(person.profesional.addCategoryDate);
 			
@@ -67,7 +67,7 @@ export class ShowPersonInfoService {
 				})
 			}
 		}
-		if (person.profesional != undefined && person.profesional.mainCategory_date !== undefined ) {
+		if (person.profesional != undefined && person.profesional.mainCategoryDate !== undefined ) {
 			person.profesional.mainCategoryDate = new Date(person.profesional.mainCategoryDate);
 			copy.profesional.mainCategoryDate = new Date(person.profesional.mainCategoryDate);
 		}

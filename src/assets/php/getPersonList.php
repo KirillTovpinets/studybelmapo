@@ -13,9 +13,23 @@
 	$condition = "";
 	$connection = "";
 	function getList($connection, $SqlObject, $field, $data, $logeduser){
+		$personal = array("appointment", "organization", "department", "surname", "name", "patername", "nameInDativeForm");
+		$private = array("birthday", "isMale", "cityzenship", "	pasport_seria", "pasport_number", "pasport_date", "pasport_organ", "insurance_number", "city_type", "city", "street", "region", "building", "flat", "country", "tel_number_home", "tel_number_work", "tel_number_mobile");
+		$prof = array("establishmentId", "facultyId","diploma_number","speciality_doc","speciality_retraining","speciality_other","experiance_general","experiance_special","experiance_last","qualification_main","qualification_add","qualification_other","mainCategory","mainCategoryDate","addCategory","addCategoryDate","diploma_start");
 		$Arr = array();
 		$limit = $data->params->listLimit;
 		$offset = $data->params->listOffset;
+		$initialTable = "";
+		$addConnection = "";
+		if(in_array($field, $personal)){
+			$initialTable = "personal_card";
+		}else if(in_array($field, $private)){
+			$initialTable = "personal_private_info";
+			$addConnection = " INNER JOIN $initialTable ON personal_card.id = $initialTable.PersonId ";
+		}else if(in_array($field, $prof)){
+			$initialTable = "personal_prof_info";
+			$addConnection = " INNER JOIN $initialTable ON personal_card.id = $initialTable.PersonId ";
+		}
 		while ($row = $SqlObject->fetch_assoc()) {
 			$Id = $row["id"];
 			$condition = "";
@@ -24,7 +38,7 @@
 			// }
 			$withArrival = "INNER JOIN arrivals ON personal_card.id = arrivals.PersonId";
 			$withArrival = "";
-			$PersonQuery = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card $withArrival WHERE personal_card.$field = $Id $condition LIMIT $limit OFFSET $offset ORDER BY personal_card.name_in_to_form ASC";
+			$PersonQuery = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card $addConnection $withArrival WHERE $initialTable.$field = $Id $condition ORDER BY personal_card.name_in_to_form ASC LIMIT $limit OFFSET $offset ";
 			$PersonResult = $connection->query($PersonQuery) or die ("Ошибка выполнения запроса '$PersonQuery': " . mysqli_error($connection));
 			$resultArray = array();
 			if ($PersonResult->{"num_rows"} == 0) {
@@ -34,7 +48,7 @@
 				array_push($resultArray, $PersonRow);
 			}
 
-			$currentPersonQuery = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday, arrivals.Status FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE personal_card.$field = $Id $condition LIMIT $limit OFFSET $offset ORDER BY personal_card.name_in_to_form ASC";
+			$currentPersonQuery = "SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday, arrivals.Status FROM personal_card $addConnection INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE $initialTable.$field = $Id $condition ORDER BY personal_card.name_in_to_form ASC LIMIT $limit OFFSET $offset";
 			$currentPersonResult = $connection->query($currentPersonQuery) or die ("Ошибка выполнения запроса '$PersonQuery': " . mysqli_error($connection));
 			$currentresultArray = array();
 			if ($currentPersonResult->{"num_rows"} == 0) {
@@ -47,15 +61,16 @@
 			$row["List"] = $resultArray;
 			$row["CurrentList"] = $currentresultArray;
 
-			$CountQuery = "SELECT COUNT(*) AS total FROM  personal_card WHERE personal_card.$field = $Id";
+			$CountQuery = "SELECT COUNT(*) AS total FROM  personal_card $addConnection WHERE $initialTable.$field = $Id";
 			$CountResult = $connection->query($CountQuery) or die ("Ошибка выполнения запроса '$CountQuery': " . mysqli_error($connection));
 			$CountArray = $CountResult->fetch_assoc();
 
-			$CurrentCountQuery = "SELECT COUNT(*) AS total FROM  personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE personal_card.$field = $Id";
+			$CurrentCountQuery = "SELECT COUNT(*) AS total FROM  personal_card $addConnection INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE $initialTable.$field = $Id";
 			$CurrentCountResult = $connection->query($CurrentCountQuery) or die ("Ошибка выполнения запроса '$CountQuery': " . mysqli_error($connection));
 			$CurrentCountArray = $CurrentCountResult->fetch_assoc();
 
 			$row["CurrentTotal"] = $CurrentCountArray["total"];
+			$row
 
 			array_push($Arr, $row);
 		}
@@ -132,7 +147,7 @@
 		}
 		case "establishment":{
 			$table = "personal_establishment";
-			$field = "ee";
+			$field = "establishmentId";
 			getCrossTableData($table, $field, $mysqli, $data, $logeduser);
 		}
 		case "job":{

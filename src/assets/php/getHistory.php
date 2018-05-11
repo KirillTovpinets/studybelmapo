@@ -14,16 +14,18 @@
         $field = $row["field"];
         $oldVal = $row["old_value"];
         $newVal = $row["new_value"];
-        $table = CONNECTIONS[$field];
-
-        $newQuery = "SELECT name FROM $table WHERE id = $newVal";
-        $oldQuery = "SELECT name FROM $table WHERE id = $oldVal";
-        $newObj = $mysqli->query($newQuery) or die ("Error in '$newQuery': " . mysqli_error($mysqli));
-        $newArr = $newObj->fetch_assoc();
-        $row["new_value"] = $newArr["name"];
-        $oldObj = $mysqli->query($oldQuery) or die ("Error in '$oldQuery': " . mysqli_error($mysqli));
-        $oldArr = $oldObj->fetch_assoc();
-        $row["old_value"] = $oldArr["name"];
+        if(array_key_exists($field, CONNECTIONS)){
+            $table = CONNECTIONS[$field];
+            $newQuery = "SELECT name FROM $table WHERE id = $newVal";
+            $oldQuery = "SELECT name FROM $table WHERE id = $oldVal";
+            $newObj = $mysqli->query($newQuery) or die ("Error in '$newQuery': " . mysqli_error($mysqli));
+            $newArr = $newObj->fetch_assoc();
+            $row["new_value"] = $newArr["name"];
+            $oldObj = $mysqli->query($oldQuery) or die ("Error in '$oldQuery': " . mysqli_error($mysqli));
+            $oldArr = $oldObj->fetch_assoc();
+            $row["old_value"] = $oldArr["name"];
+        }
+        
 		array_push($response, $row);
 	}
 	mysqli_close($mysqli);

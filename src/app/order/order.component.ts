@@ -100,7 +100,15 @@ export class OrderComponent implements OnInit{
 				private modal: BsModalService,
 				private courseList: CurrentCourcesListService){}
 	ngOnInit(){
-		this.courseList.get().then(data => { this.courses = data.json()})
+		let courses = localStorage.getItem("all-courses");
+		if(courses == null){
+			this.courseList.get().then(data => { 
+				this.courses = data.json();
+				localStorage.setItem("all-courses", JSON.stringify(this.courses));
+			})
+		}else{
+			this.courses = JSON.parse(courses);
+		}
 	}
 	EnterAction(flag:number):void{
 		if (this.data.selectedCourses.length === 0) {

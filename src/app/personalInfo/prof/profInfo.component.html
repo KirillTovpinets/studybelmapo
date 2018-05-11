@@ -9,12 +9,28 @@
             <div class="form-group">
               <label>Учреждение образования <small *ngIf="establishment.invalid">*</small></label>
               <input value="info.educational_establishment == null ? 'Не указано' : info.educational_establishment" auto-complete [list-formatter]="dataService.DropdownList" [source]="personal_establishments" [attr.disabled]="change ? null : ''" #establishment="ngModel" required [(ngModel)]="info.educational_establishment" name="department" class="form-control">
+              <div class="input-group newValue" *ngIf="info.educational_establishment == 0">
+                <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_establishments">
+                <span class="input-group-btn">
+                  <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_establishment', personal_establishments)">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                  </button>
+                </span>
+              </div>
             </div>
           </div>
           <div class="col-lg-6 col-md-6">
             <div class="form-group">
               <label>Факультет <small *ngIf="faculty.invalid">*</small></label>
               <input value="info.faculty == null ? 'Не указано' : info.faculty" auto-complete [list-formatter]="dataService.DropdownList" [source]="personal_faculties" [attr.disabled]="change ? null : ''" #faculty="ngModel" required [(ngModel)]="info.faculty" name="faculty" class="form-control">
+              <div class="input-group newValue" *ngIf="info.faculty == 0">
+                <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_faculties">
+                <span class="input-group-btn">
+                  <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_faculty', personal_faculties)">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                  </button>
+                </span>
+              </div>
             </div>
           </div>
           <div class="col-lg-3 col-md-3">
@@ -45,12 +61,28 @@
               <div class="form-group">
                 <label>Врачебная <small *ngIf="speciality.invalid">*</small></label>
                 <input value="info.speciality_doc == null ? 'Не указано' : info.speciality_doc" auto-complete [list-formatter]="dataService.DropdownList" [source]="specialityDocArr" [attr.disabled]="change ? null : ''" #speciality="ngModel" required [(ngModel)]="info.speciality_doc" name="specialityDoc" class="form-control">
+                <div class="input-group newValue" *ngIf="info.speciality_doc == 0">
+                  <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="speciality_doc">
+                  <span class="input-group-btn">
+                    <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'speciality_doct', specialityDocArr)">
+                      <span class="glyphicon glyphicon-floppy-disk"></span>
+                    </button>
+                  </span>
+                </div>
               </div>
             </div>
             <div class="col-lg-6 col-md-6">
               <div class="form-group">
                 <label>Прочие</label>
                 <input value="info.speciality_other == null ? 'Не указано' : info.speciality_other" auto-complete [list-formatter]="dataService.DropdownList" [source]="specialityOtherArr" [attr.disabled]="change ? null : ''" [(ngModel)]="info.speciality_other" name="specialityOther" class="form-control">
+                <div class="input-group newValue" *ngIf="info.speciality_other == 0">
+                  <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="speciality_other">
+                  <span class="input-group-btn">
+                    <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'speciality_other', specialityOtherArr)">
+                      <span class="glyphicon glyphicon-floppy-disk"></span>
+                    </button>
+                  </span>
+                </div>
               </div>
             </div>
           </fieldset>

@@ -59,43 +59,20 @@
           <legend><h5>Домашний адрес</h5></legend>
           <div class="col-lg-3 col-md-3">
             <div class="form-group">
-              <label>Тип населённого пункта</label>
-              <div>
-                
-                <div>
-                  <input [attr.disabled]="change ? null : ''" class="regular-radio" value="1" type="radio" name="cityType" id="city" [attr.checked]="info.city_type == 1 ? '' : null">
-                  <label for="city"></label>
-                  <label>Город</label>
-                </div>
-                <div>
-                  <input [attr.disabled]="change ? null : ''" class="regular-radio" value="2" type="radio" name="cityType" id="town" [attr.checked]="info.city_type == 2 ? '' : null">
-                  <label for="town"></label>
-                  <label>Г. п.</label>
-                </div>
-                <div>
-                  <input [attr.disabled]="change ? null : ''" class="regular-radio" value="3" type="radio" name="cityType" id="village" [attr.checked]="info.city_type == 3 ? '' : null">
-                  <label for="village"></label>
-                  <label>Деревня</label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3">
-            <div class="form-group">
               <label>Страна</label>
-              <input auto-complete [no-match-found-text]="'Не найдено'" [list-formatter]="dataService.DropdownList" [source]="personal_cityzenships" [attr.disabled]="change ? null : ''" [(ngModel)]="info.cityzenship" name="country" class="form-control">
+              <input auto-complete [no-match-found-text]="'Не найдено'" [max-num-list]="10" [list-formatter]="dataService.DropdownList" [source]="personal_cityzenships" [attr.disabled]="change ? null : ''" [(ngModel)]="info.cityzenship" name="country" class="form-control">
             </div>
           </div>
           <div class="col-lg-3 col-md-3" *ngIf="info.country == 'Беларусь' || (info.country !== undefined && info.country.value == 'Беларусь')">
             <div class="form-group">
               <label>Область</label>
-              <input auto-complete [no-match-found-text]="'Не найдено'" [list-formatter]="dataService.DropdownList" [source]="personal_regions" [attr.disabled]="change ? null : ''" type="text" [(ngModel)]="info.region" name="region" class="form-control">
+              <input auto-complete [no-match-found-text]="'Не найдено'" [max-num-list]="10" [list-formatter]="dataService.DropdownList" [source]="personal_regions" [attr.disabled]="change ? null : ''" type="text" [(ngModel)]="info.region" name="region" class="form-control">
             </div>
           </div>
           <div class="col-lg-3 col-md-3">
             <div class="form-group">
               <label>Населённый пункт</label>
-              <input auto-complete [no-match-found-text]="'Не найдено'" [list-formatter]="dataService.DropdownList" [source]="personal_cities" [attr.disabled]="change ? null : ''" type="text" [(ngModel)]="info.city" name="cityName" class="form-control">
+              <input auto-complete [no-match-found-text]="'Не найдено'" [max-num-list]="10" [list-formatter]="dataService.DropdownList" [source]="personal_cities" [attr.disabled]="change ? null : ''" type="text" [(ngModel)]="info.city" name="cityName" class="form-control">
             </div>
           </div>
           <div class="col-lg-3 col-md-3">

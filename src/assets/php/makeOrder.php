@@ -1000,7 +1000,7 @@
                     }
                 }
             }
-            $query = "SELECT personal_card.id, personal_card.name, personal_card.surname, personal_card.patername $selectAddField FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId $fromConnections WHERE arrivals.CourseId = $id ORDER BY personal_card.name_in_to_form ASC";
+            $query = "SELECT personal_card.id, personal_card.name, personal_card.surname, personal_card.patername, personal_card.name_in_to_form $selectAddField FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId $fromConnections WHERE arrivals.CourseId = $id ORDER BY personal_card.name_in_to_form ASC";
 
             $studObj = $mysqli->query($query) or die("Error in '$query': ". mysqli_error($mysqli));
             $doc_body .= "<p style='text-align:center;'> Курс №$number '$name'</p>";
@@ -1015,14 +1015,13 @@
             
             $doc_body .= "</tr>";
             $index = 1;
-            while ($student = $studObj->fetch_assoc()) {
+            $studList = array();
+
+            while($student = $studObj->fetch_assoc()){
                 $id = $student["id"];
                 $updateData = "SELECT * FROM history_of_changes WHERE personId = $id ORDER BY id ASC";
                 $updateObj = $mysqli->query($updateData) or die ("Error in '$updateData': " . mysqli_error($mysqli));
                 while ($updateRow = $updateObj->fetch_assoc()) {
-                    if($updateRow["field"] == "name_in_to_form"){
-                        $updateRow["field"] = "nameInDativeForm";
-                    }
                     foreach ($student as $key => $value) {
                         if ($key == $updateRow["field"]) {
                             $newValue = $updateRow["new_value"];
@@ -1044,12 +1043,26 @@
                         }
                     }
                 }
-                $person = $student["surname"] . " " . $student["name"] . " " . $student["patername"];
+                array_push($studList, $student);
+            }
+
+            for($k = 0; $k < count($studList) - 1; $k++){
+                for($j = $k + 1; $j < count($studList); $j++){
+                    if(strcmp($studList[$k]["name_in_to_form"], $studList[$j]["name_in_to_form"]) > 0){
+                        $temp = $studList[$k];
+                        $studList[$k] = $studList[$j];
+                        $studList[$j] = $temp;
+                    }
+                }
+            }
+            for($k = 0; $k < count($studList); $k++){
+                
+                $person = $studList[$k]["surname"] . " " . $studList[$k]["name"] . " " . $studList[$k]["patername"];
                 $doc_body .= "<tr style='border:1px solid black;'>
                                 <td style='border:1px solid black;'>$index</td>
                                 <td style='border:1px solid black;'>$person</td>";
                 for($j = 0; $j < count($additionalField); $j++){
-                    $doc_body .= "<td>" . $student[$additionalField[$j]] . "</td>";
+                    $doc_body .= "<td>" . $studList[$k][$additionalField[$j]] . "</td>";
                 }
                         
                 $doc_body .= "</tr>";

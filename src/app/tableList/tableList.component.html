@@ -48,9 +48,9 @@
                 </td>
                 <td>
                     <button class="btn btn-danger btn-block" *ngIf="person.hasChanges" (click)="CancelEdit($event, person)">Отмена</button>
-                    <button class="btn btn-danger btn-block" (click)="Deduct(person, $event)" *ngIf="!person.hasChanges && (course.class == 1 || person.Status == 3)" tooltip="Создать свидетельство об окончании">Отчислить</button>
+                    <button class="btn btn-danger btn-block" (click)="Deduct(person, $event)" *ngIf="!person.hasChanges && (person.Status == 3)" tooltip="Создать свидетельство об окончании">Отчислить</button>
                     <button class="btn btn-default btn-block" *ngIf="person.Status == 1" (click)="DeleteRow(person, $event)">Удалить</button>
-                    <button class="btn btn-danger btn-block" (click)="DeductBeforeEnd(person, $event)" *ngIf="!person.hasChanges && course.class == 2 && person.Status != 3 && person.Status != 1" tooltip="Отчислить слушателя с курса">Отчислить досрочно</button>
+                    <button class="btn btn-danger btn-block" (click)="DeductBeforeEnd(person, $event)" *ngIf="!person.hasChanges && person.Status != 3 && person.Status != 1" tooltip="Отчислить слушателя с курса">Отчислить досрочно</button>
                 </td>
             </tr>
         </ng-container>   

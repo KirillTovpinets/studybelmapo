@@ -2,3 +2,9 @@ video{
 	width:100%;
 	padding: 20px;
 }
+.fa-check{
+	color:#0f0;
+}
+.fa-question{
+	color:#00f;
+}

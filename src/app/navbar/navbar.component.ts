@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NavbarService } from './navbar.service';
 import { Router } from '@angular/router';
 import { ShareService } from '../share/share.service';
+import { DatabaseService } from '../admin/database.service';
 
 declare var jquery: any;
 declare var $:any;
@@ -13,19 +14,21 @@ declare var $:any;
 			cursor:pointer;
 		}
 	`],
-	providers: [NavbarService]
+	providers: [NavbarService, DatabaseService]
 })
 
 export class NavbarComponent implements OnInit{
 	constructor(private navInfo: NavbarService,
 				private router: Router,
-				private menuManip: ShareService){
+                private menuManip: ShareService,
+                private database: DatabaseService){
 
 	}
 	loginInfo:any;
 	message:boolean;
 	toggle:boolean = false;
     logedUser: any;
+    taskCount: number = 0;
 	lbd:any = {
 		navbar_menu_visible: 0,
 	    navbar_initialized: false,
@@ -74,6 +77,19 @@ export class NavbarComponent implements OnInit{
 	    }
 	}
 	ngOnInit():void{
+        this.database.getDatabaseInfo("tablecontent", "tasklist").subscribe(data => {
+            try{
+              let tasks = data.json().tablecontent;
+              this.menuManip.setNumberOfTasks(tasks.length);
+              this.menuManip.setTasks(tasks);
+            }catch(e){
+              console.log(e);
+              console.log(data._body);
+            }
+          })
+        this.menuManip._totalTasks.subscribe(number => {
+            this.taskCount = number;
+        })
 		this.navInfo.getInfo().subscribe(response => this.loginInfo = response.json());
         this.logedUser = JSON.parse(localStorage.getItem("currentUser"));
 		// if ($(window).width() <= 1200) {

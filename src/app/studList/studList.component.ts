@@ -30,6 +30,9 @@ declare var $: any;
 		.pull-right{
 			font-style:italic;
 		}
+		a:hover{
+			cursor:pointer;
+		}
 	`]
 })
 
@@ -85,6 +88,7 @@ export class StudListComponent implements OnInit{
 			this.isLoading[1] = false;
 		}else{
 			this.getList.get("old").then(data => { 
+				console.log(data._body);
 				try{
 					this.oldCourses = data.json();
 					localStorage.setItem("old-courses", JSON.stringify(this.oldCourses)); 
@@ -147,19 +151,20 @@ export class StudListComponent implements OnInit{
 				break;
 		}
 		this.getList.get(data).then(data => { 
+			console.log(data._body);
 			try{
 				switch(time){
 					case "current":
-						this.currentCourses = data.json();
 						this.isLoading[0] = false;
+						this.currentCourses = data.json();
 						break;
 					case "old":
-						this.oldCourses = data.json();
 						this.isLoading[1] = false;
+						this.oldCourses = data.json();
 						break;
 					case "":
-						this.courseList = data.json();
 						this.isLoading[2] = false;
+						this.courseList = data.json();
 						break;
 				}
 				this.oldCourses = data.json();
