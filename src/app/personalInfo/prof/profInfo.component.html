@@ -115,14 +115,14 @@
             <legend><h5>Стаж</h5></legend>
             <div class="col-lg-4 col-md-4">
               <div class="form-group">
-                <label>Общий <small *ngIf="expGeneral.invalid">*</small></label>
-                <input value="info.experiance_general == null ? 'Не указано' : info.experiance_general" [attr.disabled]="change ? null : ''" type="number" #expGeneral="ngModel" required [(ngModel)]="info.experiance_general" name="experiance_general" class="form-control">
+                <label>По специальности <small *ngIf="expSpecial.invalid">*</small></label>
+                <input value="info.experiance_special == null ? 'Не указано' : info.experiance_special" [attr.disabled]="change ? null : ''" type="number" #expSpecial="ngModel" required [(ngModel)]="info.experiance_special" name="experiance_special" class="form-control">
               </div>
             </div>
             <div class="col-lg-4 col-md-4">
               <div class="form-group">
-                <label>По специальности <small *ngIf="expSpecial.invalid">*</small></label>
-                <input value="info.experiance_special == null ? 'Не указано' : info.experiance_special" [attr.disabled]="change ? null : ''" type="number" #expSpecial="ngModel" required [(ngModel)]="info.experiance_special" name="experiance_special" class="form-control">
+                <label>Общий <small *ngIf="expGeneral.invalid">*</small></label>
+                <input value="info.experiance_general == null ? 'Не указано' : info.experiance_general" [attr.disabled]="change ? null : ''" type="number" #expGeneral="ngModel" required [(ngModel)]="info.experiance_general" name="experiance_general" class="form-control">
               </div>
             </div>
             <div class="col-lg-4 col-md-4">

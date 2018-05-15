@@ -26,6 +26,9 @@ export class PersonalDataService{
 	getTypeList():Promise<any>{
 		return this.http.get("assets/php/getParams.php?type=1").toPromise();	
 	}
+	getResidList(): Promise<any>{
+		return this.http.get("assets/php/getParams.php?fields=Residence").toPromise();	
+	}
 	deduct(data:any): Promise<any>{
 		return this.http.post("assets/php/deduct.php", data).toPromise();		
 	}

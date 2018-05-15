@@ -72,6 +72,7 @@
 		"speciality_retraining" => "Специальность (переподг.)",
 		"speciality_other" => "Специальность (др.)",
 		"department" => "Отдел",
-		"faculty" => "Факультет"
+		"faculty" => "Факультет",
+		"Dic_count" => "Номер договора"
 	);
 ?>

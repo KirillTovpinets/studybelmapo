@@ -47,6 +47,9 @@ import { StudListService } from '../studList/stud-list.service';
 			border:none;
 			text-align: center;
 		}
+		button:not(.btn){
+			padding: 1px 3px;
+		}
 		`]
 })
 
@@ -58,6 +61,8 @@ export class TableListCopmonent implements OnInit{
 	@ViewChild("DeductBeforeInfo") deductBefore: TemplateRef<any>;
 	@ViewChild("sure") modalTpl: TemplateRef<any>;
 	@ViewChild("sureBeforeEnd") modalBeforeTpl: TemplateRef<any>;
+	@ViewChild("contractNumber") contract: TemplateRef<any>;
+	@ViewChild("residInfo") residInfo: TemplateRef<any>;
 
 	data: any;
 	selectedPerson:any = {};
@@ -65,13 +70,15 @@ export class TableListCopmonent implements OnInit{
 				private deductData: PersonalDataService,
 				private modal: BsModalService,
 				private notify: NotificationsService,
-				private students: StudListService){}
+				private students: StudListService,){}
 
 	private sure: BsModalRef;
 	private deductInfo: BsModalRef;
 
 	private sureBefore: BsModalRef;
 	private deductBeforeInfo: BsModalRef;
+	private contractModal: BsModalRef;
+	private ResidModal: BsModalRef;
 
 	marks: any[] = [];
 	certificate: Certificate;
@@ -79,6 +86,9 @@ export class TableListCopmonent implements OnInit{
 	totalNumber: number = 0;
 	currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	deductinfo:any = {};
+	changeContractNumber: boolean = false;
+	changeResidPlace: boolean = false;
+	residList: any[] = [];
 	ngOnInit(){
 		this.students.currentTotal.subscribe(total => this.totalNumber = total);
 	}
@@ -185,6 +195,34 @@ export class TableListCopmonent implements OnInit{
 		this.students.deleteRow(person).subscribe(res => {
 			this.course.StudList.splice(this.course.StudList.indexOf(person), 1);
 			this.notify.addSuccess(res._body);
+		})
+	}
+	ShowContractNumber(person, $event){
+		$event.stopPropagation();
+		this.selectedPerson = person;
+		this.contractModal = this.modal.show(this.contract, { class: 'modal-sm'})
+	}
+	SaveContractNumber(person, field, value){
+		let params = {
+			field,
+			value
+		}
+		this.students.changeArrivalInfo(person,params).subscribe(data => {
+			this.changeContractNumber = false;
+			this.changeResidPlace = false;
+			this.modal.hide(1);
+		})
+	}
+	ShowResidInfo(person, $event){
+		$event.stopPropagation();
+		console.log(person);
+		this.selectedPerson = person;
+		this.ResidModal = this.modal.show(this.residInfo, { class: 'modal-sm'})
+	}
+	LoadResidList(){
+		this.deductData.getResidList().then(data => {
+			this.residList = data.json();
+			this.changeResidPlace = true;
 		})
 	}
 }

@@ -56,6 +56,7 @@
             <div class="content">
               <a (click)="BuildOrder(1)" class="btn btn-block btn-default" *ngIf="currentUser != undefined && currentUser.is_cathedra != 1">Зачисление</a>
               <a (click)="BuildOrder(0)" class="btn btn-block btn-default" *ngIf="currentUser != undefined && currentUser.is_cathedra != 1">Окончание</a>
+              <a (click)="ChooseListInfo()" class="btn btn-block btn-default" *ngIf="currentUser != undefined && currentUser.is_cathedra != 1">Списки слушателей</a>
 
               <a (click)="EnterAction(2)" [ngClass]="{'selected': this.data.type ===2}" class="btn btn-block btn-default" *ngIf="currentUser != undefined && currentUser.is_cathedra != 0">Для подписи свидетельств</a>
               <a (click)="EnterAction(3)" [ngClass]="{'selected': this.data.type ===3}" class="btn btn-block btn-default" *ngIf="currentUser != undefined && currentUser.is_cathedra != 0">Ведомость собеседования</a>
@@ -144,3 +145,48 @@
     </div>
   </div>
 </ng-template>
+
+<ng-template #studList>
+    <div class="modal-body">
+      <div class="card">
+        <div class="header"> 
+          <h4 class="title">Выберите данные списка</h4>
+        </div>
+        <div class="content">
+          <div class="col-md-6">
+            <div class="form-group">
+              <input type="radio" class="regular-radio" name="form" id="budget" [(ngModel)]="data.form" value="1">
+              <label for="budget"></label>
+              <label>Бюджет</label>
+            </div>
+            <div class="form-group">
+              <input type="radio" class="regular-radio" name="form" id="payful" [(ngModel)]="data.form" value="2">
+              <label for="payful"></label>
+              <label>Платное</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <input type="checkbox" name="info" id="cont-number" class="regular-checkbox" (click)="selectListInfo('Dic_count')">
+              <label for="cont-number"></label>
+              <label>Номер договора</label>
+            </div>
+            <div class="form-group">
+              <input type="checkbox" name="info" id="course-date" class="regular-checkbox" (click)="selectListInfo('Start-Finish')">
+              <label for="course-date"></label>
+              <label>Дата проведения обучения</label>
+            </div>
+            <div class="form-group">
+              <input type="checkbox" name="info" id="organization" class="regular-checkbox" (click)="selectListInfo('organization')">
+              <label for="organization"></label>
+              <label>Заказчик</label>
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <a (click)="BuildOrder(8)" class="btn btn-success">Создать</a>
+          <a (click)="modal.hide(1)" class="btn btn-danger">Отмена</a>
+        </div>
+      </div>
+    </div>
+  </ng-template>

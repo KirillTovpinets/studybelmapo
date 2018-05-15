@@ -35,176 +35,16 @@
 
     if($isEnter){
         $about = "О зачислении слушателей на $type";
-        $status = 2;
+        $status = 1;
         $currentStatus = 1;
     }else{
         $about = "Об окончании слушателями $type";
-        $status = 3;
+        $status = 2;
         $currentStatus = 2;
     }
-    if ($isEnter == 0 || $isEnter == 1) {
-        $doc_body = "
-            <html>
-                <style>
-                    body, p, ol, ul{
-                        font-size:14pt;
-                    }
-                    p, ol{
-                        text-align:justify;
-                        text-indent: 1.25cm;
-                        margin-top:0pt;
-                    }
-                    ol{
-                        text-indent: 1.25cm;
-                        padding:0px;
-                    }
-                    .StudList li{
-                        margin-left:0pt;
-                    }
-                    table{
-                        page-break-after: always;
-                    }
-                </style>
-                <table style='width:100%;margin-top:200px;'>
-                    <tr style='vertical-align:bottom;'>
-                        <td align='center'>ЗАГАД</td>
-                        <td align='right'>ПРИКАЗ</td>
-                    </tr>
-                </table>
-                <table style='margin-top:70px;'>
-                    <tr>
-                        <td width='40%'>$about</td>
-                        <td></td>
-                    </tr>
-                </table>
-                <p></p>";
-        if ($isEnter) {
-            $doc_body .= "<p>В соответствии со сводным планом повышения 
-                квалификации и переподготовки руководителей и 
-                специалистов здравоохранения Республики Беларусь 
-                на $currentYear год, утвержденным Министром 
-                здравоохранения Республики Беларусь,<br/>";
-        }else{
-            $doc_body .= "<p>В связи с выполнением учебных планов и программ курсов повышения квалификации <br/>";
-        }
-
-        $doc_body .= "ПРИКАЗЫВАЮ:<br/><ol>";
-        $sendTo = array();
-        for($i = 0; $i < count($courses); $i++){
-            $number = $courses[$i]->Number;
-            $id = $courses[$i]->id;
-            $notes = $courses[$i]->Notes;
-            $CourseObj = $mysqli->query("SELECT name, Start, Finish FROM cources WHERE id = '$id'");
-            $courseNameArr = $CourseObj->fetch_assoc();
-            $courseName = $courseNameArr["name"];
-            $Start = date_create_from_format('Y-m-d', $courseNameArr["Start"]);
-            $Start = $Start->format("d.m.y");
-            $Finish = date_create_from_format('Y-m-d', $courseNameArr["Finish"]);
-            $Finish = $Finish->format("d.m.y") ;
-            // print_r($data);
-            $CathedraObj = $mysqli->query("SELECT cathedras.name FROM cathedras INNER JOIN cources ON cathedras.id = cources.cathedraId WHERE cources.id = '$id'") or die ("Ошибка выполнения запроса: " . mysqli_error($mysqli));
-            $CathedraNameObj = $CathedraObj->fetch_assoc();
-            $cathedraName = $CathedraNameObj["name"];
-            array_push($sendTo, $cathedraName);
-            if ($isEnter) {
-                $doc_body .= "<li>
-                            Зачислить в число слушателей группы №$number $typeRelForm
-                            по специальности \"$courseName\" 
-                            ($notes) на
-                            кафедре $cathedraName согласно списку:
-                            <ol class='StudList'>";
-            }else{
-                $doc_body .= "<li>
-                            Провести выпуск группы №$number \"$courseName\" по кафедре $cathedraName согласно списку:
-                            <ol class='StudList'>";
-            }
-            $result = $mysqli->query("SELECT personal_card.id, personal_card.surname, personal_card.name, personal_card.patername 
-            FROM personal_card 
-            INNER JOIN arrivals ON personal_card.id = arrivals.PersonId 
-            WHERE arrivals.CourseId = '$id' AND arrivals.Status = $currentStatus ORDER BY personal_card.name_in_to_form") or die ("Ошибка выполнения запроса: " . mysqli_error($mysqli));
-            $countRows = 0;
-            while($row = $result->fetch_assoc()){
-                $id = $row["id"];
-                $updateData = "SELECT * FROM history_of_changes WHERE personId = $id ORDER BY id ASC";
-                $updateObj = $mysqli->query($updateData) or die ("Error in '$updateData': " . mysqli_error($mysqli));
-                while ($updateRow = $updateObj->fetch_assoc()) {
-                    if($updateRow["field"] == "name_in_to_form"){
-                        $updateRow["field"] = "nameInDativeForm";
-                    }
-                    foreach ($row as $key => $value) {
-                        if ($key == $updateRow["field"]) {
-                            $newValue = $updateRow["new_value"];
-                            if (!is_numeric($newValue)) {
-                                $row[$key] = $newValue;
-                            }else{
-                                foreach ($correspondings as $keyOut => $valueOut) {
-                                    if ($keyOut == $key) {
-                                        $table = $valueOut;
-                                        $query = "SELECT name FROM $table WHERE id = $newValue";
-                                        $result = $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));
-                                        $newNameArr = $result->fetch_assoc();
-                                        $newName = $newNameArr["name"];
-                                        $row[$key] = $newName;
-                                    }
-                                    continue;
-                                }
-                            }
-                        }
-                    }
-                }
-                $name = $row["name"];
-                $surname = $row["surname"];
-                $patername = $row["patername"];
-                $id = $row["id"];
-                $doc_body .= "<li>$surname $name $patername</li>";
-                $query = "UPDATE arrivals SET Status = $status WHERE PersonId = $id";
-                $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));
-                $countRows++;
-            }
-            $doc_body .= "</ol></li>";
-            if ($isEnter) {
-                $doc_body .="<li>Провести учебные занятия с $Start  по $Finish в соответствии с учебным планом с отрывом от работы.</li>";
-            }else{
-                $doc_body .="<li>Выпуск слушателей провести $Finish</li>";
-            }
-            $doc_body .="<li>Контроль за исполнением данного приказа возложить на проректора по учебной работе Калинину Т.В.</li>";
-        }
-        mysqli_close($mysqli);                
-        $doc_body .= "</ol>
-                    
-                    <table style='width:100%;font-size:19px;'>
-                        <tr>
-                            <td align='left'>Ректор академии</td>
-                            <td align='right'>М.А.Герасименко</td>
-                        </tr>
-                    </table>
-                    <br clear=all style='mso-special-character:line-break;page-break-before:always'>
-                    <table width='100%'>
-                        <tr>
-                            <td width='40%'>Проректор по учебной работе<br/>Т.В.Калинина<br> __.01.2017</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td width='40%'>Начальник учебно-организационного отдела<br/>О.Н. Морозова<br> __.01.2017</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td width='40%'>Юристконсульт сектора правовой работы<br/>Н.Е. Павлюкевич<br> __.01.2017</td>
-                            <td></td>
-                        </tr>
-                    </table>
-                    <p>
-                        Реестр рассылки:
-                        <ul>
-                            <li>Канцелярия - оригинал</li>";
-        for($i = 0; $i < count($sendTo); $i++){
-            $cathedra = $sendTo[$i];
-            $doc_body .= "<li>Кафедра $cathedra</li>";
-        }
-        $doc_body .= "</ul>
-                    </p>
-                </p>
-            </html>";
+    if ($isEnter == 1) {
+        require_once("statements/enter.php");
+        $doc_body = makeEnter($data, $courses, $mysqli);
     }else if($isEnter == 2){
         $prorector = $data->prorector;
         $headmaster = $data->headmaster;
@@ -944,6 +784,10 @@
         $doc_body = makeGEK($data, $courses, $mysqli);
     }else if($isEnter == 8){ 
         $additionalField = $data->statementInfo;
+        $form = 0;
+        if($data->form != 0){
+            $form = $data->form;
+        }
         $doc_body = "<html>
                         <style>
                             body, p, ol, ul{
@@ -962,9 +806,16 @@
                             }
                         </style>";
         for($i = 0; $i < count($courses); $i++){
+            
             $number = $courses[$i]->Number;
             $id = $courses[$i]->id;
             $name = $courses[$i]->name;
+            $start = explode("-", $courses[$i]->Start);
+            $finish = explode("-", $courses[$i]->Finish);
+
+            $courseStart = $start[2] . "." . $start[1] . "." . $start[0];
+            $courseFinish = $finish[2] . "." . $finish[1] . "." . $finish[0];
+
             $selectAddField = "";
             $fromConnections = "";
             for($j = 0; $j < count($additionalField); $j++){
@@ -998,9 +849,20 @@
                         }
                         break;
                     }
+                    case 'Dic_count': {
+                        $selectAddField .= ", arrivals." . $additionalField[$j];
+                    }
                 }
             }
-            $query = "SELECT personal_card.id, personal_card.name, personal_card.surname, personal_card.patername, personal_card.name_in_to_form $selectAddField FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId $fromConnections WHERE arrivals.CourseId = $id ORDER BY personal_card.name_in_to_form ASC";
+            $addCondition = "";
+            if($form != 0){
+                if($form == 1){
+                    $addCondition = " AND arrivals.Dic_count = ''";
+                }else{
+                    $addCondition = " AND arrivals.Dic_count != ''";
+                }
+            }
+            $query = "SELECT personal_card.id, personal_card.name, personal_card.surname, personal_card.patername, personal_card.name_in_to_form $selectAddField FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId $fromConnections WHERE arrivals.CourseId = $id $addCondition ORDER BY personal_card.name_in_to_form ASC";
 
             $studObj = $mysqli->query($query) or die("Error in '$query': ". mysqli_error($mysqli));
             $doc_body .= "<p style='text-align:center;'> Курс №$number '$name'</p>";
@@ -1009,6 +871,10 @@
             $doc_body .= "<th>Фамилия, имя, отчество</th>";
 
             for($j = 0; $j < count($additionalField); $j++){
+                if($additionalField[$j] == "Start-Finish"){
+                    $doc_body .= "<th>Дата проведения обучения</th>";    
+                    continue;
+                }
                 $label = LABELS[$additionalField[$j]];
                 $doc_body .= "<th>$label</th>";
             }
@@ -1062,6 +928,10 @@
                                 <td style='border:1px solid black;'>$index</td>
                                 <td style='border:1px solid black;'>$person</td>";
                 for($j = 0; $j < count($additionalField); $j++){
+                    if($additionalField[$j] == "Start-Finish"){
+                        $doc_body .= "<td>$courseStart - $courseFinish</td>";    
+                        continue;
+                    }
                     $doc_body .= "<td>" . $studList[$k][$additionalField[$j]] . "</td>";
                 }
                         
@@ -1071,6 +941,8 @@
 
             $doc_body .= "</table>";
         }
+
+    }else if($isEnter == 9){
 
     }
     $file = 'HelloWorld.doc';

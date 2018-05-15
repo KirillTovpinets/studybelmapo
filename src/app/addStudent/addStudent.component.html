@@ -147,7 +147,7 @@
                           <div class="col-md-6">
                             <div class="form-group">
                               <label>Факультет</label>
-                              <input #faculty="ngModel" required auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.faculty" [source]="personal_faculties" name="faculty" class="form-control">
+                              <input #faculty="ngModel" auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.faculty" [source]="personal_faculties" name="faculty" class="form-control">
                               <div class="input-group newValue" *ngIf="newPerson.profesional.faculty == 0">
                                 <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_faculty">
                                 <span class="input-group-btn">
@@ -182,7 +182,7 @@
                             <div class="col-md-6">
                               <div class="form-group">
                                 <label>Врачебная</label>
-                                <input #speciality="ngModel" auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" required [(ngModel)]="newPerson.profesional.speciality_doc" [source]="specialityDocArr" name="specialityDoc" class="form-control">
+                                <input #speciality="ngModel" auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" [(ngModel)]="newPerson.profesional.speciality_doc" [source]="specialityDocArr" name="specialityDoc" class="form-control">
                                 <div class="input-group newValue" *ngIf="newPerson.profesional.speciality_doc == 0">
                                   <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="speciality_doc">
                                   <span class="input-group-btn">
@@ -241,14 +241,14 @@
                             <legend><h5>Стаж</h5></legend>
                             <div class="col-md-4">
                               <div class="form-group">
-                                <label tooltip="Общий стаж">Общий (лет)</label>
-                                <input type="number" tooltip="Общий стаж" #expGeneral="ngModel" min="0" required [(ngModel)]="newPerson.profesional.experiance_general" name="experiance_general" class="form-control">
+                                <label tooltip="Стаж по специальности">По специальности</label>
+                                <input tooltip="Стаж по специальности" type="number" #expSpecial="ngModel" min="0" max="{{newPerson.profesional.experiance_general}}" required (change)="ValidateExp($event)" [(ngModel)]="newPerson.profesional.experiance_special" name="experiance_special" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-4">
                               <div class="form-group">
-                                <label tooltip="Стаж по специальности">По специальности</label>
-                                <input tooltip="Стаж по специальности" type="number" #expSpecial="ngModel" min="0" max="{{newPerson.profesional.experiance_general}}" required (change)="ValidateExp($event)" [(ngModel)]="newPerson.profesional.experiance_special" name="experiance_special" class="form-control">
+                                <label tooltip="Общий стаж">Общий (лет)</label>
+                                <input type="number" tooltip="Общий стаж" #expGeneral="ngModel" min="0" required [(ngModel)]="newPerson.profesional.experiance_general" name="experiance_general" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-4">
@@ -266,7 +266,7 @@
                             <div class="col-md-12 no-padding">
                               <div class="form-group col-md-6">
                                 <label>Врачебная (осн.)</label>
-                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" required #qualification="ngModel" [(ngModel)]="newPerson.profesional.qualification_main" [source]="qualificationMainArr" name="qualificationMain" class="form-control">
+                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" #qualification="ngModel" [(ngModel)]="newPerson.profesional.qualification_main" [source]="qualificationMainArr" name="qualificationMain" class="form-control">
                               </div>
                               <div class="form-group col-lg-6 col-md-6 col-sm-12">
                                 <label>Категория</label>
@@ -364,21 +364,21 @@
                               <div class="form-group">
                                 <label>Домашний телефон</label>
                                 <!-- [pattern]="'[(]{1}[0-9]{2}[)]{1}[0-9]{3}[-]{1}[0-9]{2}[-]{1}[0-9]{2}'" -->
-                                <input type="text" placeholder="(00)000-00-00" (focus)="NumberStartHome()" (keyup)="createMaskHome($event)" maxlength="13" #home_phone="ngModel" [(ngModel)]="newPerson.personal.tel_number_home" name="tel_number_home" class="form-control">
+                                <input type="text" placeholder="(00)000-00-00" maxlength="13" #home_phone="ngModel" [(ngModel)]="newPerson.personal.tel_number_home" name="tel_number_home" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-4 col-sm-6">
                               <div class="form-group">
                                 <label>Рабочий телефон</label>
                                 <!-- [pattern]="'[(]{1}[0-9]{2}[)]{1}[0-9]{3}[-]{1}[0-9]{2}[-]{1}[0-9]{2}'" -->
-                                <input type="text" placeholder="(00)000-00-00" (focus)="NumberStartWork()" (keyup)="createMaskWork($event)" maxlength="13" #work_phone="ngModel" [(ngModel)]="newPerson.personal.tel_number_work" name="tel_number_work" class="form-control">
+                                <input type="text" placeholder="(00)000-00-00" maxlength="13" #work_phone="ngModel" [(ngModel)]="newPerson.personal.tel_number_work" name="tel_number_work" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-4 col-sm-6">
                               <div class="form-group">
                                 <label>Мобильный телефон</label>
                                 <!-- [pattern]="'[(]{1}[0-9]{2}[)]{1}[0-9]{3}[-]{1}[0-9]{2}[-]{1}[0-9]{2}'" -->
-                                <input type="text" placeholder="(00)000-00-00" (focus)="NumberStartMobile()" (keyup)="createMaskMobile($event)" maxlength="13" #mob_phone="ngModel" [(ngModel)]="newPerson.personal.tel_number_mobile" name="tel_number_mobile" class="form-control">
+                                <input type="text" placeholder="(00)000-00-00" maxlength="13" #mob_phone="ngModel" [(ngModel)]="newPerson.personal.tel_number_mobile" name="tel_number_mobile" class="form-control">
                               </div>
                             </div>
                           </fieldset>
@@ -436,7 +436,7 @@
                         </div>
                     </div>
                   </tab>
-                  <tab heading="Научная деятельность" [disabled]="!activateTab">
+                  <!-- <tab heading="Научная деятельность" [disabled]="!activateTab">
                     <div class="content">
                       <fieldset>
                         <legend><h5>Звание</h5></legend>
@@ -536,7 +536,7 @@
                           <button type="submit" class="btn btn-success">Сохранить</button>
                         </div>
                     </div>
-                  </tab>
+                  </tab> -->
                 </tabset>
                 <div class="alert alert-danger" *ngIf="addForm.touched &&
                                                   ((suname !== undefined && suname.invalid && suname.dirty) ||

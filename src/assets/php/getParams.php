@@ -37,6 +37,15 @@
 		echo json_encode($arr);
 		return;
 	}
+	if(isset($_GET["fields"])){
+		$fields = explode("+", $_GET["fields"]);
+		for($i = 0; $i < count($fields); $i++){
+			$obj = getSqlObj($fields[$i], $mysqli);
+			$arr = getArray($obj);
+			echo json_encode($arr);
+			return;
+		}
+	}
 	$estObj = getSqlObj("personal_establishment", $mysqli);
 	$residObj = getSqlObj("countries", $mysqli);
 	$appObj = getSqlObj("personal_appointment", $mysqli);

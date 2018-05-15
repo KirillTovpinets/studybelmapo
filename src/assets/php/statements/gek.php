@@ -17,6 +17,47 @@
         $courseid = $courseNameArr["id"];
         $cathedraName = $courseNameArr["cathedra"];
         $studObj = $mysqli->query("SELECT personal_card.name, personal_card.surname, personal_card.patername FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseid ORDER BY personal_card.name_in_to_form ASC") or die("Error: ". mysqli_error($mysqli));
+
+        $studList = array();
+
+        while($student = $studObj->fetch_assoc()){
+            $id = $student["id"];
+            $updateData = "SELECT * FROM history_of_changes WHERE personId = $id ORDER BY id ASC";
+            $updateObj = $mysqli->query($updateData) or die ("Error in '$updateData': " . mysqli_error($mysqli));
+            while ($updateRow = $updateObj->fetch_assoc()) {
+                foreach ($student as $key => $value) {
+                    if ($key == $updateRow["field"]) {
+                        $newValue = $updateRow["new_value"];
+                        if (!is_numeric($newValue)) {
+                            $student[$key] = $newValue;
+                        }else{
+                            foreach ($correspondings as $keyOut => $valueOut) {
+                                if ($keyOut == $key) {
+                                    $table = $valueOut;
+                                    $query = "SELECT name FROM $table WHERE id = $newValue";
+                                    $result = $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));
+                                    $newNameArr = $result->fetch_assoc();
+                                    $newName = $newNameArr["name"];
+                                    $student[$key] = $newName;
+                                }
+                                continue;
+                            }
+                        }
+                    }
+                }
+            }
+            array_push($studList, $student);
+        }
+
+        for($k = 0; $k < count($studList) - 1; $k++){
+            for($j = $k + 1; $j < count($studList); $j++){
+                if(strcmp($studList[$k]["name_in_to_form"], $studList[$j]["name_in_to_form"]) > 0){
+                    $temp = $studList[$k];
+                    $studList[$k] = $studList[$j];
+                    $studList[$j] = $temp;
+                }
+            }
+        }
         $doc_body = "<html xmlns:v='urn:schemas-microsoft-com:vml'
         xmlns:o='urn:schemas-microsoft-com:office:office'
         xmlns:w='urn:schemas-microsoft-com:office:word'

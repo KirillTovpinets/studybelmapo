@@ -7,7 +7,11 @@
   <ng-container>
     <preloader  *ngIf="!statIsLoaded"></preloader>
     <tabset *ngIf="statIsLoaded" >
-      <tab heading="Текущие">
+      <tab>
+          <ng-template tabHeading>
+              <span>Текущие</span>
+              <a (click)="updateList()" class="refresh"><span class="fa fa-refresh"></span></a>
+            </ng-template>
         <div class="content">
           <accordion>
             <accordion-group #group *ngFor="let faculty of faculties">

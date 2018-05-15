@@ -33,6 +33,9 @@ declare var $: any;
 		a:hover{
 			cursor:pointer;
 		}
+		.refresh:hover{
+			color: #666;
+		}
 	`]
 })
 

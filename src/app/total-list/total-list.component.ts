@@ -33,8 +33,13 @@ export class TotalListComponent implements OnInit {
     let faculties = localStorage.getItem("faculties");
     if(faculties == null){
       this.info.getInfo("getStat").then(data => {
-        this.faculties = data.json().data;
-        localStorage.setItem("faculties", JSON.stringify(this.faculties));
+				this.faculties = data.json().data;
+				try{
+					localStorage.setItem("faculties", JSON.stringify(this.faculties));
+				}catch(e){
+					localStorage.clear();
+					localStorage.setItem("faculties", JSON.stringify(this.faculties));
+				}
         this.statIsLoaded = true;
       });
     }else{
@@ -47,7 +52,12 @@ export class TotalListComponent implements OnInit {
 			this.data.getData("type").then((data) => {
 				try{
 					this.types = data.json();
-					localStorage.setItem("educTypeBel", JSON.stringify(this.types));
+					try{
+						localStorage.setItem("educTypeBel", JSON.stringify(this.types));
+					}catch(e){
+						localStorage.clear();
+						localStorage.setItem("educTypeBel", JSON.stringify(this.types));
+					}
 				}catch(e){
 					console.log(e);
 					console.log(data._body);
@@ -71,7 +81,21 @@ export class TotalListComponent implements OnInit {
 				}
 			}
 		}
-  }
+	}
+	updateList(){
+		this.statIsLoaded = false;
+		this.info.getInfo("getStat").then(data => {
+			this.faculties = data.json().data;
+			localStorage.removeItem("faculties");
+			try{
+				localStorage.setItem("faculties", JSON.stringify(this.faculties));
+			}catch(e){
+				localStorage.clear();
+				localStorage.setItem("faculties", JSON.stringify(this.faculties));
+			}
+			this.statIsLoaded = true;
+		});
+	}
   getArchive(){
 		this.getList.getArchive().then(data => {
 			try{

@@ -69,6 +69,8 @@ import { PersonalDataService } from "../personalInfo/personalData.service";
 export class OrderComponent implements OnInit{
 	@ViewChild('certificates') cert: TemplateRef<any>;
 	@ViewChild('examlist') examlist: TemplateRef<any>;
+	@ViewChild('studList') studList: TemplateRef<any>;
+
 	bsValue: Date = new Date();
 	globalParams: Global = new Global();
   	data:any = {
@@ -78,7 +80,9 @@ export class OrderComponent implements OnInit{
   		exam_list_numer: "",
   		examDate: undefined,
   		exam_date: "",
-  		exam_form: 0
+		exam_form: 0,
+		form: 0,
+		statementInfo:[]  
   	};
   	message: string = "";
   	courses: any[] = [];
@@ -104,7 +108,12 @@ export class OrderComponent implements OnInit{
 		if(courses == null){
 			this.courseList.get().then(data => { 
 				this.courses = data.json();
-				localStorage.setItem("all-courses", JSON.stringify(this.courses));
+				try{
+					localStorage.setItem("all-courses", JSON.stringify(this.courses));
+				}catch(e){
+					localStorage.clear();
+					localStorage.setItem("all-courses", JSON.stringify(this.courses));
+				}
 			})
 		}else{
 			this.courses = JSON.parse(courses);
@@ -220,5 +229,17 @@ export class OrderComponent implements OnInit{
 				return value;
 			}
 		})
+	}
+	ChooseListInfo(){
+		this.modalRef = this.modal.show(this.studList, { class: "modal-md" })
+	}
+	selectListInfo(param:string){
+		if(this.data.statementInfo.indexOf(param) != -1){
+			let index = this.data.statementInfo.indexOf(param);
+			this.data.statementInfo.splice(index, 1);
+		}else{
+			this.data.statementInfo.push(param);
+			console.log(this.data.statementInfo);
+		}
 	}
 }
