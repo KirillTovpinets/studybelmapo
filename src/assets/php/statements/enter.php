@@ -939,36 +939,36 @@
         
         <p class=MsoNormal><span style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
         
-        <p class=MsoNormal style='line-height:14.0pt;mso-line-height-rule:exactly'><span
+        <p class=MsoNormal style='margin-top:0pt;line-height:14.0pt;mso-line-height-rule:exactly'><span
         style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
         
-        <p class=MsoNormal style='line-height:14.0pt;mso-line-height-rule:exactly'><span
+        <p class=MsoNormal style='margin-top:0pt;line-height:14.0pt;mso-line-height-rule:exactly'><span
         style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
         
-        <p class=MsoNormal style='line-height:14.0pt;mso-line-height-rule:exactly'><span
+        <p class=MsoNormal style='margin-top:0pt;line-height:14.0pt;mso-line-height-rule:exactly'><span
         style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
         
-        <p class=MsoNormal style='line-height:14.0pt;mso-line-height-rule:exactly'><span
+        <p class=MsoNormal style='margin-top:0pt;line-height:14.0pt;mso-line-height-rule:exactly'><span
         style='font-size:14.0pt'>О зачислении слушателей на<o:p></o:p></span></p>
         
-        <p class=MsoNormal style='line-height:14.0pt;mso-line-height-rule:exactly'><span
+        <p class=MsoNormal style='margin-top:0pt;line-height:14.0pt;mso-line-height-rule:exactly'><span
         style='font-size:14.0pt'>повышение квалификации<o:p></o:p></span></p>
         
-        <p class=MsoNormal style='line-height:14.0pt;mso-line-height-rule:exactly'><span
+        <p class=MsoNormal style='margin-top:0pt;line-height:14.0pt;mso-line-height-rule:exactly'><span
         style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
         
-        <p class=MsoNormal style='text-align:justify;text-indent:35.4pt'><span
+        <p class=MsoNormal style='margin-top:0pt;text-align:justify;text-indent:35.4pt'><span
         style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
         
-        <p class=MsoNormal style='text-align:justify;text-indent:35.4pt'><span
+        <p class=MsoNormal style='margin-top:0pt;text-align:justify;text-indent:35.4pt'><span
         style='font-size:14.0pt'>В соответствии со сводным планом повышения
         квалификации и переподготовки руководителей и специалистов здравоохранения
         Республики Беларусь на 2018 год, утвержденным Министром здравоохранения Республики
         Беларусь,<o:p></o:p></span></p>
         
-        <p class=MsoNormal style='text-align:justify'><span style='font-size:14.0pt'>ПРИКАЗЫВАЮ:<o:p></o:p></span></p>
+        <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'>ПРИКАЗЫВАЮ:<o:p></o:p></span></p>
         
-        <p class=MsoNormal style='text-align:justify'><a name=first></a><span
+        <p class=MsoNormal style='margin-top:0pt;text-align:justify'><a name=first></a><span
         style='font-size:14.0pt'><span style='mso-tab-count:1'>         </span>1.
         Зачислить в число слушателей группы № $number $typeRelForm « $courseName »
         ($notes) на кафедре $cathedraName согласно
@@ -983,11 +983,11 @@
             $person = $budgetList[$k]["surname"] . " " . $budgetList[$k]["name"] . " " . $budgetList[$k]["patername"];
             $doc_body .= "<tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;page-break-inside:avoid'>
                         <td width=378 valign=top style='width:283.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-                        <p class=MsoNormal style='tab-stops:17.85pt'><span style='font-size:14.0pt'>$index.
+                        <p class=MsoNormal style='margin-top:0pt;tab-stops:17.85pt'><span style='font-size:14.0pt'>$index.
                         $person<o:p></o:p></span></p>
                         </td>
                         <td width=189 valign=top style='width:141.7pt;padding:0cm 5.4pt 0cm 5.4pt'>
-                        <p class=MsoNormal style='text-align:justify'><span style='font-size:14.0pt'><o:p></o:p></span></p>
+                        <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><o:p></o:p></span></p>
                         </td>
                     </tr>";
             $index++;
@@ -997,29 +997,29 @@
             $person = $payfulList[$k]["surname"] . " " . $payfulList[$k]["name"] . " " . $payfulList[$k]["patername"];
             $doc_body .= "<tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;page-break-inside:avoid'>
                         <td width=378 valign=top style='width:283.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-                        <p class=MsoNormal style='tab-stops:17.85pt'><span style='font-size:14.0pt'>$index.
+                        <p class=MsoNormal style='margin-top:0pt;tab-stops:17.85pt'><span style='font-size:14.0pt'>$index.
                         $person<o:p></o:p></span></p>
                         </td>
                         <td width=189 valign=top style='width:141.7pt;padding:0cm 5.4pt 0cm 5.4pt'>
-                        <p class=MsoNormal style='text-align:justify'><span style='font-size:14.0pt'><o:p>$contractNumber</o:p></span></p>
+                        <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><o:p>платное Д № $contractNumber</o:p></span></p>
                         </td>
                     </tr>";
             $index++;
         }   
          
         $doc_body .= "</table>
-        <p class=MsoNormal style='text-align:justify;text-indent:35.4pt'><span
-        style='font-size:14.0pt'>4. Заведующим кафедрами обеспечить проведение учебных
+        <p class=MsoNormal style='margin-top:0pt;text-align:justify;text-indent:35.4pt'><span
+        style='font-size:14.0pt'>2. Заведующим кафедрами обеспечить проведение учебных
         занятий с $courseStart по $courseFinish в соответствии с учебными планами повышения
         квалификации.<o:p></o:p></span></p>
         
-        <p class=MsoNormal style='text-align:justify'><span style='font-size:14.0pt'><span
-        style='mso-tab-count:1'>         </span>4. Контроль за исполнением приказа
+        <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><span
+        style='mso-tab-count:1'>         </span>3. Контроль за исполнением приказа
         возложить на проректора по учебной работе Калинину Т.В.<o:p></o:p></span></p>
         
-        <p class=MsoNormal style='text-align:justify'><span style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
+        <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
         
-        <p class=MsoNormal style='text-align:justify'><span style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
+        <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
         
         <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
          style='border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;
@@ -1027,7 +1027,7 @@
          .5pt solid windowtext;mso-border-insidev:.5pt solid windowtext'>
          <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;mso-yfti-lastrow:yes'>
           <td width=319 valign=top style='width:239.25pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
-          <p class=MsoNormal style='text-align:justify'><span style='font-size:14.0pt'>Ректор
+          <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'>Ректор
           академии<o:p></o:p></span></p>
           </td>
           <td width=319 valign=top style='width:239.3pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
@@ -1037,7 +1037,7 @@
          </tr>
         </table>
         
-        <p class=MsoNormal style='text-align:justify'><span style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
+        <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
         
         </div>
         

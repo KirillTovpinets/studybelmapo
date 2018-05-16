@@ -23,6 +23,7 @@ export class DepMenuComponent implements OnInit {
   currentUser: any;
   tables: string[];
   global: Global = new Global();
+  showDrop: boolean = false;
   ngOnInit(): void{
   this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   this.menuManip.currentMessage.subscribe(message =>{
@@ -45,7 +46,10 @@ export class DepMenuComponent implements OnInit {
   return;
   }
   selectPage(v:number): void{
-  this.selectedPage._selectedPage = v;
+    this.selectedPage._selectedPage = v;
+  }
+  showDropdown(){
+    this.showDrop = !this.showDrop;
   }
 
 }

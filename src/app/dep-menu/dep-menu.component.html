@@ -4,8 +4,22 @@
     <ul class="nav">
       <li [ngClass]="{'active': selectedPage.selectedPage == 1}"><a (click)="selectPage(1)" routerLink="statistics"> <i class="pe-7s-home"></i>
           <p>Главная</p></a></li>
-      <li [ngClass]="{'active': selectedPage.selectedPage == 2}"><a (click)="selectPage(2)" routerLink="list"> <i class="pe-7s-note2"></i>
-          <p>Реестр врачей</p></a></li>
+      <li [ngClass]="{'active': selectedPage.selectedPage == 2}">
+        <button (click)="showDropdown()">
+          <i class="pe-7s-note2"></i>
+          <p>Реестр врачей</p>
+        </button>
+        <ul *ngIf="showDrop" >
+          <li><a routerLink="list/sirname">По фамилии</a></li>
+          <li><a routerLink="list/gender">По полу</a></li>
+          <li><a routerLink="list/age">По возрасту</a></li>
+          <li><a routerLink="list/education">По ВУЗу</a></li>
+          <li><a routerLink="list/organization">По месту работы</a></li>
+          <li><a routerLink="list/appointment">По должности</a></li>
+          <li><a routerLink="list/speciality">По специальности</a></li>
+          <li><a routerLink="list/qualification">По квалификации</a></li>
+        </ul>
+      </li>
       <li [ngClass]="{'active': selectedPage.selectedPage == 4}"><a (click)="selectPage(4)" routerLink="reports"> <i class="pe-7s-news-paper"></i>
           <p>Отчёты</p></a></li>
       <li [ngClass]="{'active': selectedPage.selectedPage == 5}">
