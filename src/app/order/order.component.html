@@ -19,12 +19,12 @@
                           </div>
                           <preloader *ngIf="courses.length === 0" ></preloader>
                           <div class="course-list content" *ngIf="courses.length !== 0 && searchCourses.length === 0">
-                              <article class="course course-item" *ngFor="let item of courses" (click)="selectCourse(item)">
+                              <article class="course course-item" *ngFor="let item of courses" (click)="selectCourse(item)" tooltip="{{ item.Start | date : 'dd.MM.yy'}} - {{ item.Finish | date : 'dd.MM.yy'}}">
                                 <span>{{ item.Number }}</span>
                               </article>
                           </div>
                           <div class="course-list content" *ngIf="courses.length !== 0 && searchCourses.length !== 0">
-                              <article class="course course-item" *ngFor="let item of searchCourses" (click)="selectCourse(item)">
+                              <article class="course course-item" *ngFor="let item of searchCourses" (click)="selectCourse(item)" tooltip="{{ item.Start | date : 'dd.MM.yy'}} - {{ item.Finish | date : 'dd.MM.yy'}}">
                                 <span>{{ item.Number }}</span>
                               </article>
                           </div>
@@ -32,7 +32,7 @@
                         <div class="col-lg-6 col-mg-6 col-sm-6">
                           <h4>Выбрано:</h4>
                           <div class="selected-courses content">
-                              <article class="course alert-info" *ngFor="let item of data.selectedCourses">
+                              <article class="course alert-info" *ngFor="let item of data.selectedCourses" tooltip="{{ item.Start | date : 'dd.MM.yy'}} - {{ item.Finish | date : 'dd.MM.yy'}}">
                                 <button type="button" class="close" (click)="unselectCourse(item)"><span class="fa fa-times"></span></button>
                                 <span>{{ item.Number }}</span>
                               </article>
