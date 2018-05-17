@@ -12,80 +12,8 @@
     $type = mb_strtolower($typeArr["name"]);
     $typeRelForm = mb_strtolower($typeArr["Relative_form"]);
     $courseName = "";
-    for($i = 0; $i < count($courses); $i++){
-        $number = $courses[$i]->Number;
-        $start = explode('-', $courses[$i]->Start);
-        $finish = explode('-', $courses[$i]->Finish);
-        $courseStart = $start[2] . "." . $start[1] . "." . $start[0];
-        $courseFinish = $finish[2] . "." . $finish[1] . "." . $finish[0];
-        $id = $courses[$i]->id;
-        $query = "SELECT cources.id, cources.Number, cources.name, cources.Start, cources.Finish, cources.Notes, cathedras.name AS cathedra FROM cources INNER JOIN cathedras ON cources.cathedraId = cathedras.id WHERE cources.id = '$id'";
-        $CourseObj = $mysqli->query($query) or die ("Error in '$query' " . mysqli_error($mysqli));
-        $courseNameArr = $CourseObj->fetch_assoc();
-        $courseName = $courseNameArr["name"];
-        $number = $courseNameArr["Number"];
-        $notes = $courseNameArr["Notes"];
-        $courseid = $courseNameArr["id"];
-        $cathedraName = mb_strtolower($courseNameArr["cathedra"]);
-        $studObj = $mysqli->query("SELECT personal_card.id, personal_card.name, personal_card.surname, personal_card.patername, personal_card.name_in_to_form, arrivals.Dic_count FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseid ORDER BY personal_card.name_in_to_form ASC") or die("Error: ". mysqli_error($mysqli));
-
-        $studList = array();
-
-        $budgetList = array();
-        $payfulList = array();
-        while($student = $studObj->fetch_assoc()){
-            $id = $student["id"];
-            $updateData = "SELECT * FROM history_of_changes WHERE personId = $id ORDER BY id ASC";
-            $updateObj = $mysqli->query($updateData) or die ("Error in '$updateData': " . mysqli_error($mysqli));
-            while ($updateRow = $updateObj->fetch_assoc()) {
-                foreach ($student as $key => $value) {
-                    if ($key == $updateRow["field"]) {
-                        $newValue = $updateRow["new_value"];
-                        if (!is_numeric($newValue)) {
-                            $student[$key] = $newValue;
-                        }else{
-                            foreach ($correspondings as $keyOut => $valueOut) {
-                                if ($keyOut == $key) {
-                                    $table = $valueOut;
-                                    $query = "SELECT name FROM $table WHERE id = $newValue";
-                                    $result = $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));
-                                    $newNameArr = $result->fetch_assoc();
-                                    $newName = $newNameArr["name"];
-                                    $student[$key] = $newName;
-                                }
-                                continue;
-                            }
-                        }
-                    }
-                }
-            }
-            if($student["Dic_count"] != ''){
-                array_push($payfulList, $student);
-            }else{
-                array_push($budgetList, $student);
-            }
-        }
-
-        for($k = 0; $k < count($budgetList) - 1; $k++){
-            for($j = $k + 1; $j < count($budgetList); $j++){
-                if(strcmp($budgetList[$k]["name_in_to_form"], $budgetList[$j]["name_in_to_form"]) > 0){
-                    $temp = $budgetList[$k];
-                    $budgetList[$k] = $budgetList[$j];
-                    $budgetList[$j] = $temp;
-                }
-            }
-        }
-        for($k = 0; $k < count($payfulList) - 1; $k++){
-            for($j = $k + 1; $j < count($payfulList); $j++){
-                if(strcmp($payfulList[$k]["name_in_to_form"], $payfulList[$j]["name_in_to_form"]) > 0){
-                    $temp = $payfulList[$k];
-                    $payfulList[$k] = $payfulList[$j];
-                    $payfulList[$j] = $temp;
-                }
-            }
-        }
-
-        $doc_body = "<html xmlns:v='urn:schemas-microsoft-com:vml'
+    $numParagraph = 1;
+    $doc_body = "<html xmlns:v='urn:schemas-microsoft-com:vml'
         xmlns:o='urn:schemas-microsoft-com:office:office'
         xmlns:w='urn:schemas-microsoft-com:office:word'
         xmlns:m='http://schemas.microsoft.com/office/2004/12/omml'
@@ -966,11 +894,83 @@
         Республики Беларусь на 2018 год, утвержденным Министром здравоохранения Республики
         Беларусь,<o:p></o:p></span></p>
         
-        <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'>ПРИКАЗЫВАЮ:<o:p></o:p></span></p>
-        
-        <p class=MsoNormal style='margin-top:0pt;text-align:justify'><a name=first></a><span
-        style='font-size:14.0pt'><span style='mso-tab-count:1'>         </span>1.
-        Зачислить в число слушателей группы № $number $typeRelForm « $courseName »
+        <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'>ПРИКАЗЫВАЮ:<o:p></o:p></span></p>";
+
+    for($i = 0; $i < count($courses); $i++){
+        $number = $courses[$i]->Number;
+        $start = explode('-', $courses[$i]->Start);
+        $finish = explode('-', $courses[$i]->Finish);
+        $courseStart = $start[2] . "." . $start[1] . "." . $start[0];
+        $courseFinish = $finish[2] . "." . $finish[1] . "." . $finish[0];
+        $id = $courses[$i]->id;
+        $query = "SELECT cources.id, cources.Number, cources.name, cources.Start, cources.Finish, cources.Notes, cathedras.name AS cathedra FROM cources INNER JOIN cathedras ON cources.cathedraId = cathedras.id WHERE cources.id = '$id'";
+        $CourseObj = $mysqli->query($query) or die ("Error in '$query' " . mysqli_error($mysqli));
+        $courseNameArr = $CourseObj->fetch_assoc();
+        $courseName = $courseNameArr["name"];
+        $number = $courseNameArr["Number"];
+        $notes = $courseNameArr["Notes"];
+        $courseid = $courseNameArr["id"];
+        $cathedraName = mb_strtolower($courseNameArr["cathedra"]);
+        $studObj = $mysqli->query("SELECT personal_card.id, personal_card.name, personal_card.surname, personal_card.patername, personal_card.name_in_to_form, arrivals.Dic_count FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseid ORDER BY personal_card.name_in_to_form ASC") or die("Error: ". mysqli_error($mysqli));
+
+        $studList = array();
+
+        $budgetList = array();
+        $payfulList = array();
+        while($student = $studObj->fetch_assoc()){
+            $id = $student["id"];
+            $updateData = "SELECT * FROM history_of_changes WHERE personId = $id ORDER BY id ASC";
+            $updateObj = $mysqli->query($updateData) or die ("Error in '$updateData': " . mysqli_error($mysqli));
+            while ($updateRow = $updateObj->fetch_assoc()) {
+                foreach ($student as $key => $value) {
+                    if ($key == $updateRow["field"]) {
+                        $newValue = $updateRow["new_value"];
+                        if (!is_numeric($newValue)) {
+                            $student[$key] = $newValue;
+                        }else{
+                            foreach ($correspondings as $keyOut => $valueOut) {
+                                if ($keyOut == $key) {
+                                    $table = $valueOut;
+                                    $query = "SELECT name FROM $table WHERE id = $newValue";
+                                    $result = $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));
+                                    $newNameArr = $result->fetch_assoc();
+                                    $newName = $newNameArr["name"];
+                                    $student[$key] = $newName;
+                                }
+                                continue;
+                            }
+                        }
+                    }
+                }
+            }
+            if($student["Dic_count"] != ''){
+                array_push($payfulList, $student);
+            }else{
+                array_push($budgetList, $student);
+            }
+        }
+
+        for($k = 0; $k < count($budgetList) - 1; $k++){
+            for($j = $k + 1; $j < count($budgetList); $j++){
+                if(strcmp($budgetList[$k]["name_in_to_form"], $budgetList[$j]["name_in_to_form"]) > 0){
+                    $temp = $budgetList[$k];
+                    $budgetList[$k] = $budgetList[$j];
+                    $budgetList[$j] = $temp;
+                }
+            }
+        }
+        for($k = 0; $k < count($payfulList) - 1; $k++){
+            for($j = $k + 1; $j < count($payfulList); $j++){
+                if(strcmp($payfulList[$k]["name_in_to_form"], $payfulList[$j]["name_in_to_form"]) > 0){
+                    $temp = $payfulList[$k];
+                    $payfulList[$k] = $payfulList[$j];
+                    $payfulList[$j] = $temp;
+                }
+            }
+        }
+        $doc_body .= "<p class=MsoNormal style='margin-top:0pt;text-align:justify'><a name=first></a><span
+        style='font-size:14.0pt'><span style='mso-tab-count:1'>         </span>$numParagraph.
+        Зачислить в число слушателей группы № $number $typeRelForm &laquo;$courseName&raquo;
         ($notes) на кафедре $cathedraName согласно
         списку:<o:p></o:p></span></p>
         
@@ -978,6 +978,7 @@
          style='border-collapse:collapse;mso-yfti-tbllook:1184;mso-padding-alt:0cm 5.4pt 0cm 5.4pt'>";
         
          $index = 1;
+         $numParagraph = $numParagraph + 1;
          for($k = 0; $k < count($budgetList); $k++){
                 
             $person = $budgetList[$k]["surname"] . " " . $budgetList[$k]["name"] . " " . $budgetList[$k]["patername"];
@@ -1009,41 +1010,42 @@
          
         $doc_body .= "</table>
         <p class=MsoNormal style='margin-top:0pt;text-align:justify;text-indent:35.4pt'><span
-        style='font-size:14.0pt'>2. Заведующим кафедрами обеспечить проведение учебных
+        style='font-size:14.0pt'>$numParagraph. Заведующим кафедрами обеспечить проведение учебных
         занятий с $courseStart по $courseFinish в соответствии с учебными планами повышения
-        квалификации.<o:p></o:p></span></p>
+        квалификации.<o:p></o:p></span></p>";
+        $numParagraph = $numParagraph + 1;
         
-        <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><span
-        style='mso-tab-count:1'>         </span>3. Контроль за исполнением приказа
-        возложить на проректора по учебной работе Калинину Т.В.<o:p></o:p></span></p>
-        
-        <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
-        
-        <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
-        
-        <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
-         style='border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;
-         mso-yfti-tbllook:480;mso-padding-alt:0cm 5.4pt 0cm 5.4pt;mso-border-insideh:
-         .5pt solid windowtext;mso-border-insidev:.5pt solid windowtext'>
-         <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;mso-yfti-lastrow:yes'>
-          <td width=319 valign=top style='width:239.25pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
-          <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'>Ректор
-          академии<o:p></o:p></span></p>
-          </td>
-          <td width=319 valign=top style='width:239.3pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
-          <p class=MsoNormal align=right style='text-align:right'><span
-          style='font-size:14.0pt'>М.А.Герасименко<o:p></o:p></span></p>
-          </td>
-         </tr>
-        </table>
-        
-        <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
-        
-        </div>
-        
-        </body>
-        
-        </html>";
+        $doc_body .= "<p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><span
+        style='mso-tab-count:1'>         </span>$numParagraph. Контроль за исполнением приказа
+        возложить на проректора по учебной работе Калинину Т.В.<o:p></o:p></span></p>";
+        $numParagraph = $numParagraph + 1;
     }
+    $doc_body .= "<p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
+        
+    <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
+    
+    <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
+     style='border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;
+     mso-yfti-tbllook:480;mso-padding-alt:0cm 5.4pt 0cm 5.4pt;mso-border-insideh:
+     .5pt solid windowtext;mso-border-insidev:.5pt solid windowtext'>
+     <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;mso-yfti-lastrow:yes'>
+      <td width=319 valign=top style='width:239.25pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+      <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'>Ректор
+      академии<o:p></o:p></span></p>
+      </td>
+      <td width=319 valign=top style='width:239.3pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+      <p class=MsoNormal align=right style='text-align:right'><span
+      style='font-size:14.0pt'>М.А.Герасименко<o:p></o:p></span></p>
+      </td>
+     </tr>
+    </table>
+    
+    <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
+    
+    </div>
+    
+    </body>
+    
+    </html>";
     return $doc_body;
   }

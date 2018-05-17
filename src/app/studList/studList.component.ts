@@ -9,6 +9,7 @@ import {NotificationsService} from 'angular4-notify';
 import { StudListService } from './stud-list.service';
 import { LogService } from '../share/log.service';
 import { IfObservable } from 'rxjs/observable/IfObservable';
+import { ShareService } from '../share/share.service';
 
 declare var $: any;
 @Component({
@@ -18,6 +19,10 @@ declare var $: any;
 		tr.active,
 		tr.active>td{
 			background-color:#15A3C1 !important;
+			color:#fff;
+		}
+		tr.active .btn{
+			border-color: #fff;
 			color:#fff;
 		}
 		.nested:hover,
@@ -59,14 +64,23 @@ export class StudListComponent implements OnInit{
 	archive: any[] = [];
 	ArchiveYearIsLoaded: boolean = false;
 	nowYear: number = new Date().getFullYear();
+	shouldUpdateList: boolean = false;
 	constructor(private info: InfoService,
 				private getList: CurrentCourcesListService,
 				private dataSrv: PersonalDataService,
 				private notify: NotificationsService,
+				private share: ShareService,
 				private students: StudListService,
 				private log: LogService){}
 
 	ngOnInit(): void{
+		this.share._updateData.subscribe(list => {
+			for(let item of list){
+				if(item.info == "studList"){
+					this.shouldUpdateList = true;
+				}
+			}
+		})
 		this.students.currentTotal.subscribe(total => this.deducts = total);
 		this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
 		let current = localStorage.getItem("current-courses");
@@ -177,6 +191,8 @@ export class StudListComponent implements OnInit{
 				console.log(e);
 			}
 			this.isLoading[1] = false;
+			this.shouldUpdateList = false;
+			this.share.deleteUpdates("studList");
 		});
 	}
 	getArchive(){

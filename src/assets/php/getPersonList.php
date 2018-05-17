@@ -70,7 +70,6 @@
 			$CurrentCountArray = $CurrentCountResult->fetch_assoc();
 
 			$row["CurrentTotal"] = $CurrentCountArray["total"];
-			$row
 
 			array_push($Arr, $row);
 		}

@@ -7,6 +7,7 @@ import { User } from '../Model/user';
 import { AddUserService } from "./addUser.service";
 import { NotificationsService } from 'angular4-notify';
 import { LogService } from '../share/log.service';
+import { ShareService } from '../share/share.service';
 
 declare var jquery: any;
 declare var $: any;
@@ -29,6 +30,7 @@ export class LoginComponent implements OnInit{
 				private addUser: AddUserService,
 				private notify: NotificationsService,
 				private log: LogService,
+				private share: ShareService,
 				private router: Router){}
 	onSubmit(login): void{
 		this.loginService.tryLogin(login)

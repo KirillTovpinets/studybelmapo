@@ -16,7 +16,7 @@
         $notes = $courseNameArr["Notes"];
         $courseid = $courseNameArr["id"];
         $cathedraName = $courseNameArr["cathedra"];
-        $studObj = $mysqli->query("SELECT personal_card.name, personal_card.surname, personal_card.patername FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseid ORDER BY personal_card.name_in_to_form ASC") or die("Error: ". mysqli_error($mysqli));
+        $studObj = $mysqli->query("SELECT personal_card.id, personal_card.name, personal_card.surname, personal_card.patername, personal_card.name_in_to_form FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseid ORDER BY personal_card.name_in_to_form ASC") or die("Error: ". mysqli_error($mysqli));
 
         $studList = array();
 

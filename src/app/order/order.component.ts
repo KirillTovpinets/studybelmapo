@@ -41,7 +41,7 @@ import { PersonalDataService } from "../personalInfo/personalData.service";
 			overflow-y: scroll;
 		}
 		.course-list .course{
-			width:65px;
+			width:78px;
 			text-align:center;
 		}
 		.course{

@@ -12,6 +12,7 @@ import { SaveArrivalService } from './services/saveArrival.service';
 import {NotificationsService} from 'angular4-notify';
 import { ShowPersonInfoService } from "../personalInfo/showPersonalInfo.service";
 import { LogService } from '../share/log.service';
+import { ShareService } from '../share/share.service';
 @Component({
 	templateUrl: './templates/chooseStudent.component.html',
 	styles: [`
@@ -68,6 +69,7 @@ export class ChooseStudentComponent implements OnInit {
 				private dataService: PersonalDataService,
 				private saveNew: SaveArrivalService,
 				private notify: NotificationsService,
+				private share: ShareService,
 				private log: LogService,
 				private showInfo: ShowPersonInfoService) {}
 
@@ -134,6 +136,7 @@ export class ChooseStudentComponent implements OnInit {
 					this.enteredStudents.push(this.students[i]);
 					this.students.splice(i, 1);
 					this.notify.addSuccess("Слушатель зачислен");
+					this.share.setUpdates([{info: "studList"}]);
 					return;
 				}
 			}
@@ -142,6 +145,7 @@ export class ChooseStudentComponent implements OnInit {
 					this.enteredStudents.push(this.searchResult[i]);
 					this.searchResult.splice(i, 1);
 					this.notify.addSuccess("Слушатель зачислен");
+					this.share.setUpdates([{info: "studList"}]);
 					return;
 				}
 			}

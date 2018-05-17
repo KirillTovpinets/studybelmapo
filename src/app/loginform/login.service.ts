@@ -23,4 +23,7 @@ export class LoginService{
 	getUserLogedIn(): boolean{
 		return this.isLogedIn;
 	}
+	getUpdates(): Promise<any>{
+		return this.http.get("assets/php/checkUpdates.php").toPromise();
+	}
 }

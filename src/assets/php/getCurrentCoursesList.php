@@ -10,6 +10,7 @@
 	$condition = "";
 	$select = "*";
 	$connection = "";
+	deleteUpdate($LogedUser->id, "studList", $mysqli);
 	if (isset($_GET["id"])) {
 		$courseId = $_GET["id"];
 		$condition = "id = $courseId";

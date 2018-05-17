@@ -3863,3 +3863,7 @@ menu.collapse .sidebar{
 .pe-7s-airplay:before {
   content: "\e67f";
 }
+
+.card .content{
+  overflow-x:scroll;
+}

@@ -75,4 +75,31 @@
 		"faculty" => "Факультет",
 		"Dic_count" => "Номер договора"
 	);
+
+	function broadcastUpdate($info, $mysqli){
+		$query = "SELECT id FROM users";
+		$obj = $mysqli->query("SELECT id FROM users");
+		while ($row = $obj->fetch_assoc()) {
+			$userId = $row["id"];
+			$insert = "INSERT INTO `updateList`(`info`, `userId`) VALUES ('$info', $userId)";
+			$mysqli->query($insert) or die ("Error in '$insert': " . mysqli_error($mysqli));
+		}
+	}
+
+	function checkUpdate($userId, $mysqli){
+		$query = "SELECT * FROM updateList WHERE userId = $userId";
+		$result = $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));
+
+		$response = array();
+
+		while($row = $result->fetch_assoc()){
+			array_push($response, $row);
+		}
+		return json_encode($response);
+	}
+
+	function deleteUpdate($userId, $info, $mysqli){
+		$query = "DELETE FROM updateList WHERE userId = $userId AND info LIKE '$info'";
+		$result = $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));
+	}
 ?>

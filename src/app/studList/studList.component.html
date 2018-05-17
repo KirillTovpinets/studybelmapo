@@ -10,6 +10,7 @@
             <ng-template tabHeading>
                 <span>Действующие</span>
                 <a (click)="updateList('current')" class="refresh"><span class="fa fa-refresh"></span></a>
+                <span class="fa fa-exclamation-triangle text-warning" *ngIf="shouldUpdateList" tooltip="Обновите данные"></span>
               </ng-template>
           <preloader  *ngIf="isLoading[0]"></preloader>
           <div class="content table-responsive table-full-width" *ngIf="currentCourses.length !== 0 && !isLoading[0]">
@@ -22,6 +23,7 @@
                 <th>Набор</th>
                 <th>Зачислено</th>
                 <th>Инфо</th>
+                <th>Действия</th>
               </tr>
               <ng-container *ngFor="let course of currentCourses">
                 <tr (click)="showListOfListners(course)" [ngClass]="{'active': course.isOpened}">
@@ -32,9 +34,12 @@
                     <td>{{ course.Size }}</td>
                     <td>{{ course.StudList.length }}</td>
                     <td>{{ course.Notes }}</td>
+                    <td>
+                      <button class="btn btn-success btn-block" [routerLink]="['../addDoctor/chooseStudent', course.id]" tooltip="Зачислить нового слушателя на этот курс">Зачислить</button>
+                    </td>
                 </tr>
                 <tr *ngIf="course.isOpened">
-                  <td colspan="7" class="no-padding">
+                  <td colspan="8" class="no-padding">
                     <table-list [course]="course"></table-list>
                   </td>   
                 </tr>

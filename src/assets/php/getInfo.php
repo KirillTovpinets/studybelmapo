@@ -19,7 +19,8 @@
 	}
 	$mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die ("Ошибка: " . mysqli_connect_error());
 	$mysqli->query("SET NAMES utf8");
-
+	
+	deleteUpdate($LogedUser->id, "studList", $mysqli);
 //Home page last 10 arrivals
     $condition = "";
     $infoCondition = "";
@@ -34,7 +35,8 @@
     	$today = date("Y-m-d");
     	while ($faculty = $allFaculties->fetch_assoc()) {
     		$facultyId = $faculty["id"];
-            $totalFaculty = 0;
+			$totalFaculty = 0;
+			$payfulFaculty = 0;
     		$query = "SELECT * FROM cathedras WHERE facultId = $facultyId $infoCondition ORDER BY name ASC";
     		$allCathedras = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
     		// if ($allCathedras->{"num_rows"} === 0) {
@@ -43,7 +45,8 @@
     		$cathedraList = array();
     		while ($cathedra = $allCathedras->fetch_assoc()) {
     			$cathedraId = $cathedra["id"];
-                $totalCathedra = 0;
+				$totalCathedra = 0;
+				$payfulCathedra = 0;
     			$query = "SELECT cources.id, cources.Number, cources.Size, cources.name, cources.Start, cources.Finish FROM cources WHERE cources.cathedraId = $cathedraId AND cources.Finish > '$today'";
     			$allCathedraCourses = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
     			// if ($allCathedraCourses->{"num_rows"} === 0) {
@@ -54,25 +57,34 @@
     				$courseId = $course["id"];
                     $totalCourse = 0;
     				$query = "SELECT arrivals.id AS arrivalId, arrivals.Dic_count, arrivals.Date, Residence.name AS ResidPlace, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId INNER JOIN Residence ON arrivals.ResidPlace = Residence.id WHERE arrivals.CourseId = $courseId ORDER BY personal_card.name_in_to_form ASC";
-    				$allStudents = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
+					$allStudents = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
+					$payQuery = "SELECT COUNT(*) as total FROM arrivals WHERE Dic_count != '' AND arrivals.CourseId = $courseId";
+					$payfulStudents = $mysqli->query($payQuery) or die ("Ошибка в запросе $payQuery: " . mysqli_error($mysqli));
+					$arr = $payfulStudents->fetch_assoc();
     				// if ($allStudents->{"num_rows"} === 0) {
 		    		// 	continue;
 		    		// }
     				$studentList = array();
     				while ($student = $allStudents->fetch_assoc()) {
     					array_push($studentList, $student);
-    				}
+					}
+					$course["payful"] = $arr["total"];
+					$payfulCathedra += $course["payful"];
+					$payfulFaculty += $course["payful"];
+
                     $course["Total"] = $allStudents->{"num_rows"};
                     $totalCathedra += $allStudents->{"num_rows"};
                     $totalFaculty += $allStudents->{"num_rows"};
     				$course["StudList"] = $studentList;
     				array_push($courseList, $course);
     			}
-                $cathedra["Total"] = $totalCathedra;
+				$cathedra["Total"] = $totalCathedra;
+				$cathedra["payful"] = $payfulCathedra;
     			$cathedra["CourseList"] = $courseList;
     			array_push($cathedraList, $cathedra);
     		}
-            $faculty["Total"] = $totalFaculty;
+			$faculty["Total"] = $totalFaculty;
+			$faculty["payful"] = $payfulFaculty;
     		$faculty["CathedraList"] = $cathedraList;
     		if (count($faculty["CathedraList"]) === 0) {
     			continue;

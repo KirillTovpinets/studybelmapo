@@ -55,11 +55,6 @@
                 </td>
             </tr>
         </ng-container>   
-        <tr class="button" *ngIf="!disableEnter">
-            <td colspan="11">
-                <button class="btn btn-success btn-block" [routerLink]="['../addDoctor/chooseStudent', course.id]" tooltip="Зачислить нового слушателя на этот курс">Зачислить</button>
-            </td>
-        </tr>
     </tbody>
 </table>
 <ng-template #sure>

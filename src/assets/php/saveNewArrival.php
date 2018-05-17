@@ -25,6 +25,8 @@
 	$Status = 1;
 	$PersonId = $person->id;
 	$query = "INSERT INTO `arrivals`(`Date`, `CourseId`, `ResidPlace`, `FormEduc`, `Dic_count`, `DocNumber`, `Status`, `PersonId`) VALUES ('$courseDate', '$CourseId', '$ResidPlace', '$FormEduc', '$Dic_count', '$DocNumber', '$Status', '$PersonId')";
+	broadcastUpdate("studList", $mysqli);
+	
 	$mysqli->query($query) or die ("Ошибка выполнения запроса $query: " . mysqli_error($mysqli));
 	mysqli_close($mysqli);
 

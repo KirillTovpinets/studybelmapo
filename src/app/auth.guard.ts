@@ -4,15 +4,20 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angul
 import { Observable } from 'rxjs/Observable';
 import { CookieService } from 'ngx-cookie-service';
 import { CheckAuthService } from './checkAuth.service';
+import { LoginService } from './loginform/login.service';
+import { ShareService } from './share/share.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 	constructor(private router: Router,
-				private checkAuth: CheckAuthService){}
+              private checkAuth: CheckAuthService,
+              private loginService: LoginService,
+              private share: ShareService){}
   public isLoggedIn:boolean = false;
   public redirectUrl: string;
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     this.redirectUrl = state.url;
+      this.checkUpdates();
      return this.checkAuthAction();
   }
 
@@ -31,6 +36,12 @@ export class AuthGuard implements CanActivate {
        }
      });
     }
+  }
+  checkUpdates():void{
+    this.loginService.getUpdates().then(data => {
+      console.log(data._body);
+      this.share.setUpdates(data.json());
+    })
   }
 }
 

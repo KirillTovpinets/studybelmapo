@@ -6,6 +6,7 @@ import { NotificationsService } from 'angular4-notify';
 import { CurrentCourcesListService } from '../FillData/services/getCurrentCourcesList.service';
 import { LogService } from '../share/log.service';
 import { PersonalDataService } from '../personalInfo/personalData.service';
+import { ShareService } from '../share/share.service';
 
 @Component({
   selector: 'app-total-list',
@@ -23,13 +24,22 @@ export class TotalListComponent implements OnInit {
   ArchiveIsLoaded:boolean = false;
 	archive:any[];
 	types: any[];
+	shouldUpdateList: boolean = false;
   constructor(private info: InfoService,
               private notify: NotificationsService,
               private getList: CurrentCourcesListService,
 							private log: LogService,
+							private share: ShareService,
 							private data: PersonalDataService) { }
 
   ngOnInit() {
+		this.share._updateData.subscribe(list => {
+			for(let item of list){
+				if(item.info == "studList"){
+					this.shouldUpdateList = true;
+				}
+			}
+		})
     let faculties = localStorage.getItem("faculties");
     if(faculties == null){
       this.info.getInfo("getStat").then(data => {
@@ -94,6 +104,8 @@ export class TotalListComponent implements OnInit {
 				localStorage.setItem("faculties", JSON.stringify(this.faculties));
 			}
 			this.statIsLoaded = true;
+			this.shouldUpdateList = false;
+			this.share.deleteUpdates("studList");
 		});
 	}
   getArchive(){
