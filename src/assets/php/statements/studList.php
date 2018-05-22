@@ -54,17 +54,22 @@
             for($j = 0; $j < count($additionalField); $j++){
                 switch($additionalField[$j]){
                     case 'appointment';
-                    case 'organization';
                     case 'department': {
                         $table = CONNECTIONS[$additionalField[$j]];
                         $selectAddField .= ", $table.name AS " . $additionalField[$j];
-                        $fromConnections .= " INNER JOIN $table ON personal_card." . $additionalField[$j] . " = $table.id" ;
+                        $fromConnections .= " LEFT JOIN $table ON personal_card." . $additionalField[$j] . " = $table.id" ;
+                        break;
+                    }
+                    case 'organization': {
+                        $table = CONNECTIONS[$additionalField[$j]];
+                        $selectAddField .= ", concat(organization_forms.short_name, ' &laquo;', $table.name, '&raquo;')  AS " . $additionalField[$j];
+                        $fromConnections .= " LEFT JOIN $table ON personal_card." . $additionalField[$j] . " = $table.id LEFT JOIN organization_forms ON organization_forms.id = $table.form";
                         break;
                     }
                     case 'establishmentId':{
                         $table = CONNECTIONS[$additionalField[$j]];
                         $selectAddField .= ", $table.name AS " . $additionalField[$j];
-                        $fromConnections .= " INNER JOIN personal_prof_info ON personal_card.id = personal_prof_info.PersonId INNER JOIN $table ON $table.id = personal_prof_info." . $additionalField[$j];
+                        $fromConnections .= " INNER JOIN personal_prof_info ON personal_card.id = personal_prof_info.PersonId LEFT JOIN $table ON $table.id = personal_prof_info." . $additionalField[$j];
                         break;
                     }
                     case 'cityzenship';
@@ -76,7 +81,7 @@
                         $table = CONNECTIONS[$additionalField[$j]];
                         if(!empty($table)){
                             $selectAddField .= ", $table.name AS " . $additionalField[$j];
-                            $fromConnections .= " INNER JOIN $table ON $table.id = personal_private_info." . $additionalField[$j];
+                            $fromConnections .= " LEFT JOIN $table ON $table.id = personal_private_info." . $additionalField[$j];
                         }else{
                             $selectAddField .= ", personal_private_info.`" . $additionalField[$j] . "`";
                         }
@@ -90,9 +95,9 @@
             $addCondition = "";
             if($form != 0){
                 if($form == 1){
-                    $addCondition = " AND arrivals.Dic_count = ''";
+                    $addCondition = " AND arrivals.FormEduc = 1";
                 }else{
-                    $addCondition = " AND arrivals.Dic_count != ''";
+                    $addCondition = " AND arrivals.FormEduc = 2";
                 }
             }
             $query = "SELECT personal_card.id, personal_card.name, personal_card.surname, personal_card.patername, personal_card.name_in_to_form $selectAddField FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId $fromConnections WHERE arrivals.CourseId = $id $addCondition ORDER BY personal_card.name_in_to_form ASC";

@@ -6,18 +6,15 @@
 	$mysqli = mysqli_connect($host, $user, $passwd, $dbname) or die ("Ошибка подключения: " . mysqli_connect_error());
 	$mysqli->query("SET NAMES utf8");
 	$data = json_decode(file_get_contents("php://input"));
-	print_r($data);
 	$isDoctor = 0;
 	if (isset($data->sience->_isDoctor)) {
 		$isDoctor = $data->sience->_isDoctor == true ? 1 : 0;
 	}
-	print_r($data);
 	$isCowoker = $data->general->_organization->id == 4530 ? 1 : 0;
 	$isMale = $data->personal->_isMale == true ? 1 : 0;
 	$educational_establishment = $data->profesional->_educational_establishment->id;
 	$cityzenship = $data->personal->_cityzenship->id;
 	$appointment = $data->general->_appointment->id;
-	echo $appointment;
 	$organization = $data->general->_organization->id;
 	if (isset($data->personal->_region)) {
 		$region = $data->personal->_region->id;

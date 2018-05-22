@@ -35,9 +35,6 @@ import { StudListService } from '../studList/stud-list.service';
 		.no-hover:hover{
 			background:transparent !important;
 		}
-		th{
-			text-align:center;
-		}
 		.pe-7s-piggy{
 			color:#398439;
 			font-size:20px;

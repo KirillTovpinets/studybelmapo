@@ -95,7 +95,13 @@ export class TotalListComponent implements OnInit {
 	updateList(){
 		this.statIsLoaded = false;
 		this.info.getInfo("getStat").then(data => {
-			this.faculties = data.json().data;
+			try{
+				this.faculties = data.json().data;
+			}catch(e){
+				console.log(e);
+				console.log(data._body);
+			}
+			
 			localStorage.removeItem("faculties");
 			try{
 				localStorage.setItem("faculties", JSON.stringify(this.faculties));

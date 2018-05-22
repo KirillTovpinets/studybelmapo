@@ -1,4 +1,4 @@
-<table class="table table-hover text-center">
+<table class="table table-hover">
     <thead>
         <tr>
             <th>№</th>
@@ -35,9 +35,9 @@
                     <span *ngIf="person.Status == 3">Отчислен</span>
                     <span *ngIf="person.Status == 4">Отчислен досрочно</span>
                 </td> -->
-                <td>
-                    <span *ngIf="person.Dic_count != ''" ><button (click)="ShowContractNumber(person, $event)">$</button></span>
-                    <button (click)="ShowResidInfo(person, $event)"><span class="fa fa-bed"></span></button>
+                <td class="text-center">
+                    <button style="margin-bottom:3px;" (click)="ShowContractNumber(person, $event)" *ngIf="person.FormEduc == 2">$</button>
+                    <button style="margin-bottom:3px;" (click)="ShowResidInfo(person, $event)"><span class="fa fa-bed"></span></button>
                 </td>
                 <td>
                     <input class="form-control" type="text" (click)="PreventParentEvent($event)" (keyup)="StartTyping($event, person)" name="docNumber" [(ngModel)]="person.DocNumber" [attr.disabled]="person.change ? null : ''"/>

@@ -5,7 +5,7 @@
       <div class="content">
         <fieldset>
           <legend><h5>ВУЗ</h5></legend>
-          <div class="col-lg-6 col-md-6">
+          <div class="col-lg-6 col-md-6" tooltip="{{ info.educational_establishment }}">
             <div class="form-group">
               <label>Учреждение образования <small *ngIf="establishment.invalid">*</small></label>
               <input value="info.educational_establishment == null ? 'Не указано' : info.educational_establishment" auto-complete [list-formatter]="dataService.DropdownList" [source]="personal_establishments" [attr.disabled]="change ? null : ''" #establishment="ngModel" required [(ngModel)]="info.educational_establishment" name="department" class="form-control">
@@ -19,7 +19,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6 col-md-6">
+          <div class="col-lg-6 col-md-6" tooltip="{{ info.faculty }}">
             <div class="form-group">
               <label>Факультет <small *ngIf="faculty.invalid">*</small></label>
               <input value="info.faculty == null ? 'Не указано' : info.faculty" auto-complete [list-formatter]="dataService.DropdownList" [source]="personal_faculties" [attr.disabled]="change ? null : ''" #faculty="ngModel" required [(ngModel)]="info.faculty" name="faculty" class="form-control">

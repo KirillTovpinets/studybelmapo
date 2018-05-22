@@ -33,7 +33,7 @@
             $notes = $courseNameArr["Notes"];
             $courseid = $courseNameArr["id"];
             $cathedraName = $courseNameArr["cathedra"];
-            $query = "SELECT personal_card.name_in_to_form FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseid ORDER BY personal_card.name_in_to_form ASC";
+            $query = "SELECT personal_card.id, personal_card.name_in_to_form FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId WHERE arrivals.CourseId = $courseid ORDER BY personal_card.name_in_to_form ASC";
             $studObj = $mysqli->query($query) or die("Error in '$query': ". mysqli_error($mysqli));
             $Start = date_create_from_format('Y-m-d', $courseNameArr["Start"]);
             $Start = $Start->format("d.m.y");
@@ -44,11 +44,29 @@
                         Просим подписать свидетельства слушателям курса № $number Повышение квалификации \"$courseName\" ($notes) $Start - $Finish
                     </p>
                     <ol>";
-            while ($row = $studObj->fetch_assoc()) {
-                   $person = $row["name_in_to_form"];
-                   $doc_body .= "<li>$person</li>";
+            $studList = array();
+            while ($student = $studObj->fetch_assoc()) {
+                $id = $student["id"];
+                $updateData = "SELECT new_value FROM history_of_changes WHERE personId = $id && field LIKE 'name_in_to_form' ORDER BY id ASC";
+                $updateObj = $mysqli->query($updateData) or die ("Error in '$updateData': " . mysqli_error($mysqli));
+                while($row = $updateObj->fetch_assoc()){
+                    $student["name_in_to_form"] = $row["new_value"];
+                }
+                array_push($studList, $student);
                }   
-
+            for($k = 0; $k < count($studList) - 1; $k++){
+                for($j = $k + 1; $j < count($studList); $j++){
+                    if(strcmp($studList[$k]["name_in_to_form"], $studList[$j]["name_in_to_form"]) > 0){
+                        $temp = $studList[$k];
+                        $studList[$k] = $studList[$j];
+                        $studList[$j] = $temp;
+                    }
+                }
+            }
+            for($i = 0; $i < count($studList); $i++){
+                $person = $studList[$i]["name_in_to_form"];
+                $doc_body .= "<li>$person</li>";
+            }
             $doc_body .= "</ol>";
             $doc_body .= "<p>Заведующий кафедрой $cathedraName $headmaster</p>";
             $doc_body .= '<span style="font-size:12.0pt;font-family:\"Times New Roman\","serif";mso-fareast-font-family:

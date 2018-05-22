@@ -91,7 +91,14 @@ export class StudListComponent implements OnInit{
 			this.getList.get("current").then(data => { 
 				try{
 					this.currentCourses = data.json();
-					localStorage.setItem("current-courses", JSON.stringify(this.currentCourses));
+					try{
+						localStorage.setItem("current-courses", JSON.stringify(this.currentCourses));
+					}catch(e){
+						let currentUser = localStorage.getItem("currentUser");
+						localStorage.clear();
+						localStorage.setItem("currentUser", currentUser);
+					}
+					
 				}catch(e){
 					console.log(data._body);
 					console.log(e);
@@ -108,7 +115,14 @@ export class StudListComponent implements OnInit{
 				console.log(data._body);
 				try{
 					this.oldCourses = data.json();
-					localStorage.setItem("old-courses", JSON.stringify(this.oldCourses)); 
+					try{
+						localStorage.setItem("old-courses", JSON.stringify(this.oldCourses)); 
+					}catch(e){
+						let currentUser = localStorage.getItem("currentUser");
+						localStorage.clear();
+						localStorage.setItem("currentUser", currentUser);
+					}
+					
 				}catch(e){
 					console.log(data._body);
 					console.log(e);
@@ -124,7 +138,14 @@ export class StudListComponent implements OnInit{
 			this.getList.get().then(data => { 
 				try{
 					this.courseList = data.json();
-					localStorage.setItem("all-courses", JSON.stringify(this.courseList));
+					try{
+						localStorage.setItem("all-courses", JSON.stringify(this.courseList));
+					}catch(e){
+						let currentUser = localStorage.getItem("currentUser");
+						localStorage.clear();
+						localStorage.setItem("currentUser", currentUser);
+					}
+					
 					this.courseList.forEach((el, index, arr) => {
 						if(this.currentCourses.indexOf(el) !== -1){
 							el.class = 2;

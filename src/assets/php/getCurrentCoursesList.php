@@ -41,7 +41,7 @@
 	$response = array();
 	while ($row = $result->fetch_assoc()) {
 		$courseId = $row["id"];
-		$query = "SELECT arrivals.id AS arrivalId, arrivals.Date, arrivals.DocNumber, arrivals.Dic_count, Residence.name As ResidPlace, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, concat(personal_card.surname, ' ', personal_card.name, ' ', personal_card.patername) AS fullName, arrivals.Status, personal_private_info.birthday FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId INNER JOIN Residence ON  arrivals.ResidPlace = Residence.id INNER JOIN personal_private_info ON personal_card.id = personal_private_info.PersonId WHERE arrivals.CourseId = $courseId AND arrivals.Status != 4 ORDER BY personal_card.name_in_to_form ASC";
+		$query = "SELECT arrivals.id AS arrivalId, arrivals.Date, arrivals.DocNumber, arrivals.FormEduc, arrivals.Dic_count, Residence.name As ResidPlace, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, concat(personal_card.surname, ' ', personal_card.name, ' ', personal_card.patername) AS fullName, arrivals.Status, personal_private_info.birthday, personal_card.name_in_to_form AS nameInDativeForm FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId INNER JOIN Residence ON  arrivals.ResidPlace = Residence.id INNER JOIN personal_private_info ON personal_card.id = personal_private_info.PersonId WHERE arrivals.CourseId = $courseId AND arrivals.Status != 4 ORDER BY nameInDativeForm ASC";
 		$countArr = $mysqli->query("SELECT COUNT(*) AS countArr FROM arrivals WHERE Status = 1 AND CourseId = $courseId");
 		$countEntered = $mysqli->query("SELECT COUNT(*) AS countEntered FROM arrivals WHERE Status = 2 AND CourseId = $courseId");
 		$countGraduated = $mysqli->query("SELECT COUNT(*) AS countGraduated FROM arrivals WHERE Status = 3 AND CourseId = $courseId");
@@ -82,6 +82,15 @@
 			}
 			array_push($studList, $student);
 		}
+		for($k = 0; $k < count($studList) - 1; $k++){
+            for($j = $k + 1; $j < count($studList); $j++){
+                if(strcmp($studList[$k]["nameInDativeForm"], $studList[$j]["nameInDativeForm"]) > 0){
+                    $temp = $studList[$k];
+                    $studList[$k] = $studList[$j];
+                    $studList[$j] = $temp;
+                }
+            }
+        }
 		if ($studListObj->{"num_rows"} == 0) {
 			$query = "SELECT Number, year from cources where id = $courseId";
 			$resultCourse = $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));

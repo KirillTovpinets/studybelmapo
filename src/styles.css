@@ -3864,6 +3864,7 @@ menu.collapse .sidebar{
   content: "\e67f";
 }
 
-.card .content{
+.card .content,
+.panel-body{
   overflow-x:scroll;
 }
