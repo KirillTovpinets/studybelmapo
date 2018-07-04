@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Global } from "../../model/global.class";
 import { PersonalDataService } from "../personalData.service";
 
@@ -12,11 +12,13 @@ import { PersonalDataService } from "../personalData.service";
 export class PrivateInfoComponent{
 	@Input('info') info: any = {};
 	@Input('change') change: boolean = false;
+	@Output() canSave = new EventEmitter<number>();
 	globalPrams: Global = new Global();
 
 	private personal_cityzenships: any[] = [];
 	private personal_regions: any[] = [];
 	private personal_cities:any[] = [];
+	private autoCopleteError: boolean = false;
 
 	constructor(private dataService: PersonalDataService){
 
@@ -112,5 +114,14 @@ export class PrivateInfoComponent{
 			return;
 		}
 		this.info.tel_number_mobile = "(";
+	}
+	checkValue($event){
+		if(typeof($event) === 'object'){
+			this.autoCopleteError = false;
+			this.canSave.emit(1);
+		}else{
+			this.autoCopleteError = true;
+			this.canSave.emit(0);
+		}
 	}
 }

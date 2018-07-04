@@ -6,6 +6,7 @@
 <div class="content">
     <ng-container >
       <tabset #courseLists>
+        <!-- Действующие курсы-->
         <tab>
             <ng-template tabHeading>
                 <span>Действующие</span>
@@ -40,7 +41,7 @@
                 </tr>
                 <tr *ngIf="course.isOpened">
                   <td colspan="8" class="no-padding">
-                    <table-list [course]="course"></table-list>
+                    <table-list [course]="course" [isCurrent]="1"></table-list>
                   </td>   
                 </tr>
               </ng-container>
@@ -55,6 +56,7 @@
             </div>
           </div>
         </tab>
+        <!-- Прошедшие курсы-->
         <tab>
           <ng-template tabHeading>
             <span>Прошедшие</span>
@@ -84,7 +86,7 @@
                 </tr>
                 <tr *ngIf="course.isOpened">
                   <td colspan="7" class="no-padding">
-                    <table-list [course]="course" [disableEnter]="true"></table-list>
+                    <table-list [course]="course" [disableEnter]="true" [isCurrent]="0"></table-list>
                   </td>   
                 </tr>
               </ng-container>

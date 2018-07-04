@@ -8,17 +8,17 @@
   <tabset>
     <tab heading="Общая" id="tab1">
       <div class="content" *ngIf="person.general">
-        <general-info [info]="person.general" [change]=change></general-info>
+        <general-info (canSave)="canSaveChanges($event)" [info]="person.general" [change]=change></general-info>
       </div>
     </tab>
     <tab heading="Проф. информация">
       <div class="content" *ngIf="person.profesional">
-        <prof-info [info]="person.profesional" [change]=change></prof-info>
+        <prof-info (canSave)="canSaveChanges($event)" [info]="person.profesional" [change]=change></prof-info>
       </div>
     </tab>
   <tab heading="Личная">
     <div class="content" *ngIf="person.personal">
-        <private-info [info]="person.personal" [change]=change></private-info>
+        <private-info (canSave)="canSaveChanges($event)" [info]="person.personal" [change]=change></private-info>
       </div>
   </tab>
   <tab heading="Приезды">
@@ -45,7 +45,7 @@
 </div>
 <div class="modal-footer">
   <button class="btn btn-warning" *ngIf="canChange && !change" (click)="Change()">Изменить</button>
-  <button class="btn btn-success" *ngIf="change" (click)="SaveChanges(person)">Сохранить</button>
+  <button class="btn btn-success" *ngIf="change" (click)="SaveChanges(person)" [attr.disabled]="permisionToSave ? null : ''">Сохранить</button>
   <button class="btn btn-danger" *ngIf="change" (click)="Cansel()">Отмена</button>
   <button type="button" class="btn btn-default" *ngIf="!change" (click)="HidePersonalInfo()">Закрыть</button>
 </div>

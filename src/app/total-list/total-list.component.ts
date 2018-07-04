@@ -96,6 +96,7 @@ export class TotalListComponent implements OnInit {
 		this.statIsLoaded = false;
 		this.info.getInfo("getStat").then(data => {
 			try{
+				console.log(data.json());
 				this.faculties = data.json().data;
 			}catch(e){
 				console.log(e);

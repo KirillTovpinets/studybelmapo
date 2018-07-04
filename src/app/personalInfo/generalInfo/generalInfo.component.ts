@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { PersonalDataService } from "../personalData.service";
 import { NotificationsService } from 'angular4-notify';
 import { PersonService } from '../../addStudent/savePerson.service';
@@ -13,11 +13,13 @@ import { PersonService } from '../../addStudent/savePerson.service';
 export class GeneralInfoComponent{
 	@Input('info') info: any = {};
 	@Input('change') change: boolean = false;
+	@Output() canSave = new EventEmitter<number>();
 
 	private personal_appointments: any[] = [];
 	private personal_organizations: any[] = [];
 	private personal_departments: any[] = [];
 	private outputData:any = {};
+	private autoCopleteError: boolean = false;
 	newValue:string = "";
 
 	constructor(private dataService: PersonalDataService,
@@ -70,5 +72,14 @@ export class GeneralInfoComponent{
 			}
 			this.newValue = "";
 		})
+	}
+	checkValue($event){
+		if(typeof($event) === 'object'){
+			this.autoCopleteError = false;
+			this.canSave.emit(1);
+		}else{
+			this.autoCopleteError = true;
+			this.canSave.emit(0);
+		}
 	}
 }

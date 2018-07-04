@@ -121,6 +121,9 @@
 		if($row["field"] == "add_category"){
 			$row["field"] = "addCategory";
 		}
+		if($row["field"] == "birthdayDate"){
+			$row["field"] = "birthday";
+		}
 		foreach ($response as $key => $value) {
 			foreach ($value as $keyIn => $valueIn) {
 				if ($keyIn == $row["field"]) {
@@ -137,7 +140,13 @@
 						}
 						continue;
 					}
-					if (!is_numeric($newValue) || ($row["field"] == "mainCategory" || $row["field"] == "addCategory" || $row["field"] == "flat" || $row["field"] == "building" || strpos($row["field"], "experiance") !== false)) {
+					if (!is_numeric($newValue) || 
+						($row["field"] == "mainCategory" || 
+						$row["field"] == "addCategory" || 
+						$row["field"] == "flat" || 
+						$row["field"] == "building" || 
+						strpos($row["field"], "experiance") !== false) ||
+						$row["field"] == "birthday") {
 						$value[$keyIn] = $newValue;
 						$response[$key] = $value;
 					}

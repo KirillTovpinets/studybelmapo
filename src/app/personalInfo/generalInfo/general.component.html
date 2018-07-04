@@ -25,7 +25,7 @@
               <input [attr.disabled]="change ? null : ''" required type="text" [(ngModel)]="info.patername" name="patername" class="form-control" #patername="ngModel">
             </div>
           </div>
-          <div class="col-lg-12 col-md-12" tooltip="{{ info.nameInDativeForm }}">
+          <div class="col-lg-12 col-md-12">
               <div class="form-group">
                 <label>ФИО в дательном падеже</label>
                 <small *ngIf="nameInDativeForm.invalid">*</small>
@@ -41,10 +41,12 @@
       <div class="content">
         <fieldset>
           <legend><h5>Дополнтельная информация</h5></legend>
-          <div class="col-lg-4 col-md-4" tooltip="{{ info.appointment }}">
+          <div class="col-lg-4 col-md-4">
             <div class="form-group">
               <label>Должность</label>
-              <input [attr.disabled]="change ? null : ''" auto-complete [list-formatter]="dataService.DropdownList" [no-match-found-text]="'Не найдено'" [source]="personal_appointments" required [(ngModel)]="info.appointment" name="appointment" class="form-control">
+              <div>
+                <input [attr.disabled]="change ? null : ''" auto-complete [list-formatter]="dataService.DropdownList" [no-match-found-text]="'Не найдено'" [source]="personal_appointments" (ngModelChange)="checkValue($event)" required [(ngModel)]="info.appointment" name="appointment" class="form-control">
+              </div>
               <div class="input-group newValue" *ngIf="info.appointment == 0">
                 <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_appointment">
                 <span class="input-group-btn">
@@ -55,10 +57,10 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-8 col-md-8" tooltip="{{ info.organization }}">
+          <div class="col-lg-8 col-md-8">
             <div class="form-group">
               <label>Учреждение</label>
-              <input [attr.disabled]="change ? null : ''" auto-complete [list-formatter]="dataService.DropdownList" [no-match-found-text]="'Не найдено'" [source]="personal_organizations" required [(ngModel)]="info.organization" name="organization" class="form-control">
+              <input [attr.disabled]="change ? null : ''" auto-complete [list-formatter]="dataService.DropdownList" (ngModelChange)="checkValue($event)" [no-match-found-text]="'Не найдено'" [source]="personal_organizations" required [(ngModel)]="info.organization" name="organization" class="form-control">
               <div class="input-group newValue" *ngIf="info.organization == 0">
                 <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="organization">
                 <span class="input-group-btn">
@@ -69,10 +71,10 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-12 col-md-12" tooltip="{{ info.department }}">
+          <div class="col-lg-12 col-md-12">
             <div class="form-group">
               <label>Структурное подразделение</label>
-              <input [attr.disabled]="change ? null : ''" auto-complete [list-formatter]="dataService.DropdownList" [no-match-found-text]="'Не найдено'" [source]="personal_departments" [(ngModel)]="info.department" name="department" class="form-control">
+              <input [attr.disabled]="change ? null : ''" auto-complete [list-formatter]="dataService.DropdownList" (ngModelChange)="checkValue($event)" [no-match-found-text]="'Не найдено'" [source]="personal_departments" [(ngModel)]="info.department" name="department" class="form-control">
               <div class="input-group newValue" *ngIf="info.department == 0">
                 <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_departments">
                 <span class="input-group-btn">
@@ -86,5 +88,8 @@
         </fieldset>
       </div>
     </div>
+  </div>
+  <div class="col-lg-12 col-md-12 alert alert-danger" *ngIf="autoCopleteError">
+    <p>Неправильное использование автозаполнением. Выберите предложенный вариант или создайте новый.</p>
   </div>
 </div>

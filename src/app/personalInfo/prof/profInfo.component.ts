@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { PersonalDataService } from "../personalData.service";
 import { Global } from "../../model/global.class";
 
@@ -12,6 +12,7 @@ import { Global } from "../../model/global.class";
 export class ProfInfoComponent{
 	@Input('info') info: any = {};
 	@Input('change') change: boolean = false;
+	@Output() canSave = new EventEmitter<number>();
 	globalPrams: Global = new Global();
 
 	private personal_faculties: any[] = [];
@@ -25,6 +26,7 @@ export class ProfInfoComponent{
 	private qualificationMainArr: any[] = [];
 	private qualificationAddArr: any[] = [];
 	private qualificationOtherArr: any[] = [];
+	private autoCopleteError: boolean = false;
 
 	dataKeys: string[] = [
 		"facArr",
@@ -90,5 +92,14 @@ export class ProfInfoComponent{
 				localStorage.setItem("qualificationOtherArr", JSON.stringify(data.json().facBel))
 			});
 		}	
+	}
+	checkValue($event){
+		if(typeof($event) === 'object'){
+			this.autoCopleteError = false;
+			this.canSave.emit(1);
+		}else{
+			this.autoCopleteError = true;
+			this.canSave.emit(0);
+		}
 	}
 }

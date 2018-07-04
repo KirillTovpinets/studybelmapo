@@ -47,16 +47,22 @@
     			$cathedraId = $cathedra["id"];
 				$totalCathedra = 0;
 				$payfulCathedra = 0;
-    			$query = "SELECT cources.id, cources.Number, cources.Size, cources.name, cources.Start, cources.Finish FROM cources WHERE cources.cathedraId = $cathedraId AND cources.Finish > '$today'";
-    			$allCathedraCourses = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
+				$query = "SELECT cources.id, cources.Number, cources.Size, cources.name, cources.Start, cources.Finish FROM cources WHERE cources.cathedraId = $cathedraId";
+				$oldQuery = "SELECT cources.id FROM cources WHERE cources.cathedraId = $cathedraId AND cources.Finish <= '$today'";
+				$allCathedraCourses = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
+				$oldCathedraCourses = $mysqli->query($oldQuery) or die ("Ошибка в запросе $oldQuery: " . mysqli_error($mysqli));
     			// if ($allCathedraCourses->{"num_rows"} === 0) {
 	    		// 	continue;
 	    		// }
-    			$courseList = array();
+				$courseList = array();
+				$oldcourses = array();
+				while($course = $oldCathedraCourses->fetch_assoc()){
+					array_push($oldcourses, $course["id"]);
+				}
     			while ($course = $allCathedraCourses->fetch_assoc()) {
     				$courseId = $course["id"];
                     $totalCourse = 0;
-    				$query = "SELECT arrivals.id AS arrivalId, arrivals.FormEduc, arrivals.Dic_count, arrivals.Date, Residence.name AS ResidPlace, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_card.birthday, personal_card.name_in_to_form AS nameInDativeForm FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId INNER JOIN Residence ON arrivals.ResidPlace = Residence.id WHERE arrivals.CourseId = $courseId ORDER BY nameInDativeForm ASC";
+    				$query = "SELECT arrivals.id AS arrivalId, arrivals.FormEduc, arrivals.Dic_count, arrivals.Date, Residence.name AS ResidPlace, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_private_info.birthday, personal_card.name_in_to_form AS nameInDativeForm FROM personal_card INNER JOIN personal_private_info ON personal_card.id = personal_private_info.PersonId INNER JOIN arrivals ON personal_card.id = arrivals.PersonId INNER JOIN Residence ON arrivals.ResidPlace = Residence.id WHERE arrivals.CourseId = $courseId ORDER BY nameInDativeForm ASC";
 					$allStudents = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
 					$payQuery = "SELECT COUNT(*) as total FROM arrivals WHERE Dic_count != '' AND arrivals.CourseId = $courseId";
 					$payfulStudents = $mysqli->query($payQuery) or die ("Ошибка в запросе $payQuery: " . mysqli_error($mysqli));
@@ -94,12 +100,15 @@
 						}
 					}
 					$course["payful"] = $arr["total"];
-					$payfulCathedra += $course["payful"];
-					$payfulFaculty += $course["payful"];
-
-                    $course["Total"] = $allStudents->{"num_rows"};
-                    $totalCathedra += $allStudents->{"num_rows"};
-                    $totalFaculty += $allStudents->{"num_rows"};
+					$course["Total"] = $allStudents->{"num_rows"};
+					$course["isCurrent"] = 0;
+					if(!in_array($course["id"], $oldcourses)){
+						$course["isCurrent"] = 1;
+						$payfulCathedra += $course["payful"];
+						$payfulFaculty += $course["payful"];
+						$totalCathedra += $allStudents->{"num_rows"};
+                    	$totalFaculty += $allStudents->{"num_rows"};
+					}
     				$course["StudList"] = $studentList;
     				array_push($courseList, $course);
     			}
@@ -110,7 +119,7 @@
     		}
 			$faculty["Total"] = $totalFaculty;
 			$faculty["payful"] = $payfulFaculty;
-    		$faculty["CathedraList"] = $cathedraList;
+			$faculty["CathedraList"] = $cathedraList;
     		if (count($faculty["CathedraList"]) === 0) {
     			continue;
     		}

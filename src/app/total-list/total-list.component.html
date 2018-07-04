@@ -52,7 +52,7 @@
                               </tr>
                               <tr *ngIf="course.isOpened">
                                 <td colspan="7" class="no-padding">
-                                  <table-list [course]="course" (onChanges)="onChanges($event)"></table-list>
+                                  <table-list [course]="course" (onChanges)="onChanges($event)" [isCurrent]="course.isCurrent"></table-list>
                                 </td>   
                               </tr>
                             </ng-container>

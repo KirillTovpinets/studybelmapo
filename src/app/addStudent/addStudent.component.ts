@@ -315,9 +315,49 @@ export class AddStudentComponent implements OnInit{
 					// localStorage.setItem("citiesArr", JSON.stringify(data.json().citiesArr))
 					this.isLoaded = true;
 				}catch(e){
-					console.log(e);
-					console.log(data._body);
-					this.notify.addError("Произошла ошибка. Обратитесь к администратору");
+					localStorage.clear();
+					this.faculties = data.json().facBel;
+					localStorage.setItem("facBel", JSON.stringify(data.json().facBel))
+					this.educTypes = data.json().educTypeBel;
+					localStorage.setItem("educTypeBel", JSON.stringify(data.json().educTypeBel))
+					this.educForms = data.json().formBel;
+					localStorage.setItem("formBel", JSON.stringify(data.json().formBel))
+					this.residance = data.json().belmapo_residence;
+					localStorage.setItem("belmapo_residence", JSON.stringify(data.json().belmapo_residence))
+					this.personal_faculties = data.json().facArr;
+					localStorage.setItem("facArr", JSON.stringify(data.json().facArr))
+					this.personal_cityzenships = data.json().residArr;
+					this.all_countries = this.personal_cityzenships;
+					localStorage.setItem("residArr", JSON.stringify(data.json().residArr))
+					this.personal_appointments = data.json().appArr;
+					localStorage.setItem("appArr", JSON.stringify(data.json().appArr))
+					this.personal_organizations = data.json().orgArr;
+					localStorage.setItem("orgArr", JSON.stringify(data.json().orgArr))
+					this.personal_regions = data.json().regArr;
+					this.all_regions = this.personal_regions;
+					localStorage.setItem("regArr", JSON.stringify(data.json().regArr))
+					this.personal_departments = data.json().depArr;
+					localStorage.setItem("depArr", JSON.stringify(this.personal_departments))
+					this.personal_establishments = data.json().estArr;
+					localStorage.setItem("estArr", JSON.stringify(this.personal_establishments))
+					this.belmapo_courses = data.json().coursesBel;
+					localStorage.setItem("coursesBel", JSON.stringify(this.belmapo_courses))
+					this.specialityDocArr = data.json().specialityDocArr;
+					localStorage.setItem("specialityDocArr", JSON.stringify(data.json().specialityDocArr))
+					this.specialityRetrArr = data.json().specialityRetrArr;
+					localStorage.setItem("specialityRetrArr", JSON.stringify(data.json().specialityRetrArr))
+					this.specialityOtherArr = data.json().specialityOtherArr;
+					localStorage.setItem("specialityOtherArr", JSON.stringify(data.json().specialityOtherArr))
+					this.qualificationMainArr = data.json().qualificationMainArr;
+					localStorage.setItem("qualificationMainArr", JSON.stringify(data.json().qualificationMainArr))
+					this.qualificationAddArr = data.json().qualificationAddArr;
+					localStorage.setItem("qualificationAddArr", JSON.stringify(data.json().qualificationAddArr))
+					this.qualificationOtherArr = data.json().qualificationOtherArr;
+					localStorage.setItem("qualificationOtherArr", JSON.stringify(data.json().qualificationOtherArr))
+					this.personal_cities = data.json().citiesArr;
+					this.all_cities = this.personal_cities;
+					// localStorage.setItem("citiesArr", JSON.stringify(data.json().citiesArr))
+					this.isLoaded = true;
 				}
 				
 			});

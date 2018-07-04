@@ -13,7 +13,7 @@
 	$new = (array)$data->new;
 	$old = (array)$data->old;
 	$personal = array("appointment", "organization", "department", "surname", "name", "patername", "nameInDativeForm");
-	$private = array("birthday", "isMale", "cityzenship", "	pasport_seria", "pasport_number", "pasport_date", "pasport_organ", "insurance_number", "city_type", "city", "street", "region", "building", "flat", "country", "tel_number_home", "tel_number_work", "tel_number_mobile");
+	$private = array("birthdayDate", "isMale", "cityzenship", "	pasport_seria", "pasport_number", "pasport_date", "pasport_organ", "insurance_number", "city_type", "city", "street", "region", "building", "flat", "country", "tel_number_home", "tel_number_work", "tel_number_mobile");
 	$prof = array("establishmentId", "facultyId","diploma_number","speciality_doc","speciality_retraining","speciality_other","experiance_general","experiance_special","experiance_last","qualification_main","qualification_add","qualification_other","mainCategory","mainCategoryDate","addCategory","addCategoryDate","diploma_start");
 	// print_r($data);
 	foreach ($new as $key => $value) {
@@ -78,6 +78,9 @@
 						break;
 					case 'addCategoryDate':
 						$field = "add_category_date";
+						break;
+					case 'birthdayDate':
+						$field = "birthday";
 						break;
 					default:
 						$field = $keyDiff;

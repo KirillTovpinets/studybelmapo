@@ -1008,18 +1008,9 @@
             $index++;
         }   
          
-        $doc_body .= "</table>
-        <p class=MsoNormal style='margin-top:0pt;text-align:justify;text-indent:35.4pt'><span
-        style='font-size:14.0pt'>$numParagraph. Заведующим кафедрами обеспечить проведение учебных
-        занятий с $courseStart по $courseFinish в соответствии с учебными планами повышения
-        квалификации.<o:p></o:p></span></p>";
-        $numParagraph = $numParagraph + 1;
-        
-        $doc_body .= "<p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><span
-        style='mso-tab-count:1'>         </span>$numParagraph. Контроль за исполнением приказа
-        возложить на проректора по учебной работе Калинину Т.В.<o:p></o:p></span></p>";
-        $numParagraph = $numParagraph + 1;
+    
     }
+    
     $doc_body .= "<p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>
         
     <p class=MsoNormal style='margin-top:0pt;text-align:justify'><span style='font-size:14.0pt'><o:p>&nbsp;</o:p></span></p>

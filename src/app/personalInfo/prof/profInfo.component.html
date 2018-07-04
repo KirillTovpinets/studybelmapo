@@ -5,10 +5,10 @@
       <div class="content">
         <fieldset>
           <legend><h5>ВУЗ</h5></legend>
-          <div class="col-lg-6 col-md-6" tooltip="{{ info.educational_establishment }}">
+          <div class="col-lg-6 col-md-6">
             <div class="form-group">
               <label>Учреждение образования <small *ngIf="establishment.invalid">*</small></label>
-              <input value="info.educational_establishment == null ? 'Не указано' : info.educational_establishment" auto-complete [list-formatter]="dataService.DropdownList" [source]="personal_establishments" [attr.disabled]="change ? null : ''" #establishment="ngModel" required [(ngModel)]="info.educational_establishment" name="department" class="form-control">
+              <input value="info.educational_establishment == null ? 'Не указано' : info.educational_establishment" auto-complete [no-match-found-text]="'Не найдено'" (ngModelChange)="checkValue($event)" [list-formatter]="dataService.DropdownList" [source]="personal_establishments" [attr.disabled]="change ? null : ''" #establishment="ngModel" required [(ngModel)]="info.educational_establishment" name="department" class="form-control">
               <div class="input-group newValue" *ngIf="info.educational_establishment == 0">
                 <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_establishments">
                 <span class="input-group-btn">
@@ -19,10 +19,10 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6 col-md-6" tooltip="{{ info.faculty }}">
+          <div class="col-lg-6 col-md-6">
             <div class="form-group">
               <label>Факультет <small *ngIf="faculty.invalid">*</small></label>
-              <input value="info.faculty == null ? 'Не указано' : info.faculty" auto-complete [list-formatter]="dataService.DropdownList" [source]="personal_faculties" [attr.disabled]="change ? null : ''" #faculty="ngModel" required [(ngModel)]="info.faculty" name="faculty" class="form-control">
+              <input value="info.faculty == null ? 'Не указано' : info.faculty" auto-complete [no-match-found-text]="'Не найдено'" (ngModelChange)="checkValue($event)" [list-formatter]="dataService.DropdownList" [source]="personal_faculties" [attr.disabled]="change ? null : ''" #faculty="ngModel" required [(ngModel)]="info.faculty" name="faculty" class="form-control">
               <div class="input-group newValue" *ngIf="info.faculty == 0">
                 <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_faculties">
                 <span class="input-group-btn">
@@ -60,7 +60,7 @@
             <div class="col-lg-6 col-md-6">
               <div class="form-group">
                 <label>Врачебная <small *ngIf="speciality.invalid">*</small></label>
-                <input value="info.speciality_doc == null ? 'Не указано' : info.speciality_doc" auto-complete [list-formatter]="dataService.DropdownList" [source]="specialityDocArr" [attr.disabled]="change ? null : ''" #speciality="ngModel" required [(ngModel)]="info.speciality_doc" name="specialityDoc" class="form-control">
+                <input value="info.speciality_doc == null ? 'Не указано' : info.speciality_doc" auto-complete [no-match-found-text]="'Не найдено'" (ngModelChange)="checkValue($event)" [list-formatter]="dataService.DropdownList" [source]="specialityDocArr" [attr.disabled]="change ? null : ''" #speciality="ngModel" required [(ngModel)]="info.speciality_doc" name="specialityDoc" class="form-control">
                 <div class="input-group newValue" *ngIf="info.speciality_doc == 0">
                   <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="speciality_doc">
                   <span class="input-group-btn">
@@ -74,7 +74,7 @@
             <div class="col-lg-6 col-md-6">
               <div class="form-group">
                 <label>Прочие</label>
-                <input value="info.speciality_other == null ? 'Не указано' : info.speciality_other" auto-complete [list-formatter]="dataService.DropdownList" [source]="specialityOtherArr" [attr.disabled]="change ? null : ''" [(ngModel)]="info.speciality_other" name="specialityOther" class="form-control">
+                <input value="info.speciality_other == null ? 'Не указано' : info.speciality_other" auto-complete [no-match-found-text]="'Не найдено'" (ngModelChange)="checkValue($event)" [list-formatter]="dataService.DropdownList" [source]="specialityOtherArr" [attr.disabled]="change ? null : ''" [(ngModel)]="info.speciality_other" name="specialityOther" class="form-control">
                 <div class="input-group newValue" *ngIf="info.speciality_other == 0">
                   <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="speciality_other">
                   <span class="input-group-btn">
@@ -93,7 +93,7 @@
               <div class="col-lg-6 col-md-12">
                 <div class="form-group">
                   <label>Переподготовка</label>
-                  <input auto-complete [list-formatter]="dataService.DropdownList" [source]="specialityRetrArr" [attr.disabled]="change ? null : ''" [(ngModel)]="retr.name" name="specialityRetr-{{retr.id}}" class="form-control">
+                  <input auto-complete [no-match-found-text]="'Не найдено'" (ngModelChange)="checkValue($event)" [list-formatter]="dataService.DropdownList" [source]="specialityRetrArr" [attr.disabled]="change ? null : ''" [(ngModel)]="retr.name" name="specialityRetr-{{retr.id}}" class="form-control">
                 </div>
               </div>
               <div class="col-lg-3 col-md-12" *ngIf="retr.speciality_retraining != '' || retr.speciality_retraining != null">
@@ -144,7 +144,15 @@
            <div class="col-lg-12 col-md-12 no-padding">
              <div class="form-group col-lg-6 col-md-6">
                <label>Врачебная (осн <small *ngIf="qualification.invalid">*</small>.)</label>
-               <input value="info.qualification_main == null ? 'Не указано' : info.qualification_main" auto-complete [list-formatter]="dataService.DropdownList" [source]="qualificationMainArr" [attr.disabled]="change ? null : ''" required #qualification="ngModel" [(ngModel)]="info.qualification_main" name="qualificationMain" class="form-control">
+               <input value="info.qualification_main == null ? 'Не указано' : info.qualification_main" auto-complete [no-match-found-text]="'Не найдено'" (ngModelChange)="checkValue($event)" [list-formatter]="dataService.DropdownList" [source]="qualificationMainArr" [attr.disabled]="change ? null : ''" required #qualification="ngModel" [(ngModel)]="info.qualification_main" name="qualificationMain" class="form-control">
+               <div class="input-group newValue" *ngIf="info.qualification_main == 0">
+                <input type="text" required class="form-control" placeholder="Введите новое значение" [(ngModel)]="newValue" name="qualification_main">
+                <span class="input-group-btn">
+                  <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'qualification_main', qualificationMainArr)">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                  </button>
+                </span>
+              </div>
              </div>
              <div class="form-group col-lg-3 col-md-3">
                <label>Категория</label>
@@ -163,7 +171,7 @@
            <div class="col-lg-12 col-md-12 no-padding">
              <div class="form-group col-lg-6 col-md-6">
                <label>Врачебная (доп.)</label>
-               <input value="info.qualification_add == null ? 'Не указано' : info.qualification_add" auto-complete [list-formatter]="dataService.DropdownList" [source]="qualificationAddArr" [attr.disabled]="change ? null : ''" [(ngModel)]="info.qualification_add" name="qualificationAdd" class="form-control">
+               <input value="info.qualification_add == null ? 'Не указано' : info.qualification_add" auto-complete [no-match-found-text]="'Не найдено'" (ngModelChange)="checkValue($event)" [list-formatter]="dataService.DropdownList" [source]="qualificationAddArr" [attr.disabled]="change ? null : ''" [(ngModel)]="info.qualification_add" name="qualificationAdd" class="form-control">
              </div>
              <div class="form-group col-lg-3 col-md-3">
                <label>Категория</label>
@@ -176,17 +184,20 @@
              </div>
              <div class="foinfo.addCategory  == null ? 'Не указано' : info.addCategory rm-group col-lg-3 col-md-3" *ngIf="info.addCategory != 0">
                <label>Дата присвоения <small *ngIf="addCategoryDate.invalid">*</small></label>
-               <input value="info.addCategoryDate == null ? 'Не указано' : info.addCategoryDate" auto-complete [list-formatter]="dataService.DropdownList" [source]="qualificationOtherArr" [attr.disabled]="change ? null : ''" type="text" required [(ngModel)]="info.addCategoryDate" [minDate]="globalPrams.minDate" [maxDate]="globalPrams.maxDate" #dp="bsDatepicker" [bsConfig]="globalPrams.bsConfig" bsDatepicker [(bsValue)]="bsValueAddCategoryDate" name="addCategoryDate" class="date-picker form-control" #addCategoryDate="ngModel">
+               <input value="info.addCategoryDate == null ? 'Не указано' : info.addCategoryDate" auto-complete [no-match-found-text]="'Не найдено'" (ngModelChange)="checkValue($event)" [list-formatter]="dataService.DropdownList" [source]="qualificationOtherArr" [attr.disabled]="change ? null : ''" type="text" required [(ngModel)]="info.addCategoryDate" [minDate]="globalPrams.minDate" [maxDate]="globalPrams.maxDate" #dp="bsDatepicker" [bsConfig]="globalPrams.bsConfig" bsDatepicker [(bsValue)]="bsValueAddCategoryDate" name="addCategoryDate" class="date-picker form-control" #addCategoryDate="ngModel">
              </div>
            </div>
            <div class="col-lg-12 col-md-12">
              <div class="form-group">
                <label>Прочие</label>
-               <input value="info.qualification_other == null ? 'Не указано' : info.qualification_other" auto-complete [list-formatter]="dataService.DropdownList" [source]="qualificationOtherArr" [attr.disabled]="change ? null : ''" [(ngModel)]="info.qualification_other" name="qualificationOther" class="form-control">
+               <input value="info.qualification_other == null ? 'Не указано' : info.qualification_other" auto-complete [no-match-found-text]="'Не найдено'" (ngModelChange)="checkValue($event)" [list-formatter]="dataService.DropdownList" [source]="qualificationOtherArr" [attr.disabled]="change ? null : ''" [(ngModel)]="info.qualification_other" name="qualificationOther" class="form-control">
              </div>
            </div>
         </fieldset>
      </div>
     </div>
+  </div>
+  <div class="col-lg-12 col-md-12 alert alert-danger" *ngIf="autoCopleteError">
+    <p>Неправильное использование автозаполнением. Выберите предложенный вариант или создайте новый.</p>
   </div>
 </div>

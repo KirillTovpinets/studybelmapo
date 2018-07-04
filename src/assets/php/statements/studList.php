@@ -108,7 +108,12 @@
             $doc_body .= "<th>№ п/п</th>";
             $doc_body .= "<th>Фамилия, имя, отчество</th>";
 
-            for($j = 0; $j < count($additionalField); $j++){
+            $reserved = 0;
+            if(in_array("organization", $additionalField) && in_array("appointment", $additionalField)){
+                $doc_body .= "<th> Место работы, должность</th>";
+                $reserved = 2;
+            }
+            for($j = 0 + $reserved; $j < count($additionalField); $j++){
                 if($additionalField[$j] == "Start-Finish"){
                     $doc_body .= "<th>Дата проведения обучения</th>";    
                     continue;
@@ -165,7 +170,13 @@
                 $doc_body .= "<tr style='border:1px solid black;'>
                                 <td style='border:1px solid black;'>$index</td>
                                 <td style='border:1px solid black;'>$person</td>";
-                for($j = 0; $j < count($additionalField); $j++){
+                $reserved = 0;
+                if(in_array("organization", $additionalField) && in_array("appointment", $additionalField)){
+                    $doc_body .= "<td>" . $studList[$k]["organization"] . ', ' . $studList[$k]["appointment"] . "</td>";
+                    $reserved = 2;
+                }
+                
+                for($j = 0 + $reserved; $j < count($additionalField); $j++){
                     if($additionalField[$j] == "Start-Finish"){
                         $doc_body .= "<td>$courseStart - $courseFinish</td>";    
                         continue;

@@ -52,6 +52,7 @@ import { StudListService } from '../studList/stud-list.service';
 
 export class TableListCopmonent implements OnInit{
 	@Input('course') course: any;
+	@Input('isCurrent') courseIsCurrent: number;
 	@Input('disableEnter') disableEnter: boolean = false;
 	@Output() onChanges = new EventEmitter<boolean>();
 	@ViewChild("DeductInfo") deduct: TemplateRef<any>;
@@ -91,7 +92,7 @@ export class TableListCopmonent implements OnInit{
 	}
 	Deduct(person:any, $event:any){
 		$event.stopPropagation();
-		if (person.DocNumber.length === 0) {
+		if (person.DocNumber === undefined || person.DocNumber.length === 0) {
 			this.notify.addError("Отсутствует номер документа");
 			return;
 		}
@@ -150,7 +151,12 @@ export class TableListCopmonent implements OnInit{
 		this.modal.hide(1);
 	}
 	Cansel($event){
-		$event.preventPropaganion();
+		try{
+			$event.preventPropaganion();
+		}catch(e){
+			this.modal.hide(1);
+			this.modal.hide(1);	
+		}
 		this.modal.hide(1);
 		this.modal.hide(1);
 	}

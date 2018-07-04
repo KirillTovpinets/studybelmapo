@@ -44,7 +44,7 @@
                             <div class="col-md-3">
                               <div class="form-group">
                                 <label>Фамилия</label>
-                                <input required type="text"  [pattern]="'^[А-Я]{1}[а-я]*$'" [(ngModel)]="newPerson.general.surname" name="surname" class="form-control" #suname="ngModel">
+                                <input required type="text"  [pattern]="'^[А-Я]{1}[а-я\-А-Я]*$'" [(ngModel)]="newPerson.general.surname" name="surname" class="form-control" #suname="ngModel">
                               </div>
                             </div>
                             <div class="col-md-3">
