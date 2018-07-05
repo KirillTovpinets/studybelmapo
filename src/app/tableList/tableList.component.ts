@@ -200,6 +200,12 @@ export class TableListCopmonent implements OnInit{
 			this.notify.addSuccess(res._body);
 		})
 	}
+	EnterRow(person, $event){
+		$event.stopPropagation();
+		this.students.enterRow(person).subscribe(res => {
+			this.notify.addSuccess(res._body);
+		})
+	}
 	ShowContractNumber(person, $event){
 		$event.stopPropagation();
 		this.selectedPerson = person;

@@ -19,6 +19,9 @@ export class StudListService {
   deleteRow(person): Observable<any>{
   	return this.http.post("assets/php/deletePersonArriavlInfo.php", person);
   }
+  enterRow(person): Observable<any>{
+  	return this.http.post("assets/php/enterPersonArriavlInfo.php", person);
+  }
   changeArrivalInfo(arrival: any, params:any): Observable<any>{
     let data = {
       arrival,

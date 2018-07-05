@@ -44,15 +44,23 @@
                 </td>
                 <td>
                     <button class="btn btn-success btn-block" *ngIf="person.hasChanges" (click)="SaveChanges($event, person)">Сохранить</button>
-                    <button class="btn btn-warning btn-block" *ngIf="!person.hasChanges && !person.change" (click)="EditAction($event, person)">Редактировать</button>
+                    <button class="btn btn-warning btn-block" *ngIf="!person.hasChanges && !person.change" (click)="EditAction($event, person)">№ документа</button>
                     <button class="btn btn-info btn-block" *ngIf="!person.hasChanges && person.change" (click)="EditAction($event, person)">Отмена</button>
                 </td>
-                <td>
+                <td style="max-width:200px;">
                     <button class="btn btn-danger btn-block" *ngIf="person.hasChanges" (click)="CancelEdit($event, person)">Отмена</button>
                     <button class="btn btn-danger btn-block" (click)="Deduct(person, $event)" *ngIf="!person.hasChanges && person.Status !== 1 && courseIsCurrent != 1" tooltip="Создать свидетельство об окончании">Отчислить</button>
-                    <button class="btn btn-default btn-block" *ngIf="person.Status == 1" (click)="DeleteRow(person, $event)">Удалить</button>
+                    <div class="btn-group btn-group-justified" role="group" aria-label="buttons">
+                        <div class="btn-group">
+                            <button class="btn btn-default" *ngIf="person.Status == 1" (click)="DeleteRow(person, $event)">Удалить</button>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-success" *ngIf="person.Status == 1" (click)="EnterRow(person, $event)">Зачислить</button>
+                        </div>
+                    </div>
                     <button class="btn btn-danger btn-block" (click)="DeductBeforeEnd(person, $event)" *ngIf="!person.hasChanges && person.Status != 1 && courseIsCurrent == 1" tooltip="Отчислить слушателя с курса">Отчислить досрочно </button>
                 </td>
+                <td><button class="btn btn-danger btn-block" *ngIf="person.hasChanges" (click)="CancelEdit($event, person)">Отмена</button></td>
             </tr>
         </ng-container>   
     </tbody>

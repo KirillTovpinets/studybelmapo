@@ -62,7 +62,7 @@
     			while ($course = $allCathedraCourses->fetch_assoc()) {
     				$courseId = $course["id"];
                     $totalCourse = 0;
-    				$query = "SELECT arrivals.id AS arrivalId, arrivals.FormEduc, arrivals.Dic_count, arrivals.Date, Residence.name AS ResidPlace, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_private_info.birthday, personal_card.name_in_to_form AS nameInDativeForm FROM personal_card INNER JOIN personal_private_info ON personal_card.id = personal_private_info.PersonId INNER JOIN arrivals ON personal_card.id = arrivals.PersonId INNER JOIN Residence ON arrivals.ResidPlace = Residence.id WHERE arrivals.CourseId = $courseId ORDER BY nameInDativeForm ASC";
+    				$query = "SELECT arrivals.id AS arrivalId, arrivals.FormEduc, arrivals.Dic_count, arrivals.DocNumber, arrivals.Date, Residence.name AS ResidPlace, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, personal_private_info.birthday, personal_card.name_in_to_form AS nameInDativeForm FROM personal_card INNER JOIN personal_private_info ON personal_card.id = personal_private_info.PersonId INNER JOIN arrivals ON personal_card.id = arrivals.PersonId INNER JOIN Residence ON arrivals.ResidPlace = Residence.id WHERE arrivals.CourseId = $courseId ORDER BY nameInDativeForm ASC";
 					$allStudents = $mysqli->query($query) or die ("Ошибка в запросе $query: " . mysqli_error($mysqli));
 					$payQuery = "SELECT COUNT(*) as total FROM arrivals WHERE Dic_count != '' AND arrivals.CourseId = $courseId";
 					$payfulStudents = $mysqli->query($payQuery) or die ("Ошибка в запросе $payQuery: " . mysqli_error($mysqli));

@@ -24,7 +24,7 @@
 	      </table>
 	      <accordion *ngIf="!selectable">
 	      	<accordion-group *ngFor="let course of archive[year.year]" (isOpenChange)="DownloadCourseInfo(course, $event)">
-	      		<div accordion-heading class="clearfix" >
+	      		<div accordion-heading class="clearfix" tooltip="{{ course.Start  | date: 'dd.MM.yyyy'}} - {{ course.Finish | date: 'dd.MM.yyyy'}}">
 	      			<span class="course-name">{{ course.Number}} - {{ course.name }}</span>
 	      			<span class="pull-right float-xs-right">{{ course.total }} человек</span>		
 	      		</div>

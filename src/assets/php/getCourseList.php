@@ -14,7 +14,7 @@
         $year = $_GET["year"];
         $limit = $_GET["limit"];
         $offset = $_GET["offset"];
-        $query = "SELECT cources_zip.id, cources_zip.Number, cources_zip.name FROM cources_zip WHERE cources_zip.year = $year ORDER BY cources_zip.Number ASC LIMIT $limit OFFSET $offset";
+        $query = "SELECT cources_zip.id, cources_zip.Number, cources_zip.name, cources_zip.Start, cources_zip.Finish FROM cources_zip WHERE cources_zip.year = $year ORDER BY cources_zip.Number ASC LIMIT $limit OFFSET $offset";
         $result = $mysqli->query($query) or die ("Ошибка запроса '$query':" . mysqli_error($mysqli));    
         $response = array();
         while ($row = $result->fetch_assoc()) {
