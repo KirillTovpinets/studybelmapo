@@ -104,11 +104,13 @@
 					$course["isCurrent"] = 0;
 					if(!in_array($course["id"], $oldcourses)){
 						$course["isCurrent"] = 1;
-						$payfulCathedra += $course["payful"];
-						$payfulFaculty += $course["payful"];
-						$totalCathedra += $allStudents->{"num_rows"};
-                    	$totalFaculty += $allStudents->{"num_rows"};
 					}
+
+					$payfulCathedra += $course["payful"];
+					$payfulFaculty += $course["payful"];
+					$totalCathedra += $allStudents->{"num_rows"};
+					$totalFaculty += $allStudents->{"num_rows"};
+					
     				$course["StudList"] = $studentList;
     				array_push($courseList, $course);
     			}

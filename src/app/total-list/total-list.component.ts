@@ -24,6 +24,7 @@ export class TotalListComponent implements OnInit {
   ArchiveIsLoaded:boolean = false;
 	archive:any[];
 	types: any[];
+	update: boolean = false;
 	shouldUpdateList: boolean = false;
   constructor(private info: InfoService,
               private notify: NotificationsService,
@@ -59,7 +60,7 @@ export class TotalListComponent implements OnInit {
 		
 		let types = localStorage.getItem("educTypeBel");
 		if(types == null){
-			this.data.getData("type").then((data) => {
+			this.data.getData(["type"]).then((data) => {
 				try{
 					this.types = data.json();
 					try{
@@ -115,16 +116,6 @@ export class TotalListComponent implements OnInit {
 			this.share.deleteUpdates("studList");
 		});
 	}
-  getArchive(){
-		this.getList.getArchive().then(data => {
-			try{
-				this.ArchiveIsLoaded = true;
-				this.archive = data.json();
-			}catch(e){
-				this.ErrorAction(e, data);
-			}
-		})
-	}
   //For departments view
 	showListOfListners(course:any): void {
 		if (this.prevRow != undefined && this.prevRow !== course) {
@@ -146,6 +137,9 @@ export class TotalListComponent implements OnInit {
 		console.log(data._body);
 		this.notify.addError(data._body);
 		this.log.SendError({page: "studList", error: e, response: data});
+	}
+	updateArchive(){
+		this.update = true;
 	}
 }
 

@@ -20,7 +20,7 @@
             </td>
         </tr>
         <ng-container *ngIf="inputList && inputList.length != 0">
-            <tr *ngFor="let person of inputList; index as i">
+            <tr *ngFor="let person of inputList; index as i" (click)="showInfo.ShowPersonalInfo(person)">
                 <td>{{ i + 1 }}</td>
                 <td>{{ person.DateGet | date: "dd.MM.yyyy" }}</td>
                 <td>{{ person.surname }}</td>

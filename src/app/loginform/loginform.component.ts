@@ -59,7 +59,9 @@ export class LoginComponent implements OnInit{
 				this.notify.addError("Произошла ошибка. Обратитесь к администратору");
 			}
 		})
-		.catch(this.handleError);
+		.catch((e) => {
+			this.notify.addError("Что-то пошло не так. Обратитесь к администратору");
+		});
 	}
 	ngOnInit(): void {
 		this.loginService.getDepList("cathedras").then(data => {
@@ -85,9 +87,6 @@ export class LoginComponent implements OnInit{
 			this.notify.addInfo(data.json().message);
 			this.slideUp();
 		});
-	}
-	private handleError(error: any): Promise<any>{
-		return Promise.reject(error.message || error);
 	}
 	slideUp(): void{
 	  $('form').animate({

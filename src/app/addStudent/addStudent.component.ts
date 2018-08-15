@@ -97,6 +97,7 @@ export class AddStudentComponent implements OnInit{
 	private qualificationOtherArr: any[] = [];
 
 	public newPerson:Person = new Person();
+	public findPerson: any = {};
 	public tempData:Person = new Person();
 	public originalData:Person = new Person();
 	private isLoaded: boolean = false;
@@ -112,29 +113,28 @@ export class AddStudentComponent implements OnInit{
   	courseId:number = 0;
   	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: "ru", dateInputFormat: 'DD.MM.YYYY' });
   	alreadyExist: BsModalRef;
-  	activateTab: boolean = false;
+	  activateTab: boolean = false;
+	renewData = [];
   	dataKeys: string[] = [
-		"facBel",
-		"educTypeBel",
-		"formBel",
-		"belmapo_residence",
-		"facArr",
-		"residArr",
-		"appArr",
-		"orgArr",
-		"regArr",
-		"depArr",
-		"estArr",
-		"residArr",
-		"coursesBel",
-		"specialityDocArr",
-		"specialityRetrArr",
-		"specialityOtherArr",
-		"qualificationMainArr",
-		"qualificationAddArr",
-		"qualificationOtherArr",
-		"citiesArr"
-  	];
+		"faculties",
+		"educType",
+		"formofeducation",
+		"Residence",
+		"personal_faculty",
+		"countries",
+		"personal_appointment",
+		"personal_organizations",
+		"regions",
+		"personal_department",
+		"personal_establishment",
+		"speciality_doct",
+		"speciality_retraining",
+		"speciality_other",
+		"qualification_main",
+		"qualification_add",
+		"qualification_other",
+		"cities"
+	  ];
 	constructor(private dataService: PersonalDataService,
 				private saveService: PersonService,
 				private notify: NotificationsService,
@@ -197,167 +197,229 @@ export class AddStudentComponent implements OnInit{
 	}
 	ngOnInit():void{
 		this.courseId = this.router.snapshot.params["id"];
-		var renewData = [];
+		
 		for(let key of this.dataKeys){
 			if (localStorage.getItem(key) == null) {
-				renewData.push(key);
+				this.renewData.push(key);
 			}else{
 				switch (key) {
-					case "facBel":
-						this.faculties = JSON.parse(localStorage.getItem("facBel"));
+					case "faculties":
+						this.faculties = JSON.parse(localStorage.getItem("faculties"));
 						break;
-					case "educTypeBel":
-						this.educTypes = JSON.parse(localStorage.getItem("educTypeBel"));
+					case "educType":
+						this.educTypes = JSON.parse(localStorage.getItem("educType"));
 						break;
-					case "formBel":
-						this.educForms = JSON.parse(localStorage.getItem("formBel"));
+					case "formofeducation":
+						this.educForms = JSON.parse(localStorage.getItem("formofeducation"));
 						break;
-					case "belmapo_residence":
-						this.residance = JSON.parse(localStorage.getItem("belmapo_residence"));
+					case "Residence":
+						this.residance = JSON.parse(localStorage.getItem("Residence"));
+						this.personal_cityzenships = JSON.parse(localStorage.getItem("Residence"));
 						break;
-					case "facArr":
-						this.personal_faculties = JSON.parse(localStorage.getItem("facArr"));
+					case "personal_faculty":
+						this.personal_faculties = JSON.parse(localStorage.getItem("personal_faculty"));
 						break;
-					case "residArr":
-						this.personal_cityzenships = JSON.parse(localStorage.getItem("residArr"));
+					case "personal_appointment":
+						this.personal_appointments = JSON.parse(localStorage.getItem("personal_appointment"));
 						break;
-					case "appArr":
-						this.personal_appointments = JSON.parse(localStorage.getItem("appArr"));
+					case "personal_organizations":
+						this.personal_organizations = JSON.parse(localStorage.getItem("personal_organizations"));
 						break;
-					case "orgArr":
-						this.personal_organizations = JSON.parse(localStorage.getItem("orgArr"));
-						break;
-					case "regArr":
-						this.personal_regions = JSON.parse(localStorage.getItem("regArr"));
+					case "regions":
+						this.personal_regions = JSON.parse(localStorage.getItem("regions"));
 						this.all_regions = this.personal_regions;
 						break;
-					case "depArr":
-						this.personal_departments = JSON.parse(localStorage.getItem("depArr"));
+					case "personal_department":
+						this.personal_departments = JSON.parse(localStorage.getItem("personal_department"));
 						break;
-					case "estArr":
-						this.personal_establishments = JSON.parse(localStorage.getItem("estArr"));
+					case "personal_establishment":
+						this.personal_establishments = JSON.parse(localStorage.getItem("personal_establishment"));
 						break;
 					case "residArr":
 						this.personal_cityzenships = JSON.parse(localStorage.getItem("residArr"));
 						this.all_countries = this.personal_cityzenships;
 						break;
-					case "coursesBel":
-						this.belmapo_courses = JSON.parse(localStorage.getItem("coursesBel"));
+					case "speciality_doct":
+						this.specialityDocArr = JSON.parse(localStorage.getItem("speciality_doct"));
 						break;
-					case "specialityDocArr":
-						this.specialityDocArr = JSON.parse(localStorage.getItem("specialityDocArr"));
+					case "speciality_retraining":
+						this.specialityRetrArr = JSON.parse(localStorage.getItem("speciality_retraining"));
 						break;
-					case "specialityRetrArr":
-						this.specialityRetrArr = JSON.parse(localStorage.getItem("specialityRetrArr"));
+					case "speciality_other":
+						this.specialityOtherArr = JSON.parse(localStorage.getItem("speciality_other"));
 						break;
-					case "specialityOtherArr":
-						this.specialityOtherArr = JSON.parse(localStorage.getItem("specialityOtherArr"));
+					case "qualification_main":
+						this.qualificationMainArr = JSON.parse(localStorage.getItem("qualification_main"));
 						break;
-					case "qualificationMainArr":
-						this.qualificationMainArr = JSON.parse(localStorage.getItem("qualificationMainArr"));
+					case "qualification_add":
+						this.qualificationAddArr = JSON.parse(localStorage.getItem("qualification_add"));
 						break;
-					case "qualificationAddArr":
-						this.qualificationAddArr = JSON.parse(localStorage.getItem("qualificationAddArr"));
+					case "qualification_other":
+						this.qualificationOtherArr = JSON.parse(localStorage.getItem("qualification_other"));
 						break;
-					case "qualificationOtherArr":
-						this.qualificationOtherArr = JSON.parse(localStorage.getItem("qualificationOtherArr"));
-						break;
-					case "citiesArr":
-						this.personal_cities = JSON.parse(localStorage.getItem("citiesArr"));
+					case "cities":
+						this.personal_cities = JSON.parse(localStorage.getItem("cities"));
 						this.all_cities = this.personal_cities;
 						break;
 				}
 			}
 		}
-		if (renewData.length != 0) {
-			this.dataService.getData().then(data => {
+		if (this.renewData.length != 0) {
+			this.dataService.getData(this.renewData).then(data => {
 				try{
-					this.faculties = data.json().facBel;
-					localStorage.setItem("facBel", JSON.stringify(data.json().facBel))
-					this.educTypes = data.json().educTypeBel;
-					localStorage.setItem("educTypeBel", JSON.stringify(data.json().educTypeBel))
-					this.educForms = data.json().formBel;
-					localStorage.setItem("formBel", JSON.stringify(data.json().formBel))
-					this.residance = data.json().belmapo_residence;
-					localStorage.setItem("belmapo_residence", JSON.stringify(data.json().belmapo_residence))
-					this.personal_faculties = data.json().facArr;
-					localStorage.setItem("facArr", JSON.stringify(data.json().facArr))
-					this.personal_cityzenships = data.json().residArr;
-					this.all_countries = this.personal_cityzenships;
-					localStorage.setItem("residArr", JSON.stringify(data.json().residArr))
-					this.personal_appointments = data.json().appArr;
-					localStorage.setItem("appArr", JSON.stringify(data.json().appArr))
-					this.personal_organizations = data.json().orgArr;
-					localStorage.setItem("orgArr", JSON.stringify(data.json().orgArr))
-					this.personal_regions = data.json().regArr;
-					this.all_regions = this.personal_regions;
-					localStorage.setItem("regArr", JSON.stringify(data.json().regArr))
-					this.personal_departments = data.json().depArr;
-					localStorage.setItem("depArr", JSON.stringify(this.personal_departments))
-					this.personal_establishments = data.json().estArr;
-					localStorage.setItem("estArr", JSON.stringify(this.personal_establishments))
-					this.belmapo_courses = data.json().coursesBel;
-					localStorage.setItem("coursesBel", JSON.stringify(this.belmapo_courses))
-					this.specialityDocArr = data.json().specialityDocArr;
-					localStorage.setItem("specialityDocArr", JSON.stringify(data.json().specialityDocArr))
-					this.specialityRetrArr = data.json().specialityRetrArr;
-					localStorage.setItem("specialityRetrArr", JSON.stringify(data.json().specialityRetrArr))
-					this.specialityOtherArr = data.json().specialityOtherArr;
-					localStorage.setItem("specialityOtherArr", JSON.stringify(data.json().specialityOtherArr))
-					this.qualificationMainArr = data.json().qualificationMainArr;
-					localStorage.setItem("qualificationMainArr", JSON.stringify(data.json().qualificationMainArr))
-					this.qualificationAddArr = data.json().qualificationAddArr;
-					localStorage.setItem("qualificationAddArr", JSON.stringify(data.json().qualificationAddArr))
-					this.qualificationOtherArr = data.json().qualificationOtherArr;
-					localStorage.setItem("qualificationOtherArr", JSON.stringify(data.json().qualificationOtherArr))
-					this.personal_cities = data.json().citiesArr;
-					this.all_cities = this.personal_cities;
-					// localStorage.setItem("citiesArr", JSON.stringify(data.json().citiesArr))
+					if(data.json().faculties !== undefined){
+						this.faculties = data.json().faculties;
+						localStorage.setItem("faculties", JSON.stringify(data.json().faculties))
+					}
+					if(data.json().educType !== undefined){
+						this.educTypes = data.json().educType;
+						localStorage.setItem("educType", JSON.stringify(data.json().educType))
+					}
+					if(data.json().formofeducation !== undefined){
+						this.educForms = data.json().formofeducation;
+						localStorage.setItem("formofeducation", JSON.stringify(data.json().formofeducation))
+					}
+					if(data.json().Residence !== undefined){
+						this.residance = data.json().Residence;
+						localStorage.setItem("Residence", JSON.stringify(data.json().Residence))
+					}
+					if(data.json().personal_faculty !== undefined){
+						this.personal_faculties = data.json().personal_faculty;
+						localStorage.setItem("personal_faculty", JSON.stringify(data.json().personal_faculty))
+					}
+					if(data.json().countries !== undefined){
+						this.personal_cityzenships = data.json().countries;
+						this.all_countries = this.personal_cityzenships;
+						localStorage.setItem("countries", JSON.stringify(data.json().countries))
+					}
+					if(data.json().personal_appointment !== undefined){
+						this.personal_appointments = data.json().personal_appointment;
+						localStorage.setItem("personal_appointment", JSON.stringify(data.json().personal_appointment))
+					}
+					if(data.json().personal_organizations !== undefined){
+						this.personal_organizations = data.json().personal_organizations;
+						localStorage.setItem("personal_organizations", JSON.stringify(data.json().personal_organizations))
+					}
+					if(data.json().regions !== undefined){
+						this.personal_regions = data.json().regions;
+						this.all_regions = this.personal_regions;
+						localStorage.setItem("regions", JSON.stringify(data.json().regions))
+					}
+					if(data.json().personal_department !== undefined){
+						this.personal_departments = data.json().personal_department;
+						localStorage.setItem("personal_department", JSON.stringify(this.personal_departments))
+					}
+					if(data.json().personal_establishment !== undefined){
+						this.personal_establishments = data.json().personal_establishment;
+						localStorage.setItem("personal_establishment", JSON.stringify(this.personal_establishments))
+					}
+					if(data.json().speciality_doct !== undefined){
+						this.specialityDocArr = data.json().speciality_doct;
+						localStorage.setItem("speciality_doct", JSON.stringify(data.json().speciality_doct))
+					}
+					if(data.json().speciality_retraining !== undefined){
+						this.specialityRetrArr = data.json().speciality_retraining;
+						localStorage.setItem("speciality_retraining", JSON.stringify(data.json().speciality_retraining))
+					}
+					if(data.json().speciality_other !== undefined){
+						this.specialityOtherArr = data.json().speciality_other;
+						localStorage.setItem("speciality_other", JSON.stringify(data.json().speciality_other))
+					}
+					if(data.json().qualification_main !== undefined){
+						this.qualificationMainArr = data.json().qualification_main;
+						localStorage.setItem("qualification_main", JSON.stringify(data.json().qualification_main))
+					}
+					if(data.json().qualification_add !== undefined){
+						this.qualificationAddArr = data.json().qualification_add;
+						localStorage.setItem("qualification_add", JSON.stringify(data.json().qualification_add))
+					}
+					if(data.json().qualification_other !== undefined){
+						this.qualificationOtherArr = data.json().qualification_other;
+						localStorage.setItem("qualification_other", JSON.stringify(data.json().qualification_other))
+					}
+					if(data.json().cities !== undefined){
+						this.personal_cities = data.json().cities;
+						this.all_cities = this.personal_cities;
+						localStorage.setItem("cities", JSON.stringify(data.json().citiesArr))
+					}
 					this.isLoaded = true;
 				}catch(e){
 					localStorage.clear();
-					this.faculties = data.json().facBel;
-					localStorage.setItem("facBel", JSON.stringify(data.json().facBel))
-					this.educTypes = data.json().educTypeBel;
-					localStorage.setItem("educTypeBel", JSON.stringify(data.json().educTypeBel))
-					this.educForms = data.json().formBel;
-					localStorage.setItem("formBel", JSON.stringify(data.json().formBel))
-					this.residance = data.json().belmapo_residence;
-					localStorage.setItem("belmapo_residence", JSON.stringify(data.json().belmapo_residence))
-					this.personal_faculties = data.json().facArr;
-					localStorage.setItem("facArr", JSON.stringify(data.json().facArr))
-					this.personal_cityzenships = data.json().residArr;
-					this.all_countries = this.personal_cityzenships;
-					localStorage.setItem("residArr", JSON.stringify(data.json().residArr))
-					this.personal_appointments = data.json().appArr;
-					localStorage.setItem("appArr", JSON.stringify(data.json().appArr))
-					this.personal_organizations = data.json().orgArr;
-					localStorage.setItem("orgArr", JSON.stringify(data.json().orgArr))
-					this.personal_regions = data.json().regArr;
-					this.all_regions = this.personal_regions;
-					localStorage.setItem("regArr", JSON.stringify(data.json().regArr))
-					this.personal_departments = data.json().depArr;
-					localStorage.setItem("depArr", JSON.stringify(this.personal_departments))
-					this.personal_establishments = data.json().estArr;
-					localStorage.setItem("estArr", JSON.stringify(this.personal_establishments))
-					this.belmapo_courses = data.json().coursesBel;
-					localStorage.setItem("coursesBel", JSON.stringify(this.belmapo_courses))
-					this.specialityDocArr = data.json().specialityDocArr;
-					localStorage.setItem("specialityDocArr", JSON.stringify(data.json().specialityDocArr))
-					this.specialityRetrArr = data.json().specialityRetrArr;
-					localStorage.setItem("specialityRetrArr", JSON.stringify(data.json().specialityRetrArr))
-					this.specialityOtherArr = data.json().specialityOtherArr;
-					localStorage.setItem("specialityOtherArr", JSON.stringify(data.json().specialityOtherArr))
-					this.qualificationMainArr = data.json().qualificationMainArr;
-					localStorage.setItem("qualificationMainArr", JSON.stringify(data.json().qualificationMainArr))
-					this.qualificationAddArr = data.json().qualificationAddArr;
-					localStorage.setItem("qualificationAddArr", JSON.stringify(data.json().qualificationAddArr))
-					this.qualificationOtherArr = data.json().qualificationOtherArr;
-					localStorage.setItem("qualificationOtherArr", JSON.stringify(data.json().qualificationOtherArr))
-					this.personal_cities = data.json().citiesArr;
-					this.all_cities = this.personal_cities;
-					// localStorage.setItem("citiesArr", JSON.stringify(data.json().citiesArr))
-					this.isLoaded = true;
+					if(data.json().faculties !== undefined){
+						this.faculties = data.json().faculties;
+						localStorage.setItem("faculties", JSON.stringify(data.json().faculties))
+					}
+					if(data.json().educType !== undefined){
+						this.educTypes = data.json().educType;
+						localStorage.setItem("educType", JSON.stringify(data.json().educType))
+					}
+					if(data.json().formofeducation !== undefined){
+						this.educForms = data.json().formofeducation;
+						localStorage.setItem("formofeducation", JSON.stringify(data.json().formofeducation))
+					}
+					if(data.json().Residence !== undefined){
+						this.residance = data.json().Residence;
+						localStorage.setItem("Residence", JSON.stringify(data.json().Residence))
+					}
+					if(data.json().personal_faculty !== undefined){
+						this.personal_faculties = data.json().personal_faculty;
+						localStorage.setItem("personal_faculty", JSON.stringify(data.json().personal_faculty))
+					}
+					if(data.json().countries !== undefined){
+						this.personal_cityzenships = data.json().countries;
+						this.all_countries = this.personal_cityzenships;
+						localStorage.setItem("countries", JSON.stringify(data.json().countries))
+					}
+					if(data.json().personal_appointment !== undefined){
+						this.personal_appointments = data.json().personal_appointment;
+						localStorage.setItem("personal_appointment", JSON.stringify(data.json().personal_appointment))
+					}
+					if(data.json().personal_organizations !== undefined){
+						this.personal_organizations = data.json().personal_organizations;
+						localStorage.setItem("personal_organizations", JSON.stringify(data.json().personal_organizations))
+					}
+					if(data.json().regions !== undefined){
+						this.personal_regions = data.json().regions;
+						this.all_regions = this.personal_regions;
+						localStorage.setItem("regions", JSON.stringify(data.json().regions))
+					}
+					if(data.json().personal_department !== undefined){
+						this.personal_departments = data.json().personal_department;
+						localStorage.setItem("personal_department", JSON.stringify(this.personal_departments))
+					}
+					if(data.json().personal_establishment !== undefined){
+						this.personal_establishments = data.json().personal_establishment;
+						localStorage.setItem("personal_establishment", JSON.stringify(this.personal_establishments))
+					}
+					if(data.json().speciality_doct !== undefined){
+						this.specialityDocArr = data.json().speciality_doct;
+						localStorage.setItem("speciality_doct", JSON.stringify(data.json().speciality_doct))
+					}
+					if(data.json().speciality_retraining !== undefined){
+						this.specialityRetrArr = data.json().speciality_retraining;
+						localStorage.setItem("speciality_retraining", JSON.stringify(data.json().speciality_retraining))
+					}
+					if(data.json().speciality_other !== undefined){
+						this.specialityOtherArr = data.json().speciality_other;
+						localStorage.setItem("speciality_other", JSON.stringify(data.json().speciality_other))
+					}
+					if(data.json().qualification_main !== undefined){
+						this.qualificationMainArr = data.json().qualification_main;
+						localStorage.setItem("qualification_main", JSON.stringify(data.json().qualification_main))
+					}
+					if(data.json().qualification_add !== undefined){
+						this.qualificationAddArr = data.json().qualification_add;
+						localStorage.setItem("qualification_add", JSON.stringify(data.json().qualification_add))
+					}
+					if(data.json().qualification_other !== undefined){
+						this.qualificationOtherArr = data.json().qualification_other;
+						localStorage.setItem("qualification_other", JSON.stringify(data.json().qualification_other))
+					}
+					if(data.json().cities !== undefined){
+						this.personal_cities = data.json().cities;
+						this.all_cities = this.personal_cities;
+						localStorage.setItem("cities", JSON.stringify(data.json().citiesArr))
+					}
 				}
 				
 			});
@@ -418,9 +480,11 @@ export class AddStudentComponent implements OnInit{
 	Check(){
 		if (!this.isChecked) {
 			this.dataService.check(this.newPerson).then(response => {
-				if (response._body == "Exist") {
+				let data = response.json();
+				if ( data.surname !== undefined) {
+					this.findPerson = data;
 					this.alreadyExist = this.modal.show(this.exist, {class: "modal-md"});
-				}else if(response._body == "Not exist"){
+				}else if(data.length == 0){
 					// var id = this.newPerson.personal.insurance_number;
 					// var gender = Number(id.slice(0,1));
 					// if (gender == 1 || gender == 3 || gender == 5) {
@@ -462,6 +526,9 @@ export class AddStudentComponent implements OnInit{
 				}else{
 					console.log(response._body);
 				}
+			}).catch((e) => {
+				this.notify.addError("Что-то пошло не так. Обратитесь к администратору");
+				console.log(e);
 			});
 		}
 	}

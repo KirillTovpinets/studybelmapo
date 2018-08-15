@@ -7,7 +7,8 @@
 </div>
 <div class="row">
 	<div class="col-lg-6 col-md-6">
-		<div class="content">
+			<preloader *ngIf="listIsLoading"></preloader>
+		<div class="content" *ngIf="!listIsLoading">			
 			<form>
 				<label for="">Поиск по ФИО</label>
 				<input type="text" class="form-control" (keyup)="Search($event)">
@@ -103,29 +104,29 @@
 </div>
 <ng-template #confirmTpl>
 	<div class="modal-body text-center">
-		<p>Вы действительно хотите зачислить этого слушателя?</p>
+		<p>Проверьте данные слушателя</p>
 		<preloader *ngIf="isClicked"></preloader>	
 		<div class="content table-responsive table-full-width" *ngIf="!isClicked">
 			<table class="table table-striped">
 				<tbody>
 					<tr>
-						<th>Слушатель</th>
-						<td>{{ selectedPerson.surname }}</td>
-						<td>{{ selectedPerson.name }}</td>
-						<td>{{ selectedPerson.patername }}</td>
-						<td>{{ selectedPerson.birthday | date: "dd.MM.yyyy" }}</td>
+						<td>Слушатель</td>
+						<th>{{ selectedPerson.surname }}</th>
+						<th>{{ selectedPerson.name }}</th>
+						<th>{{ selectedPerson.patername }}</th>
+						<th>{{ selectedPerson.birthday | date: "dd.MM.yyyy" }}</th>
 					</tr>
 					<tr>
-						<th>Курс</th>
-						<td>{{ course.Number }}</td>
-						<td colspan="3">{{ course.name }}</td>
+						<td>Курс</td>
+						<th>{{ course.Number }}</th>
+						<th colspan="3">{{ course.name }}</th>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		<button type="button" class="btn btn-success" *ngIf="infoIsChecked" (click)="setLastInfo(setLastInfoTpl)">Да</button>
+		<button type="button" class="btn btn-success" *ngIf="infoIsChecked" (click)="setLastInfo(setLastInfoTpl)">Зачислить</button>
 		<button type="button" class="btn btn-info" tooltip="Информация слушателя" (click)="personInfo()">Инфо</button>
-		<button type="button" class="btn btn-danger" (click)="reject()">Нет</button>
+		<button type="button" class="btn btn-danger" (click)="reject()">Отмена</button>
 	</div>
 </ng-template>
 <ng-template #setLastInfoTpl>
@@ -184,7 +185,7 @@
 						</div>
 					</div>
 					<div class="alert alert-danger" *ngIf="costed != undefined">
-						<p>Поле номера договора явялется обязательным</p>
+						<p>Поле номера договора является обязательным</p>
 					</div>
 					<div class="text-center">
 						<button type="submit" class="btn btn-success">Сохранить</button>

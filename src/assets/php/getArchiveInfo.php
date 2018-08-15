@@ -20,7 +20,7 @@
             $forCathedras = " AND cathedras.id = $cathedraId";
             $forCathedrasConnection = "INNER JOIN cathedras ON course";
         }
-        $query = "SELECT certificates.DateGet, marks.name AS Mark, personal_card.surname, personal_card.name, personal_card.patername, arrivals_zip.DocNumber FROM certificates INNER JOIN arrivals_zip ON certificates.Arrival_id = arrivals_zip.id INNER JOIN personal_card ON arrivals_zip.PersonId = personal_card.id INNER JOIN marks ON certificates.MarkId = marks.id WHERE arrivals_zip.CourseId = $course LIMIT $limit OFFSET $offset ";
+        $query = "SELECT certificates.DateGet, marks.name AS Mark, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, arrivals_zip.DocNumber FROM certificates INNER JOIN arrivals_zip ON certificates.Arrival_id = arrivals_zip.id INNER JOIN personal_card ON arrivals_zip.PersonId = personal_card.id INNER JOIN marks ON certificates.MarkId = marks.id WHERE arrivals_zip.CourseId = $course LIMIT $limit OFFSET $offset ";
         $result = $mysqli->query($query) or die ("Ошибка запроса '$query':" . mysqli_error($mysqli));    
         $response = array();
         while ($row = $result->fetch_assoc()) {

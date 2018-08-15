@@ -29,14 +29,11 @@ export class PrivateInfoComponent{
 		if(this.personal_cityzenships == null ||
 			this.personal_regions == null ||
 			this.personal_cities == null){
-			this.dataService.getData().then(data => {
-				this.personal_cityzenships = data.json().residArr;
-				this.personal_regions = data.json().regArr;
-				this.personal_cities = data.json().citiesArr;
+			this.dataService.getData(['countries', 'regions', 'cities']).then(data => {
+				this.personal_cityzenships = data.json().countries;
+				this.personal_regions = data.json().regions;
+				this.personal_cities = data.json().cities;
 
-				localStorage.setItem("residArr", JSON.stringify(this.personal_cityzenships));
-				localStorage.setItem("regArr", JSON.stringify(this.personal_regions));
-				localStorage.setItem("citiesArr", JSON.stringify(this.personal_cities));
 				for(let country of this.personal_cityzenships){
 					if (country.id == this.info.country) {
 						this.info.contry = country.value;

@@ -59,6 +59,7 @@ import { PersonInfoModule } from './person-info/person-info.module';
 import { RegistryModule } from './registry/registry.module';
 import { MenuModule } from './Menu/menu.module';
 import { DropdownModule } from 'ngx-dropdown';
+import { PersonalInfoService } from './personalInfo/personalInfo.service';
 
 enableProdMode();
 defineLocale('ru', ruLocale);
@@ -118,6 +119,7 @@ defineLocale('ru', ruLocale);
                GlobalParamsService,
                CheckAuthService,
                ShowPersonInfoService,
+               PersonalInfoService,
                ShareService,
                StudListService,
                LogService],

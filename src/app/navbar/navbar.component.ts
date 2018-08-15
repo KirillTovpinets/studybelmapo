@@ -24,12 +24,12 @@ export class NavbarComponent implements OnInit{
                 private database: DatabaseService){
 
 	}
-	loginInfo:any;
-	message:boolean;
-	toggle:boolean = false;
-    logedUser: any;
-    taskCount: number = 0;
-	lbd:any = {
+	public loginInfo:any;
+	public message:boolean;
+	public toggle:boolean = false;
+    public logedUser: any;
+    public taskCount: number = 0;
+	public lbd:any = {
 		navbar_menu_visible: 0,
 	    navbar_initialized: false,
 	    initRightMenu: function(){
@@ -118,5 +118,11 @@ export class NavbarComponent implements OnInit{
         $('html').addClass('nav-open');
         $('.navbar-collapse').css("transform", "translate3d(0,0,0)");
         this.lbd.navbar_menu_visible = 1;
+    }
+    clearLocalStorage(){
+        let currentUser = localStorage.getItem("currentUser");
+        localStorage.clear();
+        localStorage.setItem("currentUser", currentUser);
+        alert("Кэш браузера очищен");
     }
 }

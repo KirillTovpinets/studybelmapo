@@ -75,13 +75,16 @@
                 <th>Инфо</th>
               </tr>
               <ng-container *ngFor="let course of oldCourses">
-                <tr (click)="showListOfListners(course)" [ngClass]="{'active': course.isOpened}">
+                <tr (click)="showListOfListners(course)" [ngClass]="{'active': course.isOpened}" *ngIf="course.StudList.length !== 0">
                     <td>{{course.Number}}</td>
                     <td>{{course.name}}</td>
                     <td>{{course.Start | date: "dd.MM.yy"}}</td>
                     <td>{{course.Finish | date: "dd.MM.yy"}}</td>
                     <td>{{ course.Size }}</td>
-                    <td>{{ course.StudList.length }}</td>
+                    <td>
+                      <span *ngIf="course.StudList.length !== 0">{{ course.StudList.length }}</span>
+                      <span class="fa fa-archive" *ngIf="course.StudList.length === 0" tooltip="Данные о студентах находятся в архиве"></span>
+                    </td>
                     <td>{{ course.Notes }}</td>
                 </tr>
                 <tr *ngIf="course.isOpened">
@@ -181,7 +184,11 @@
             </div>
           </div>
         </tab> -->
-        <tab heading="Архив" (select)="getArchive()">
+        <tab (select)="getArchive()">
+            <ng-template tabHeading>
+                <span>Архив</span>
+                <a (click)="getArchive()" class="refresh"><span class="fa fa-refresh"></span></a>
+              </ng-template>
           <archive></archive>
         </tab>
       </tabset>

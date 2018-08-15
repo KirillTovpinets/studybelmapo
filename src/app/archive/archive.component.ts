@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange } from '@angular/core';
 import { CurrentCourcesListService } from '../FillData/services/getCurrentCourcesList.service';
 import { NotificationsService } from 'angular4-notify';
 import { LogService } from '../share/log.service';
@@ -10,6 +10,7 @@ import { LogService } from '../share/log.service';
 })
 export class ArchiveComponent implements OnInit {
 	@Input("selectableRow") selectable: boolean = false;
+	@Input() update: boolean;
 	@Output("selectedCourses") selected = new EventEmitter<any[]>();
 	ArchiveIsLoaded: boolean = false;
 	ArchiveYearIsLoaded: boolean = false;
@@ -24,7 +25,12 @@ export class ArchiveComponent implements OnInit {
   	this.getArchive();
   }
 
+  ngOnChanges(changes: {[propKey: string]: SimpleChange}){
+	  this.getArchive();
+  }
   getArchive(){
+	  this.ArchiveIsLoaded = false;
+	  this.archive = [];
 	this.courseList.getArchive().then(data => {
 			try{
 				this.ArchiveIsLoaded = true;

@@ -19,7 +19,7 @@ export class PersonalInfoComponent{
 	level: number = 1;
 	canChange: boolean = true;
 	change: boolean = false;
-	permisionToSave: boolean = false;
+	permisionToSave: boolean = true;
 	originalData:any = {};
 	constructor(public PIModal: BsModalRef,
 				private saveChanges: SaveChangesService,
@@ -44,7 +44,6 @@ export class PersonalInfoComponent{
 		this.PIModal.hide();
 	}
 	canSaveChanges($event){
-		console.log($event);
 		this.permisionToSave = $event ? true : false;
 	}
 }

@@ -15,7 +15,7 @@
 		$courseId = $_GET["id"];
 		$condition = "id = $courseId";
 	}else if($LogedUser->is_cathedra == 1){
-		$condition = "cathedraId = $depId";
+		$condition = "(cathedraId = $depId OR Number = '0')";
 		if(isset($_GET["time"]) && !empty($_GET["time"])){
 			$time = $_GET["time"];
 			$today = date("Y-m-d");

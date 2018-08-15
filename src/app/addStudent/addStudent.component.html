@@ -44,19 +44,19 @@
                             <div class="col-md-3">
                               <div class="form-group">
                                 <label>Фамилия</label>
-                                <input required type="text"  [pattern]="'^[А-Я]{1}[а-я\-А-Я]*$'" [(ngModel)]="newPerson.general.surname" name="surname" class="form-control" #suname="ngModel">
+                                <input required type="text"  [pattern]="'^[А-ЯЁ]{1}[а-я\-А-ЯёЁ]*$'" [(ngModel)]="newPerson.general.surname" name="surname" class="form-control" #suname="ngModel">
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="form-group">
                                 <label>Имя</label>
-                                <input required type="text" [pattern]="'^[А-Я]{1}[а-я]*$'" [(ngModel)]="newPerson.general.name" name="name" class="form-control" #name="ngModel">
+                                <input required type="text" [pattern]="'^[А-ЯЁ]{1}[а-яёЁ]*$'" [(ngModel)]="newPerson.general.name" name="name" class="form-control" #name="ngModel">
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="form-group">
                                 <label>Отчество</label>
-                                <input required type="text" [pattern]="'^[А-Я]{1}[а-я]*$'" [(ngModel)]="newPerson.general.patername" name="patername" class="form-control" #patername="ngModel">
+                                <input required type="text" [pattern]="'^[А-ЯЁ]{1}[а-яёЁ]*$'" [(ngModel)]="newPerson.general.patername" name="patername" class="form-control" #patername="ngModel">
                               </div>
                             </div>
                             <div class="col-md-3">
@@ -672,7 +672,8 @@
   <div class="modal-body text-center">
     <div class="card">
       <div class="content">
-        <div class="header"><p>Этот слушатель уже есть в базе данных. Хотите найти его в списке базы данных?</p></div>
+        <div class="header"><p>Этот слушатель уже есть в базе данных.</p></div>
+        <div class="content"><p>{{findPerson.surname}} {{findPerson.name}} {{findPerson.patername}}</p></div>
         <button class="btn btn-success" (click)="Confirm()">Перейти к списку</button>
         <button class="btn btn-danger" (click)="Hide()">Отмена</button>
       </div>

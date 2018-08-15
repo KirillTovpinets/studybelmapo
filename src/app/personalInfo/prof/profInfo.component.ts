@@ -39,59 +39,23 @@ export class ProfInfoComponent{
 		"qualificationOtherArr"
   	];
 	constructor(private dataService: PersonalDataService){
-		var renewData = [];
-		for(let key of this.dataKeys){
-			if (localStorage.getItem(key) == null) {
-				renewData.push(key);
-			}else{
-				switch (key) {
-					case "facBel":
-						this.personal_faculties = JSON.parse(localStorage.getItem("facArr"));
-						break;
-					case "educTypeBel":
-						this.personal_establishments = JSON.parse(localStorage.getItem("estArr"));
-						break;
-					case "formBel":
-						this.specialityDocArr = JSON.parse(localStorage.getItem("specialityDocArr"));
-						break;
-					case "belmapo_residence":
-						this.specialityRetrArr = JSON.parse(localStorage.getItem("specialityRetrArr"));
-						break;
-					case "facArr":
-						this.specialityOtherArr = JSON.parse(localStorage.getItem("specialityOtherArr"));
-						break;
-					case "residArr":
-						this.qualificationMainArr = JSON.parse(localStorage.getItem("qualificationMainArr"));
-						break;
-					case "appArr":
-						this.qualificationAddArr = JSON.parse(localStorage.getItem("qualificationAddArr"));
-						break;
-					case "orgArr":
-						this.qualificationOtherArr = JSON.parse(localStorage.getItem("qualificationOtherArr"));
-						break;
-				}
+		let fields = ["personal_faculty", "personal_establishment", "speciality_doct", "speciality_retraining", "speciality_other", "qualification_main", "qualification_add", "qualification_other"];
+		this.dataService.getData(fields).then(data => {
+			try{
+				let response = data.json();
+				fields.forEach(e => this[e] = response[e]);
+			}catch(e){
+				console.log(e);
+				console.log(data._body)
 			}
-		}
-		if (renewData.length != 0) {
-			this.dataService.getData().then(data => {
-				this.personal_faculties = data.json().facArr;
-				localStorage.setItem("facArr", JSON.stringify(data.json().facBel))
-				this.personal_establishments = data.json().estArr;
-				localStorage.setItem("estArr", JSON.stringify(data.json().facBel))
-				this.specialityDocArr = data.json().specialityDocArr;
-				localStorage.setItem("specialityDocArr", JSON.stringify(data.json().facBel))
-				this.specialityRetrArr = data.json().specialityRetrArr;
-				localStorage.setItem("specialityRetrArr", JSON.stringify(data.json().facBel))
-				this.specialityOtherArr = data.json().specialityOtherArr;
-				localStorage.setItem("specialityOtherArr", JSON.stringify(data.json().facBel))
-				this.qualificationMainArr = data.json().qualificationMainArr;
-				localStorage.setItem("qualificationMainArr", JSON.stringify(data.json().facBel))
-				this.qualificationAddArr = data.json().qualificationAddArr;
-				localStorage.setItem("qualificationAddArr", JSON.stringify(data.json().facBel))
-				this.qualificationOtherArr = data.json().qualificationOtherArr;
-				localStorage.setItem("qualificationOtherArr", JSON.stringify(data.json().facBel))
-			});
-		}	
+			
+			
+			
+			
+			
+			
+			
+		});
 	}
 	checkValue($event){
 		if(typeof($event) === 'object'){

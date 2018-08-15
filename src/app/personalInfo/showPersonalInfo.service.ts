@@ -77,7 +77,7 @@ export class ShowPersonInfoService {
 		}
 
 		this.PersonalInfoModal = this.PIService.show(PersonalInfoComponent, {class: 'modal-lg'});
-		this.PersonalInfoModal.content.title = "Профиль врача (" + person.general.surname + " " + person.general.name + " " + person.general.patername + ")";
+		this.PersonalInfoModal.content.title = "Профиль слушателя (" + person.general.surname + " " + person.general.name + " " + person.general.patername + ")";
 		this.PersonalInfoModal.content.person = person;
 		this.PersonalInfoModal.content.originalData = copy;
 		this.PersonalInfoModal.content.service = this.PIService;

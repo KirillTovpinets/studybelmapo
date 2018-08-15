@@ -6,7 +6,7 @@
 	$mysqli->query("SET NAMES utf8");
 	$data = (array)json_decode(file_get_contents("php://input"));
 	
-	$query = "SELECT COUNT(*) AS Total FROM arrivals ";
+	$query = "SELECT COUNT(*) AS Total FROM arrivals_zip ";
 	foreach ($data["tableIds"] as $key => $value) {
 		$connectField = "PersonId";
 		switch ($value) {
@@ -17,15 +17,17 @@
 		}
 		if($value == "cources"){
 			$query .= "INNER JOIN $value ON arrivals.CourseId = $value.$connectField ";
+		}else if($value == "cources_zip"){
+			$query .= "INNER JOIN $value ON arrivals_zip.CourseId = $value.$connectField ";
 		}else if ($value != "arrivals" && $value != "arrivals_zip") {
-			$query .= "INNER JOIN $value ON arrivals.PersonId = $value.$connectField ";
+			$query .= "INNER JOIN $value ON arrivals_zip.PersonId = $value.$connectField ";
 		}else if($value == 'arrivals_zip'){
 
 		}
 	}
-	if(in_array("arrivals_zip", $data["tableIds"])){
-		$query = str_replace("arrivals", "arrivals_zip", $query);
-	}
+	// if(in_array("arrivals_zip", $data["tableIds"])){
+	// 	$query = str_replace("arrivals", "arrivals_zip", $query);
+	// }
 
 	$response = array();
 	$addAnd = false;
@@ -96,6 +98,7 @@
 	$array = $result->fetch_assoc();
 	
 	$Cross["value"] = $array["Total"];
+	// $Cross["value"] = $query;
 	$Cross["label"] = "Интегрированный";
 
 	$Total["value"] = $total;

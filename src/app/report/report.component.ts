@@ -14,7 +14,7 @@ export class ReportComponent implements OnInit{
 	private personal_cityzenships: any[] = [];
 	private personal_appointments: any[] = [];
 	private personal_organizations: any[] = [];
-	private personal_regions: any[] = [];
+	private regions: any[] = [];
 	private personal_departments: any[] = [];
 	private personal_establishments: any[] = [];
 	private belmapo_courses:any[] = [];
@@ -22,8 +22,8 @@ export class ReportComponent implements OnInit{
 	private selectedCourse:any;
 	private faculties: any[] = [];
 	private cathedras: any[] = [];
-	private educTypes: any[] = [];
-	private educForms: any[] = [];
+	private educType: any[] = [];
+	private formofeducation: any[] = [];
 	private residance: any[] = [];
 
 	private isLoaded:boolean = false;
@@ -37,6 +37,7 @@ export class ReportComponent implements OnInit{
   private ARRIVAL: string = "arrivals";
   private ARRIVAL_ZIP: string = "arrivals_zip";
   private COURSE: string = "cources";
+  private COURSE_ZIP: string = "cources_zip";
 
 
 	// private filterParams: Person = new Person();
@@ -57,16 +58,10 @@ export class ReportComponent implements OnInit{
   		department: "",
   		facultyId: "",
   		cathedra: "",
-  		course: "",
+  		CourseId: "",
   		groupNumber: 0
     };
 
-    private fieldAndArray:any = {
-      region: this.personal_regions,
-      FormEduc: this.educForms,
-      Type: this.educTypes,
-      years: this.years
-    };
     private ParamLabels:any = ["Учреждение образования", "Гражданство", "Дата получения диплома", "Должность", "Звание кандидата медицинских нук", "Организация", "Область", "Пол", "Сотрудник", "Опыт работы", "Отдел", "Факультет", "Факультет БелМАПО", "Кафедра БелМАПО", "Курс", "Форма обучения", "Номер группы", "Тип обучения"];
     private LabelsToDisplay:any = {};
 	constructor(private dataService: PersonalDataService,
@@ -80,32 +75,29 @@ export class ReportComponent implements OnInit{
   }
 	ngOnInit():void{
     let today = new Date();
-    let year = today.getFullYear();
+    let year = today.getFullYear() - 1;
     for(let i = 2007; i <= year; i ++){
       this.years.push({
         id: i,
         value: i
       });
     }
-		this.dataService.getData().then(data => {
-      let response = data.json();
-      
-      response.facBel.forEach((element, index, arr) => this.faculties.push(element));
-      response.educTypeBel.forEach((element, index, arr) => this.educTypes.push(element));
-      response.formBel.forEach((element, index, arr) => this.educForms.push(element));
-      response.belmapo_residence.forEach((element, index, arr) => this.residance.push(element));
-      response.facArr.forEach((element, index, arr) => this.personal_faculties.push(element));
-      response.residArr.forEach((element, index, arr) => this.personal_cityzenships.push(element));
-      response.appArr.forEach((element, index, arr) => this.personal_appointments.push(element));
-      response.orgArr.forEach((element, index, arr) => this.personal_organizations.push(element));
-      response.regArr.forEach((element, index, arr) => this.personal_regions.push(element));
-      response.depArr.forEach((element, index, arr) => this.personal_departments.push(element));
-      response.estArr.forEach((element, index, arr) => this.personal_establishments.push(element));
-      response.residArr.forEach((element, index, arr) => this.personal_cityzenships.push(element));
-      response.coursesBel.forEach((element, index, arr) => this.belmapo_courses.push(element));
+
+    let params = ["faculties", "educType", "formofeducation", "Residence", "personal_faculty", "countries", "personal_appointment", "personal_organizations", "regions", "personal_department", "personal_establishment", "cources_zip"];
+    
+		this.dataService.getData(params).then(data => {
+      try{
+        let response = data.json();
+        params.forEach((e, i, arr) => this[e] = response[e]);
+      }catch(e){
+        console.log(e);
+        console.log(data._body);
+      }
 
 			this.isLoaded = true;
-		});
+		}).catch(function(e){
+      console.log(e);
+    });
 	}
 
 	SelectRegionAction(region:any):void {
@@ -116,11 +108,14 @@ export class ReportComponent implements OnInit{
     }
     return this.reportAction(this.PERSONAL);
   };
-  SelectYear(year){
-    if (this.filterParams.years.indexOf(year.id) < 0) {
-      this.filterParams.years.push(year.id);
+  DropdownList(data:any):string{
+		return data.value;
+	}
+  SelectYear($event){
+    if (this.filterParams.years.indexOf($event.target.value) < 0) {
+      this.filterParams.years.push($event.target.value);
     }else{
-      this.filterParams.years.splice(this.filterParams.years.indexOf(year.id), 1);
+      this.filterParams.years.splice(this.filterParams.years.indexOf($event.target.value), 1);
     }
     return this.reportAction(this.ARRIVAL_ZIP);
   }
@@ -132,7 +127,6 @@ export class ReportComponent implements OnInit{
       console.log(data);
       var i, len, ref, value;
       try{
-        console.log(data.json());
         ref = data.json();
         this.parameters = [];
         for (i = 0, len = ref.length; i < len; i++) {
@@ -151,7 +145,14 @@ export class ReportComponent implements OnInit{
                 var field = str.split("-")[0];
                 var indexNumber = Number(index);
                 var flag = false;
-                for(let obj of this.fieldAndArray[field]){
+
+                let fieldAndArray:any = {
+                  region: this.regions,
+                  FormEduc: this.formofeducation,
+                  Type: this.educType,
+                  years: this.years
+                };
+                for(let obj of fieldAndArray[field]){
                   if(obj.id == indexNumber){
                     value.label = obj.value;
                     flag = true;
@@ -194,21 +195,29 @@ export class ReportComponent implements OnInit{
     });
   };
   ResetService():void{
-    this.filterParams.establishmentId = "",
-    this.filterParams.cityzenship = "",
-    this.filterParams.DipDateFrom = 0,
-    this.filterParams.DipDateTo = 0,
-    this.filterParams.appointment = "",
-    this.filterParams.isDoctor = "",
-    this.filterParams.organization = "",
-    this.filterParams.gender = "",
-    this.filterParams.isCowoker = "",
-    this.filterParams.experiance = "",
-    this.filterParams.department = "",
-    this.filterParams.facultyId = "",
-    this.filterParams.cathedra = "",
-    this.filterParams.course = "",
-    this.filterParams.groupNumber = 0
+    this.filterParams = {
+    	establishmentId: "",
+  		cityzenship: "",
+  		DipDateFrom: 0,
+  		DipDateTo: 0,
+      appointment: "",
+      region: [],
+      faculties: [],
+      FormEduc: [],
+      Type: [],
+      tableIds: [],
+      years: [],
+  		isDoctor: "",
+  		organization: "",
+  		gender: "",
+  		isCowoker: "",
+  		experiance: "",
+  		department: "",
+  		facultyId: "",
+  		cathedra: "",
+  		CourseId: "",
+  		groupNumber: 0
+    };
     this.parameters = [];
     this.total = 0;
   }
@@ -248,6 +257,6 @@ export class ReportComponent implements OnInit{
     }
     
     this.LabelsToDisplay = this.ParamLabels[16];
-    return this.reportAction(this.COURSE);
+    return this.reportAction(this.COURSE_ZIP);
   };
 }

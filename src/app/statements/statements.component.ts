@@ -73,28 +73,40 @@ export class StatementsComponent implements OnInit {
 	educForms: any[] = [];
 	searchResult: any[] = [];
   ngOnInit() {
-    this.courseList.get().then(res => {
-		try{
-			this.courses = res.json();
-			var today = new Date();
-			for (var i = 0; i < this.courses.length; i++) {
-					var start = new Date(this.courses[i].Start);
-					var finish = new Date(this.courses[i].Finish);
-					
-					if (start < today && finish < today) {
-						this.courses[i].class=1;
-					}else if(start < today && finish > today){
-						this.courses[i].class=2;
-					}else if(start > today && finish > today){
-						this.courses[i].class=3;
+	this.courses = JSON.parse(localStorage.getItem("all-courses"));
+	if(this.courses === null){
+		this.courseList.get().then(res => {
+			try{
+				this.courses = res.json();
+				var today = new Date();
+				for (var i = 0; i < this.courses.length; i++) {
+						var start = new Date(this.courses[i].Start);
+						var finish = new Date(this.courses[i].Finish);
+						
+						if (start < today && finish < today) {
+							this.courses[i].class=1;
+						}else if(start < today && finish > today){
+							this.courses[i].class=2;
+						}else if(start > today && finish > today){
+							this.courses[i].class=3;
+						}
 					}
+				this.isLoaded = true;
+				try{
+					localStorage.setItem("all-courses", JSON.stringify(this.courses));
+				}catch(e){
+					localStorage.clear();
+					localStorage.setItem("all-courses", JSON.stringify(this.courses));
 				}
-			this.isLoaded = true;
-		}catch(e){
-			console.log(e);
-			console.log(res._body);
-		}
-	})
+			}catch(e){
+				console.log(e);
+				console.log(res._body);
+			}
+		})
+	}else{
+		this.isLoaded = true;
+	}
+    
   }
   GetCoursesList(value:Date, flag:number){
 		if (flag === 0) {

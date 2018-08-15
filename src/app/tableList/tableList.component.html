@@ -6,7 +6,7 @@
             <th>Фамилия</th>
             <th>Имя</th>
             <th>Отчество</th>
-            <th>Дата рождения</th>
+            <th>Место жительства</th>
             <!-- <th>Статус</th> -->
             <th></th>
             <th>Номер документа</th>
@@ -28,7 +28,7 @@
                 <td>{{ person.surname }}</td>
                 <td>{{ person.name }}</td>
                 <td>{{ person.patername }}</td>
-                <td>{{ person.birthday | date: "dd.MM.yyyy"}}</td>
+                <td>{{ person.ResidPlace }}</td>
                 <!-- <td [ngClass]="{'success': person.Status == 2, 'danger': person.Status == 3 || person.Status == 4}">
                     <span *ngIf="person.Status == 1">Прибыл</span>
                     <span *ngIf="person.Status == 2">Зачислен</span>
@@ -37,7 +37,6 @@
                 </td> -->
                 <td class="text-center">
                     <button style="margin-bottom:3px;" (click)="ShowContractNumber(person, $event)" *ngIf="person.FormEduc == 2">$</button>
-                    <button style="margin-bottom:3px;" (click)="ShowResidInfo(person, $event)"><span class="fa fa-bed"></span></button>
                 </td>
                 <td>
                     <input class="form-control" type="text" (click)="PreventParentEvent($event)" (keyup)="StartTyping($event, person)" name="docNumber" [(ngModel)]="person.DocNumber" [attr.disabled]="person.change ? null : ''"/>
@@ -60,7 +59,6 @@
                     </div>
                     <button class="btn btn-danger btn-block" (click)="DeductBeforeEnd(person, $event)" *ngIf="!person.hasChanges && person.Status != 1 && courseIsCurrent == 1" tooltip="Отчислить слушателя с курса">Отчислить досрочно </button>
                 </td>
-                <td><button class="btn btn-danger btn-block" *ngIf="person.hasChanges" (click)="CancelEdit($event, person)">Отмена</button></td>
             </tr>
         </ng-container>   
     </tbody>

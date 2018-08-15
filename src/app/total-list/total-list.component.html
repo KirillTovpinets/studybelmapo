@@ -65,8 +65,13 @@
           </accordion>
         </div>
       </tab>
-      <tab heading="Архив" (select)="getArchive()">
-        <archive></archive>
+      <tab>
+          <ng-template tabHeading>
+              <span>Архив</span>
+              <a (click)="updateArchive()" class="refresh"><span class="fa fa-refresh"></span></a>
+              <span class="fa fa-exclamation-triangle text-warning" *ngIf="shouldUpdateList" tooltip="Обновите данные"></span>
+            </ng-template>
+        <archive [update]="update"></archive>
       </tab>
       <tab heading="Добавить курс">
           <div class="content">

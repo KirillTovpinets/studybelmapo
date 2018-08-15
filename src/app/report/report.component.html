@@ -9,6 +9,98 @@
                 </div>
                 <div class="content">
                   <tabset>
+                    <tab heading="Обучение">
+                      <div class="content">
+                        <div id="educationalData" class="tab-pane">
+                          <div class="places-buttons">
+                            <form>
+                              <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group no-margin">
+                                      <label>Год</label>
+                                      <select (change)="SelectYear($event)" class="form-control">
+                                        <option value="{{year.id}}" *ngFor="let year of years" id="region-{{year.id}}">{{year.id}}</option>
+                                      </select>
+                                      <!-- <table>
+                                        <tr *ngFor="let year of years">
+                                          <td>
+                                            <input type="checkbox" id="region-{{year.id}}" (click)="SelectYear(year)" class="regular-checkbox years">
+                                            <label for="region-{{ year.id }}" class="years"> </label>
+                                          </td>
+                                          <td>
+                                            <label>{{year.id}}</label>
+                                          </td>
+                                        </tr>
+                                      </table> -->
+                                    </div>
+                                  </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                  <div class="form-group no-margin">
+                                    <label>Курс</label>
+                                    <input type="text" auto-complete [list-formatter]="DropdownList" [source]="cources_zip" [(ngModel)]="filterParams.CourseId" (ngModelChange)="reportAction(COURSE_ZIP)" class="form-control" name="course-name">
+                                  </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                  <div class="form-group no-margin">
+                                    <label for="">Разрез</label>
+                                    <table>
+                                      <tr>
+                                        <td>
+                                          <input type="checkbox" id="per-faculties" (click)="PerFacultiesAction()" name="per-faculties" class="regular-checkbox">
+                                          <label for="per-faculties"></label>
+                                        </td>
+                                        <td>
+                                            <label>По факультетам</label>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <input type="checkbox" id="per-cathedras" (click)="PerCathedraAction()" name="per-cathedras" class="regular-checkbox">
+                                          <label for="per-cathedras"></label>
+                                        </td>
+                                        <td><label>По кафедрам</label></td>
+                                      </tr>
+                                    </table>
+                                  </div>
+                                </div>
+                                <div class="col-md-12">
+                                  <div class="form-group no-margin">
+                                    <label>Форма обучения</label>
+                                    <table>
+                                      <tr *ngFor="let form of formofeducation">
+                                        <td>
+                                          <input type="checkbox" id="form-{{form.id}}" (click)="SelectFormAction(form)" name="belmapo_educForm" class="regular-checkbox">
+                                          <label for="form-{{ form.id }}"> </label>
+                                        </td>
+                                        <td>
+                                          <label>{{ form.value }}</label>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </div>
+                                </div>
+                                <div class="col-md-12">
+                                  <div class="form-group no-margin">
+                                    <label>Тип обучения</label>
+                                    <table>
+                                      <tr *ngFor="let type of educType">
+                                        <td>
+                                          <input type="checkbox" id="educType-{{ type.id }}" (click)="SelectEducTypeAction(type)" name="belmapo_educType" class="regular-checkbox">
+                                          <label for="educType-{{ type.id }}"> </label>
+                                        </td>
+                                        <td>
+                                          <label>{{ type.value }}</label>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </tab>
                     <tab heading="Личные">
                       <div class="content">
                         <div id="peronalData" class="tab-pane active">
@@ -18,32 +110,32 @@
                                 <div class="col-md-12">
                                   <div class="form-group no-margin">
                                     <label>Учреждение образования</label>
-                                    <input type="text" auto-complete [source]="personal_establishments" [(ngModel)]="filterParams.establishmentId" (ngModelChange)="reportAction(PROFESIONAL)" class="form-control" name="educational_establishment">
+                                    <input type="text" auto-complete [list-formatter]="DropdownList" [source]="personal_establishment" [(ngModel)]="filterParams.establishmentId" (ngModelChange)="reportAction(PROFESIONAL)" class="form-control" name="educational_establishment">
                                   </div>
                                 </div>
                                 <div class="col-md-12">
                                   <div class="form-group no-margin">
                                     <label>Гражданство</label>
-                                    <input type="text" auto-complete [source]="personal_cityzenships" [(ngModel)]="filterParams.cityzenship" (ngModelChange)="reportAction(PERSONAL)" class="form-control" name="cityzenship">
+                                    <input type="text" auto-complete [list-formatter]="DropdownList" [source]="countries" [(ngModel)]="filterParams.cityzenship" (ngModelChange)="reportAction(PERSONAL)" class="form-control" name="cityzenship">
                                   </div>
                                 </div>
                                 <div class="col-md-12">
                                   <div class="form-group no-margin">
                                     <label>Должность</label>
-                                    <input type="text" auto-complete [source]="personal_appointments" [(ngModel)]="filterParams.appointment" (ngModelChange)="reportAction(GENERAL)" class="form-control" name="appointment">
+                                    <input type="text" auto-complete [list-formatter]="DropdownList" [source]="personal_appointment" [(ngModel)]="filterParams.appointment" (ngModelChange)="reportAction(GENERAL)" class="form-control" name="appointment">
                                   </div>
                                 </div>
                                 <div class="col-md-12">
                                   <div class="form-group no-margin">
                                     <label>Организация</label>
-                                    <input type="text" auto-complete [source]="personal_organizations" [(ngModel)]="filterParams.organization" (ngModelChange)="reportAction(GENERAL)" class="form-control" name="organization">
+                                    <input type="text" auto-complete [list-formatter]="DropdownList" [source]="personal_organizations" [(ngModel)]="filterParams.organization" (ngModelChange)="reportAction(GENERAL)" class="form-control" name="organization">
                                   </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                   <div class="form-group no-margin">
                                     <label>Область</label>
                                     <table>
-                                      <tr *ngFor="let region of personal_regions">
+                                      <tr *ngFor="let region of regions">
                                         
                                         <td>
                                           <input type="checkbox" id="region-{{region.id}}" (click)="SelectRegionAction(region)" class="regular-checkbox regions">
@@ -51,22 +143,6 @@
                                         </td>
                                         <td>
                                           <label>{{region.value}}</label>
-                                        </td>
-                                      </tr>
-                                    </table>
-                                  </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                  <div class="form-group no-margin">
-                                    <label>Год</label>
-                                    <table>
-                                      <tr *ngFor="let year of years">
-                                        <td>
-                                          <input type="checkbox" id="region-{{year.id}}" (click)="SelectYear(year)" class="regular-checkbox years">
-                                          <label for="region-{{ year.id }}" class="years"> </label>
-                                        </td>
-                                        <td>
-                                          <label>{{year.id}}</label>
                                         </td>
                                       </tr>
                                     </table>
@@ -84,57 +160,13 @@
                                 <div class="col-md-12">
                                   <div class="form-group no-margin">
                                     <label>Отдел</label>
-                                    <input type="text" auto-complete [source]="personal_departments" [(ngModel)]="filterParams.department" (ngModelChange)="reportAction(GENERAL)" class="form-control" name="department">
+                                    <input type="text" auto-complete [list-formatter]="DropdownList" [source]="personal_department" [(ngModel)]="filterParams.department" (ngModelChange)="reportAction(GENERAL)" class="form-control" name="department">
                                   </div>
                                 </div>
                                 <div class="col-md-12">
                                   <div class="form-group no-margin">
                                     <label>Факультет</label>
-                                    <input type="text" auto-complete [source]="personal_faculties" [(ngModel)]="filterParams.facultyId" (ngModelChange)="reportAction(PROFESIONAL)" class="form-control" name="faculty">
-                                  </div>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </tab>
-                    <tab heading="Обучение">
-                      <div class="content">
-                        <div id="educationalData" class="tab-pane">
-                          <div class="places-buttons">
-                            <form>
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <div class="form-group no-margin">
-                                    <label>Форма обучения</label>
-                                    <table>
-                                      <tr *ngFor="let form of educForms">
-                                        <td>
-                                          <input type="checkbox" id="form-{{form.id}}" (click)="SelectFormAction(form)" name="belmapo_educForm" class="regular-checkbox">
-                                          <label for="form-{{ form.id }}"> </label>
-                                        </td>
-                                        <td>
-                                          <label>{{ form.value }}</label>
-                                        </td>
-                                      </tr>
-                                    </table>
-                                  </div>
-                                </div>
-                                <div class="col-md-12">
-                                  <div class="form-group no-margin">
-                                    <label>Тип обучения</label>
-                                    <table>
-                                      <tr *ngFor="let educType of educTypes">
-                                        <td>
-                                          <input type="checkbox" id="educType-{{ educType.id }}" (click)="SelectEducTypeAction(educType)" name="belmapo_educType" class="regular-checkbox">
-                                          <label for="educType-{{ educType.id }}"> </label>
-                                        </td>
-                                        <td>
-                                          <label>{{ educType.value }}</label>
-                                        </td>
-                                      </tr>
-                                    </table>
+                                    <input type="text" auto-complete [list-formatter]="DropdownList" [source]="personal_faculty" [(ngModel)]="filterParams.facultyId" (ngModelChange)="reportAction(PROFESIONAL)" class="form-control" name="faculty">
                                   </div>
                                 </div>
                               </div>

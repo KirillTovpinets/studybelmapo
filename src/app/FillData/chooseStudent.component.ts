@@ -87,12 +87,14 @@ export class ChooseStudentComponent implements OnInit {
 	searchValue:string = "";
 	hideNotify: boolean = false;
 	isLoading: boolean = false;
+	listIsLoading: boolean = false;
 	isClicked: boolean = false;
 	enteredStudents: any[] = [];
 
 	items: any[] = [];
 	infoIsChecked: boolean = false;
 	ngOnInit() {
+		this.listIsLoading = true;
 		this.getList.getList(30, this.offset, "all").then(response =>{
 			try{
 				this.students = response.json().data;
@@ -101,6 +103,11 @@ export class ChooseStudentComponent implements OnInit {
 				console.log(e);
 				console.log(response._body);
 			}
+			this.listIsLoading = false;
+		}).catch((e) => {
+			this.notify.addError("Что-то пошло не так. Перезагрузите страницу или обратитесь к администратору");
+			console.log(e);
+			this.listIsLoading = false;
 		})
 		this.courseId = this.router.snapshot.params["id"];
 
@@ -113,6 +120,9 @@ export class ChooseStudentComponent implements OnInit {
 				this.log.SendError({page: 'chooseStudent', error: e, response: data});
 				this.notify.addError("Произошла ошибка. Обратитесь к администратору");
 			}
+		}).catch((e) => {
+			this.notify.addError("Что-то пошло не так. Перезагрузите страницу или обратитесь к администратору");
+			console.log(e);
 		});
 	}
 	confirmation(person:any, template: TemplateRef<any>): void{

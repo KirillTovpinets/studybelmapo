@@ -31,13 +31,10 @@ export class GeneralInfoComponent{
 		this.personal_departments = JSON.parse(localStorage.getItem("depArr"));
 
 		if(this.personal_appointments == null || this.personal_organizations || this.personal_departments){
-			this.dataService.getData().then(data => {
-				this.personal_appointments = data.json().appArr;
-				this.personal_organizations = data.json().orgArr;
-				this.personal_departments = data.json().depArr;
-				localStorage.setItem("appArr", JSON.stringify(this.personal_appointments));
-				localStorage.setItem("orgArr", JSON.stringify(this.personal_organizations));
-				localStorage.setItem("depArr", JSON.stringify(this.personal_departments));
+			this.dataService.getData(["personal_appointment", "personal_organizations", "personal_department"]).then(data => {
+				this.personal_appointments = data.json().personal_appointment;
+				this.personal_organizations = data.json().personal_organizations;
+				this.personal_departments = data.json().personal_department;
 			});
 		}
 	}

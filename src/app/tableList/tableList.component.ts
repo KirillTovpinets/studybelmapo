@@ -130,7 +130,9 @@ export class TableListCopmonent implements OnInit{
 		this.totalNumber += 1;
 		// this.students.changeTotal(this.totalNumber);
 		this.deductData.deduct(this.certificate).then(res => {
-			this.notify.addSuccess("Слушатель отчислен")
+			this.notify.addSuccess("Слушатель отчислен");
+			let today = new Date();
+			localStorage.removeItem("archive-" + today.getFullYear());
 			this.onChanges.emit(this.course);
 		});
 		this.modal.hide(1);
@@ -144,7 +146,7 @@ export class TableListCopmonent implements OnInit{
 		this.totalNumber += 1;
 		// this.students.changeTotal(this.totalNumber);
 		this.deductData.deductBefore(this.deductinfo).then(res => {
-			this.notify.addSuccess("Слушат ель отчислен досрочно")
+			this.notify.addSuccess("Слушатель отчислен досрочно")
 			this.onChanges.emit(this.course);
 		});
 		this.modal.hide(1);
@@ -203,6 +205,7 @@ export class TableListCopmonent implements OnInit{
 	EnterRow(person, $event){
 		$event.stopPropagation();
 		this.students.enterRow(person).subscribe(res => {
+			console.log(res._body);
 			this.notify.addSuccess(res._body);
 		})
 	}

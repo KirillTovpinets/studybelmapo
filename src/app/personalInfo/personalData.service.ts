@@ -7,12 +7,9 @@ import "rxjs/add/operator/toPromise";
 
 export class PersonalDataService{
 	constructor(private http: Http){}
-	getData(param?): Promise<any>{
-		let url = "assets/php/getParams.php";
-		if(param !== undefined){
-			url = url +"?" + param + "=true";
-		}
-		return this.http.get(url).toPromise();
+	getData(params?:string[]): Promise<any>{
+		let fields = params.join(";");
+		return this.http.get(`assets/php/getParams.php?fields=${fields}`).toPromise();	
 	}
 	DropdownList(data:any):string{
 		return data.value;

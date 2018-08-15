@@ -104,6 +104,10 @@ export class StudListComponent implements OnInit{
 					console.log(e);
 				}
 				this.isLoading[0] = false;
+			}).catch((e) => {
+				console.log(e);
+				this.notify.addError("Что-то пошло не так. Обратитесь к администратору.");
+				this.isLoading[0] = false;
 			});
 		}
 		let old = localStorage.getItem("old-courses");
@@ -128,7 +132,11 @@ export class StudListComponent implements OnInit{
 					console.log(e);
 				}
 				this.isLoading[1] = false;
-			});
+			}).catch((e) => {
+				console.log(e);
+				this.notify.addError("Что-то пошло не так. Обратитесь к администратору.");
+				this.isLoading[1] = false;
+			});;
 		}
 		let all = localStorage.getItem("all-courses");
 		if(all != null){
@@ -160,10 +168,20 @@ export class StudListComponent implements OnInit{
 					console.log(e);
 				}
 				this.isLoading[2] = false;
-			});
+			}).catch((e) => {
+				console.log(e);
+				this.notify.addError("Что-то пошло не так. Обратитесь к администратору.");
+				this.isLoading[2] = false;
+			});;
 		}
 
-		this.dataSrv.getTypeList().then(res => this.types = res.json());
+		this.dataSrv.getData(['educType']).then(res => {
+			try{
+				this.types = res.json();
+			}catch(e){
+				console.log(res._body);
+			}
+		}).catch((e) => console.log(e));
 	}
 	//For departments view
 	showListOfListners(course:any): void {
@@ -189,7 +207,6 @@ export class StudListComponent implements OnInit{
 				break;
 		}
 		this.getList.get(data).then(data => { 
-			console.log(data._body);
 			try{
 				switch(time){
 					case "current":
@@ -214,6 +231,9 @@ export class StudListComponent implements OnInit{
 			this.isLoading[1] = false;
 			this.shouldUpdateList = false;
 			this.share.deleteUpdates("studList");
+		}).catch((e) => {
+			this.notify.addError("Ошибка сервера. Попробуйте обновить позже");
+			this.isLoading.fill(true);
 		});
 	}
 	getArchive(){

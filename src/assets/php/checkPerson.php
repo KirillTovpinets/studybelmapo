@@ -5,11 +5,11 @@
 	$mysqli->query("SET NAMES utf8");
 	$data = json_decode(file_get_contents("php://input"));
 	$id = $data->personal->_insurance_number;
-	$result = $mysqli->query("SELECT * FROM personal_private_info WHERE insurance_number LIKE '$id'") or die ("Error: " . mysqli_error($mysqli));
+	$result = $mysqli->query("SELECT personal_card.surname, personal_card.name, personal_card.patername, personal_private_info.insurance_number FROM personal_private_info INNER JOIN personal_card ON personal_private_info.PersonId = personal_card.id WHERE personal_private_info.insurance_number LIKE '$id'") or die ("Error: " . mysqli_error($mysqli));
 	mysqli_close($mysqli);
 	if ($result->{"num_rows"} > 0) {
-		exit("Exist");
+		echo json_encode($result->fetch_assoc());
 	}else{
-		echo "Not exist";
+		echo json_encode(array());
 	}
 ?>
