@@ -15,6 +15,7 @@
 
 	$ResidPlace = $person->_belmapo_residense;
 	$FormEduc = $person->belmapo_educForm;
+	$dateEnter = $person->dateEnter;
 	if (isset($person->_belmapo_paymentData)) {
 		$Dic_count = $person->_belmapo_paymentData;
 	}else{
@@ -24,7 +25,7 @@
 	$isDeleted = 0;
 	$Status = 1;
 	$PersonId = $person->id;
-	$query = "INSERT INTO `arrivals`(`Date`, `CourseId`, `ResidPlace`, `FormEduc`, `Dic_count`, `DocNumber`, `Status`, `PersonId`) VALUES ('$courseDate', '$CourseId', '$ResidPlace', '$FormEduc', '$Dic_count', '$DocNumber', '$Status', '$PersonId')";
+	$query = "INSERT INTO `arrivals`(`Date`, `CourseId`, `ResidPlace`, `FormEduc`, `Dic_count`, `DocNumber`, `Status`, `PersonId`) VALUES ('$dateEnter', '$CourseId', '$ResidPlace', '$FormEduc', '$Dic_count', '$DocNumber', '$Status', '$PersonId')";
 	broadcastUpdate("studList", $mysqli);
 	
 	$mysqli->query($query) or die ("Ошибка выполнения запроса $query: " . mysqli_error($mysqli));

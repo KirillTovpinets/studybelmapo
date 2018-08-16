@@ -41,18 +41,20 @@
                           </thead>
                           <tbody>
                             <ng-container *ngFor="let course of cathedra.CourseList">
-                              <tr (click)="showListOfListners(course)" [ngClass]="{'active': course.isOpened}">
+                              <tr (click)="showListOfListners(course, cathedra.CourseList)" [ngClass]="{'active': course.isOpened}">
                                   <td>{{course.Number}}</td>
                                   <td>{{course.name}}</td>
                                   <td>{{course.Start | date: "dd.MM.yy"}}</td>
                                   <td>{{course.Finish | date: "dd.MM.yy"}}</td>
-                                  <td class="success" align="center">{{course.StudList.length}}</td>
+                                  <td class="success" align="center">{{course.total}}</td>
                                   <td>{{ course.payful }}</td>
-                                  <td class="warning" align="center">{{course.Size - course.StudList.length}}</td>
+                                  <td class="warning" align="center">{{course.payful}}</td>
                               </tr>
-                              <tr *ngIf="course.isOpened">
+                              <tr>
                                 <td colspan="7" class="no-padding">
-                                  <table-list [course]="course" (onChanges)="onChanges($event)" [isCurrent]="course.isCurrent"></table-list>
+                                  <preloader path="assets/img/Elipsis.gif" *ngIf="course.isLoading"></preloader>
+                                  <ng-template #courseList></ng-template>
+                                  <!-- <table-list [course]="course" (onChanges)="onChanges($event)" [isCurrent]="course.isCurrent"></table-list> -->
                                 </td>   
                               </tr>
                             </ng-container>

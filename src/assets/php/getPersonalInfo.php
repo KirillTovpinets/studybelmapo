@@ -19,7 +19,8 @@
 		"speciality_other" => "speciality_other",
 		"speciality_retraining" => "speciality_retraining",
 		"cityzenship" => "countries",
-		"region" => "regions"
+		"region" => "regions",
+		"city" => "cities"
 	);
 
 	//Общая информация

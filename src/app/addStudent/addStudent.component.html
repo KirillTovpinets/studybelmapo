@@ -88,15 +88,15 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Учреждение</label>
-                              <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" required [(ngModel)]="newPerson.general.organization" [source]="personal_organizations" name="organization" class="form-control">
-                              <div class="input-group newValue" *ngIf="newPerson.general.organization == 0">
-                                <input type="text" class="form-control" required placeholder="Введите новое значение" [(ngModel)]="newValue" name="personal_organizati">
+                              <!-- <div class="input-group">
+                                <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Добавить'" [list-formatter]="DropdownList" required [(ngModel)]="newPerson.general.organization" [source]="personal_organizations" name="organization" class="form-control">
                                 <span class="input-group-btn">
-                                  <button class="btn btn-success" type="button" (click)="saveNewParameter(newValue, 'personal_organizations', personal_organizations)">
-                                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                                  <button class="btn btn-success" type="button" (click)="addOrganization()">
+                                    <span class="glyphicon glyphicon-plus"></span>
                                   </button>
                                 </span>
-                              </div>
+                              </div> -->
+                              <input auto-complete auto-select-first-item="true" [max-num-list]="10" [no-match-found-text]="'Нет вариантов'" [list-formatter]="DropdownList" required [(ngModel)]="newPerson.general.organization" [source]="personal_organizations" name="organization" class="form-control">
                             </div>
                           </div>
                           <div class="col-md-4">
@@ -611,49 +611,53 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                <fieldset>
-                  <legend>Форма обучения</legend>
-                  <div>
-                    <input type="radio" checked name="formEduc" [(ngModel)]="newPerson.belmapo_educForm" id="pay" class="regular-radio" value="1">
-                    <label for="pay"></label>
-                    <label>Бюджетное</label>
+                      <fieldset>
+                        <legend>Форма обучения</legend>
+                        <div>
+                          <input type="radio" checked name="formEduc" [(ngModel)]="newPerson.belmapo_educForm" id="pay" class="regular-radio" value="1">
+                          <label for="pay"></label>
+                          <label>Бюджетное</label>
+                        </div>
+                        <div>
+                          <input type="radio" name="formEduc" [(ngModel)]="newPerson.belmapo_educForm" id="budget" class="regular-radio" value="2">
+                          <label for="budget"></label>
+                          <label>Платное</label>
+                        </div>
+                        <div class="form-group">
+                          <label for="date">Дата зачисления</label>
+                          <input #enterDate="ngModel" required type="text" [(ngModel)]="newPerson.dateEnter" [minDate]="minDate" [maxDate]="maxDate" #dateEneter="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueEnter" name="date" class="date-picker form-control">
+                        </div>
+                        <input type="text" class="form-control" *ngIf="newPerson.belmapo_educForm == 2" required [(ngModel)]="newPerson.belmapo_paymentData" name="paymentData" placeholder="Введите номер договора">
+                      </fieldset>
+                    </div>
                   </div>
-                  <div>
-                    <input type="radio" name="formEduc" [(ngModel)]="newPerson.belmapo_educForm" id="budget" class="regular-radio" value="2">
-                    <label for="budget"></label>
-                    <label>Платное</label>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <fieldset>
+                        <legend>Место пребывания</legend>
+                        <div>
+                          <input type="radio" [(ngModel)]="newPerson.belmapo_residense" name="residence" class="regular-radio" id="resid2" value="2">
+                          <label for="resid2"></label>
+                          <label for="">Общежитие №2</label>
+                        </div>
+                        <div>
+                          <input type="radio" [(ngModel)]="newPerson.belmapo_residense" name="residence" class="regular-radio" id="resid3" value="3">
+                          <label for="resid3"></label>
+                          <label for="">Общежитие №3</label>
+                        </div>
+                        <div>
+                          <input type="radio" [(ngModel)]="newPerson.belmapo_residense" name="residence" class="regular-radio" id="resid4" value="4">
+                          <label for="resid4"></label>
+                          <label for="">Общежитие №4</label>
+                        </div>
+                        <div>
+                          <input type="radio" [(ngModel)]="newPerson.belmapo_residense" name="residence" class="regular-radio" id="resid6" value="6">
+                          <label for="resid6"></label>
+                          <label for="">Своё жильё</label>
+                        </div>
+                      </fieldset>
+                    </div>
                   </div>
-                  <input type="text" class="form-control" *ngIf="newPerson.belmapo_educForm == 2" required [(ngModel)]="newPerson.belmapo_paymentData" name="paymentData" placeholder="Введите номер договора">
-                </fieldset>
-              </div>
-                  </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <fieldset>
-                  <legend>Место пребывания</legend>
-                  <div>
-                    <input type="radio" [(ngModel)]="newPerson.belmapo_residense" name="residence" class="regular-radio" id="resid2" value="2">
-                    <label for="resid2"></label>
-                    <label for="">Общежитие №2</label>
-                  </div>
-                  <div>
-                    <input type="radio" [(ngModel)]="newPerson.belmapo_residense" name="residence" class="regular-radio" id="resid3" value="3">
-                    <label for="resid3"></label>
-                    <label for="">Общежитие №3</label>
-                  </div>
-                  <div>
-                    <input type="radio" [(ngModel)]="newPerson.belmapo_residense" name="residence" class="regular-radio" id="resid4" value="4">
-                    <label for="resid4"></label>
-                    <label for="">Общежитие №4</label>
-                  </div>
-                  <div>
-                    <input type="radio" [(ngModel)]="newPerson.belmapo_residense" name="residence" class="regular-radio" id="resid6" value="6">
-                    <label for="resid6"></label>
-                    <label for="">Своё жильё</label>
-                  </div>
-                </fieldset>
-              </div>
-            </div>
           </div>
           <div class="errors">
             <p></p>
@@ -680,3 +684,81 @@
     </div>
   </div>
 </ng-template>
+
+<ng-template #newOrgan>
+    <div class="modal-body">
+      <div class="card">
+        <div class="content">
+          <div class="header"><p>Заполните данные новой организации</p></div>
+          <div class="content">
+              <form #personInfo="ngForm">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="row">
+                        <div class="form-group col-md-12">
+                          <label for="date">Название</label>
+                          <input required type="text" [(ngModel)]="newOrganization.name" name="name" class="form-control" required>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-6">
+                          <label for="date">Аббревиатура</label>
+                          <input required type="text" [(ngModel)]="newOrganization.short_name" name="short_name" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                              <label for="date">Тип учреждения</label>
+                              <input required auto-complete auto-select-first-item="true"  [source]="organizationForms" [list-formatter]="DropdownList" [max-num-list]="10" type="text" [no-match-found-text]="'Нет вариантов'" [(ngModel)]="newOrganization.form" name="form" class="form-control" required>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                            <label for="date">Форма собственности</label>
+
+                            <div class="form-group">
+                              <input type="radio" name="public" [(ngModel)]="newOrganization.isPublic" id="public" class="regular-radio" value="1">
+                              <label for="public"></label>
+                              <label>Государственная</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="radio" name="public" [(ngModel)]="newOrganization.isPublic" id="private" class="regular-radio" value="0">
+                                <label for="private"></label>
+                                <label>Частная</label>
+                            </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                          <div class="form-group col-md-6">
+                            <label for="date">Страна</label>
+                            <input auto-complete auto-select-first-item="true"  [source]="personal_cityzenships" [list-formatter]="DropdownList" [max-num-list]="10" type="text" [no-match-found-text]="'Нет вариантов'" [(ngModel)]="newOrganization.country" name="country" class="form-control" required>
+                          </div>
+                          <div class="form-group col-md-6">
+                            <label for="date">Область</label>
+                            <input auto-complete auto-select-first-item="true"  [source]="all_regions" [list-formatter]="DropdownList" [max-num-list]="10" type="text" [no-match-found-text]="'Нет вариантов'" [(ngModel)]="newOrganization.region" name="region" class="form-control">
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-md-6">
+                            <label for="date">Город</label>
+                            <input auto-complete auto-select-first-item="true"  [source]="all_cities" [list-formatter]="DropdownList" [max-num-list]="10" type="text" [no-match-found-text]="'Нет вариантов'" [(ngModel)]="newOrganization.city" name="city" class="form-control" required>
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="date">Улица</label>
+                            <input required type="text" [(ngModel)]="newOrganization.street" name="street" class="form-control">
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="date">Дом</label>
+                            <input required type="text" [(ngModel)]="newOrganization.building" name="short_name" class="form-control">
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                  <a (click)="SaveOrganization(newOrganization, 'personal_organizations', personal_organizations )" class="btn btn-success">Сохранить</a>
+                  <a (click)="modal.hide(1)" class="btn btn-danger">Отмена</a>
+                </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>

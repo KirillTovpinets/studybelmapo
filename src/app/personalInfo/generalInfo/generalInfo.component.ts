@@ -15,14 +15,14 @@ export class GeneralInfoComponent{
 	@Input('change') change: boolean = false;
 	@Output() canSave = new EventEmitter<number>();
 
-	private personal_appointments: any[] = [];
-	private personal_organizations: any[] = [];
-	private personal_departments: any[] = [];
-	private outputData:any = {};
-	private autoCopleteError: boolean = false;
+	public personal_appointments: any[] = [];
+	public personal_organizations: any[] = [];
+	public personal_departments: any[] = [];
+	public outputData:any = {};
+	public autoCopleteError: boolean = false;
 	newValue:string = "";
 
-	constructor(private dataService: PersonalDataService,
+	constructor(public dataService: PersonalDataService,
 				private notify: NotificationsService,
 				private saveService: PersonService,){
 

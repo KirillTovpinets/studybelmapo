@@ -13,7 +13,7 @@ import { LogService } from '../share/log.service';
 })
 
 export class MenuComponent implements OnInit{
-	constructor(private selectedPage: GlobalParamsService,
+	constructor(public selectedPage: GlobalParamsService,
 				private menuManip: ShareService,
 				private element: ElementRef,
 				private log: LogService,
@@ -31,7 +31,7 @@ export class MenuComponent implements OnInit{
 			this.element.nativeElement.style.right = "0";
 			this.element.nativeElement.style.left = "initial";
 		 });
-		this.selectedPage._selectedPage = 1;
+		this.selectedPage.selectedPage = 1;
 
 		if (this.currentUser.login == "admin") {
 			this.database.getDatabaseInfo("schema").subscribe(res => {
@@ -49,6 +49,6 @@ export class MenuComponent implements OnInit{
 		this.showDrop = !this.showDrop;
 	}
 	selectPage(v:number): void{
-		this.selectedPage._selectedPage = v;
+		this.selectedPage.selectedPage = v;
 	}
 }

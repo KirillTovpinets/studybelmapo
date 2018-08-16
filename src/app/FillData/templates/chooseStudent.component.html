@@ -142,15 +142,19 @@
 		          			<div class="form-group">
 								<fieldset>
 									<legend>Форма обучения</legend>
-									<div>
+									<div class="form-group">
 										<input type="radio" checked name="formEduc" [(ngModel)]="selectedPerson.belmapo_educForm" id="pay" class="regular-radio" value="1">
 										<label for="pay"></label>
 										<label>Бюджетное</label>
 									</div>
-									<div>
+									<div class="form-group">
 										<input type="radio" name="formEduc" [(ngModel)]="selectedPerson.belmapo_educForm" id="budget" class="regular-radio" value="2">
 										<label for="budget"></label>
 										<label>Платное</label>
+									</div>
+									<div class="form-group">
+										<label for="date">Дата зачисления</label>
+										<input #enterDate="ngModel" required type="text" [(ngModel)]="selectedPerson.dateEnter" [minDate]="minDate" [maxDate]="maxDate" #dateEneter="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker [(bsValue)]="bsValueEnter" name="date" class="date-picker form-control">
 									</div>
 									<input type="text" class="form-control" *ngIf="selectedPerson.belmapo_educForm == 2" required #costed="ngModel" [(ngModel)]="selectedPerson._belmapo_paymentData" name="paymentData" placeholder="Введите номер договора">
 								</fieldset>

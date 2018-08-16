@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class GlobalParamsService {
-	private selectedPage:number = 0;
+	private _selectedPage:number = 0;
 	constructor() {}
 
-	public get _selectedPage() : number {
-		return this.selectedPage;
+	public get selectedPage() : number {
+		return this._selectedPage;
 	}
-	public set _selectedPage(v : number) {
-		this.selectedPage = v;
+	public set selectedPage(v : number) {
+		this._selectedPage = v;
 	}
 }

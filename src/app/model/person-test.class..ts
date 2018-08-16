@@ -1,13 +1,11 @@
-import { GeneralInfo } from './generalInfo.class';
-import { ProfesionalInfo } from './profesionInfo.class';
-import { PrivateInfo } from './privateInfo.class';
-import { SienceInfo } from './sienceInfo.class';
+import { GeneralInfoTest } from './generalInfoTest.class';
+import { ProfesionalInfoTest } from './profesionInfoTest.class';
+import { PrivateInfoTest } from './privateInfoTest.class';
 
-export class Person{
-	public general: GeneralInfo;
-	public profesional: ProfesionalInfo;
-	public personal: PrivateInfo;
-	public sience: SienceInfo;
+export class PersonTest{
+	public general: GeneralInfoTest;
+	public profesional: ProfesionalInfoTest;
+	public personal: PrivateInfoTest;
 	private _isCowoker:boolean;
 	private _dateEnter;
 	
@@ -91,19 +89,17 @@ export class Person{
 	}
 	
 	constructor(){
-		this.general = new GeneralInfo();
-		this.profesional = new ProfesionalInfo();
-		this.personal = new PrivateInfo();
-		this.sience = new SienceInfo();
-		// this._belmapo_docNumber = "test";
+		this.general = new GeneralInfoTest();
+		this.profesional = new ProfesionalInfoTest();
+		this.personal = new PrivateInfoTest();
 
-		// this._id = 1;
-		// this._belmapo_faculty = 1;
-		// this._belmapo_cathedra = 1;
-		// this._belmapo_course = 1;
-		// this._belmapo_educType = 1;
-		// this._belmapo_residense = 1;
-		// this._belmapo_educForm = 1;
-		// this._belmapo_paymentData = 1;
+		this._id = 1;
+		this._belmapo_faculty = 1;
+		this._belmapo_cathedra = 1;
+		this._belmapo_course = 1;
+		this._belmapo_educType = 1;
+		this._belmapo_residense = 1;
+		this._belmapo_educForm = 1;
+		this._belmapo_paymentData = 1;
 	}
 }

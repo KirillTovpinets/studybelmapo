@@ -12,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Retraining } from '../model/profesionInfo.class';
 import { LogService } from '../share/log.service';
 import { NgForm } from '@angular/forms';
+import { PersonTest } from '../model/person-test.class.';
 @Component({
 	templateUrl: "./addStudent.component.html",
 	providers: [PersonalDataService, PersonService, BsModalService],
@@ -61,6 +62,14 @@ import { NgForm } from '@angular/forms';
 		fieldset{
 			margin:0;
 		}
+		.input-group{
+			margin-top: 0px !important;
+		}
+		.input-group .form-control{
+			border-left:1px solid #666 !important;
+			border-top-left-radius: 3px;
+			border-bottom-left-radius: 3px;
+		}
 	`]
 })
 
@@ -68,6 +77,7 @@ export class AddStudentComponent implements OnInit{
 	@ViewChild("tabSet") tabSet: TabsetComponent
 	@ViewChild("existTpl") exist: TemplateRef<any>;
 	@ViewChild("addForm") form: NgForm;
+	@ViewChild("newOrgan") newOrg: TemplateRef<any>;
 	private personal_faculties: any[] = [];
 	
 	private personal_appointments: any[] = [];
@@ -100,20 +110,23 @@ export class AddStudentComponent implements OnInit{
 	public findPerson: any = {};
 	public tempData:Person = new Person();
 	public originalData:Person = new Person();
-	private isLoaded: boolean = false;
-	private isChecked:boolean = false;
+	public isLoaded: boolean = false;
+	public isChecked:boolean = false;
+	public organizationForms: any[] = [];
+	public newOrganization:any = {};
 
 	private outputData:any = {};
-	private newValue: string = "";
-	private fillDataModal: BsModalRef;
+	public newValue: string = "";
+	public fillDataModal: BsModalRef;
 	bsValue: Date = new Date();
 	minDate = new Date(1900, 1, 1);
   	maxDate = new Date();
   	locale = "ru";
   	courseId:number = 0;
   	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: "ru", dateInputFormat: 'DD.MM.YYYY' });
-  	alreadyExist: BsModalRef;
-	  activateTab: boolean = false;
+	alreadyExist: BsModalRef;
+	newOrgModal: BsModalRef;  
+	activateTab: boolean = false;
 	renewData = [];
   	dataKeys: string[] = [
 		"faculties",
@@ -175,10 +188,8 @@ export class AddStudentComponent implements OnInit{
  				inputData.profesional.speciality_retraining[i].diploma_start = inputData.profesional.speciality_retraining[i].diploma_startDate.toISOString().slice(0,10);
  			}
  		}
- 		if (inputData.sience.statusApproveDate !== undefined) {
- 			inputData.sience.statusApprove_date = inputData.sience.statusApproveDate.toISOString().slice(0,10);
- 		}
- 		inputData.belmapo_course = this.courseId;
+		 inputData.belmapo_course = this.courseId;
+		console.log(inputData);
  		this.saveService.save(inputData).then(data => {
  			this.notify.addInfo("Cлушатель зачислен");
  			this.isChecked = false;
@@ -186,8 +197,12 @@ export class AddStudentComponent implements OnInit{
  		});
  	}
 	NextTab(tabId:number){
-		tabId += 1;
-  		this.tabSet.tabs[tabId].active = true;
+		try{
+			tabId += 1;
+  			this.tabSet.tabs[tabId].active = true;
+		}catch(e){
+
+		}
   	}
 	DropdownList(data:any):string{
 		return data.value;
@@ -197,9 +212,11 @@ export class AddStudentComponent implements OnInit{
 	}
 	ngOnInit():void{
 		this.courseId = this.router.snapshot.params["id"];
-		
+		let courseDate = localStorage.getItem("course-start");
+		this.minDate = new Date(courseDate);
+		this.newPerson.dateEnter = this.minDate;
 		for(let key of this.dataKeys){
-			if (localStorage.getItem(key) == null) {
+			if (localStorage.getItem(key) == null || localStorage.getItem(key) == "undefined") {
 				this.renewData.push(key);
 			}else{
 				switch (key) {
@@ -214,7 +231,9 @@ export class AddStudentComponent implements OnInit{
 						break;
 					case "Residence":
 						this.residance = JSON.parse(localStorage.getItem("Residence"));
-						this.personal_cityzenships = JSON.parse(localStorage.getItem("Residence"));
+						break;
+					case "countries":
+						this.personal_cityzenships = JSON.parse(localStorage.getItem("countries"));
 						break;
 					case "personal_faculty":
 						this.personal_faculties = JSON.parse(localStorage.getItem("personal_faculty"));
@@ -234,10 +253,6 @@ export class AddStudentComponent implements OnInit{
 						break;
 					case "personal_establishment":
 						this.personal_establishments = JSON.parse(localStorage.getItem("personal_establishment"));
-						break;
-					case "residArr":
-						this.personal_cityzenships = JSON.parse(localStorage.getItem("residArr"));
-						this.all_countries = this.personal_cityzenships;
 						break;
 					case "speciality_doct":
 						this.specialityDocArr = JSON.parse(localStorage.getItem("speciality_doct"));
@@ -266,6 +281,13 @@ export class AddStudentComponent implements OnInit{
 		}
 		if (this.renewData.length != 0) {
 			this.dataService.getData(this.renewData).then(data => {
+				try{
+					data.json();
+				}catch(e){
+					console.log(data._body);
+					this.isLoaded = true;
+					this.notify.addError("Что-то пошло не так. Обратитесь к администратору");
+				}
 				try{
 					if(data.json().faculties !== undefined){
 						this.faculties = data.json().faculties;
@@ -344,7 +366,9 @@ export class AddStudentComponent implements OnInit{
 					}
 					this.isLoaded = true;
 				}catch(e){
+					let curUser = localStorage.getItem("currentUser");
 					localStorage.clear();
+					localStorage.setItem("currentUser", curUser);
 					if(data.json().faculties !== undefined){
 						this.faculties = data.json().faculties;
 						localStorage.setItem("faculties", JSON.stringify(data.json().faculties))
@@ -635,7 +659,26 @@ export class AddStudentComponent implements OnInit{
   		}
   		this.newPerson.personal.tel_number_mobile = "(";
   	}
-  	setCorrectDate(){
-  		
-  	}
+  	addOrganization(){
+		this.dataService.getData(['organization_forms']).then((data) => {
+			console.log(data.json());
+			this.organizationForms = data.json().organization_forms;
+		})
+		this.newOrgModal = this.modal.show(this.newOrg, {class: "modal-lg"});
+	}
+	SaveOrganization(org:any, table:string, arr: any[]){
+		this.outputData.value = org;
+		this.outputData.table = table;
+
+		arr.forEach(element => {
+			if(org.name == element.value){
+				this.notify.addWarning("Этот вариант уже существует");
+				return;
+			}
+		});
+		console.log(this.outputData);
+		this.saveService.saveParameter(this.outputData).then(data => {
+			console.log(data._body);
+		})
+	}
 }

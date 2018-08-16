@@ -22,26 +22,26 @@
                 <th>Начало</th>
                 <th>Конец</th>
                 <th>Набор</th>
-                <th>Зачислено</th>
                 <th>Инфо</th>
                 <th>Действия</th>
               </tr>
               <ng-container *ngFor="let course of currentCourses">
-                <tr (click)="showListOfListners(course)" [ngClass]="{'active': course.isOpened}">
+                <tr (click)="showListOfListners(course, currentCourses, 'curCources')" [ngClass]="{'active': course.isOpened}">
                     <td>{{course.Number}}</td>
                     <td>{{course.name}}</td>
                     <td>{{course.Start | date: "dd.MM.yy"}}</td>
                     <td>{{course.Finish | date: "dd.MM.yy"}}</td>
                     <td>{{ course.Size }}</td>
-                    <td>{{ course.StudList.length }}</td>
                     <td>{{ course.Notes }}</td>
                     <td>
                       <button class="btn btn-success btn-block" [routerLink]="['../addDoctor/chooseStudent', course.id]" tooltip="Зачислить нового слушателя на этот курс">Зачислить</button>
                     </td>
                 </tr>
-                <tr *ngIf="course.isOpened">
+                <tr>
                   <td colspan="8" class="no-padding">
-                    <table-list [course]="course" [isCurrent]="1"></table-list>
+                      <preloader path="assets/img/Elipsis.gif" *ngIf="course.isLoading"></preloader>
+                      <ng-template #curCrs></ng-template>
+                    <!-- <table-list [course]="course" [isCurrent]="1"></table-list> -->
                   </td>   
                 </tr>
               </ng-container>
@@ -71,25 +71,22 @@
                 <th>Начало</th>
                 <th>Конец</th>
                 <th>Набор</th>
-                <th>Отучилось</th>
                 <th>Инфо</th>
               </tr>
               <ng-container *ngFor="let course of oldCourses">
-                <tr (click)="showListOfListners(course)" [ngClass]="{'active': course.isOpened}" *ngIf="course.StudList.length !== 0">
+                <tr (click)="showListOfListners(course, oldCourses, 'oldCources')" [ngClass]="{'active': course.isOpened}">
                     <td>{{course.Number}}</td>
                     <td>{{course.name}}</td>
                     <td>{{course.Start | date: "dd.MM.yy"}}</td>
                     <td>{{course.Finish | date: "dd.MM.yy"}}</td>
                     <td>{{ course.Size }}</td>
-                    <td>
-                      <span *ngIf="course.StudList.length !== 0">{{ course.StudList.length }}</span>
-                      <span class="fa fa-archive" *ngIf="course.StudList.length === 0" tooltip="Данные о студентах находятся в архиве"></span>
-                    </td>
                     <td>{{ course.Notes }}</td>
                 </tr>
-                <tr *ngIf="course.isOpened">
+                <tr>
                   <td colspan="7" class="no-padding">
-                    <table-list [course]="course" [disableEnter]="true" [isCurrent]="0"></table-list>
+                      <preloader path="assets/img/Elipsis.gif" *ngIf="course.isLoading"></preloader>
+                    <ng-template #oldCrs></ng-template>
+                    <!-- <table-list [course]="course" [disableEnter]="true" [isCurrent]="0"></table-list> -->
                   </td>   
                 </tr>
               </ng-container>
@@ -121,7 +118,7 @@
                 <th>Инфо</th>
               </tr>
               <ng-container *ngFor="let course of courseList">
-                <tr (click)="showListOfListners(course)" [ngClass]="{'active': course.isOpened, 'danger': course.class === 1, 'success': course.class === 2}">
+                <tr (click)="showListOfListners(course, courseList, 'allCources')" [ngClass]="{'active': course.isOpened, 'danger': course.class === 1, 'success': course.class === 2}">
                     <td>{{course.Number}}</td>
                     <td>{{course.name}}</td>
                     <td>{{course.Start | date: "dd.MM.yy"}}</td>
@@ -129,9 +126,11 @@
                     <td>{{ course.Size }}</td>
                     <td>{{ course.Notes }}</td>
                 </tr>
-                <tr *ngIf="course.isOpened">
+                <tr>
                   <td colspan="6" class="no-padding">
-                    <table-list [course]="course"></table-list>
+                      <preloader path="assets/img/Elipsis.gif" *ngIf="course.isLoading"></preloader>
+                      <ng-template #allCrs></ng-template>
+                    <!-- <table-list [course]="course"></table-list> -->
                   </td>   
                 </tr>
               </ng-container>

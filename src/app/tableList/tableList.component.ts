@@ -50,7 +50,7 @@ import { StudListService } from '../studList/stud-list.service';
 		`]
 })
 
-export class TableListCopmonent implements OnInit{
+export class TableListCopmonent{
 	@Input('course') course: any;
 	@Input('isCurrent') courseIsCurrent: number;
 	@Input('disableEnter') disableEnter: boolean = false;
@@ -77,7 +77,7 @@ export class TableListCopmonent implements OnInit{
 	private deductBeforeInfo: BsModalRef;
 	private contractModal: BsModalRef;
 	private ResidModal: BsModalRef;
-
+	public courseItem: any;
 	marks: any[] = [];
 	certificate: Certificate;
 	global: Global = new Global();
@@ -87,9 +87,10 @@ export class TableListCopmonent implements OnInit{
 	changeContractNumber: boolean = false;
 	changeResidPlace: boolean = false;
 	residList: any[] = [];
-	ngOnInit(){
-		this.students.currentTotal.subscribe(total => this.totalNumber = total);
-	}
+
+	// ngOnInit(){
+	// 	this.students.currentTotal.subscribe(total => this.totalNumber = total);
+	// }
 	Deduct(person:any, $event:any){
 		$event.stopPropagation();
 		if (person.DocNumber === undefined || person.DocNumber.length === 0) {

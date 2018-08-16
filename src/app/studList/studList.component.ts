@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ComponentFactoryResolver, ViewContainerRef, QueryList, ViewChildren, ComponentRef } from '@angular/core';
 import { InfoService } from './studList.service';
 import { AccordionModule, TabsetComponent } from 'ngx-bootstrap';
 import { CurrentCourcesListService } from '../FillData/services/getCurrentCourcesList.service';
@@ -10,6 +10,8 @@ import { StudListService } from './stud-list.service';
 import { LogService } from '../share/log.service';
 import { IfObservable } from 'rxjs/observable/IfObservable';
 import { ShareService } from '../share/share.service';
+import { TableListCopmonent } from '../tableList/tableList.component';
+import { forwardRef } from '@angular/core';
 
 declare var $: any;
 @Component({
@@ -46,6 +48,9 @@ declare var $: any;
 
 export class StudListComponent implements OnInit{
 	@ViewChild("courseLists") coursesTabs: TabsetComponent;
+	@ViewChildren('oldCrs', { read: ViewContainerRef }) oldList: QueryList<ViewContainerRef>;
+	@ViewChildren('curCrs', { read: ViewContainerRef }) curList: QueryList<ViewContainerRef>;
+	@ViewChildren('allCrs', { read: ViewContainerRef }) allList: QueryList<ViewContainerRef>;
 	courseList: any[] = [];
 	oldCourses: any[] = [];
 	currentCourses: any[] = [];
@@ -65,13 +70,15 @@ export class StudListComponent implements OnInit{
 	ArchiveYearIsLoaded: boolean = false;
 	nowYear: number = new Date().getFullYear();
 	shouldUpdateList: boolean = false;
+	componentRef: any;
 	constructor(private info: InfoService,
 				private getList: CurrentCourcesListService,
 				private dataSrv: PersonalDataService,
 				private notify: NotificationsService,
 				private share: ShareService,
 				private students: StudListService,
-				private log: LogService){}
+				private log: LogService,
+				private cfr: ComponentFactoryResolver){}
 
 	ngOnInit(): void{
 		this.share._updateData.subscribe(list => {
@@ -184,15 +191,52 @@ export class StudListComponent implements OnInit{
 		}).catch((e) => console.log(e));
 	}
 	//For departments view
-	showListOfListners(course:any): void {
-		if (this.prevRow != undefined && this.prevRow !== course) {
-			this.prevRow.isOpened = false;
+	showListOfListners(course:any, cl:any[], type:string): void {
+		if(course.isOpened){
+			this.componentRef.destroy();
+			course.isOpened = false;
+			this.prevRow = course;
+			return;
 		}
-		course.isOpened = !course.isOpened;
-		this.prevRow = course;
+		course.isLoading = true;
+		this.getList.getById(course.id).then((data) => {
+			try{
+				console.log(data.json())
+				let viewList;
+				switch(type){
+					case 'curCources':
+						viewList = this.curList.toArray();
+						break;
+					case 'oldCources':
+						viewList = this.oldList.toArray();
+						break;
+					case 'allCources':
+						viewList = this.allList.toArray();
+						break;
+				}
+
+				const container = viewList[cl.indexOf(course)];
+				if(this.componentRef !== undefined){
+					this.componentRef.destroy();
+				}
+				container.clear();
+				let compFact = this.cfr.resolveComponentFactory(TableListCopmonent);
+				this.componentRef = container.createComponent(compFact);
+				let response = data.json();
+				this.componentRef.instance.courseItem = response[0];
+				course.isOpened = true;
+				course.isLoading = false;
+
+			}catch(e){
+				console.log(e);
+				console.log(data._body);
+				this.notify.addError("Что-то пошло не так. Обратитесь к администратору");
+			}
+		})
 	}
 
-	updateList(time?:string){
+	updateList(time:string = ""){
+		console.log(time);
 		localStorage.removeItem(time + "-courses");
 		let data = time || "";
 		switch(time){
@@ -208,22 +252,31 @@ export class StudListComponent implements OnInit{
 		}
 		this.getList.get(data).then(data => { 
 			try{
+				console.log(data.json());
 				switch(time){
 					case "current":
+					{
 						this.isLoading[0] = false;
 						this.currentCourses = data.json();
+						localStorage.setItem(time + "-courses", JSON.stringify(this.oldCourses)); 
 						break;
+					}
 					case "old":
+					{
 						this.isLoading[1] = false;
 						this.oldCourses = data.json();
+						localStorage.setItem(time + "-courses", JSON.stringify(this.oldCourses)); 
 						break;
+					}
 					case "":
+					{
 						this.isLoading[2] = false;
 						this.courseList = data.json();
+						localStorage.setItem("all-courses", JSON.stringify(this.oldCourses)); 
 						break;
+					}
 				}
-				this.oldCourses = data.json();
-				localStorage.setItem("old-courses", JSON.stringify(this.oldCourses)); 
+
 			}catch(e){
 				console.log(data._body);
 				console.log(e);

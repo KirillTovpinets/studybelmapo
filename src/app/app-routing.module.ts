@@ -7,7 +7,6 @@ import { MainComponent } 			from './main/main.component';
 import { MenuComponent } 			from './menu/menu.component';
 import { FillDataComponent } 		from './fillData/fillData.component';
 import { NavbarComponent } 			from './navbar/navbar.component';
-import { AccordionComponent } 		from './accordion.component';
 import { StudListComponent } 		from './studList/studList.component';
 import { SearchStudentComponent } 	from './registry/searchStudent.component';
 import { AddStudentComponent } 		from './addStudent/addStudent.component';

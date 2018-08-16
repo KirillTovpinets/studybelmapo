@@ -14,15 +14,15 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngIf="course.StudList && course.StudList.length == 0" class="no-hover">
+        <tr *ngIf="courseItem.StudList && courseItem.StudList.length == 0" class="no-hover">
             <td colspan="11" align="center">
                 <div class="alert alert-warning">
                     <p>Список пуст</p>
                 </div>
             </td>
         </tr>
-        <ng-container *ngIf="course.StudList && course.StudList.length != 0">
-            <tr *ngFor="let person of course.StudList; index as i" (click)="showInfo.ShowPersonalInfo(person)">
+        <ng-container *ngIf="courseItem.StudList && courseItem.StudList.length != 0">
+            <tr *ngFor="let person of courseItem.StudList; index as i" (click)="showInfo.ShowPersonalInfo(person)">
                 <td>{{ i + 1 }}</td>
                 <td>{{ person.Date | date: "dd.MM.yyyy" }}</td>
                 <td>{{ person.surname }}</td>
@@ -48,7 +48,7 @@
                 </td>
                 <td style="max-width:200px;">
                     <button class="btn btn-danger btn-block" *ngIf="person.hasChanges" (click)="CancelEdit($event, person)">Отмена</button>
-                    <button class="btn btn-danger btn-block" (click)="Deduct(person, $event)" *ngIf="!person.hasChanges && person.Status !== 1 && courseIsCurrent != 1" tooltip="Создать свидетельство об окончании">Отчислить</button>
+                    <button class="btn btn-danger btn-block" (click)="Deduct(person, $event)" *ngIf="!person.hasChanges && person.Status !== 1 && courseItemIsCurrent != 1" tooltip="Создать свидетельство об окончании">Отчислить</button>
                     <div class="btn-group btn-group-justified" role="group" aria-label="buttons">
                         <div class="btn-group">
                             <button class="btn btn-default" *ngIf="person.Status == 1" (click)="DeleteRow(person, $event)">Удалить</button>
@@ -57,7 +57,7 @@
                             <button class="btn btn-success" *ngIf="person.Status == 1" (click)="EnterRow(person, $event)">Зачислить</button>
                         </div>
                     </div>
-                    <button class="btn btn-danger btn-block" (click)="DeductBeforeEnd(person, $event)" *ngIf="!person.hasChanges && person.Status != 1 && courseIsCurrent == 1" tooltip="Отчислить слушателя с курса">Отчислить досрочно </button>
+                    <button class="btn btn-danger btn-block" (click)="DeductBeforeEnd(person, $event)" *ngIf="!person.hasChanges && person.Status != 1 && courseItemIsCurrent == 1" tooltip="Отчислить слушателя с курса">Отчислить досрочно </button>
                 </td>
             </tr>
         </ng-container>   

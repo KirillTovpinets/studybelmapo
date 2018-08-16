@@ -60,7 +60,6 @@ import { RegistryModule } from './registry/registry.module';
 import { MenuModule } from './Menu/menu.module';
 import { DropdownModule } from 'ngx-dropdown';
 import { PersonalInfoService } from './personalInfo/personalInfo.service';
-
 enableProdMode();
 defineLocale('ru', ruLocale);
 
@@ -111,6 +110,7 @@ defineLocale('ru', ruLocale);
     RegistryModule,
     MenuModule
   ],
+  entryComponents: [TableListCopmonent],
   providers: [ CookieService, 
                NotificationsService, 
                AuthGuard, 

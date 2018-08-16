@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, ViewContainerRef, QueryList, ComponentFactoryResolver } from '@angular/core';
 import { InfoService } from '../studList/studList.service';
 import { Course } from '../model/course.class';
 import { Global } from '../model/global.class';
@@ -7,6 +7,7 @@ import { CurrentCourcesListService } from '../FillData/services/getCurrentCource
 import { LogService } from '../share/log.service';
 import { PersonalDataService } from '../personalInfo/personalData.service';
 import { ShareService } from '../share/share.service';
+import { TableListCopmonent } from '../tableList/tableList.component';
 
 @Component({
   selector: 'app-total-list',
@@ -15,6 +16,7 @@ import { ShareService } from '../share/share.service';
   providers: [InfoService, NotificationsService, PersonalDataService]
 })
 export class TotalListComponent implements OnInit {
+	@ViewChildren('courseList', { read: ViewContainerRef }) list: QueryList<ViewContainerRef>;
   statIsLoaded: boolean = false;
   cathedras: string[] = [];
   faculties: any[] = [];
@@ -26,12 +28,15 @@ export class TotalListComponent implements OnInit {
 	types: any[];
 	update: boolean = false;
 	shouldUpdateList: boolean = false;
+	componentRef:any;
+	allCourses: any[] = [];
   constructor(private info: InfoService,
               private notify: NotificationsService,
               private getList: CurrentCourcesListService,
 							private log: LogService,
 							private share: ShareService,
-							private data: PersonalDataService) { }
+							private data: PersonalDataService,
+							private cfr: ComponentFactoryResolver) { }
 
   ngOnInit() {
 		this.share._updateData.subscribe(list => {
@@ -45,6 +50,11 @@ export class TotalListComponent implements OnInit {
     if(faculties == null){
       this.info.getInfo("getStat").then(data => {
 				this.faculties = data.json().data;
+				this.faculties.forEach((e) => {
+					e.CathedraList.forEach((e) => {
+						this.allCourses = this.allCourses.concat(e.CourseList);
+					})
+				});
 				try{
 					localStorage.setItem("faculties", JSON.stringify(this.faculties));
 				}catch(e){
@@ -54,11 +64,16 @@ export class TotalListComponent implements OnInit {
         this.statIsLoaded = true;
       });
     }else{
-      this.faculties = JSON.parse(faculties);
+			this.faculties = JSON.parse(faculties);
+			this.faculties.forEach((e) => {
+				e.CathedraList.forEach((e) => {
+					this.allCourses = this.allCourses.concat(e.CourseList);
+				})
+			});
       this.statIsLoaded = true;
 		}
 		
-		let types = localStorage.getItem("educTypeBel");
+		let types = localStorage.getItem("educType");
 		if(types == null){
 			this.data.getData(["type"]).then((data) => {
 				try{
@@ -117,12 +132,37 @@ export class TotalListComponent implements OnInit {
 		});
 	}
   //For departments view
-	showListOfListners(course:any): void {
-		if (this.prevRow != undefined && this.prevRow !== course) {
-			this.prevRow.isOpened = false;
+	showListOfListners(course:any, cl:any[]): void {
+		if(course.isOpened){
+			this.componentRef.destroy();
+			course.isOpened = false;
+			this.prevRow = course;
+			return;
 		}
-		course.isOpened = !course.isOpened;
-		this.prevRow = course;
+		course.isLoading = true;
+		this.getList.getById(course.id).then((data) => {
+			try{
+				let viewList = this.list.toArray();
+
+				const container = viewList[this.allCourses.indexOf(course)];
+				if(this.componentRef !== undefined){
+					this.componentRef.destroy();
+				}
+				container.clear();
+				let compFact = this.cfr.resolveComponentFactory(TableListCopmonent);
+				this.componentRef = container.createComponent(compFact);
+				let response = data.json();
+				this.componentRef.instance.courseItem = response[0];
+				course.isOpened = true;
+				course.isLoading = false;
+
+			}catch(e){
+				console.log(e);
+				console.log(data._body);
+				course.isLoading = false;
+				this.notify.addError("Что-то пошло не так. Обратитесь к администратору");
+			}
+		})
 	}
 	SaveCourse(){
 		this.newCourse.startStr = this.newCourse.start.toISOString().slice(0,10);

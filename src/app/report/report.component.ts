@@ -26,7 +26,7 @@ export class ReportComponent implements OnInit{
 	private formofeducation: any[] = [];
 	private residance: any[] = [];
 
-	private isLoaded:boolean = false;
+	public isLoaded:boolean = false;
   private getResult:boolean = true;
 	private parameters:any[] = [];
 

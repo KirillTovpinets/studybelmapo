@@ -2,6 +2,7 @@ import {Injectable } from "@angular/core";
 import {Http} from "@angular/http";
 import { Person } from '../model/person.class';
 import "rxjs/add/operator/toPromise";
+import { PersonTest } from "../model/person-test.class.";
 
 @Injectable()
 

@@ -15,12 +15,13 @@ export class PrivateInfoComponent{
 	@Output() canSave = new EventEmitter<number>();
 	globalPrams: Global = new Global();
 
-	private personal_cityzenships: any[] = [];
-	private personal_regions: any[] = [];
-	private personal_cities:any[] = [];
-	private autoCopleteError: boolean = false;
+	public personal_cityzenships: any[] = [];
+	public personal_regions: any[] = [];
+	public personal_cities:any[] = [];
+	public autoCopleteError: boolean = false;
+	public bsValueBirthday: Date = new Date();
 
-	constructor(private dataService: PersonalDataService){
+	constructor(public dataService: PersonalDataService){
 
 		this.personal_cityzenships = JSON.parse(localStorage.getItem("residArr"));
 		this.personal_regions = JSON.parse(localStorage.getItem("regArr"));

@@ -188,11 +188,10 @@
 	}else{
 		$paymentInfo = "";
 	}
-	$courseObj = $mysqli->query("SELECT Start FROM cources where id = $data->_belmapo_course");
-	$courseArr = $courseObj->fetch_assoc();
-	$courseDate = $courseArr["Start"];
+
+	$dateEnter = $data->_dateEnter;
 	$mysqli->query("INSERT INTO arrivals (date,CourseId, ResidPlace, FormEduc, Dic_count, Status, PersonId) VALUES (
-		'$courseDate', 
+		'$dateEnter', 
 		'$data->_belmapo_course', 
 		'$data->_belmapo_residense', 
 		'$data->_belmapo_educForm', 

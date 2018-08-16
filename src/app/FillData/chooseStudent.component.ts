@@ -13,6 +13,7 @@ import {NotificationsService} from 'angular4-notify';
 import { ShowPersonInfoService } from "../personalInfo/showPersonalInfo.service";
 import { LogService } from '../share/log.service';
 import { ShareService } from '../share/share.service';
+import { BsDatepickerConfig } from 'ngx-bootstrap';
 @Component({
 	templateUrl: './templates/chooseStudent.component.html',
 	styles: [`
@@ -90,10 +91,15 @@ export class ChooseStudentComponent implements OnInit {
 	listIsLoading: boolean = false;
 	isClicked: boolean = false;
 	enteredStudents: any[] = [];
-
+	bsValue: Date = new Date();
+	minDate = new Date(1900, 1, 1);
+  	maxDate = new Date();
+	bsConfig: Partial<BsDatepickerConfig> =  Object.assign({}, { containerClass: "theme-blue", locale: "ru", dateInputFormat: 'DD.MM.YYYY' });
 	items: any[] = [];
 	infoIsChecked: boolean = false;
 	ngOnInit() {
+		let courseDate = localStorage.getItem("course-start");
+		this.minDate = new Date(courseDate);
 		this.listIsLoading = true;
 		this.getList.getList(30, this.offset, "all").then(response =>{
 			try{
@@ -115,6 +121,7 @@ export class ChooseStudentComponent implements OnInit {
 			try{
 				for (var obj of data.json()) {
 					this.course = obj;
+					localStorage.setItem("course-start", obj.Start);
 				}
 			}catch(e){
 				this.log.SendError({page: 'chooseStudent', error: e, response: data});
@@ -128,6 +135,7 @@ export class ChooseStudentComponent implements OnInit {
 	confirmation(person:any, template: TemplateRef<any>): void{
 		this.hideNotify = false;
 		this.selectedPerson = {...person};
+		this.selectedPerson.dateEnter = this.minDate;
 		this.modalRef = this.modalService.show(template, {class: 'modal-md'});
 	}
 	setLastInfo(template:TemplateRef<any>):void{

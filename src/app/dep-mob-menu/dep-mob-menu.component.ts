@@ -21,11 +21,11 @@ export class DepMobMenuComponent implements OnInit {
     this.element.nativeElement.style.right = "0";
     this.element.nativeElement.style.left = "initial";
   });
-  this.selectedPage._selectedPage = 1;
+  this.selectedPage.selectedPage = 1;
   return;
   }
   selectPage(v:number): void{
-  this.selectedPage._selectedPage = v;
+  this.selectedPage.selectedPage = v;
   }
 
 }

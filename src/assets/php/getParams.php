@@ -3,10 +3,16 @@
 	require_once("config.php");
 
 	function getSqlObj($tableName, $mysqli){
-		if($tableName == 'cources_zip'){
-			$result = $mysqli->query("SELECT *, concat('№-',Number, ' - ', year, ' год' ) AS value FROM $tableName ORDER BY year DESC");	
-		}else{
-			$result = $mysqli->query("SELECT *, name AS value FROM $tableName ORDER BY value ASC");
+		switch ($tableName) {
+			case 'cources_zip':
+				$result = $mysqli->query("SELECT *, concat('№-',Number, ' - ', year, ' год' ) AS value FROM $tableName ORDER BY year DESC") or die ("Error: " . mysqli_error($mysqli));
+				break;
+			case 'personal_organizations':
+				$result = $mysqli->query("SELECT personal_organizations.id, concat(personal_organizations.name, ' (', personal_organizations.short_name, ' ', cities.name , ')' ) AS value FROM $tableName INNER JOIN cities ON $tableName.location_city = cities.id ORDER BY personal_organizations.name ASC") or die ("Error: " . mysqli_error($mysqli));
+				break;
+			default:
+				$result = $mysqli->query("SELECT *, name AS value FROM $tableName ORDER BY value ASC") or die ("Error: " . mysqli_error($mysqli));
+				break;
 		}
 		return $result;
 	}

@@ -13,34 +13,10 @@
 	deleteUpdate($LogedUser->id, "studList", $mysqli);
 	if (isset($_GET["id"])) {
 		$courseId = $_GET["id"];
-		$condition = "id = $courseId";
-	}else if($LogedUser->is_cathedra == 1){
-		$condition = "(cathedraId = $depId OR Number = '0')";
-		if(isset($_GET["time"]) && !empty($_GET["time"])){
-			$time = $_GET["time"];
-			$today = date("Y-m-d");
-			switch($time){
-				case "current": {
-					$condition .= " AND (Date(cources.Start) <= '$today' AND Date(cources.Finish) >= '$today')";
-					break;
-				}
-				case 'old':{
-					$condition .= " AND (Date(cources.Start) <= '$today' AND Date(cources.Finish) <= '$today')";
-					break;
-				}
-			}
-		}
-	}else if($LogedUser->is_cathedra == 0){
-		$condition = "1";
-		$select = "DISTINCT cources.`id`, cources.`Number`, cources.`Type`, cources.`name`,cources.`year`, cources.`Start`, cources.`Finish`, cources.`Duration`, cources.`Size`, cources.`Notes`, cources.`cathedraId`";
-		// $connection = "INNER JOIN arrivals ON arrivals.CourseId = cources.id";
-	}
-
-	$query = "SELECT $select FROM cources $connection WHERE $condition";
-	$result = $mysqli->query($query) or die ("Ошибка запроса '$query':" . mysqli_error($mysqli));
-	$response = array();
-	while ($row = $result->fetch_assoc()) {
-		$courseId = $row["id"];
+		$query = "SELECT * FROM cources WHERE id = $courseId";
+		$result = $mysqli->query($query) or die ("Ошибка запроса '$query':" . mysqli_error($mysqli));
+		$response = array();
+		$row = $result->fetch_assoc();
 		$query = "SELECT arrivals.id AS arrivalId, arrivals.Date, arrivals.DocNumber, arrivals.FormEduc, arrivals.Dic_count, Residence.name As ResidPlace, personal_card.id, personal_card.surname, personal_card.name, personal_card.patername, concat(personal_card.surname, ' ', personal_card.name, ' ', personal_card.patername) AS fullName, arrivals.Status, personal_private_info.birthday, personal_card.name_in_to_form AS nameInDativeForm FROM personal_card INNER JOIN arrivals ON personal_card.id = arrivals.PersonId INNER JOIN Residence ON  arrivals.ResidPlace = Residence.id INNER JOIN personal_private_info ON personal_card.id = personal_private_info.PersonId WHERE arrivals.CourseId = $courseId AND arrivals.Status != 4 ORDER BY nameInDativeForm ASC";
 		$countArr = $mysqli->query("SELECT COUNT(*) AS countArr FROM arrivals WHERE Status = 1 AND CourseId = $courseId");
 		$countEntered = $mysqli->query("SELECT COUNT(*) AS countEntered FROM arrivals WHERE Status = 2 AND CourseId = $courseId");
@@ -83,14 +59,14 @@
 			array_push($studList, $student);
 		}
 		for($k = 0; $k < count($studList) - 1; $k++){
-            for($j = $k + 1; $j < count($studList); $j++){
-                if(strcmp($studList[$k]["nameInDativeForm"], $studList[$j]["nameInDativeForm"]) > 0){
-                    $temp = $studList[$k];
-                    $studList[$k] = $studList[$j];
-                    $studList[$j] = $temp;
-                }
-            }
-        }
+			for($j = $k + 1; $j < count($studList); $j++){
+				if(strcmp($studList[$k]["nameInDativeForm"], $studList[$j]["nameInDativeForm"]) > 0){
+					$temp = $studList[$k];
+					$studList[$k] = $studList[$j];
+					$studList[$j] = $temp;
+				}
+			}
+		}
 		if ($studListObj->{"num_rows"} == 0) {
 			$query = "SELECT Number, year from cources where id = $courseId";
 			$resultCourse = $mysqli->query($query) or die ("Error in '$query': " . mysqli_error($mysqli));
@@ -114,10 +90,43 @@
 		}
 		$row["StudList"] = $studList;
 		array_push($response, $row);
+		
+		if(count($response) == 0){
+			echo "Нет курсов, удовлетворяющих условиям поиска";
+		}else{
+			echo json_encode($response);    
+		}
+		return;
+	}else if($LogedUser->is_cathedra == 1){
+		$condition = "(cathedraId = $depId OR Number = '0')";
+		if(isset($_GET["time"]) && !empty($_GET["time"])){
+			$time = $_GET["time"];
+			$today = date("Y-m-d");
+			switch($time){
+				case "current": {
+					$condition .= " AND (Date(cources.Start) <= '$today' AND Date(cources.Finish) >= '$today')";
+					break;
+				}
+				case 'old':{
+					$condition .= " AND (Date(cources.Start) <= '$today' AND Date(cources.Finish) <= '$today')";
+					break;
+				}
+			}
+		}
+	}else if($LogedUser->is_cathedra == 0){
+		$condition = "1";
+		$select = "DISTINCT cources.`id`, cources.`Number`, cources.`Type`, cources.`name`,cources.`year`, cources.`Start`, cources.`Finish`, cources.`Duration`, cources.`Size`, cources.`Notes`, cources.`cathedraId`";
+		// $connection = "INNER JOIN arrivals ON arrivals.CourseId = cources.id";
+	}
+
+	$query = "SELECT $select FROM cources $connection WHERE $condition";
+	$result = $mysqli->query($query) or die ("Ошибка запроса '$query':" . mysqli_error($mysqli));
+	$response = array();
+	while ($row = $result->fetch_assoc()) {
+		array_push($response, $row);
 	}
     
     if(count($response) == 0){
-		echo $query;
         echo "Нет курсов, удовлетворяющих условиям поиска";
     }else{
         echo json_encode($response);    
